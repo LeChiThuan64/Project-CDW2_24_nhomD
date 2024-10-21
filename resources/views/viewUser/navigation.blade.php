@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html dir="ltr" lang="zxx">
 
-<!-- Mirrored from uomo-html.flexkitux.com/Demo10/product2_variable.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 04 Oct 2024 16:54:54 GMT -->
-
 <head>
 
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
@@ -262,7 +260,8 @@
     <div class="header-mobile header_sticky">
         <div class="container d-flex align-items-center h-100">
             <a class="mobile-nav-activator d-block position-relative" href="#">
-                <svg class="nav-icon" width="25" height="18" viewBox="0 0 25 18" xmlns="http://www.w3.org/2000/svg">
+                <svg class="nav-icon" width="25" height="18" viewBox="0 0 25 18"
+                    xmlns="http://www.w3.org/2000/svg">
                     <use href="#icon_nav" />
                 </svg>
                 <span class="btn-close-lg position-absolute top-0 start-0 w-100"></span>
@@ -289,8 +288,8 @@
                 <form action="https://uomo-html.flexkitux.com/Demo10/search.html" method="GET"
                     class="search-field position-relative mt-4 mb-3">
                     <div class="position-relative">
-                        <input class="search-field__input w-100 border rounded-1" type="text" name="search-keyword"
-                            placeholder="Search products">
+                        <input class="search-field__input w-100 border rounded-1" type="text"
+                            name="search-keyword" placeholder="Search products">
                         <button class="btn-icon search-popup__submit pb-0 me-2" type="submit">
                             <svg class="d-block" width="20" height="20" viewBox="0 0 20 20" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
@@ -340,7 +339,8 @@
                                         <use href="#icon_prev_sm" />
                                     </svg>Shop</a>
                                 <div class="sub-menu__wrapper">
-                                    <a href="#" class="navigation__link js-nav-right d-flex align-items-center">Shop
+                                    <a href="#"
+                                        class="navigation__link js-nav-right d-flex align-items-center">Shop
                                         List<svg class="ms-auto" width="7" height="11" viewBox="0 0 7 11"
                                             xmlns="http://www.w3.org/2000/svg">
                                             <use href="#icon_next_sm" />
@@ -356,7 +356,8 @@
                                         </ul>
                                     </div><!-- /.sub-menu__wrapper -->
 
-                                    <a href="#" class="navigation__link js-nav-right d-flex align-items-center">Shop
+                                    <a href="#"
+                                        class="navigation__link js-nav-right d-flex align-items-center">Shop
                                         Detail<svg class="ms-auto" width="7" height="11" viewBox="0 0 7 11"
                                             xmlns="http://www.w3.org/2000/svg">
                                             <use href="#icon_next_sm" />
@@ -376,7 +377,8 @@
                                         </ul>
                                     </div><!-- /.sub-menu__wrapper -->
 
-                                    <a href="#" class="navigation__link js-nav-right d-flex align-items-center">Other
+                                    <a href="#"
+                                        class="navigation__link js-nav-right d-flex align-items-center">Other
                                         Pages<svg class="ms-auto" width="7" height="11" viewBox="0 0 7 11"
                                             xmlns="http://www.w3.org/2000/svg">
                                             <use href="#icon_next_sm" />
@@ -444,7 +446,8 @@
                         </li>
 
                         <li class="navigation__item">
-                            <a href="#" class="navigation__link js-nav-right d-flex align-items-center">Pages<svg
+                            <a href="#"
+                                class="navigation__link js-nav-right d-flex align-items-center">Pages<svg
                                     class="ms-auto" width="7" height="11" viewBox="0 0 7 11"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <use href="#icon_next_sm" />
@@ -469,7 +472,8 @@
                                             class="menu-link menu-link_us-s">Faq</a></li>
                                     <li class="sub-menu__item"><a href="terms.html"
                                             class="menu-link menu-link_us-s">Terms</a></li>
-                                    <li class="sub-menu__item"><a href="404.html" class="menu-link menu-link_us-s">404
+                                    <li class="sub-menu__item"><a href="404.html"
+                                            class="menu-link menu-link_us-s">404
                                             Error</a></li>
                                     <li class="sub-menu__item"><a href="coming_soon.html"
                                             class="menu-link menu-link_us-s">Coming Soon</a></li>
@@ -490,8 +494,8 @@
 
             <div class="border-top mt-auto pb-2">
                 <div class="customer-links container mt-4 mb-2 pb-1">
-                    <svg class="d-inline-block align-middle" width="20" height="20" viewBox="0 0 20 20" fill="none"
-                        xmlns="http://www.w3.org/2000/svg">
+                    <svg class="d-inline-block align-middle" width="20" height="20" viewBox="0 0 20 20"
+                        fill="none" xmlns="http://www.w3.org/2000/svg">
                         <use href="#icon_user" />
                     </svg>
                     <span class="d-inline-block ms-2 text-uppercase align-middle fw-medium">My Account</span>
@@ -540,8 +544,8 @@
                     </li>
                     <li>
                         <a href="https://www.instagram.com/" class="footer__social-link d-block">
-                            <svg class="svg-icon svg-icon_instagram" width="14" height="13" viewBox="0 0 14 13"
-                                xmlns="http://www.w3.org/2000/svg">
+                            <svg class="svg-icon svg-icon_instagram" width="14" height="13"
+                                viewBox="0 0 14 13" xmlns="http://www.w3.org/2000/svg">
                                 <use href="#icon_instagram" />
                             </svg>
                         </a>
@@ -557,8 +561,8 @@
                     </li>
                     <li>
                         <a href="https://www.pinterest.com/" class="footer__social-link d-block">
-                            <svg class="svg-icon svg-icon_pinterest" width="14" height="15" viewBox="0 0 14 15"
-                                xmlns="http://www.w3.org/2000/svg">
+                            <svg class="svg-icon svg-icon_pinterest" width="14" height="15"
+                                viewBox="0 0 14 15" xmlns="http://www.w3.org/2000/svg">
                                 <use href="#icon_pinterest" />
                             </svg>
                         </a>
@@ -655,8 +659,8 @@
                     <div class="header-tools__item hover-container">
                         <div class="js-hover__open position-relative">
                             <a class="js-search-popup search-field__actor" href="#">
-                                <svg class="d-block" width="20" height="20" viewBox="0 0 20 20" fill="none"
-                                    xmlns="http://www.w3.org/2000/svg">
+                                <svg class="d-block" width="20" height="20" viewBox="0 0 20 20"
+                                    fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <use href="#icon_search" />
                                 </svg>
                                 <i class="btn-icon btn-close-lg"></i>
@@ -664,15 +668,15 @@
                         </div>
 
                         <div class="search-popup js-hidden-content">
-                            <form action="https://uomo-html.flexkitux.com/Demo10/search_result.html" method="GET"
+                            <form action="{{ route('product.search') }}" method="GET"
                                 class="search-field container">
                                 <p class="text-uppercase text-secondary fw-medium mb-4">What are you looking for?</p>
                                 <div class="position-relative">
-                                    <input class="search-field__input search-popup__input w-100 fw-medium" type="text"
-                                        name="search-keyword" placeholder="Search products">
+                                    <input class="search-field__input search-popup__input w-100 fw-medium"
+                                        type="text" name="search-keyword" placeholder="Search products">
                                     <button class="btn-icon search-popup__submit" type="submit">
-                                        <svg class="d-block" width="20" height="20" viewBox="0 0 20 20" fill="none"
-                                            xmlns="http://www.w3.org/2000/svg">
+                                        <svg class="d-block" width="20" height="20" viewBox="0 0 20 20"
+                                            fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <use href="#icon_search" />
                                         </svg>
                                     </button>
@@ -683,8 +687,8 @@
                                     <div class="sub-menu search-suggestion">
                                         <h6 class="sub-menu__title fs-base">Quicklinks</h6>
                                         <ul class="sub-menu__list list-unstyled">
-                                            <li class="sub-menu__item"><a href="#" class="menu-link menu-link_us-s">New
-                                                    Arrivals</a></li>
+                                            <li class="sub-menu__item"><a href="#"
+                                                    class="menu-link menu-link_us-s">New Arrivals</a></li>
                                             <li class="sub-menu__item"><a href="#"
                                                     class="menu-link menu-link_us-s">Dresses</a></li>
                                             <li class="sub-menu__item"><a href="#"
@@ -695,11 +699,31 @@
                                                     class="menu-link menu-link_us-s">Sweatshirt</a></li>
                                         </ul>
                                     </div>
-
-                                    <div class="search-result row row-cols-5"></div>
                                 </div>
-                            </form><!-- /.header-search -->
-                        </div><!-- /.search-popup -->
+                            </form>
+                        </div>
+
+                        <!-- Kết quả tìm kiếm -->
+                        @if (isset($products))
+                            <h1>Search Results for "{{ $keyword }}"</h1>
+
+                            @if ($products->isEmpty())
+                                <p>No products found.</p>
+                            @else
+                                <div class="row">
+                                    @foreach ($products as $product)
+                                        <div class="col-md-3">
+                                            <div class="product-card">
+                                                <img src="{{ $product->image_url }}" alt="{{ $product->name }}"
+                                                    class="img-fluid">
+                                                <h5>{{ $product->name }}</h5>
+                                                <p>{{ $product->price }}</p>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            @endif
+                        @endif
                     </div><!-- /.header-tools__item hover-container -->
 
                     <div class="header-tools__item hover-container">
@@ -711,7 +735,8 @@
                         </a>
                     </div>
 
-                    <a href="#" class="header-tools__item header-tools__cart js-open-aside" data-aside="cartDrawer">
+                    <a href="#" class="header-tools__item header-tools__cart js-open-aside"
+                        data-aside="cartDrawer">
                         <svg class="d-block" width="20" height="20" viewBox="0 0 20 20" fill="none"
                             xmlns="http://www.w3.org/2000/svg">
                             <use href="#icon_cart" />
@@ -719,8 +744,9 @@
                         <span class="cart-amount d-block position-absolute js-cart-items-count">3</span>
                     </a>
 
-                    <a class="header-tools__item" href="account_wishlist.html">
-                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <a class="header-tools__item" href="{{ route('wishlist.index') }}">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
                             <use href="#icon_heart" />
                         </svg>
                     </a>
@@ -731,8 +757,6 @@
     <!-- End Header Type 1 -->
 
     @yield('content')
-
-    <div class="mb-5 pb-xl-5"></div>
 
     <!-- Footer Type 1 -->
     <footer class="footer footer_type_1">
@@ -756,32 +780,32 @@
                     <ul class="social-links list-unstyled d-flex flex-wrap mb-0">
                         <li>
                             <a href="https://www.facebook.com/" class="footer__social-link d-block">
-                                <svg class="svg-icon svg-icon_facebook" width="9" height="15" viewBox="0 0 9 15"
-                                    xmlns="http://www.w3.org/2000/svg">
+                                <svg class="svg-icon svg-icon_facebook" width="9" height="15"
+                                    viewBox="0 0 9 15" xmlns="http://www.w3.org/2000/svg">
                                     <use href="#icon_facebook" />
                                 </svg>
                             </a>
                         </li>
                         <li>
                             <a href="https://www.twitter.com/" class="footer__social-link d-block">
-                                <svg class="svg-icon svg-icon_twitter" width="14" height="13" viewBox="0 0 14 13"
-                                    xmlns="http://www.w3.org/2000/svg">
+                                <svg class="svg-icon svg-icon_twitter" width="14" height="13"
+                                    viewBox="0 0 14 13" xmlns="http://www.w3.org/2000/svg">
                                     <use href="#icon_twitter" />
                                 </svg>
                             </a>
                         </li>
                         <li>
                             <a href="https://www.instagram.com/" class="footer__social-link d-block">
-                                <svg class="svg-icon svg-icon_instagram" width="14" height="13" viewBox="0 0 14 13"
-                                    xmlns="http://www.w3.org/2000/svg">
+                                <svg class="svg-icon svg-icon_instagram" width="14" height="13"
+                                    viewBox="0 0 14 13" xmlns="http://www.w3.org/2000/svg">
                                     <use href="#icon_instagram" />
                                 </svg>
                             </a>
                         </li>
                         <li>
                             <a href="https://www.youtube.com/" class="footer__social-link d-block">
-                                <svg class="svg-icon svg-icon_youtube" width="16" height="11" viewBox="0 0 16 11"
-                                    xmlns="http://www.w3.org/2000/svg">
+                                <svg class="svg-icon svg-icon_youtube" width="16" height="11"
+                                    viewBox="0 0 16 11" xmlns="http://www.w3.org/2000/svg">
                                     <path
                                         d="M15.0117 1.8584C14.8477 1.20215 14.3281 0.682617 13.6992 0.518555C12.5234 0.19043 7.875 0.19043 7.875 0.19043C7.875 0.19043 3.19922 0.19043 2.02344 0.518555C1.39453 0.682617 0.875 1.20215 0.710938 1.8584C0.382812 3.00684 0.382812 5.46777 0.382812 5.46777C0.382812 5.46777 0.382812 7.90137 0.710938 9.07715C0.875 9.7334 1.39453 10.2256 2.02344 10.3896C3.19922 10.6904 7.875 10.6904 7.875 10.6904C7.875 10.6904 12.5234 10.6904 13.6992 10.3896C14.3281 10.2256 14.8477 9.7334 15.0117 9.07715C15.3398 7.90137 15.3398 5.46777 15.3398 5.46777C15.3398 5.46777 15.3398 3.00684 15.0117 1.8584ZM6.34375 7.68262V3.25293L10.2266 5.46777L6.34375 7.68262Z" />
                                 </svg>
@@ -789,8 +813,8 @@
                         </li>
                         <li>
                             <a href="https://www.pinterest.com/" class="footer__social-link d-block">
-                                <svg class="svg-icon svg-icon_pinterest" width="14" height="15" viewBox="0 0 14 15"
-                                    xmlns="http://www.w3.org/2000/svg">
+                                <svg class="svg-icon svg-icon_pinterest" width="14" height="15"
+                                    viewBox="0 0 14 15" xmlns="http://www.w3.org/2000/svg">
                                     <use href="#icon_pinterest" />
                                 </svg>
                             </a>
@@ -805,9 +829,11 @@
                         </li>
                         <li class="sub-menu__item"><a href="about.html" class="menu-link menu-link_us-s">Careers</a>
                         </li>
-                        <li class="sub-menu__item"><a href="about.html" class="menu-link menu-link_us-s">Affiliates</a>
+                        <li class="sub-menu__item"><a href="about.html"
+                                class="menu-link menu-link_us-s">Affiliates</a>
                         </li>
-                        <li class="sub-menu__item"><a href="blog_list1.html" class="menu-link menu-link_us-s">Blog</a>
+                        <li class="sub-menu__item"><a href="blog_list1.html"
+                                class="menu-link menu-link_us-s">Blog</a>
                         </li>
                         <li class="sub-menu__item"><a href="contact.html" class="menu-link menu-link_us-s">Contact
                                 Us</a></li>
@@ -819,10 +845,12 @@
                     <ul class="sub-menu__list list-unstyled">
                         <li class="sub-menu__item"><a href="shop2.html" class="menu-link menu-link_us-s">New
                                 Arrivals</a></li>
-                        <li class="sub-menu__item"><a href="shop3.html" class="menu-link menu-link_us-s">Accessories</a>
+                        <li class="sub-menu__item"><a href="shop3.html"
+                                class="menu-link menu-link_us-s">Accessories</a>
                         </li>
                         <li class="sub-menu__item"><a href="shop4.html" class="menu-link menu-link_us-s">Men</a></li>
-                        <li class="sub-menu__item"><a href="shop5.html" class="menu-link menu-link_us-s">Women</a></li>
+                        <li class="sub-menu__item"><a href="shop5.html" class="menu-link menu-link_us-s">Women</a>
+                        </li>
                         <li class="sub-menu__item"><a href="shop1.html" class="menu-link menu-link_us-s">Shop All</a>
                         </li>
                     </ul>
@@ -833,15 +861,19 @@
                     <ul class="sub-menu__list list-unstyled">
                         <li class="sub-menu__item"><a href="about.html" class="menu-link menu-link_us-s">Customer
                                 Service</a></li>
-                        <li class="sub-menu__item"><a href="account_dashboard.html" class="menu-link menu-link_us-s">My
+                        <li class="sub-menu__item"><a href="account_dashboard.html"
+                                class="menu-link menu-link_us-s">My
                                 Account</a></li>
-                        <li class="sub-menu__item"><a href="store_location.html" class="menu-link menu-link_us-s">Find a
+                        <li class="sub-menu__item"><a href="store_location.html"
+                                class="menu-link menu-link_us-s">Find a
                                 Store</a></li>
                         <li class="sub-menu__item"><a href="about.html" class="menu-link menu-link_us-s">Legal &
                                 Privacy</a></li>
-                        <li class="sub-menu__item"><a href="contact.html" class="menu-link menu-link_us-s">Contact</a>
+                        <li class="sub-menu__item"><a href="contact.html"
+                                class="menu-link menu-link_us-s">Contact</a>
                         </li>
-                        <li class="sub-menu__item"><a href="about.html" class="menu-link menu-link_us-s">Gift Card</a>
+                        <li class="sub-menu__item"><a href="about.html" class="menu-link menu-link_us-s">Gift
+                                Card</a>
                         </li>
                     </ul>
                 </div><!-- /.footer-column -->
@@ -860,7 +892,8 @@
                     <div class="mt-4 pt-3">
                         <strong class="fw-medium">Secure payments</strong>
                         <p class="mt-2">
-                            <img loading="lazy" src="../images/payment-options.png" alt="Acceptable payment gateways">
+                            <img loading="lazy" src="../images/payment-options.png"
+                                alt="Acceptable payment gateways">
                         </p>
                     </div>
                 </div><!-- /.footer-column -->
@@ -1029,7 +1062,8 @@
                                 <a href="#" class="swatch-color js-filter" style="color: #d29b48"></a>
                                 <a href="#" class="swatch-color js-filter" style="color: #e6ae95"></a>
                                 <a href="#" class="swatch-color js-filter" style="color: #d76b67"></a>
-                                <a href="#" class="swatch-color swatch_active js-filter" style="color: #bababa"></a>
+                                <a href="#" class="swatch-color swatch_active js-filter"
+                                    style="color: #bababa"></a>
                                 <a href="#" class="swatch-color js-filter" style="color: #bfdcc4"></a>
                             </div>
                         </div>
@@ -1057,12 +1091,18 @@
                         aria-labelledby="accordion-heading-size" data-bs-parent="#size-filters">
                         <div class="accordion-body px-0 pb-0">
                             <div class="d-flex flex-wrap">
-                                <a href="#" class="swatch-size btn btn-sm btn-outline-light mb-3 me-3 js-filter">XS</a>
-                                <a href="#" class="swatch-size btn btn-sm btn-outline-light mb-3 me-3 js-filter">S</a>
-                                <a href="#" class="swatch-size btn btn-sm btn-outline-light mb-3 me-3 js-filter">M</a>
-                                <a href="#" class="swatch-size btn btn-sm btn-outline-light mb-3 me-3 js-filter">L</a>
-                                <a href="#" class="swatch-size btn btn-sm btn-outline-light mb-3 me-3 js-filter">XL</a>
-                                <a href="#" class="swatch-size btn btn-sm btn-outline-light mb-3 me-3 js-filter">XXL</a>
+                                <a href="#"
+                                    class="swatch-size btn btn-sm btn-outline-light mb-3 me-3 js-filter">XS</a>
+                                <a href="#"
+                                    class="swatch-size btn btn-sm btn-outline-light mb-3 me-3 js-filter">S</a>
+                                <a href="#"
+                                    class="swatch-size btn btn-sm btn-outline-light mb-3 me-3 js-filter">M</a>
+                                <a href="#"
+                                    class="swatch-size btn btn-sm btn-outline-light mb-3 me-3 js-filter">L</a>
+                                <a href="#"
+                                    class="swatch-size btn btn-sm btn-outline-light mb-3 me-3 js-filter">XL</a>
+                                <a href="#"
+                                    class="swatch-size btn btn-sm btn-outline-light mb-3 me-3 js-filter">XXL</a>
                             </div>
                         </div>
                     </div>
@@ -1149,8 +1189,8 @@
                 <div class="accordion-item mb-4">
                     <h5 class="accordion-header mb-2" id="accordion-heading-price">
                         <button class="accordion-button p-0 border-0 fs-5 text-uppercase" type="button"
-                            data-bs-toggle="collapse" data-bs-target="#accordion-filter-price" aria-expanded="true"
-                            aria-controls="accordion-filter-price">
+                            data-bs-toggle="collapse" data-bs-target="#accordion-filter-price"
+                            aria-expanded="true" aria-controls="accordion-filter-price">
                             Price
                             <svg class="accordion-button__icon" viewBox="0 0 14 14">
                                 <g aria-hidden="true" stroke="none" fill-rule="evenodd">
@@ -1162,8 +1202,9 @@
                     </h5>
                     <div id="accordion-filter-price" class="accordion-collapse collapse show border-0"
                         aria-labelledby="accordion-heading-price" data-bs-parent="#price-filters">
-                        <input class="price-range-slider" type="text" name="price_range" value="" data-slider-min="10"
-                            data-slider-max="1000" data-slider-step="5" data-slider-value="[250,450]" data-currency="$">
+                        <input class="price-range-slider" type="text" name="price_range" value=""
+                            data-slider-min="10" data-slider-max="1000" data-slider-step="5"
+                            data-slider-value="[250,450]" data-currency="$">
                         <div class="price-range__info d-flex align-items-center mt-2">
                             <div class="me-auto">
                                 <span class="text-secondary">Min Price: </span>
@@ -1231,7 +1272,8 @@
                         <div class="form-check mb-0">
                             <input name="remember" class="form-check-input form-check-input_fill" type="checkbox"
                                 value="" id="flexCheckDefault">
-                            <label class="form-check-label text-secondary" for="flexCheckDefault">Remember me</label>
+                            <label class="form-check-label text-secondary" for="flexCheckDefault">Remember
+                                me</label>
                         </div>
                         <a href="reset_password.html" class="btn-text ms-auto">Lost password?</a>
                     </div>
@@ -1240,7 +1282,8 @@
 
                     <div class="customer-option mt-4 text-center">
                         <span class="text-secondary">No account yet?</span>
-                        <a href="login_register.html#register-tab" class="btn-text js-show-register">Create Account</a>
+                        <a href="login_register.html#register-tab" class="btn-text js-show-register">Create
+                            Account</a>
                     </div>
                 </form>
             </div><!-- /.customer__login -->
@@ -1275,7 +1318,8 @@
                             type="password" placeholder="*******">
                     </div>
 
-                    <p class="text-secondary mb-4">Your personal data will be used to support your experience throughout
+                    <p class="text-secondary mb-4">Your personal data will be used to support your experience
+                        throughout
                         this website, to manage access to your account, and for other purposes described in our privacy
                         policy.</p>
 
@@ -1294,7 +1338,8 @@
     <!-- Cart Drawer -->
     <div class="aside aside_right overflow-hidden cart-drawer" id="cartDrawer">
         <div class="aside-header d-flex align-items-center">
-            <h3 class="text-uppercase fs-6 mb-0">SHOPPING BAG ( <span class="cart-amount js-cart-items-count">1</span> )
+            <h3 class="text-uppercase fs-6 mb-0">SHOPPING BAG ( <span
+                    class="cart-amount js-cart-items-count">1</span> )
             </h3>
             <button class="btn-close-lg js-close-aside btn-close-aside ms-auto"></button>
         </div><!-- /.aside-header -->
@@ -1303,11 +1348,13 @@
             <div class="cart-drawer-item d-flex position-relative">
                 <div class="position-relative">
                     <a href="product1_simple.html">
-                        <img loading="lazy" class="cart-drawer-item__img" src="../images/cart-item-1.jpg" alt="">
+                        <img loading="lazy" class="cart-drawer-item__img" src="../images/cart-item-1.jpg"
+                            alt="">
                     </a>
                 </div>
                 <div class="cart-drawer-item__info flex-grow-1">
-                    <h6 class="cart-drawer-item__title fw-normal"><a href="product1_simple.html">Zessi Dresses</a></h6>
+                    <h6 class="cart-drawer-item__title fw-normal"><a href="product1_simple.html">Zessi Dresses</a>
+                    </h6>
                     <p class="cart-drawer-item__option text-secondary">Color: Yellow</p>
                     <p class="cart-drawer-item__option text-secondary">Size: L</p>
                     <div class="d-flex align-items-center justify-content-between mt-1">
@@ -1329,11 +1376,13 @@
             <div class="cart-drawer-item d-flex position-relative">
                 <div class="position-relative">
                     <a href="product1_simple.html">
-                        <img loading="lazy" class="cart-drawer-item__img" src="../images/cart-item-2.jpg" alt="">
+                        <img loading="lazy" class="cart-drawer-item__img" src="../images/cart-item-2.jpg"
+                            alt="">
                     </a>
                 </div>
                 <div class="cart-drawer-item__info flex-grow-1">
-                    <h6 class="cart-drawer-item__title fw-normal"><a href="product1_simple.html">Kirby T-Shirt</a></h6>
+                    <h6 class="cart-drawer-item__title fw-normal"><a href="product1_simple.html">Kirby T-Shirt</a>
+                    </h6>
                     <p class="cart-drawer-item__option text-secondary">Color: Black</p>
                     <p class="cart-drawer-item__option text-secondary">Size: XS</p>
                     <div class="d-flex align-items-center justify-content-between mt-1">
@@ -1380,7 +1429,7 @@
     <script src="{{ asset('assets/js/plugins/jquery.fancybox.js') }}"></script>
 
     <!-- Footer Scripts -->
-    <script src="{{ asset('assets/js/theme.css') }}"></script>
+    <script src="{{ asset('assets/js/theme.js') }}"></script>
 
 </body>
 

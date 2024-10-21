@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\WishlistController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,5 +24,24 @@ Route::get('/dashboard', function () {
     return view('vieuwAdmin.dashboard');
 });
 Route::get('/product-detail', function () {
-    return view('viewUser.navigation');
+    return view('viewUser.product-detail');
 });
+Route::get('/wishlist', function () {
+    return view('viewUser.wishlist');
+});
+
+Route::get('/product/{id}', [ProductController::class, 'show'])->name('product.show');
+
+// Route để hiển thị wishlist
+Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist.index');
+
+// Route để thêm sản phẩm vào wishlist
+Route::post('/wishlist/add/{productId}', [WishlistController::class, 'add'])->name('wishlist.add');
+
+Route::delete('/wishlist/remove/{wishlistId}', [WishlistController::class, 'remove'])->name('wishlist.remove');
+
+// Tìm kiếm
+Route::get('/search', [ProductController::class, 'search'])->name('product.search');
+
+
+
