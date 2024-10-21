@@ -1,26 +1,29 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
-
+// Route trang chủ
 Route::get('/', function () {
     return view('welcome');
 });
 
-
+// Route dashboard
 Route::get('/dashboard', function () {
     return view('vieuwAdmin.dashboard');
 });
+
+// Route trang hiển thị danh sách người dùng (tables.blade.php)
+Route::get('/tables', [UserController::class, 'index'])->name('tables');
+
+// Route xóa người dùng
+Route::delete('/user/{id}', [UserController::class, 'destroy'])->name('user.destroy');
+
+// Route cho trang thêm người dùng
+Route::get('/add-user', [UserController::class, 'create'])->name('user.create');
+Route::post('/add-user', [UserController::class, 'store'])->name('user.store');
+
+// Route cho trang chi tiết sản phẩm
 Route::get('/product-detail', function () {
     return view('viewUser.navigation');
 });
