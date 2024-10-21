@@ -21,3 +21,6 @@ Route::get('/', function () {
 Route::get('/dashboard', function () {
     return view('vieuwAdmin.dashboard');
 });
+Route::get('/product-detail', function () {
+    return view('viewUser.navigation');
+});
