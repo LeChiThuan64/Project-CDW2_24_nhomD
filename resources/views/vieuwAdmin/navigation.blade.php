@@ -37,6 +37,7 @@
     content="Material Dashboard 2 is a beautiful Bootstrap 5 admin dashboard with a large number of components, designed to look beautiful and organized. If you are looking for a tool to manage and visualize data about your business, this dashboard is the thing for you." />
   <meta property="og:site_name" content="Creative Tim" />
 
+
   <link rel="stylesheet" type="text/css"
     href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900|Roboto+Slab:400,700" />
 
@@ -46,9 +47,21 @@
   <link id="pagestyle" href="{{ asset('assets/css/material-dashboard.mine63c.css?v=3.1.0') }}" rel="stylesheet" />
 
   <script src="{{ asset('assets/js/kit.fontawesome.js') }}" crossorigin="anonymous"></script>
-
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
   <script defer data-site="demos.creative-tim.com" src="{{ asset('assets/js/nepcha-analytics.js') }}"></script>
+  <style>
+    .pagination .page-item.active .page-link {
+        background-color: red; /* Màu nền đỏ */
+        color: white; /* Màu chữ trắng */
+        border-color: red; /* Màu viền đỏ */
+    }
+
+    .pagination .page-item .page-link {
+        color: #007bff; /* Màu mặc định cho các trang không active */
+    }
+</style>
+
 </head>
 
 <body class="g-sidenav-show  bg-gray-200">
@@ -78,7 +91,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white " href="tables.html">
+          <a class="nav-link text-white " href="{{ url('tables') }}">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">table_view</i>
             </div>
