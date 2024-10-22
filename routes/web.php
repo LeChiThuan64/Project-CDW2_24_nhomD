@@ -22,6 +22,12 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/addProducts', function () {
+    return view('viewAdmin.addProducts');
+});
+
+
+
 // Route dashboard
 Route::get('/dashboard', function () {
     return view('viewAdmin.dashboard');
@@ -44,8 +50,7 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
 Route::post('/register', [RegisterController::class, 'register']);
 
-    return view('vieuwAdmin.dashboard');
-});
+    
 
 // Route trang hiển thị danh sách người dùng (tables.blade.php)
 Route::get('/tables', [UserController::class, 'index'])->name('tables');
