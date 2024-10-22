@@ -10,7 +10,7 @@ class LoginController extends Controller
 {
     public function showLoginForm()
     {
-        return view('vieuwUser.login'); // replace with your login view name
+        return view('viewUser.login'); // replace with your login view name
     }
 
     public function login(Request $request)
@@ -52,7 +52,7 @@ class LoginController extends Controller
     
         // Attempt to log the user in
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password], $request->remember)) {
-            return response()->json(['status' => 'success', 'redirect' => route('home')]);
+            return response()->json(['status' => 'success', 'redirect' => route('logout')]);
         }
     
         // Nếu không thành công, trả về lỗi

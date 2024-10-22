@@ -22,12 +22,12 @@ Route::get('/', function () {
 
 
 Route::get('/dashboard', function () {
-    return view('vieuwAdmin.dashboard');
+    return view('viewAdmin.dashboard');
 });
 
-Route::get('/home', function () {
-    return view('vieuwUser.home');
-})->name('home');
+Route::get('/logout', function () {
+    return view('viewUser.logout');
+})->name('logout');
 
 Route::post('/logout', function () {
     Auth::logout();

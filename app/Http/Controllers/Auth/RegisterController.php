@@ -13,7 +13,7 @@ class RegisterController extends Controller
     // Hiển thị form đăng ký
     public function showRegistrationForm()
     {
-        return view('vieuwUser.register'); // Điều hướng tới view đăng ký
+        return view('viewUser.register'); // Điều hướng tới view đăng ký
     }
 
     // Xử lý yêu cầu đăng ký người dùng mới

@@ -1,4 +1,4 @@
-@extends('vieuwUser.navLogin_Register')
+@extends('viewUser.navLogin_Register')
 @section('title', 'Login')
 @section('content')
 
