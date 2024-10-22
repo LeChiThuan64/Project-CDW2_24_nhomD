@@ -10,23 +10,20 @@
                         <div class="product-single__image">
                             <div class="swiper-container">
                                 <div class="swiper-wrapper">
-                                    <!-- Duyệt qua hình ảnh sản phẩm -->
-                                    @if (!empty($product->images))
-                                        @foreach ($product->images as $image)
-                                            <div class="swiper-slide product-single__image-item">
-                                                <img loading="lazy" class="h-auto"
-                                                    src="{{ asset('assets/img/products/' . $image->image_url) }}"
-                                                    width="674" height="674" alt="">
-                                                <a data-fancybox="gallery"
-                                                    href="{{ asset('assets/img/products/' . $image->image_url) }}"
-                                                    data-bs-toggle="tooltip" data-bs-placement="left" title="Zoom">
-                                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
-                                                        xmlns="http://www.w3.org/2000/svg">
-                                                        <use href="#icon_zoom" />
-                                                    </svg>
-                                                </a>
-                                            </div>
-                                        @endforeach
+                                    @if (!empty($product->images) && isset($product->images[0]))
+                                        <div class="swiper-slide product-single__image-item">
+                                            <img loading="lazy" class="h-auto"
+                                                src="{{ asset('assets/img/products/' . $product->images[0]->image_url) }}"
+                                                width="674" height="674" alt="Product Image">
+                                            <a data-fancybox="gallery"
+                                                href="{{ asset('assets/img/products/' . $product->images[0]->image_url) }}"
+                                                data-bs-toggle="tooltip" data-bs-placement="left" title="Zoom">
+                                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
+                                                    xmlns="http://www.w3.org/2000/svg">
+                                                    <use href="#icon_zoom" />
+                                                </svg>
+                                            </a>
+                                        </div>
                                     @else
                                         <p>No images available</p>
                                     @endif
@@ -109,7 +106,8 @@
                     </div>
                 </form>
                 <div class="product-single__addtolinks">
-                    <form action="{{ route('wishlist.add', $product->product_id) }}" method="POST" class="add-to-wishlist-form">
+                    <form action="{{ route('wishlist.add', $product->product_id) }}" method="POST"
+                        class="add-to-wishlist-form">
                         @csrf
                         <button type="submit" class="menu-link menu-link_us-s add-to-wishlist">
                             <svg width="16" height="16" viewBox="0 0 20 20" fill="none"
@@ -151,8 +149,7 @@
                             </div>
                         </details>
                     </share-button>
-                    <script src="{{ asset('assets/js/details-disclosure.js') }}" defer="defer"></script>
-                    <script src="{{ asset('assets/js/share.js') }}" defer="defer"></script>
+                   
                 </div>
                 <div class="product-single__meta-info">
                     <div class="meta-item">

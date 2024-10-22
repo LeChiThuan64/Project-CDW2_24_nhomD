@@ -41,7 +41,7 @@ Route::post('/wishlist/add/{productId}', [WishlistController::class, 'add'])->na
 Route::delete('/wishlist/remove/{wishlistId}', [WishlistController::class, 'remove'])->name('wishlist.remove');
 
 // Tìm kiếm
-Route::get('/search', [ProductController::class, 'search'])->name('product.search');
+Route::get('/search-results', [ProductController::class, 'search'])->name('product.search');
 
 
 

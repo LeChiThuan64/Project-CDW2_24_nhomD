@@ -703,27 +703,7 @@
                             </form>
                         </div>
 
-                        <!-- Kết quả tìm kiếm -->
-                        @if (isset($products))
-                            <h1>Search Results for "{{ $keyword }}"</h1>
-
-                            @if ($products->isEmpty())
-                                <p>No products found.</p>
-                            @else
-                                <div class="row">
-                                    @foreach ($products as $product)
-                                        <div class="col-md-3">
-                                            <div class="product-card">
-                                                <img src="{{ $product->image_url }}" alt="{{ $product->name }}"
-                                                    class="img-fluid">
-                                                <h5>{{ $product->name }}</h5>
-                                                <p>{{ $product->price }}</p>
-                                            </div>
-                                        </div>
-                                    @endforeach
-                                </div>
-                            @endif
-                        @endif
+                       
                     </div><!-- /.header-tools__item hover-container -->
 
                     <div class="header-tools__item hover-container">
@@ -1427,6 +1407,8 @@
     <script src="{{ asset('assets/js/plugins/swiper.min.js') }}"></script>
     <script src="{{ asset('assets/js/plugins/countdown.js') }}"></script>
     <script src="{{ asset('assets/js/plugins/jquery.fancybox.js') }}"></script>
+    <script src="{{ asset('assets/js/details-disclosure.js') }}" defer="defer"></script>
+    <script src="{{ asset('assets/js/share.js') }}" defer="defer"></script>
 
     <!-- Footer Scripts -->
     <script src="{{ asset('assets/js/theme.js') }}"></script>

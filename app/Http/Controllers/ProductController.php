@@ -62,6 +62,6 @@ class ProductController extends Controller
                             ->get();
 
         // Trả về view kết quả tìm kiếm
-        return view('search_results', compact('products', 'keyword'));
+        return view('viewUser.search-results', compact('products', 'keyword'));
     }
 }
