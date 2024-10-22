@@ -1,0 +1,327 @@
+body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+/* Căn giữa page-wrapper */
+
+/* Đặt bố cục cho header */
+.header-container {
+    display: flex;
+    justify-content: space-between; /* Giữ khoảng cách đều giữa các phần */
+    align-items: center; /* Căn giữa theo chiều dọc */
+    padding: 20px 100px;
+    width: 100%;
+    background-color: #fff;
+}
+
+/* Đặt logo */
+.logo img {
+    width: 100px; /* Tùy chỉnh kích thước logo */
+    height: auto;
+}
+
+/* Đặt bố cục menu */
+.main-nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex; /* Đặt ul thành flex container */
+}
+
+.main-nav ul li {
+    margin: 0 15px; /* Tạo khoảng cách giữa các mục menu */
+}
+
+.main-nav ul li a {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+/* Đặt bố cục cho các icon */
+.header-icons {
+    display: flex; /* Các icon nằm ngang */
+    align-items: center;
+}
+
+.header-icons a {
+    text-decoration: none;
+    color: #333;
+    font-size: 20px;
+    margin: 0 10px;
+    position: relative;
+}
+
+/* Tùy chỉnh số lượng giỏ hàng */
+.header-icons .cart-count {
+    position: absolute;
+    top: -8px;
+    right: -10px;
+    background-color: gold;
+    color: white;
+    border-radius: 50%;
+    font-size: 12px;
+    width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.container .img-product {
+    margin-bottom: 20px;
+}
+
+.ti {
+    font-size: 18px;
+}
+
+.product-img {
+    width: 100%;
+    height: auto;
+}
+
+.thumb-img {
+    width: 100px;
+    height: auto;
+    cursor: pointer;
+}
+
+.price {
+    color: #ff5733;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.qty {
+    width: 50px;
+    text-align: center;
+}
+.d-flex.align-items-center.mb-4 a {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+    font-size: 16px;
+    margin-right: 10px;
+}
+
+.d-flex.align-items-center.mb-4 a:last-child {
+    margin-right: 0;
+}
+.d-none {
+    display: none;
+}
+
+.comparison-table {
+    position: fixed;
+    top: 90%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 80%;
+    padding: 20px;
+    border: 1px solid #ddd;
+    background-color: #f9f9f9;
+    z-index: 1000;
+}
+
+.comparison-table .close-btn {
+    background: none;
+    border: none;
+    font-size: 25px;
+    cursor: pointer;
+    color: #000;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+.comparison-table .comparison-item {
+    flex: 1;
+    text-align: center;
+    border: 1px solid #ddd; /* Add border to each item */
+    padding: 10px; /* Add padding inside each item */
+    margin: 0 5px; /* Add margin to space items apart */
+    box-sizing: border-box; /* Ensure padding and border are included in the width */
+    height: 200px; /* Set a fixed height for all items */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.comparison-table .comparison-item:first-child {
+    margin-left: 0; /* Remove left margin for the first item */
+}
+
+.comparison-table .comparison-item:last-child {
+    margin-right: 0; /* Remove right margin for the last item */
+}
+
+.comparison-item .btn-table {
+    display: block;
+    width: 100%;
+    margin-bottom: 10px; /* Optional: Adds space between the buttons */
+}
+
+.modal {
+    position: fixed;
+    display: block;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 500px;
+    height: 500px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    background-color: #fff;
+    z-index: 1001;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: auto; /* Add scroll if content overflows */
+}
+
+.modal-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center align the content */
+}
+
+.close {
+    align-self: flex-end;
+    cursor: pointer;
+}
+
+.product-info {
+    width: 100%;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.search-container {
+    margin-top: 20px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+#product-search {
+    width: 80%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.search-results {
+    margin-top: 20px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.search-result-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 80%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+
+.search-result-item button {
+    margin-left: 10px;
+}
+
+/* CSS cho bảng so sánh sản phẩm */
+.comparison-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+}
+
+.comparison-section .comparison-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    width: 80%;
+    max-width: 800px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    position: relative; /* Để định vị nút "Đóng" */
+}
+
+/* Header và các sản phẩm */
+.comparison-section .comparison-header,
+.comparison-section .comparison-details {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+/* Column styles */
+.comparison-section .col-4 {
+    flex: 0 0 33.33%; /* 4 columns out of 12 */
+    max-width: 33.33%;
+}
+
+.comparison-section .col-8 {
+    flex: 0 0 66.67%; /* 8 columns out of 12 */
+    max-width: 66.67%;
+}
+
+/* Thẻ sản phẩm */
+.comparison-section .product-wrapper,
+.comparison-section .details-wrapper {
+    display: flex;
+    gap: 20px; /* Khoảng cách giữa các thẻ sản phẩm */
+}
+
+/* Card styles */
+.comparison-section .product-card,
+.comparison-section .details-card {
+    width: 48%;
+    padding: 20px;
+    border: 1px solid #fff;
+    position: relative;
+    text-align: center;
+}
+
+/* Định dạng cho nút "Đóng" */
+.comparison-section .close-btn {
+    background: none;
+    border: none;
+    font-size: 25px;
+    cursor: pointer;
+    color: #000;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+/* Tiêu đề h2 và h3 */
+.comparison-section .title-comparsion,
+.comparison-section .title-details {
+    font-size: 15px;
+    text-transform: uppercase;
+    color: #fff;
+}
+
+.product-details {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px; /* Khoảng cách giữa các phần tử */
+    justify-content: flex-start; /* Căn trái */
+    text-align: left;
+}
