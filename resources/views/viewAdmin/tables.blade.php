@@ -61,6 +61,7 @@
             <tr>
               <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">ID</th>
               <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Họ và tên</th>
+              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">email</th>
               <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Role</th>
               <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Action</th>
             </tr>
@@ -78,6 +79,13 @@
                   </div>
                 </div>
               </td>
+              <td>
+                <div class="d-flex px-2 py-1">
+                  <div class="d-flex flex-column justify-content-center">
+                    <h6 class="mb-0 text-sm">{{ $user->email }}</h6>
+                  </div>
+                </div>
+              </td>
               <td class="align-middle text-center text-sm">
                 @if($user->role == 0)
                 <span class="badge badge-sm bg-gradient-primary">Admin</span>
@@ -85,18 +93,21 @@
                 <span class="badge badge-sm bg-gradient-success">User</span>
                 @endif
               </td>
-              <td class="actions">
-                <form action="{{ route('user.destroy', $user->id) }}" method="POST">
-                  @csrf
-                  @method('DELETE')
-                  <button type="submit" class="btn btn-danger btn-sm px-3" style="border-radius: 5px; font-size: 14px;" onclick="return confirm('Bạn có chắc chắn muốn xóa người dùng này?')">
-                    <i class="fas fa-trash"></i> Xóa
-                  </button>
-                </form>
+              <td class="actions" style="text-align: center;">
+    <form action="{{ route('user.destroy', $user->id) }}" method="POST" style="display: inline;">
+        @csrf
+        @method('DELETE')
+        <button type="submit" class="btn btn-danger btn-sm px-3" style="border-radius: 5px; font-size: 14px;" onclick="return confirm('Bạn có chắc chắn muốn xóa người dùng này?')">
+            <i class="fas fa-trash"></i> Xóa
+        </button>
+    </form>
+
+    <button type="button" class="btn btn-info btn-sm px-3" style="border-radius: 5px; font-size: 14px;">
+        <i class="fas fa-edit"></i> Sửa
+    </button>
+</td>
 
 
-                <i class="fas fa-edit">
-              </td>
 
 
 
