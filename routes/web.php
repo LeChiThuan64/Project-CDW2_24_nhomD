@@ -8,9 +8,15 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/addProducts', function () {
+    return view('viewAdmin.addProducts');
+});
+
+
+
 // Route dashboard
 Route::get('/dashboard', function () {
-    return view('vieuwAdmin.dashboard');
+    return view('viewAdmin.dashboard');
 });
 
 // Route trang hiển thị danh sách người dùng (tables.blade.php)
