@@ -11,19 +11,16 @@ return new class extends Migration
      */
     public function up()
     {
-        // Nếu bảng chưa tồn tại, tạo bảng 'users'
-        if (!Schema::hasTable('users')) {
-            Schema::create('users', function (Blueprint $table) {
-                $table->id('user_id');
-                $table->string('name', 100);
-                $table->string('email', 100)->unique();
-                $table->string('password', 255);
-                $table->string('phone', 15)->nullable();
-                $table->string('address', 255)->nullable();
-                $table->integer('role')->default(1); // Đặt mặc định là 1
-                $table->timestamps(); // Tự động tạo 'created_at' và 'updated_at'
-            });
-        }
+        Schema::create('users', function (Blueprint $table) {
+            $table->id();
+            $table->string('name', 100);
+            $table->string('email', 100)->unique();
+            $table->string('password', 255);
+            $table->string('phone', 15)->nullable();
+            $table->string('address', 255)->nullable();
+            $table->string('role', 20)->default('customer');
+            $table->timestamp('created_at')->useCurrent();
+        });
     }
 
     /**

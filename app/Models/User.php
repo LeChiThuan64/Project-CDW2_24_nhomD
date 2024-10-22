@@ -36,11 +36,14 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
 
-    /**
-     * Định nghĩa khóa chính là 'user_id'
-     *
-     * @var string
-     */
-    protected $primaryKey = 'user_id'; // Thêm dòng này để chỉ định cột khóa chính
+    public function wishlists()
+    {
+        return $this->hasMany(Wishlist::class);
+    }
+    
 }
