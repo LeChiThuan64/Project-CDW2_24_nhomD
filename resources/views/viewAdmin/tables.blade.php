@@ -69,7 +69,7 @@
             @foreach($users as $user)
             <tr>
               <td class="align-middle text-center">
-                <span class="text-secondary text-xs font-weight-bold">{{ $user->user_id }}</span>
+                <span class="text-secondary text-xs font-weight-bold">{{ $user->id }}</span>
               </td>
               <td>
                 <div class="d-flex px-2 py-1">
@@ -86,13 +86,14 @@
                 @endif
               </td>
               <td class="actions">
-                <form action="{{ route('user.destroy', $user->user_id) }}" method="POST">
+                <form action="{{ route('user.destroy', $user->id) }}" method="POST">
                   @csrf
                   @method('DELETE')
                   <button type="submit" class="btn btn-danger btn-sm px-3" style="border-radius: 5px; font-size: 14px;" onclick="return confirm('Bạn có chắc chắn muốn xóa người dùng này?')">
                     <i class="fas fa-trash"></i> Xóa
                   </button>
                 </form>
+
 
                 <i class="fas fa-edit">
               </td>
