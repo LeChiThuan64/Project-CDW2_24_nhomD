@@ -1,4 +1,4 @@
-@extends('vieuwAdmin.navigation')
+@extends('viewAdmin.navigation')
 @section('title', 'Dashboard')
 @section('content')
 

@@ -25,11 +25,11 @@ class UserController extends Controller
 
         // Kiểm tra nếu là yêu cầu AJAX
         if ($request->ajax()) {
-            return view('vieuwAdmin.tables', compact('users'))->render();
+            return view('viewAdmin.tables', compact('users'))->render();
         }
 
         // Trả về view chính khi không phải AJAX
-        return view('vieuwAdmin.tables', compact('users'));
+        return view('viewAdmin.tables', compact('users'));
     }
 
     public function destroy($id)
@@ -47,7 +47,7 @@ class UserController extends Controller
     public function create()
     {
         // Trả về view addUser.blade.php
-        return view('vieuwAdmin.addUser'); // Điều chỉnh đường dẫn nếu cần
+        return view('viewAdmin.addUser'); // Điều chỉnh đường dẫn nếu cần
     }
 
      // Lưu người dùng mới
