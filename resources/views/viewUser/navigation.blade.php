@@ -636,11 +636,17 @@
                                 </div><!-- /.container d-flex -->
                             </div>
                         </li>
+
+
                         <li class="navigation__item">
-                            <a href="#" class="navigation__link">Blog</a>
+                            <a href="{{ route('blog.index') }}" class="navigation__link">Blog</a>
                             <ul class="default-menu list-unstyled">
+                                <!-- Bạn có thể thêm các menu phụ tại đây nếu cần -->
                             </ul><!-- /.box-menu -->
                         </li>
+
+
+
                         <li class="navigation__item">
                             <a href="#" class="navigation__link">Pages</a>
                             <ul class="default-menu list-unstyled">
@@ -703,7 +709,7 @@
                             </form>
                         </div>
 
-                       
+
                     </div><!-- /.header-tools__item hover-container -->
 
                     <div class="header-tools__item hover-container">

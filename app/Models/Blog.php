@@ -7,8 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class Blog extends Model
 {
-    use HasFactory;
-
-    // Nếu bảng trong cơ sở dữ liệu có tên khác, bạn cần chỉ định như sau:
+    // Đặt tên bảng (nếu cần)
     protected $table = 'blogs';
+    
+    // Khai báo khóa chính là blog_id
+    protected $primaryKey = 'blog_id';
+    
+    public function comments()
+{
+    return $this->hasMany(Comment::class, 'blog_id');
+}
+
 }

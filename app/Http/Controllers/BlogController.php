@@ -9,21 +9,27 @@ use App\Models\Comment;
 class BlogController extends Controller
 {
     public function index()
-    {
-        // Lấy tất cả các bài viết blog từ cơ sở dữ liệu
-        $blogs = Blog::all();
+{
+    // Lấy tất cả các bài viết blog
+    $blogs = Blog::all();
 
-        // Truyền dữ liệu đến view
-        return view('viewUser.blog_list', compact('blogs'));
-    }
+    // Truyền dữ liệu tới view hiển thị danh sách blog
+    return view('viewUser.blog_list', compact('blogs'));
+}
+
     public function show($blog_id)
     {
-        // Tìm blog theo blog_id
+        // Lấy blog theo blog_id
         $blog = Blog::where('blog_id', $blog_id)->firstOrFail();
-
-        // Truyền blog tới view chi tiết
-        return view('viewUser.blogs_Detal', compact('blog'));
+    
+        // Lấy tất cả các bình luận liên quan đến blog này
+        $comments = $blog->comments;  // Đảm bảo rằng $comments không phải null
+    
+        // Truyền blog và comments tới view
+        return view('viewUser.blogs_Detal', compact('blog', 'comments'));
     }
+    
+
     public function storeComment(Request $request, $blog_id)
     {
         // Validate dữ liệu bình luận

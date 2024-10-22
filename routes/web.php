@@ -83,6 +83,8 @@ Route::get('/blogs_Detal', function () {
 Route::get('/blogs/{blog_id}', [BlogController::class, 'show'])->name('blog.detail');
 
 Route::post('/blogs/{blog_id}/comment', [BlogController::class, 'storeComment'])->name('blog.comment');
+
+Route::get('/blogs', [BlogController::class, 'index'])->name('blog.index');
 // blog ketthuc phia trên
 
 
