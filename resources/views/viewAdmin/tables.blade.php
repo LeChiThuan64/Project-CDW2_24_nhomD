@@ -1,4 +1,4 @@
-@extends('vieuwAdmin.navigation')
+@extends('viewAdmin.navigation')
 
 @section('title', 'Tables')
 
@@ -89,10 +89,11 @@
                 <form action="{{ route('user.destroy', $user->user_id) }}" method="POST">
                   @csrf
                   @method('DELETE')
-                  <button type="submit" onclick="return confirm('Bạn có chắc chắn muốn xóa người dùng này?')">
+                  <button type="submit" class="btn btn-danger btn-sm px-3" style="border-radius: 5px; font-size: 14px;" onclick="return confirm('Bạn có chắc chắn muốn xóa người dùng này?')">
                     <i class="fas fa-trash"></i> Xóa
                   </button>
                 </form>
+
                 <i class="fas fa-edit">
               </td>
 
