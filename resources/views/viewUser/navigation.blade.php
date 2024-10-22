@@ -6,7 +6,7 @@
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <meta name="author" content="flexkit">
 
-    <link rel="shortcut icon" href="https://uomo-html.flexkitux.com/images/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="{{ asset('logoJ97.jpg') }}" type="image/x-icon">
     <link rel="preconnect" href="https://fonts.gstatic.com/">
 
     <!-- Fonts -->
@@ -269,7 +269,7 @@
 
             <div class="logo">
                 <a href="index-2.html">
-                    <img src="../images/logo.png" alt="J97" class="logo__image d-block">
+                    <img src="{{ asset('logoJ97.jpg') }}" alt="J97" class="logo__image d-block">
                 </a>
             </div><!-- /.logo -->
 
@@ -578,7 +578,7 @@
             <div class="header-desk header-desk_type_1">
                 <div class="logo">
                     <a href="index-2.html">
-                        <img src="../images/logo.png" alt="J97" class="logo__image d-block">
+                        <img src="{{ asset('logoJ97.jpg') }}" alt="J97" class="logo__image d-block">
                     </a>
                 </div><!-- /.logo -->
 

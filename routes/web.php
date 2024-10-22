@@ -70,6 +70,9 @@ Route::get('/product-detail', function () {
 Route::get('/wishlist', function () {
     return view('viewUser.wishlist');
 });
+Route::get('/blog_list', function () {
+    return view('viewUser.blog_list');
+});
 
 Route::get('/product/{id}', [ProductController::class, 'show'])->name('product.show');
 
