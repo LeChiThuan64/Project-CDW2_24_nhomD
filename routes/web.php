@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\UserController;
-
+use App\Http\Controllers\BlogController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -56,6 +56,9 @@ Route::post('/register', [RegisterController::class, 'register']);
 // Route trang hiển thị danh sách người dùng (tables.blade.php)
 Route::get('/tables', [UserController::class, 'index'])->name('tables');
 
+//blog
+Route::get('/blogs', [BlogController::class, 'index']);
+
 // Route xóa người dùng
 Route::delete('/user/{id}', [UserController::class, 'destroy'])->name('user.destroy');
 
@@ -73,6 +76,16 @@ Route::get('/wishlist', function () {
 Route::get('/blog_list', function () {
     return view('viewUser.blog_list');
 });
+// hiển thị blog và chi tiếc blog comment 
+Route::get('/blogs_Detal', function () {
+    return view('viewUser.blogs_Detal');
+});
+Route::get('/blogs/{blog_id}', [BlogController::class, 'show'])->name('blog.detail');
+
+Route::post('/blogs/{blog_id}/comment', [BlogController::class, 'storeComment'])->name('blog.comment');
+// blog ketthuc phia trên
+
+
 
 Route::get('/product/{id}', [ProductController::class, 'show'])->name('product.show');
 
