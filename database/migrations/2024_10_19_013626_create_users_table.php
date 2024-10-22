@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('password', 255);
             $table->string('phone', 15)->nullable();
             $table->string('address', 255)->nullable();
-            $table->string('role', 20)->default('customer');
+            $table->string('role', 20)->default('1');
             $table->timestamp('created_at')->useCurrent();
         });
     }

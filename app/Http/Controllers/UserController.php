@@ -15,7 +15,7 @@ class UserController extends Controller
         // Kiểm tra nếu có từ khóa tìm kiếm
         if ($search) {
             // Tìm kiếm theo ID hoặc tên người dùng
-            $users = User::where('user_id', 'like', "%$search%")
+            $users = User::where('id', 'like', "%$search%")
                 ->orWhere('name', 'like', "%$search%")
                 ->paginate(10);
         } else {
@@ -50,7 +50,7 @@ class UserController extends Controller
         return view('viewAdmin.addUser'); // Điều chỉnh đường dẫn nếu cần
     }
 
-     // Lưu người dùng mới
+    // Lưu người dùng mới
     public function store(Request $request)
     {
         // Validate dữ liệu
@@ -59,7 +59,7 @@ class UserController extends Controller
             'email' => 'required|email|unique:users',
             'password' => 'required|min:6',
         ]);
-    
+
         // Tạo người dùng mới với role mặc định là 1
         User::create([
             'name' => $request->input('name'),
@@ -67,9 +67,8 @@ class UserController extends Controller
             'password' => bcrypt($request->input('password')),
             'role' => 1, // Role mặc định
         ]);
-    
+
         // Chuyển hướng về trang /tables sau khi thêm người dùng thành công
         return redirect()->route('tables')->with('success', 'Người dùng đã được thêm thành công!');
     }
-    
 }

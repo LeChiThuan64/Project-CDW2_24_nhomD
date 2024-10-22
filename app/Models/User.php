@@ -11,7 +11,7 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
-    protected $primaryKey = 'user_id'; // Khóa chính của bảng là 'user_id'
+    protected $primaryKey = 'id'; // Khóa chính trong cơ sở dữ liệu là 'id'
 
     protected $fillable = ['name', 'email', 'password', 'role'];
 
@@ -29,4 +29,5 @@ class User extends Authenticatable
         return $this->hasMany(Wishlist::class);
     }
 }
+
 
