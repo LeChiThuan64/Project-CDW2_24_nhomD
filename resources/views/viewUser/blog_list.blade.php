@@ -1,24 +1,73 @@
 @extends('viewUser.navigation')
 @section('title', 'Blogs_')
 @section('content')
+
 <head>
-<style>
+  <style>
     .btn-simple {
-        padding: 10px 20px;
-        color: #6A0DAD; /* Màu tím nhạt */
-        border: 1px solid #6A0DAD; /* Viền màu tím nhạt */
-        border-radius: 5px; /* Góc bo nhẹ */
-        background-color: transparent; /* Nền trong suốt */
-        text-decoration: none; /* Xóa gạch chân */
-        font-size: 16px;
-        transition: background-color 0.2s ease, color 0.2s ease; /* Hiệu ứng mượt */
+      padding: 10px 20px;
+      color: #6A0DAD;
+      /* Màu tím nhạt */
+      border: 1px solid #6A0DAD;
+      /* Viền màu tím nhạt */
+      border-radius: 5px;
+      /* Góc bo nhẹ */
+      background-color: transparent;
+      /* Nền trong suốt */
+      text-decoration: none;
+      /* Xóa gạch chân */
+      font-size: 16px;
+      transition: background-color 0.2s ease, color 0.2s ease;
+      /* Hiệu ứng mượt */
     }
 
     .btn-simple:hover {
-        background-color: #6A0DAD; /* Nền tím nhạt khi hover */
-        color: white; /* Màu chữ chuyển sang trắng khi hover */
+      background-color: #6A0DAD;
+      /* Nền tím nhạt khi hover */
+      color: white;
+      /* Màu chữ chuyển sang trắng khi hover */
     }
-</style>
+
+    .pagination-wrapper nav ul {
+      display: flex;
+      list-style: none;
+      justify-content: center;
+      padding: 0;
+    }
+
+    /* phân trang */
+    .pagination-wrapper nav ul li {
+      margin: 0 5px;
+    }
+
+    .pagination-wrapper nav ul li a,
+    .pagination-wrapper nav ul li span {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1px solid #ddd;
+      color: blue;
+      font-size: 16px;
+      text-decoration: none;
+    }
+
+    .pagination-wrapper nav ul li.active span {
+      background-color: red;
+      color: white;
+      border-color: red;
+    }
+
+    .pagination-wrapper nav ul li a:hover {
+      background-color: lightgray;
+    }
+
+    .pagination-wrapper nav ul li.disabled span {
+      color: #ccc;
+    }
+  </style>
 
 
 </head>
@@ -64,7 +113,7 @@
             <a href="{{ route('blog.detail', ['blog_id' => $blog->blog_id]) }}" class="btn-simple">Continue Reading</a>
 
 
-            
+
 
 
           </div>
@@ -73,6 +122,13 @@
       @endforeach
 
     </div>
+
+    <!-- Hiển thị nút phân trang -->
+    <div class="pagination-wrapper">
+  {{ $blogs->links('pagination::bootstrap-4') }} <!-- Laravel pagination links -->
+</div>
+
+
   </section>
 </main>
 
