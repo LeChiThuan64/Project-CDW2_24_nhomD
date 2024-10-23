@@ -2,6 +2,32 @@
 @section('title', $blog->title)
 @section('content')
 
+<HEad>
+  <STYle>
+    .blog-image {
+      max-width: 80%;
+      /* Đặt giới hạn kích thước tối đa của hình ảnh */
+      margin: 0 auto;
+      /* Căn giữa hình ảnh */
+      display: block;
+      /* Đảm bảo hình ảnh là phần tử khối */
+    }
+
+    .mw-930 p {
+      font-size: 18px;
+      /* Tăng kích thước chữ */
+
+      line-height: 1.6;
+      /* Điều chỉnh khoảng cách giữa các dòng để dễ đọc hơn */
+    }
+    .review-textt{
+      font-size: 18px;
+      /* Tăng kích thước chữ */
+
+      line-height: 1.6;
+    }
+  </STYle>
+</HEad>
 <main>
   <div class="mb-4 pb-4"></div>
   <section class="blog-page blog-single container">
@@ -15,7 +41,8 @@
 
     <div class="blog-single__item-content">
       <p>
-        <img loading="lazy" class="blog-image w-100 h-auto d-block" src="{{ asset($blog->image_url) }}" alt="{{ $blog->title }}">
+        <img loading="lazy" class="blog-image w-100 h-auto d-block" src="{{ asset($blog->image_url) }}"
+          alt="{{ $blog->title }}">
       </p>
       <div class="mw-930">
         <p>{{ $blog->content }}</p>
@@ -27,20 +54,20 @@
       <h2 class="blog-single__reviews-title">Comments</h2>
 
       @if ($comments && count($comments) > 0)
-    @foreach ($comments as $comment)
-        <div class="blog-single__reviews-item">
-            <div class="customer-review">
-                <h6>{{ $comment->name }}</h6>
-                <div class="review-date">{{ $comment->created_at->format('F d, Y') }}</div>
-                <div class="review-text">
-                    <p>{{ $comment->comment }}</p>
-                </div>
-            </div>
+      @foreach ($comments as $comment)
+      <div class="blog-single__reviews-item">
+        <div class="customer-review">
+          <h6>{{ $comment->name }}</h6>
+          <div class="review-date">{{ $comment->created_at->format('F d, Y') }}</div>
+          <div class="review-textt">
+            <p>{{ $comment->comment }}</p>
+          </div>
         </div>
-    @endforeach
-@else
-    <p>No comments yet. Be the first to comment!</p>
-@endif
+      </div>
+      @endforeach
+      @else
+      <p>No comments yet. Be the first to comment!</p>
+      @endif
 
 
     </div>
