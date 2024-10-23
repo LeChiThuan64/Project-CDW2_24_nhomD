@@ -20,7 +20,8 @@
       line-height: 1.6;
       /* Điều chỉnh khoảng cách giữa các dòng để dễ đọc hơn */
     }
-    .review-textt{
+
+    .review-textt {
       font-size: 18px;
       /* Tăng kích thước chữ */
 
@@ -29,7 +30,10 @@
   </STYle>
 </HEad>
 <main>
+
+
   <div class="mb-4 pb-4"></div>
+ 
   <section class="blog-page blog-single container">
     <div class="mw-930">
       <h2 class="page-title">{{ $blog->title }}</h2>

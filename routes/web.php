@@ -8,6 +8,8 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\BlogController;
+use App\Http\Controllers\AdminBlogController;
+use App\Models\Blog;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -80,13 +82,31 @@ Route::get('/blog_list', function () {
 Route::get('/blogs_Detal', function () {
     return view('viewUser.blogs_Detal');
 });
+
 Route::get('/blogs/{blog_id}', [BlogController::class, 'show'])->name('blog.detail');
 
 Route::post('/blogs/{blog_id}/comment', [BlogController::class, 'storeComment'])->name('blog.comment');
 
 Route::get('/blogs', [BlogController::class, 'index'])->name('blog.index');
+ 
+// tim kiem
+
+
 // blog ketthuc phia trên
 
+
+// blog cho admin
+
+
+
+Route::get('/blogs_admin', function () {
+    $blogs = Blog::orderBy('created_at', 'desc')->paginate(6);
+    return view('viewAdmin.blogs_admin', ['blogs' => $blogs]);
+});
+Route::get('/admin/search', 'AdminBlogController@search')->name('admin.search');
+Route::get('/admin/search', [AdminBlogController::class, 'search'])->name('admin.search');
+
+//Het blog cho admin
 
 
 Route::get('/product/{id}', [ProductController::class, 'show'])->name('product.show');
