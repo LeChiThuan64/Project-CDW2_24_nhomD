@@ -8,17 +8,41 @@ use App\Models\Comment;
 
 class BlogController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        // Lấy tất cả các bài viết blog
-        // $blogs = Blog::all();
-        
-        // Lấy 6 bài viết blog mỗi trang
-        $blogs = Blog::paginate(6);
+        $query = Blog::query();
+        $queryText = $request->input('query');
 
-        // Truyền dữ liệu tới view hiển thị danh sách blog
+        if ($queryText) {
+            $query->where('title', 'like', '%' . $queryText . '%')
+                ->orWhere('blog_id', $queryText); // Sử dụng 'blog_id' thay vì 'id'
+        }
+
+        $blogs = $query->orderBy('created_at', 'desc')->paginate(6);
+
+        if ($request->ajax()) {
+            return view('viewUser.blog_list_ajax', compact('blogs'))->render();
+        }
+
         return view('viewUser.blog_list', compact('blogs'));
     }
+
+    // Admin blog index
+    public function adminIndex(Request $request)
+    {
+        $query = Blog::query();
+        $queryText = $request->input('query');
+
+        if ($queryText) {
+            $query->where('title', 'like', '%' . $queryText . '%')
+                ->orWhere('blog_id', $queryText);
+        }
+
+        $blogs = $query->orderBy('created_at', 'desc')->paginate(6);
+
+        return view('viewAdmin.blogs_admin', compact('blogs'));
+    }
+
 
     public function show($blog_id)
     {

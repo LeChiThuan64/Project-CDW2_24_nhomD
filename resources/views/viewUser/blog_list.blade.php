@@ -67,6 +67,57 @@
     .pagination-wrapper nav ul li.disabled span {
       color: #ccc;
     }
+
+    /* tim */
+    .search-form {
+      display: flex;
+      align-items: center;
+      border: 2px solid #007bff;
+      /* Màu viền */
+      padding: 5px 10px;
+      border-radius: 25px;
+      /* Bo góc */
+      background-color: white;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      /* Bóng đổ nhẹ */
+    }
+
+    .search-input {
+      flex: 1;
+      border: none;
+      outline: none;
+      padding: 8px 10px;
+      font-size: 16px;
+      /* Kích thước font */
+      border-radius: 25px 0 0 25px;
+      /* Bo góc trái */
+      transition: all 0.3s;
+      /* Hiệu ứng chuyển đổi mượt */
+    }
+
+    .search-button {
+      padding: 8px 15px;
+      border: none;
+      background-color: #007bff;
+      /* Màu nền nút */
+      color: white;
+      /* Màu chữ */
+      cursor: pointer;
+      border-radius: 0 25px 25px 0;
+      /* Bo góc phải */
+      transition: background-color 0.3s;
+      /* Hiệu ứng chuyển màu */
+    }
+
+    .search-input:focus {
+      box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
+      /* Bóng đổ khi focus */
+    }
+
+    .search-button:hover {
+      background-color: #0056b3;
+      /* Màu khi hover */
+    }
   </style>
 
 
@@ -91,6 +142,20 @@
 
   <section class="blog-page container">
     <h2 class="d-none">The Blog</h2>
+
+    <div class="timkiem py-5">
+    @csrf
+
+      <form action="{{ route('blog.index') }}" method="GET" class="search-form">
+        <input type="text" name="query" placeholder="Tìm kiếm bài viết theo tên hoặc ID..." class="search-input">
+        <button type="submit" class="search-button">
+          <i class="fas fa-search"></i>
+        </button>
+      </form>
+
+
+    </div>
+
     <div class="blog-grid row row-cols-1 row-cols-md-2 row-cols-xl-3">
 
       @foreach ($blogs as $blog)
@@ -125,8 +190,8 @@
 
     <!-- Hiển thị nút phân trang -->
     <div class="pagination-wrapper">
-  {{ $blogs->links('pagination::bootstrap-4') }} <!-- Laravel pagination links -->
-</div>
+      {{ $blogs->links('pagination::bootstrap-4') }} <!-- Laravel pagination links -->
+    </div>
 
 
   </section>
