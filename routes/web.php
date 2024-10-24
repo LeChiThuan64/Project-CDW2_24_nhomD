@@ -103,8 +103,15 @@ Route::get('/blogs_admin', function () {
     $blogs = Blog::orderBy('created_at', 'desc')->paginate(6);
     return view('viewAdmin.blogs_admin', ['blogs' => $blogs]);
 });
-Route::get('/admin/search', 'AdminBlogController@search')->name('admin.search');
-Route::get('/admin/search', [AdminBlogController::class, 'search'])->name('admin.search');
+
+// Admin routes
+Route::get('/blogs_admin', [BlogController::class, 'adminIndex'])->name('admin.blog.index');
+
+// Route tìm kiếm blogs
+
+
+// Route::get('/admin/search', 'AdminBlogController@search')->name('admin.search');
+// Route::get('/admin/search', [AdminBlogController::class, 'search'])->name('admin.search');
 
 //Het blog cho admin
 

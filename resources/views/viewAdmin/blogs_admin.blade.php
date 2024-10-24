@@ -5,6 +5,7 @@
 @section('content')
 
 <html>
+
 <head>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
   <style>
@@ -107,39 +108,53 @@
       font-size: 20px;
       cursor: pointer;
     }
- /* //hghhhh */
- .pagination-wrapper {
-    text-align: center; /* Căn giữa các liên kết phân trang */
-    padding: 13px; /* Thêm padding cho vùng chứa phân trang */
-    margin-top: 20px; /* Tạo khoảng cách phía trên */
-}
 
-.pagination {
+    /* //hghhhh */
+    .pagination-wrapper {
+      text-align: center;
+      /* Căn giữa các liên kết phân trang */
+      padding: 13px;
+      /* Thêm padding cho vùng chứa phân trang */
+      margin-top: 20px;
+      /* Tạo khoảng cách phía trên */
+    }
 
-    padding-left: 0; /* Xóa padding trái mặc định */
-}
-.pagination li {
-    display: inline; /* Hiển thị các mục liên kết trên cùng một dòng */
-    padding: 0 10px; /* Thêm padding giữa các liên kết */
-}
-.pagination li a {
-    color: #333; /* Màu sắc cho liên kết, bạn có thể thay đổi theo ý muốn */
-    text-decoration: none; /* Xóa gạch chân */
-    padding: 5px 10px; /* Padding cho liên kết để dễ bấm hơn */
-    border: 1px solid #ddd; /* Viền xung quanh liên kết */
-}
+    .pagination {
 
+      padding-left: 0;
+      /* Xóa padding trái mặc định */
+    }
+
+    .pagination li {
+      display: inline;
+      /* Hiển thị các mục liên kết trên cùng một dòng */
+      padding: 0 10px;
+      /* Thêm padding giữa các liên kết */
+    }
+
+    .pagination li a {
+      color: #333;
+      /* Màu sắc cho liên kết, bạn có thể thay đổi theo ý muốn */
+      text-decoration: none;
+      /* Xóa gạch chân */
+      padding: 5px 10px;
+      /* Padding cho liên kết để dễ bấm hơn */
+      border: 1px solid #ddd;
+      /* Viền xung quanh liên kết */
+    }
   </style>
 </head>
 
 <body>
   <div class="header">
     <div class="search-container">
-      <button>
-        
-        <i class="fas fa-search"></i>
-      </button>
-      <input placeholder="Tìm kiếm blog......" type="text" />
+      @csrf
+      <form action="{{ route('admin.blog.index') }}" method="GET" class="search-form">
+        <input type="text" name="query" placeholder="Tìm kiếm bài viết theo tên hoặc ID..." class="search-input">
+        <button type="submit" class="search-button">
+          <i class="fas fa-search"></i>
+        </button>
+      </form>
     </div>
     <div class="add-button">
       <i class="fas fa-plus"></i>
@@ -151,9 +166,9 @@
     <div class="blog-item">
       <img alt="Placeholder image for blog" height="100" src="{{ $blog->image_url }}" width="100" />
       <div class="blog-info">
-        <p>id {{ $blog->blog_id }}</p>
-        <p>{{ $blog->title }}</p>
-        <p>{{ $blog->content }}</p>
+        <p>id : {{ $blog->blog_id }}</p>
+        <p>tên : {{ $blog->title }}</p>
+        <p> nội dung : {{ $blog->content }}</p>
       </div>
       <div class="blog-actions">
         <button>
@@ -170,7 +185,7 @@
   <!-- Pagination -->
   <div class="pagination-wrapper">
     {{ $blogs->links('pagination::bootstrap-4') }} <!-- Sử dụng template bootstrap-4 cho phân trang -->
-</div>
+  </div>
 
 
 </body>

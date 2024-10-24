@@ -27,7 +27,21 @@ class BlogController extends Controller
         return view('viewUser.blog_list', compact('blogs'));
     }
 
+    // Admin blog index
+    public function adminIndex(Request $request)
+    {
+        $query = Blog::query();
+        $queryText = $request->input('query');
 
+        if ($queryText) {
+            $query->where('title', 'like', '%' . $queryText . '%')
+                ->orWhere('blog_id', $queryText);
+        }
+
+        $blogs = $query->orderBy('created_at', 'desc')->paginate(6);
+
+        return view('viewAdmin.blogs_admin', compact('blogs'));
+    }
 
 
     public function show($blog_id)
