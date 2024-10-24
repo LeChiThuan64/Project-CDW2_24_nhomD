@@ -89,6 +89,14 @@ Route::post('/blogs/{blog_id}/comment', [BlogController::class, 'storeComment'])
 
 Route::get('/blogs', [BlogController::class, 'index'])->name('blog.index');
  
+Route::get('/admin/blogs/create', function () {
+    return view('viewAdmin.add_blog');
+})->name('admin.blog.create');
+
+
+// thêm
+Route::post('/admin/blogs', [BlogController::class, 'store'])->name('admin.blog.store');
+
 // tim kiem
 
 
@@ -103,9 +111,12 @@ Route::get('/blogs_admin', function () {
     $blogs = Blog::orderBy('created_at', 'desc')->paginate(6);
     return view('viewAdmin.blogs_admin', ['blogs' => $blogs]);
 });
-
+Route::get('/add_blog', function () {
+    return view('viewAdmin.add_blog');
+});
 // Admin routes
 Route::get('/blogs_admin', [BlogController::class, 'adminIndex'])->name('admin.blog.index');
+Route::delete('/blogs/{blog_id}', [BlogController::class, 'destroy'])->name('admin.blog.destroy');
 
 // Route tìm kiếm blogs
 
