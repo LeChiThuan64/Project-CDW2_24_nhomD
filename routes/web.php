@@ -106,6 +106,7 @@ Route::get('/blogs_admin', function () {
 
 // Admin routes
 Route::get('/blogs_admin', [BlogController::class, 'adminIndex'])->name('admin.blog.index');
+Route::delete('/blogs/{blog_id}', [BlogController::class, 'destroy'])->name('admin.blog.destroy');
 
 // Route tìm kiếm blogs
 

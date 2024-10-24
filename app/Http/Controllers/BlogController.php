@@ -42,6 +42,15 @@ class BlogController extends Controller
 
         return view('viewAdmin.blogs_admin', compact('blogs'));
     }
+    public function destroy($blog_id)
+    {
+        // Tìm blog theo blog_id và xóa nó
+        $blog = Blog::where('blog_id', $blog_id)->firstOrFail();
+        $blog->delete();
+
+        // Chuyển hướng với thông báo thành công
+        return redirect()->route('admin.blog.index')->with('success', 'Blog đã được xóa thành công!');
+    }
 
 
     public function show($blog_id)
