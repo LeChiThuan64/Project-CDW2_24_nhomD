@@ -42,6 +42,38 @@ class BlogController extends Controller
 
         return view('viewAdmin.blogs_admin', compact('blogs'));
     }
+
+    // thêm sql
+    public function store(Request $request)
+    {
+        // Validate dữ liệu
+        $request->validate([
+            'title' => 'required|string|max:100',
+            'content' => 'required|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg|max:1024', // Hạn chế dung lượng và định dạng
+        ]);
+    
+        // Xử lý upload ảnh
+        if ($request->hasFile('image')) {
+            // Lưu file ảnh vào thư mục 'uploads' trong 'storage/app/public'
+            $path = $request->file('image')->store('uploads', 'public');
+        } else {
+            $path = null; // Không có ảnh tải lên
+        }
+    
+        // Tạo một blog mới
+        $blog = new Blog();
+        $blog->title = $request->input('title');
+        $blog->content = $request->input('content');
+        $blog->image_url = $path; // Lưu đường dẫn ảnh nếu có
+        $blog->save();
+    
+        // Chuyển hướng về trang danh sách blog với thông báo thành công
+        return redirect()->route('admin.blog.index')->with('success', 'Blog đã được thêm thành công!');
+    }
+    
+
+
     public function destroy($blog_id)
     {
         // Tìm blog theo blog_id và xóa nó

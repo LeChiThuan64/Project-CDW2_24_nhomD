@@ -5,11 +5,10 @@
 @section('content')
 
 @if (session('success'))
-    <div class="alert alert-success"  style="background-color: #d4edda; color: #155724;">
-        {{ session('success') }}
-    </div>
+<div id="success-alert" class="alert alert-success" style="background-color: #d4edda; color: #155724;">
+  {{ session('success') }}
+</div>
 @endif
-
 
 <html>
 
@@ -116,38 +115,26 @@
       cursor: pointer;
     }
 
-    /* //hghhhh */
     .pagination-wrapper {
       text-align: center;
-      /* Căn giữa các liên kết phân trang */
       padding: 13px;
-      /* Thêm padding cho vùng chứa phân trang */
       margin-top: 20px;
-      /* Tạo khoảng cách phía trên */
     }
 
     .pagination {
-
       padding-left: 0;
-      /* Xóa padding trái mặc định */
     }
 
     .pagination li {
       display: inline;
-      /* Hiển thị các mục liên kết trên cùng một dòng */
       padding: 0 10px;
-      /* Thêm padding giữa các liên kết */
     }
 
     .pagination li a {
       color: #333;
-      /* Màu sắc cho liên kết, bạn có thể thay đổi theo ý muốn */
       text-decoration: none;
-      /* Xóa gạch chân */
       padding: 5px 10px;
-      /* Padding cho liên kết để dễ bấm hơn */
       border: 1px solid #ddd;
-      /* Viền xung quanh liên kết */
     }
   </style>
 </head>
@@ -175,36 +162,31 @@
         </form>
       </div>
 
-
       <div class="col-md-2 text-right">
-        <a href="#" class="btn btn-outline-primary">
-          <i class="fas fa-plus"></i>
+        <a href="{{ route('admin.blog.create') }}" class="btn btn-outline-primary">
+          <i class="fas fa-plus"></i> 
         </a>
       </div>
-
     </div>
-
 
     <!-- Nút dấu cộng -->
   </div>
 
-
   <div class="blog-list">
     @foreach($blogs as $blog)
     <div class="blog-item">
-      <img alt="Placeholder image for blog" height="100" src="{{ $blog->image_url }}" width="100" />
+      <img src="{{ Storage::url($blog->image_url) }}" alt="Blog Image" width="100" height="100">
+
       <div class="blog-info">
         <p>id : {{ $blog->blog_id }}</p>
         <p>tên : {{ $blog->title }}</p>
-        <p> nội dung : {{ $blog->content }}</p>
+        <p>nội dung : {{ Str::limit(strip_tags($blog->content), 100) }}</p>
       </div>
       <div class="blog-actions">
-        <!-- Nút sửa -->
         <button class="btn btn-outline-secondary">
           <i class="fas fa-edit"></i> Sửa
         </button>
 
-        <!-- Nút xóa -->
         <form action="{{ route('admin.blog.destroy', $blog->blog_id) }}" method="POST" onsubmit="return confirm('Bạn có chắc chắn muốn xóa blog này không?');" style="display:inline;">
           @csrf
           @method('DELETE')
@@ -213,7 +195,6 @@
           </button>
         </form>
       </div>
-
     </div>
     @endforeach
   </div>
@@ -224,16 +205,16 @@
   </div>
 
   <script>
-    // Đoạn script để ẩn thông báo sau 3 giây (3000ms)
-    document.addEventListener('DOMContentLoaded', function () {
-        setTimeout(function() {
-            var alert = document.getElementById('success-alert');
-            if (alert) {
-                alert.style.display = 'none';
-            }
-        }, 3000); // 3000ms = 3 giây
+    // Script để ẩn thông báo sau 3 giây (3000ms)
+    document.addEventListener('DOMContentLoaded', function() {
+      setTimeout(function() {
+        var alert = document.getElementById('success-alert');
+        if (alert) {
+          alert.style.display = 'none';
+        }
+      }, 3000); // 3000ms = 3 giây
     });
-</script>
+  </script>
 </body>
 
 </html>

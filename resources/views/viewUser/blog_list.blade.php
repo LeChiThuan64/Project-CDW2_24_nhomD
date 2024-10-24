@@ -118,6 +118,14 @@
       background-color: #0056b3;
       /* Màu khi hover */
     }
+    .blog-image {
+        display: block;
+        max-width: 100%;
+        height: 250px;
+        margin: 0 auto;
+        border-radius: 10px; /* Bo tròn các góc */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Thêm bóng đổ cho ảnh */
+    }
   </style>
 
 
@@ -125,7 +133,7 @@
 <main>
   <section class="blog-page-title mb-4 mb-xl-5">
     <div class="title-bg">
-      <img loading="lazy" src="{{ asset('images_user/blog_title_bg.jpg') }}" width="1780" height="420" alt="Blog Title">
+      <img loading="lazy" src="{{ asset('assets/img/images_user/blog_title_bg.jpg') }}" width="1780" height="420" alt="Blog Title">
     </div>
     <div class="container">
       <h2 class="page-title">The Blog</h2>
@@ -161,7 +169,7 @@
       @foreach ($blogs as $blog)
       <div class="blog-grid__item">
         <div class="blog-grid__item-image">
-          <img loading="lazy" class="h-auto" src="{{ asset($blog->image_url) }}" style="width: 100%; height: 350px; object-fit: cover;" alt="{{ $blog->title }}">
+        <img src="{{ Storage::url($blog->image_url) }}" alt="Blog Image" class="blog-image">
         </div>
 
 
@@ -174,7 +182,7 @@
             <a href="blog_single.html">{{ $blog->title }}</a>
           </div>
           <div class="blog-grid__item-content">
-            <p>{{ Str::limit($blog->content, 100) }}</p>
+            <p>{{ Str::limit(strip_tags($blog->content), 100) }}</p>
             <a href="{{ route('blog.detail', ['blog_id' => $blog->blog_id]) }}" class="btn-simple">Continue Reading</a>
 
 
