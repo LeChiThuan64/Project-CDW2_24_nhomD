@@ -3,11 +3,15 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Auth\ProductsController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\BlogController;
+
+
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -104,3 +108,8 @@ Route::get('/search-results', [ProductController::class, 'search'])->name('produ
 
 
 
+
+// Quản lý sản phẩm
+// Thêm sản phẩm
+Route::get('/products/add', [ProductsController::class, 'showForm'])->name('products.add');
+Route::post('/products/store', [ProductsController::class, 'store'])->name('products.store');
