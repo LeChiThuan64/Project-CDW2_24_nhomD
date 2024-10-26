@@ -44,7 +44,7 @@
       <?php $__currentLoopData = $blogs; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $blog): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
       <div class="blog-grid__item">
         <div class="blog-grid__item-image">
-        <img src="<?php echo e(Storage::url($blog->image_url)); ?>" alt="Blog Image" class="blog-image">
+        <img src="<?php echo e(asset($blog->image_url)); ?>" alt="Blog Image" class="blog-image">
         </div>
 
 

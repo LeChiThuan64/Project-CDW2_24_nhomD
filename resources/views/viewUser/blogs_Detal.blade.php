@@ -38,7 +38,7 @@
     <div class="blog-single__item-content">
       <p>
         <!-- Sử dụng class blog-image để căn giữa và điều chỉnh kích thước ảnh -->
-        <img src="{{ Storage::url($blog->image_url) }}" alt="Blog Image" class="blog-image">
+        <img src="{{ asset($blog->image_url) }}" alt="Blog Image" class="blog-image">
       </p>
       <div class="mw-930">
       <p>{{ strip_tags($blog->content) }}</p>

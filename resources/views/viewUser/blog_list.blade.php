@@ -45,7 +45,7 @@
       @foreach ($blogs as $blog)
       <div class="blog-grid__item">
         <div class="blog-grid__item-image">
-        <img src="{{ Storage::url($blog->image_url) }}" alt="Blog Image" class="blog-image">
+        <img src="{{ asset($blog->image_url) }}" alt="Blog Image" class="blog-image">
         </div>
 
 

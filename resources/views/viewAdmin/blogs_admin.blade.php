@@ -56,8 +56,8 @@
   <div class="blog-list">
     @foreach($blogs as $blog)
     <div class="blog-item">
-      <img src="{{ Storage::url($blog->image_url) }}" alt="Blog Image" width="100" height="100">
 
+    <img src="{{ asset($blog->image_url) }}" alt="Blog Image" width="100" height="100">
       <div class="blog-info">
         <p>id : {{ $blog->blog_id }}</p>
         <p>tên : {{ $blog->title }}</p>
