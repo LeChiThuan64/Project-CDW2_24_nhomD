@@ -14,14 +14,12 @@ class Product extends Model
     protected $fillable = [
         'name',
         'description',
-        'color',
-        'quantity',
-        'size',
         'price',
         'category_id',
         'created_at',
         'updated_at'
     ];
+    
 
     public $timestamps = false;
 
@@ -47,4 +45,12 @@ class Product extends Model
     {
         return $this->hasMany(Wishlist::class);
     }
+
+    public function sizesAndColors()
+{
+    return $this->belongsToMany(Size::class, 'product_size_color')
+                ->withPivot('color_id', 'size_id', 'quantity')
+                ->withTimestamps();
+}
+
 }

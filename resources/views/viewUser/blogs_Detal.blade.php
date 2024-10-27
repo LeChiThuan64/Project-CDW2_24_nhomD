@@ -5,31 +5,27 @@
 <HEad>
   <STYle>
     .blog-image {
-      max-width: 80%;
-      /* Đặt giới hạn kích thước tối đa của hình ảnh */
-      margin: 0 auto;
-      /* Căn giữa hình ảnh */
-      display: block;
-      /* Đảm bảo hình ảnh là phần tử khối */
+      max-width: 50%; /* Đặt kích thước tối đa của hình ảnh (thay đổi tùy ý) */
+      height: auto; /* Giữ tỷ lệ của hình ảnh */
+      margin: 0 auto; /* Căn giữa hình ảnh */
+      display: block; /* Đảm bảo hình ảnh là phần tử khối */
     }
 
     .mw-930 p {
       font-size: 18px;
-      /* Tăng kích thước chữ */
-
       line-height: 1.6;
-      /* Điều chỉnh khoảng cách giữa các dòng để dễ đọc hơn */
     }
-    .review-textt{
-      font-size: 18px;
-      /* Tăng kích thước chữ */
 
+    .review-textt {
+      font-size: 18px;
       line-height: 1.6;
     }
   </STYle>
 </HEad>
 <main>
+
   <div class="mb-4 pb-4"></div>
+ 
   <section class="blog-page blog-single container">
     <div class="mw-930">
       <h2 class="page-title">{{ $blog->title }}</h2>
@@ -41,11 +37,12 @@
 
     <div class="blog-single__item-content">
       <p>
-        <img loading="lazy" class="blog-image w-100 h-auto d-block" src="{{ asset($blog->image_url) }}"
-          alt="{{ $blog->title }}">
+        <!-- Sử dụng class blog-image để căn giữa và điều chỉnh kích thước ảnh -->
+        <img src="{{ asset($blog->image_url) }}" alt="Blog Image" class="blog-image">
       </p>
       <div class="mw-930">
-        <p>{{ $blog->content }}</p>
+      <p>{{ strip_tags($blog->content) }}</p>
+
       </div>
     </div>
 
@@ -68,8 +65,6 @@
       @else
       <p>No comments yet. Be the first to comment!</p>
       @endif
-
-
     </div>
 
     <!-- Form gửi bình luận -->

@@ -8,17 +8,85 @@ use App\Models\Comment;
 
 class BlogController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        // Lấy tất cả các bài viết blog
-        // $blogs = Blog::all();
-        
-        // Lấy 6 bài viết blog mỗi trang
-        $blogs = Blog::paginate(6);
+        $query = Blog::query();
+        $queryText = $request->input('query');
 
-        // Truyền dữ liệu tới view hiển thị danh sách blog
+        if ($queryText) {
+            $query->where('title', 'like', '%' . $queryText . '%')
+                ->orWhere('blog_id', $queryText); // Sử dụng 'blog_id' thay vì 'id'
+        }
+
+        $blogs = $query->orderBy('created_at', 'desc')->paginate(6);
+
+        if ($request->ajax()) {
+            return view('viewUser.blog_list_ajax', compact('blogs'))->render();
+        }
+
         return view('viewUser.blog_list', compact('blogs'));
     }
+
+    // Admin blog index
+    public function adminIndex(Request $request)
+    {
+        $query = Blog::query();
+        $queryText = $request->input('query');
+
+        if ($queryText) {
+            $query->where('title', 'like', '%' . $queryText . '%')
+                ->orWhere('blog_id', $queryText);
+        }
+
+        $blogs = $query->orderBy('created_at', 'desc')->paginate(6);
+
+        return view('viewAdmin.blogs_admin', compact('blogs'));
+    }
+
+    // thêm sql
+    public function store(Request $request)
+    {
+        // Validate dữ liệu
+        $request->validate([
+            'title' => 'required|string|max:100',
+            'content' => 'required|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg|max:1024',
+        ]);
+
+        // Xử lý upload ảnh
+        if ($request->hasFile('image')) {
+            // Lưu file ảnh trực tiếp vào thư mục public/uploads
+            $imageName = time() . '-' . $request->file('image')->getClientOriginalName();
+            $request->file('image')->move(public_path('uploads'), $imageName);
+            $path = 'uploads/' . $imageName;
+        } else {
+            $path = null;
+        }
+
+        // Tạo một blog mới
+        $blog = new Blog();
+        $blog->title = $request->input('title');
+        $blog->content = $request->input('content');
+        $blog->image_url = $path; // Lưu đường dẫn ảnh
+        $blog->save();
+
+        // Chuyển hướng về trang danh sách blog với thông báo thành công
+        return redirect()->route('admin.blog.index')->with('success', 'Blog đã được thêm thành công!');
+    }
+
+
+
+
+    public function destroy($blog_id)
+    {
+        // Tìm blog theo blog_id và xóa nó
+        $blog = Blog::where('blog_id', $blog_id)->firstOrFail();
+        $blog->delete();
+
+        // Chuyển hướng với thông báo thành công
+        return redirect()->route('admin.blog.index')->with('success', 'Blog đã được xóa thành công!');
+    }
+
 
     public function show($blog_id)
     {

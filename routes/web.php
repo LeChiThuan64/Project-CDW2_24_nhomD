@@ -9,9 +9,8 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\BlogController;
-
-
-
+use App\Http\Controllers\AdminBlogController;
+use App\Models\Blog;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -51,7 +50,6 @@ Route::post('/logout', function () {
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
-
 Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
 Route::post('/register', [RegisterController::class, 'register']);
 
@@ -84,13 +82,49 @@ Route::get('/blog_list', function () {
 Route::get('/blogs_Detal', function () {
     return view('viewUser.blogs_Detal');
 });
+
 Route::get('/blogs/{blog_id}', [BlogController::class, 'show'])->name('blog.detail');
 
 Route::post('/blogs/{blog_id}/comment', [BlogController::class, 'storeComment'])->name('blog.comment');
 
 Route::get('/blogs', [BlogController::class, 'index'])->name('blog.index');
+ 
+Route::get('/admin/blogs/create', function () {
+    return view('viewAdmin.add_blog');
+})->name('admin.blog.create');
+
+
+// thêm
+Route::post('/admin/blogs', [BlogController::class, 'store'])->name('admin.blog.store');
+
+// tim kiem
+
+
 // blog ketthuc phia trên
 
+
+// blog cho admin
+
+
+
+Route::get('/blogs_admin', function () {
+    $blogs = Blog::orderBy('created_at', 'desc')->paginate(6);
+    return view('viewAdmin.blogs_admin', ['blogs' => $blogs]);
+});
+Route::get('/add_blog', function () {
+    return view('viewAdmin.add_blog');
+});
+// Admin routes
+Route::get('/blogs_admin', [BlogController::class, 'adminIndex'])->name('admin.blog.index');
+Route::delete('/blogs/{blog_id}', [BlogController::class, 'destroy'])->name('admin.blog.destroy');
+
+// Route tìm kiếm blogs
+
+
+// Route::get('/admin/search', 'AdminBlogController@search')->name('admin.search');
+// Route::get('/admin/search', [AdminBlogController::class, 'search'])->name('admin.search');
+
+//Het blog cho admin
 
 
 Route::get('/product/{id}', [ProductController::class, 'show'])->name('product.show');

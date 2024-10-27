@@ -3,78 +3,13 @@
 @section('content')
 
 <head>
-  <style>
-    .btn-simple {
-      padding: 10px 20px;
-      color: #6A0DAD;
-      /* Màu tím nhạt */
-      border: 1px solid #6A0DAD;
-      /* Viền màu tím nhạt */
-      border-radius: 5px;
-      /* Góc bo nhẹ */
-      background-color: transparent;
-      /* Nền trong suốt */
-      text-decoration: none;
-      /* Xóa gạch chân */
-      font-size: 16px;
-      transition: background-color 0.2s ease, color 0.2s ease;
-      /* Hiệu ứng mượt */
-    }
-
-    .btn-simple:hover {
-      background-color: #6A0DAD;
-      /* Nền tím nhạt khi hover */
-      color: white;
-      /* Màu chữ chuyển sang trắng khi hover */
-    }
-
-    .pagination-wrapper nav ul {
-      display: flex;
-      list-style: none;
-      justify-content: center;
-      padding: 0;
-    }
-
-    /* phân trang */
-    .pagination-wrapper nav ul li {
-      margin: 0 5px;
-    }
-
-    .pagination-wrapper nav ul li a,
-    .pagination-wrapper nav ul li span {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      border: 1px solid #ddd;
-      color: blue;
-      font-size: 16px;
-      text-decoration: none;
-    }
-
-    .pagination-wrapper nav ul li.active span {
-      background-color: red;
-      color: white;
-      border-color: red;
-    }
-
-    .pagination-wrapper nav ul li a:hover {
-      background-color: lightgray;
-    }
-
-    .pagination-wrapper nav ul li.disabled span {
-      color: #ccc;
-    }
-  </style>
-
+<link rel="stylesheet" href="{{ asset('assets/css/blog_list.css') }}">
 
 </head>
 <main>
   <section class="blog-page-title mb-4 mb-xl-5">
     <div class="title-bg">
-      <img loading="lazy" src="{{ asset('images_user/blog_title_bg.jpg') }}" width="1780" height="420" alt="Blog Title">
+      <img loading="lazy" src="{{ asset('assets/img/images_user/blog_title_bg.jpg') }}" width="1780" height="420" alt="Blog Title">
     </div>
     <div class="container">
       <h2 class="page-title">The Blog</h2>
@@ -91,12 +26,26 @@
 
   <section class="blog-page container">
     <h2 class="d-none">The Blog</h2>
+
+    <div class="timkiem py-5">
+    @csrf
+
+      <form action="{{ route('blog.index') }}" method="GET" class="search-form">
+        <input type="text" name="query" placeholder="Tìm kiếm bài viết theo tên hoặc ID..." class="search-input">
+        <button type="submit" class="search-button">
+          <i class="fas fa-search"></i>
+        </button>
+      </form>
+
+
+    </div>
+
     <div class="blog-grid row row-cols-1 row-cols-md-2 row-cols-xl-3">
 
       @foreach ($blogs as $blog)
       <div class="blog-grid__item">
         <div class="blog-grid__item-image">
-          <img loading="lazy" class="h-auto" src="{{ asset($blog->image_url) }}" style="width: 100%; height: 350px; object-fit: cover;" alt="{{ $blog->title }}">
+        <img src="{{ asset($blog->image_url) }}" alt="Blog Image" class="blog-image">
         </div>
 
 
@@ -109,7 +58,7 @@
             <a href="blog_single.html">{{ $blog->title }}</a>
           </div>
           <div class="blog-grid__item-content">
-            <p>{{ Str::limit($blog->content, 100) }}</p>
+            <p>{{ Str::limit(strip_tags($blog->content), 100) }}</p>
             <a href="{{ route('blog.detail', ['blog_id' => $blog->blog_id]) }}" class="btn-simple">Continue Reading</a>
 
 
@@ -125,8 +74,8 @@
 
     <!-- Hiển thị nút phân trang -->
     <div class="pagination-wrapper">
-  {{ $blogs->links('pagination::bootstrap-4') }} <!-- Laravel pagination links -->
-</div>
+      {{ $blogs->links('pagination::bootstrap-4') }} <!-- Laravel pagination links -->
+    </div>
 
 
   </section>
