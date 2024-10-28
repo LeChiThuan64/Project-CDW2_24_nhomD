@@ -56,7 +56,10 @@
   <div class="blog-list">
     @foreach($blogs as $blog)
     <!-- Thêm, model -->
-    <div class="blog-item" data-bs-toggle="modal" data-bs-target="#exampleModal" data-content="{{ $blog->content }}" data-image-url="{{ asset($blog->image_url) }}">      <img src="{{ asset($blog->image_url) }}" alt="Blog Image" width="100" height="100">
+    <div class="blog-item" data-bs-toggle="modal" data-bs-target="#exampleModal"
+      data-content="{{ $blog->content }}" data-image-url="{{ asset($blog->image_url) }}">
+      <img src="{{ asset($blog->image_url) }}" alt="Blog Image" width="100" height="100">
+
       <div class="blog-info">
         <p>id : {{ $blog->blog_id }}</p>
         <p>tên : {{ $blog->title }}</p>
@@ -66,9 +69,11 @@
         <button type="button" class="btn btn-primary">
           xem
         </button>
-        <button class="btn btn-outline-secondary">
+        <button onclick="window.location.href='{{ route('admin.blog.edit', $blog->blog_id) }}'" class="btn btn-outline-secondary">
           <i class="fas fa-edit"></i> Sửa
         </button>
+
+
 
         <form action="{{ route('admin.blog.destroy', $blog->blog_id) }}" method="POST" onsubmit="return confirm('Bạn có chắc chắn muốn xóa blog này không?');" style="display:inline;">
           @csrf
@@ -85,20 +90,20 @@
   <!-- Modal -->
   <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Blog Content</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body" id="modal-content">
-                <!-- Nội dung blog sẽ được cập nhật tại đây -->
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            </div>
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Blog Content</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
+        <div class="modal-body" id="modal-content">
+          <!-- Nội dung blog sẽ được cập nhật tại đây -->
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
     </div>
-</div>
+  </div>
 
 
   <script>
@@ -114,13 +119,12 @@
 
     // Script để hiển thị nội dung blog khi mở modal
     document.querySelectorAll('.blog-item').forEach(item => {
-    item.addEventListener('click', function() {
+      item.addEventListener('click', function() {
         const content = this.getAttribute('data-content');
         const imageUrl = this.getAttribute('data-image-url');
         document.getElementById('modal-content').innerHTML = `<img src="${imageUrl}" alt="Blog Image"><div>${content}</div>`;
+      });
     });
-});
-
   </script>
 </body>
 

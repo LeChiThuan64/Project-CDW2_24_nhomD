@@ -93,19 +93,8 @@ Route::get('/admin/blogs/create', function () {
     return view('viewAdmin.add_blog');
 })->name('admin.blog.create');
 
-
 // thêm
 Route::post('/admin/blogs', [BlogController::class, 'store'])->name('admin.blog.store');
-
-// tim kiem
-
-
-// blog ketthuc phia trên
-
-
-// blog cho admin
-
-
 
 Route::get('/blogs_admin', function () {
     $blogs = Blog::orderBy('created_at', 'desc')->paginate(6);
@@ -117,8 +106,13 @@ Route::get('/add_blog', function () {
 // Admin routes
 Route::get('/blogs_admin', [BlogController::class, 'adminIndex'])->name('admin.blog.index');
 Route::delete('/blogs/{blog_id}', [BlogController::class, 'destroy'])->name('admin.blog.destroy');
-
 Route::post('/upload-image', [BlogController::class, 'uploadImage'])->name('upload.image');
+
+// Route cho trang chỉnh sửa blog
+Route::get('/admin/blogs/{blog_id}/edit', [BlogController::class, 'edit'])->name('admin.blog.edit');
+
+// Route để cập nhật blog sau khi chỉnh sửa
+Route::post('/admin/blogs/{blog_id}/update', [BlogController::class, 'update'])->name('admin.blog.update');
 
 // Route tìm kiếm blogs
 

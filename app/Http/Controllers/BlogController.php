@@ -105,6 +105,43 @@ class BlogController extends Controller
         return redirect()->route('admin.blog.index')->with('success', 'Blog đã được xóa thành công!');
     }
 
+    public function edit($blog_id)
+{
+    // Lấy blog cần sửa
+    $blog = Blog::where('blog_id', $blog_id)->firstOrFail();
+    return view('viewAdmin.sua_blog', compact('blog'));
+}
+
+public function update(Request $request, $blog_id)
+{
+    // Validate dữ liệu
+    $request->validate([
+        'title' => 'required|string|max:100',
+        'content' => 'required|string',
+        'image' => 'nullable|image|mimes:jpeg,png,jpg|max:1024',
+    ]);
+
+    // Tìm blog để cập nhật
+    $blog = Blog::where('blog_id', $blog_id)->firstOrFail();
+
+    // Xử lý upload ảnh nếu có
+    if ($request->hasFile('image')) {
+        $imageName = time() . '-' . $request->file('image')->getClientOriginalName();
+        $request->file('image')->move(public_path('uploads'), $imageName);
+        $path = 'uploads/' . $imageName;
+        $blog->image_url = $path;
+    }
+
+    // Cập nhật các thông tin khác
+    $blog->title = $request->input('title');
+    $blog->content = $request->input('content');
+    $blog->save();
+
+    // Chuyển hướng về trang danh sách blog với thông báo thành công
+    return redirect()->route('admin.blog.index')->with('success', 'Blog đã được cập nhật thành công!');
+}
+
+
 
     public function show($blog_id)
     {

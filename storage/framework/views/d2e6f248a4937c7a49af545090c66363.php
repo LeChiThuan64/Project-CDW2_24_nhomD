@@ -55,7 +55,10 @@
   <div class="blog-list">
     <?php $__currentLoopData = $blogs; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $blog): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
     <!-- Thêm, model -->
-    <div class="blog-item" data-bs-toggle="modal" data-bs-target="#exampleModal" data-content="<?php echo e($blog->content); ?>" data-image-url="<?php echo e(asset($blog->image_url)); ?>">      <img src="<?php echo e(asset($blog->image_url)); ?>" alt="Blog Image" width="100" height="100">
+    <div class="blog-item" data-bs-toggle="modal" data-bs-target="#exampleModal"
+      data-content="<?php echo e($blog->content); ?>" data-image-url="<?php echo e(asset($blog->image_url)); ?>">
+      <img src="<?php echo e(asset($blog->image_url)); ?>" alt="Blog Image" width="100" height="100">
+
       <div class="blog-info">
         <p>id : <?php echo e($blog->blog_id); ?></p>
         <p>tên : <?php echo e($blog->title); ?></p>
@@ -65,9 +68,11 @@
         <button type="button" class="btn btn-primary">
           xem
         </button>
-        <button class="btn btn-outline-secondary">
+        <button onclick="window.location.href='<?php echo e(route('admin.blog.edit', $blog->blog_id)); ?>'" class="btn btn-outline-secondary">
           <i class="fas fa-edit"></i> Sửa
         </button>
+
+
 
         <form action="<?php echo e(route('admin.blog.destroy', $blog->blog_id)); ?>" method="POST" onsubmit="return confirm('Bạn có chắc chắn muốn xóa blog này không?');" style="display:inline;">
           <?php echo csrf_field(); ?>
@@ -84,20 +89,20 @@
   <!-- Modal -->
   <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Blog Content</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body" id="modal-content">
-                <!-- Nội dung blog sẽ được cập nhật tại đây -->
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            </div>
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Blog Content</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
+        <div class="modal-body" id="modal-content">
+          <!-- Nội dung blog sẽ được cập nhật tại đây -->
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
     </div>
-</div>
+  </div>
 
 
   <script>
@@ -113,18 +118,16 @@
 
     // Script để hiển thị nội dung blog khi mở modal
     document.querySelectorAll('.blog-item').forEach(item => {
-    item.addEventListener('click', function() {
+      item.addEventListener('click', function() {
         const content = this.getAttribute('data-content');
         const imageUrl = this.getAttribute('data-image-url');
         document.getElementById('modal-content').innerHTML = `<img src="${imageUrl}" alt="Blog Image"><div>${content}</div>`;
+      });
     });
-});
-
   </script>
 </body>
 
 </html>
 
 <?php $__env->stopSection(); ?>
-
 <?php echo $__env->make('viewAdmin.navigation', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\Project-CDW2_24_nhomD\resources\views/viewAdmin/blogs_admin.blade.php ENDPATH**/ ?>
