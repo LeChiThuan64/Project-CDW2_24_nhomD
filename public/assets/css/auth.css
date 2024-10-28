@@ -1,0 +1,95 @@
+/* Sửa đổi CSS */
+
+.layout {
+    width: 400px;
+    padding: 20px;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+/* Tabs */
+.tabs {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.tabs div {
+    margin: 0 10px;
+    padding: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    color: #666;
+}
+
+.tabs .active {
+    font-weight: bold;
+    color: #000;
+    border-bottom: 2px solid #000;
+}
+
+/* Đặt mặc định form-container ẩn */
+.form-container {
+    display: none; /* Ẩn tất cả form theo mặc định */
+}
+
+.form-container.active {
+    display: block; /* Hiển thị chỉ form có lớp active */
+}
+
+/* Form Styling */
+.form-group input,
+.form-container input[type="email"],
+.form-container input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.form-container .btn {
+    width: 100%;
+    padding: 15px;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.form-container .btn:hover {
+    background-color: #555;
+}
+
+.form-text,
+.footer {
+    font-size: 14px;
+    color: #666;
+    margin-top: 20px;
+}
+
+.footer a,
+.form-container a {
+    color: #666;
+    text-decoration: none;
+}
+
+.footer a:hover,
+.form-container a:hover {
+    text-decoration: underline;
+}
+
+/* Container for login and register form */
+.form-container {
+    display: none; /* Form sẽ bị ẩn theo mặc định */
+    opacity: 0;    /* Đặt opacity để chuẩn bị cho hiệu ứng */
+    transition: opacity 0.4s ease; /* Thêm hiệu ứng mờ */
+}
+
+.form-container.active {
+    display: block; /* Hiển thị form khi có class active */
+    opacity: 1;     /* Đặt opacity để form hiện lên */
+}
