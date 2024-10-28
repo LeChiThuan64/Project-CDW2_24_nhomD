@@ -119,3 +119,9 @@ body {
     padding: 5px 10px;
     border: 1px solid #ddd;
   }
+  .modal-body img {
+    max-width: 100%; /* Đảm bảo hình ảnh không vượt quá chiều rộng modal */
+    height: auto; /* Tự động điều chỉnh chiều cao theo chiều rộng */
+    display: block;
+    margin: 0 auto; /* Căn giữa hình ảnh */
+}

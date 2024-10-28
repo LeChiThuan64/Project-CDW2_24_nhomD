@@ -53,19 +53,16 @@
     <!-- Nút dấu cộng -->
   </div>
 
-  <div class="blog-list" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-    <!-- Thêm, model -->
+  <div class="blog-list">
     @foreach($blogs as $blog)
-    <div class="blog-item">
-
-      <img src="{{ asset($blog->image_url) }}" alt="Blog Image" width="100" height="100">
+    <!-- Thêm, model -->
+    <div class="blog-item" data-bs-toggle="modal" data-bs-target="#exampleModal" data-content="{{ $blog->content }}" data-image-url="{{ asset($blog->image_url) }}">      <img src="{{ asset($blog->image_url) }}" alt="Blog Image" width="100" height="100">
       <div class="blog-info">
         <p>id : {{ $blog->blog_id }}</p>
         <p>tên : {{ $blog->title }}</p>
         <p>nội dung : {{ Str::limit(strip_tags($blog->content), 100) }}</p>
       </div>
       <div class="blog-actions">
-
         <button type="button" class="btn btn-primary">
           xem
         </button>
@@ -86,27 +83,23 @@
   </div>
 
   <!-- Modal -->
-  <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Blog Content</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="modal-content">
+                <!-- Nội dung blog sẽ được cập nhật tại đây -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
         </div>
-        <div class="modal-body">
-          ...
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Understood</button>
-        </div>
-      </div>
     </div>
-  </div>
-  <!-- Pagination -->
-  <div class="pagination-wrapper">
-    {{ $blogs->links('pagination::bootstrap-4') }} <!-- Sử dụng template bootstrap-4 cho phân trang -->
-  </div>
+</div>
+
 
   <script>
     // Script để ẩn thông báo sau 3 giây (3000ms)
@@ -118,6 +111,16 @@
         }
       }, 3000); // 3000ms = 3 giây
     });
+
+    // Script để hiển thị nội dung blog khi mở modal
+    document.querySelectorAll('.blog-item').forEach(item => {
+    item.addEventListener('click', function() {
+        const content = this.getAttribute('data-content');
+        const imageUrl = this.getAttribute('data-image-url');
+        document.getElementById('modal-content').innerHTML = `<img src="${imageUrl}" alt="Blog Image"><div>${content}</div>`;
+    });
+});
+
   </script>
 </body>
 

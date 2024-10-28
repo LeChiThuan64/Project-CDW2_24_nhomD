@@ -3,6 +3,9 @@
 
 <HEad>
   <STYle>
+   
+       /* Chọn font Arial hoặc font gần giống */
+  
     .blog-image {
       max-width: 50%; /* Đặt kích thước tối đa của hình ảnh (thay đổi tùy ý) */
       height: auto; /* Giữ tỷ lệ của hình ảnh */
@@ -32,9 +35,9 @@
 
   <div class="mb-4 pb-4"></div>
  
-  <section class="blog-page blog-single container">
+  <section class="blog-page blog-single container" style="font-family: Arial, sans-serif;">
     <div class="mw-930">
-      <h2 class="page-title"><?php echo e($blog->title); ?></h2>
+      <h2 class="page-title"style="font-family: Arial, sans-serif;"><?php echo e($blog->title); ?></h2>
       <div class="blog-single__item-meta">
         <span class="blog-single__item-meta__author">By Admin</span>
         <span class="blog-single__item-meta__date"><?php echo e($blog->created_at->format('F d, Y')); ?></span>
@@ -46,7 +49,7 @@
         <!-- Sử dụng class blog-image để căn giữa và điều chỉnh kích thước ảnh -->
         <img src="<?php echo e(asset($blog->image_url)); ?>" alt="Blog Image" class="blog-image">
       </p>
-      <div class="blog-content mw-930">
+      <div class="blog-content mw-930"style="font-family: Arial, sans-serif;">
       <!-- <p><?php echo e(strip_tags($blog->content)); ?></p> -->
       <?php echo $blog->content; ?>
 
@@ -55,7 +58,7 @@
     </div>
 
     <!-- Hiển thị các bình luận -->
-    <div class="blog-single__reviews mw-930">
+    <div class="blog-single__reviews mw-930"style="font-family: Arial, sans-serif;">
       <h2 class="blog-single__reviews-title">Comments</h2>
 
       <?php if($comments && count($comments) > 0): ?>
