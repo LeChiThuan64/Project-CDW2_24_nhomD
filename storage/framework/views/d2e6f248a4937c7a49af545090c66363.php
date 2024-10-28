@@ -14,7 +14,7 @@
 <head>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
   <style>
-   
+
   </style>
   <link rel="stylesheet" href="<?php echo e(asset('assets/css/blogs_admin.css')); ?>">
 </head>
@@ -44,7 +44,7 @@
 
       <div class="col-md-2 text-right">
         <a href="<?php echo e(route('admin.blog.create')); ?>" class="btn btn-outline-primary">
-          <i class="fas fa-plus"></i> 
+          <i class="fas fa-plus"></i>
         </a>
       </div>
     </div>
@@ -52,17 +52,21 @@
     <!-- Nút dấu cộng -->
   </div>
 
-  <div class="blog-list">
+  <div class="blog-list" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
     <?php $__currentLoopData = $blogs; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $blog): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
     <div class="blog-item">
 
-    <img src="<?php echo e(asset($blog->image_url)); ?>" alt="Blog Image" width="100" height="100">
+      <img src="<?php echo e(asset($blog->image_url)); ?>" alt="Blog Image" width="100" height="100">
       <div class="blog-info">
         <p>id : <?php echo e($blog->blog_id); ?></p>
         <p>tên : <?php echo e($blog->title); ?></p>
         <p>nội dung : <?php echo e(Str::limit(strip_tags($blog->content), 100)); ?></p>
       </div>
       <div class="blog-actions">
+
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+          xem
+        </button>
         <button class="btn btn-outline-secondary">
           <i class="fas fa-edit"></i> Sửa
         </button>
@@ -79,6 +83,24 @@
     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
   </div>
 
+  <!-- Modal -->
+  <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          ...
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Understood</button>
+        </div>
+      </div>
+    </div>
+  </div>
   <!-- Pagination -->
   <div class="pagination-wrapper">
     <?php echo e($blogs->links('pagination::bootstrap-4')); ?> <!-- Sử dụng template bootstrap-4 cho phân trang -->
@@ -100,5 +122,4 @@
 </html>
 
 <?php $__env->stopSection(); ?>
-
 <?php echo $__env->make('viewAdmin.navigation', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\Project-CDW2_24_nhomD\resources\views/viewAdmin/blogs_admin.blade.php ENDPATH**/ ?>

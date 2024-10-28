@@ -20,6 +20,13 @@
       font-size: 18px;
       line-height: 1.6;
     }
+    .blog-content img {
+    max-width: 100%; /* Đảm bảo ảnh không vượt quá chiều rộng của container */
+    height: auto; /* Giữ tỉ lệ ảnh để không bị biến dạng */
+    display: block; /* Giúp ảnh căn chỉnh đẹp hơn */
+    margin: 0 auto; /* Căn giữa ảnh trong content */
+}
+
   </STYle>
 </HEad>
 <main>
@@ -40,8 +47,9 @@
         <!-- Sử dụng class blog-image để căn giữa và điều chỉnh kích thước ảnh -->
         <img src="{{ asset($blog->image_url) }}" alt="Blog Image" class="blog-image">
       </p>
-      <div class="mw-930">
-      <p>{{ strip_tags($blog->content) }}</p>
+      <div class="blog-content mw-930">
+      <!-- <p>{{ strip_tags($blog->content) }}</p> -->
+      {!! $blog->content !!}
 
       </div>
     </div>

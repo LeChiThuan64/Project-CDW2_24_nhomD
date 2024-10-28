@@ -74,6 +74,24 @@ class BlogController extends Controller
         return redirect()->route('admin.blog.index')->with('success', 'Blog đã được thêm thành công!');
     }
 
+    public function uploadImage(Request $request)
+    {
+        $imageData = $request->input('image');
+
+        // Kiểm tra ảnh có đúng định dạng base64 không
+        if (preg_match('/^data:image\/(\w+);base64,/', $imageData, $type)) {
+            $data = substr($imageData, strpos($imageData, ',') + 1);
+            $data = base64_decode($data);
+            $imageName = time() . '.png';
+            $path = public_path('uploads') . '/' . $imageName;
+            file_put_contents($path, $data);
+
+            // Trả về URL của ảnh đã lưu
+            return response()->json(['url' => asset('uploads/' . $imageName)]);
+        }
+
+        return response()->json(['error' => 'Invalid image data'], 400);
+    }
 
 
 

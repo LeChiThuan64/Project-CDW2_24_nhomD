@@ -118,6 +118,8 @@ Route::get('/add_blog', function () {
 Route::get('/blogs_admin', [BlogController::class, 'adminIndex'])->name('admin.blog.index');
 Route::delete('/blogs/{blog_id}', [BlogController::class, 'destroy'])->name('admin.blog.destroy');
 
+Route::post('/upload-image', [BlogController::class, 'uploadImage'])->name('upload.image');
+
 // Route tìm kiếm blogs
 
 

@@ -15,7 +15,7 @@
 <head>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
   <style>
-   
+
   </style>
   <link rel="stylesheet" href="{{ asset('assets/css/blogs_admin.css') }}">
 </head>
@@ -45,7 +45,7 @@
 
       <div class="col-md-2 text-right">
         <a href="{{ route('admin.blog.create') }}" class="btn btn-outline-primary">
-          <i class="fas fa-plus"></i> 
+          <i class="fas fa-plus"></i>
         </a>
       </div>
     </div>
@@ -53,17 +53,22 @@
     <!-- Nút dấu cộng -->
   </div>
 
-  <div class="blog-list">
+  <div class="blog-list" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+    <!-- Thêm, model -->
     @foreach($blogs as $blog)
     <div class="blog-item">
 
-    <img src="{{ asset($blog->image_url) }}" alt="Blog Image" width="100" height="100">
+      <img src="{{ asset($blog->image_url) }}" alt="Blog Image" width="100" height="100">
       <div class="blog-info">
         <p>id : {{ $blog->blog_id }}</p>
         <p>tên : {{ $blog->title }}</p>
         <p>nội dung : {{ Str::limit(strip_tags($blog->content), 100) }}</p>
       </div>
       <div class="blog-actions">
+
+        <button type="button" class="btn btn-primary">
+          xem
+        </button>
         <button class="btn btn-outline-secondary">
           <i class="fas fa-edit"></i> Sửa
         </button>
@@ -80,6 +85,24 @@
     @endforeach
   </div>
 
+  <!-- Modal -->
+  <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          ...
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Understood</button>
+        </div>
+      </div>
+    </div>
+  </div>
   <!-- Pagination -->
   <div class="pagination-wrapper">
     {{ $blogs->links('pagination::bootstrap-4') }} <!-- Sử dụng template bootstrap-4 cho phân trang -->

@@ -6,7 +6,7 @@
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <meta name="author" content="flexkit">
 
-    <link rel="shortcut icon" href="<?php echo e(asset('logoJ97.jpg')); ?>" type="image/x-icon">
+    <link rel="shortcut icon" href="<?php echo e(asset('assets/img/logos/logoJ97.png')); ?>" type="image/x-icon">
     <link rel="preconnect" href="https://fonts.gstatic.com/">
 
     <!-- Fonts -->
@@ -576,9 +576,9 @@
     <header id="header" class="header header_sticky">
         <div class="container">
             <div class="header-desk header-desk_type_1">
-                <div class="logo">
+                <div class="logo"
                     <a href="index-2.html">
-                        <img src="<?php echo e(asset('logoJ97.jpg')); ?>" alt="J97" class="logo__image d-block">
+                        <img src="<?php echo e(asset('assets/img/logos/logoJ97.png')); ?>" alt="J97" class="logo__image d-block" style="width:2em;">
                     </a>
                 </div><!-- /.logo -->
 
@@ -898,7 +898,7 @@
                             <option class="footer-select__option" value="1">United States | English</option>
                             <option class="footer-select__option" value="2">German</option>
                             <option class="footer-select__option" value="3">French</option>
-                            <option class="footer-select__option" value="4">Swedish</option>
+                            <option class="footer-select__option" value="4">Vietnamese</option>
                         </select>
                     </div>
 
@@ -906,9 +906,10 @@
                         <label for="footerSettingsCurrency" class="ms-md-3 me-2 text-secondary">Currency</label>
                         <select id="footerSettingsCurrency" class="form-select form-select-sm bg-transparent"
                             aria-label="Default select example" name="store-language">
-                            <option selected>$ USD</option>
-                            <option value="1">£ GBP</option>
-                            <option value="2">€ EURO</option>
+                            <option value="1" selected>$ USD</option>
+                            <option value="2">£ GBP</option>
+                            <option value="3">€ EURO</option>
+                            <option value="4">đ VND</option>
                         </select>
                     </div>
                 </div><!-- /.footer-settings -->
