@@ -54,9 +54,7 @@
 
   <div class="blog-list">
     <?php $__currentLoopData = $blogs; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $blog): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-    <!-- Thêm, model -->
-    <div class="blog-item" data-bs-toggle="modal" data-bs-target="#exampleModal"
-      data-content="<?php echo e($blog->content); ?>" data-image-url="<?php echo e(asset($blog->image_url)); ?>">
+    <div class="blog-item">
       <img src="<?php echo e(asset($blog->image_url)); ?>" alt="Blog Image" width="100" height="100">
 
       <div class="blog-info">
@@ -65,14 +63,13 @@
         <p>nội dung : <?php echo e(Str::limit(strip_tags($blog->content), 100)); ?></p>
       </div>
       <div class="blog-actions">
-        <button type="button" class="btn btn-primary">
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"
+          data-content="<?php echo e($blog->content); ?>" data-image-url="<?php echo e(asset($blog->image_url)); ?>"style="color: black;">
           xem
         </button>
         <button onclick="window.location.href='<?php echo e(route('admin.blog.edit', $blog->blog_id)); ?>'" class="btn btn-outline-secondary">
           <i class="fas fa-edit"></i> Sửa
         </button>
-
-
 
         <form action="<?php echo e(route('admin.blog.destroy', $blog->blog_id)); ?>" method="POST" onsubmit="return confirm('Bạn có chắc chắn muốn xóa blog này không?');" style="display:inline;">
           <?php echo csrf_field(); ?>
@@ -84,7 +81,8 @@
       </div>
     </div>
     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-  </div>
+</div>
+
 
   <!-- Modal -->
   <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -117,13 +115,17 @@
     });
 
     // Script để hiển thị nội dung blog khi mở modal
-    document.querySelectorAll('.blog-item').forEach(item => {
-      item.addEventListener('click', function() {
+    document.querySelectorAll('.btn-primary').forEach(button => {
+    button.addEventListener('click', function() {
         const content = this.getAttribute('data-content');
         const imageUrl = this.getAttribute('data-image-url');
-        document.getElementById('modal-content').innerHTML = `<img src="${imageUrl}" alt="Blog Image"><div>${content}</div>`;
-      });
+        document.getElementById('modal-content').innerHTML = `
+            <img src="${imageUrl}" alt="Blog Image" width="100%" />
+            <p>${content}</p>
+        `;
     });
+});
+
   </script>
 </body>
 
