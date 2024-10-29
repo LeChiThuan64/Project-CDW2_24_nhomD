@@ -15,51 +15,47 @@
     <div class="container">
         <div class="header">Sửa User</div>
         <div class="sub-header">Quản lý thông tin hồ sơ để bảo mật tài khoản</div>
-        <div class="form-group">
-            <label for="username">Tên đăng nhập</label>
-            <input id="username" placeholder="tên tài khoản" type="text" />
-        </div>
-        <div class="form-group">
-            <label for="email">Email</label>
-            <input id="email" type="email" />
-        </div>
-        <div class="form-group">
-            <label for="phone">Số điện thoại</label>
-            <input id="phone" type="text" />
-        </div>
-        <div class="form-group">
-            <label for="password">Mật khẩu</label>
-            <div class="password-wrapper">
-                <input id="password" type="password" />
-                <i id="togglePassword" class="fas fa-eye"></i>
+        <form action="{{ route('user.update', $user->id) }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            @method('PUT')
+            <div class="form-group">
+                <label for="username">Tên đăng nhập</label>
+                <input id="username" name="name" type="text" value="{{ old('name', $user->name) }}" />
             </div>
-        </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input id="email" name="email" type="email" value="{{ old('email', $user->email) }}" />
+            </div>
+            <div class="form-group">
+                <label for="phone">Số điện thoại</label>
+                <input id="phone" name="phone" type="text" value="{{ old('phone', $user->phone) }}" />
+            </div>
+            <div class="form-group">
+                <label>Giới tính</label>
+                <div class="radio-group">
+                    <label><input name="gender" type="radio" value="male" {{ $user->gender === 'male' ? 'checked' : '' }} /> Nam</label>
+                    <label><input name="gender" type="radio" value="female" {{ $user->gender === 'female' ? 'checked' : '' }} /> Nữ</label>
+                    <label><input name="gender" type="radio" value="other" {{ $user->gender === 'other' ? 'checked' : '' }} /> Khác</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="dob">Ngày sinh</label>
+                <input id="dob" name="dob" type="date" value="{{ old('dob', $user->dob ? $user->dob->format('Y-m-d') : '') }}" />
+            </div>
 
-        <div class="form-group">
-            <label>Giới tính</label>
-            <div class="radio-group">
-                <label><input name="gender" type="radio" value="male" /> Nam</label>
-                <label><input name="gender" type="radio" value="female" /> Nữ</label>
-                <label><input name="gender" type="radio" value="other" />
-                    Khác
-                </label>
+            <div class="profile-pic">
+                <img id="profileImage" alt="ảnh" src="{{ $user->profile_image ? asset($user->profile_image) : 'https://storage.googleapis.com/a1aa/image/JvrL8IccnN7JEFHYrd8lG4Pkxxr1MJyu5roHmDKfPBx2sy1JA.jpg' }}" />
+                <input id="uploadImage" name="profile_image" type="file" accept="image/*" onchange="previewImage(event)" style="display: none;" />
+                <label for="uploadImage" class="upload-button">Chọn ảnh</label>
+                <div class="file-info">Dung lượng file tối đa 1 MB<br />Định dạng: JPEG, PNG</div>
             </div>
-        </div>
-        <div class="form-group">
-            <label for="dob">Ngày sinh</label>
-            <input id="dob" type="date" />
-            <span class="calendar-icon"></span>
-        </div>
-        <div class="buttons">
-            <input type="button" value="Lưu" />
-            <input type="button" value="Hủy" />
-        </div>
-        <div class="profile-pic">
-            <img id="profileImage" alt="ảnh" src="https://storage.googleapis.com/a1aa/image/JvrL8IccnN7JEFHYrd8lG4Pkxxr1MJyu5roHmDKfPBx2sy1JA.jpg" />
-            <input id="uploadImage" type="file" accept="image/*" onchange="previewImage(event)" style="display: none;" />
-            <label for="uploadImage" class="upload-button">Chọn ảnh</label>
-            <div class="file-info">Dung lượng file tối đa 1 MB<br />Định dạng: JPEG, PNG</div>
-        </div>
+
+            <div class="buttons">
+                <button type="submit" class="btn btn-primary">Lưu</button>
+                <a href="{{ route('tables') }}" class="btn btn-secondary">Hủy</a>
+            </div>
+        </form>
+
     </div>
 
     <script>

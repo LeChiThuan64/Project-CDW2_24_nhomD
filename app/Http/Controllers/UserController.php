@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
+   
     public function index(Request $request)
     {
         // Lấy từ khóa tìm kiếm từ người dùng
@@ -32,43 +34,106 @@ class UserController extends Controller
         return view('viewAdmin.tables', compact('users'));
     }
 
+
     public function destroy($id)
     {
         $user = User::find($id);
-
         if ($user) {
+            if ($user->profile_image) {
+                Storage::delete($user->profile_image); // Xóa ảnh cũ
+            }
             $user->delete();
-            return redirect()->back()->with('success', 'Xóa được rồi!');
+            return redirect()->back()->with('success', 'Xóa thành công!');
         }
-
-        return redirect()->back()->with('error', 'Thua Ban oi!');
+        return redirect()->back()->with('error', 'Không tìm thấy người dùng!');
     }
 
     public function create()
     {
-        // Trả về view addUser.blade.php
-        return view('viewAdmin.addUser'); // Điều chỉnh đường dẫn nếu cần
+        return view('viewAdmin.addUser');
     }
 
-    // Lưu người dùng mới
     public function store(Request $request)
     {
-        // Validate dữ liệu
         $request->validate([
-            'name' => 'required',
+            'name' => 'required|string|max:100',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:6',
+            'phone' => 'nullable|numeric|digits:10',
+            'gender' => 'required|in:male,female,other',
+            'dob' => 'nullable|date',
+            'profile_image' => 'nullable|image|mimes:jpeg,png|max:1024',
+        ]);
+    
+        try {
+            $profileImagePath = null;
+            
+            // Đường dẫn thư mục lưu ảnh
+            $directoryPath = public_path('uploads');
+            
+            // Tạo thư mục nếu chưa tồn tại
+            if (!file_exists($directoryPath)) {
+                mkdir($directoryPath, 0755, true);
+            }
+    
+            if ($request->hasFile('profile_image')) {
+                $profileImageName = $request->file('profile_image')->getClientOriginalName();
+                $request->file('profile_image')->move($directoryPath, $profileImageName);
+    
+                // Lưu đường dẫn ảnh để lưu vào cơ sở dữ liệu
+                $profileImagePath = 'uploads/' . $profileImageName;
+            }
+    
+            User::create([
+                'name' => $request->input('name'),
+                'email' => $request->input('email'),
+                'password' => bcrypt($request->input('password')),
+                'phone' => $request->input('phone'),
+                'gender' => $request->input('gender'),
+                'dob' => $request->input('dob'),
+                'role' => 1,
+                'profile_image' => $profileImagePath,
+            ]);
+    
+            return redirect()->route('tables')->with('success', 'Người dùng đã được thêm thành công!');
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors('Không thể thêm user, vui lòng thử lại.');
+        }
+    }
+    
+
+
+
+
+
+    public function edit($id)
+    {
+        $user = User::findOrFail($id);
+        return view('viewAdmin.edit_user', compact('user'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'name' => 'required|string|max:100',
+            'email' => 'required|email|regex:/@gmail\.com$/|unique:users,email,' . $id,
+            'phone' => 'required|numeric|digits:10',
+            'gender' => 'required|in:male,female,other',
+            'dob' => 'required|date',
+            'profile_image' => 'nullable|image|mimes:jpeg,png|max:1024',
         ]);
 
-        // Tạo người dùng mới với role mặc định là 1
-        User::create([
-            'name' => $request->input('name'),
-            'email' => $request->input('email'),
-            'password' => bcrypt($request->input('password')),
-            'role' => 1, // Role mặc định
-        ]);
+        $user = User::findOrFail($id);
+        $user->update($request->only(['name', 'email', 'phone', 'gender', 'dob']));
 
-        // Chuyển hướng về trang /tables sau khi thêm người dùng thành công
-        return redirect()->route('tables')->with('success', 'Người dùng đã được thêm thành công!');
+        if ($request->hasFile('profile_image')) {
+            if ($user->profile_image) {
+                Storage::delete($user->profile_image); // Xóa ảnh cũ trước khi cập nhật
+            }
+            $path = $request->file('profile_image')->store('uploads');
+            $user->update(['profile_image' => $path]);
+        }
+
+        return redirect()->route('tables')->with('success', 'Cập nhật thành công!');
     }
 }

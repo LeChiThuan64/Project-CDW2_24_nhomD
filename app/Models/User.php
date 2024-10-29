@@ -13,11 +13,17 @@ class User extends Authenticatable
 
     protected $primaryKey = 'id'; // Khóa chính trong cơ sở dữ liệu là 'id'
 
-    protected $fillable = ['name', 'email', 'password', 'role'];
-
+    // Cho phép các trường này có thể được ghi vào cơ sở dữ liệu
+    // protected $fillable = ['name', 'email', 'password', 'role', 'phone', 'gender', 'dob', 'profile_image'];
+protected $fillable = [
+        'name', 'email', 'password', 'phone', 'role', 'gender', 'dob', 'is_active', 'profile_image'
+    ];
     protected $hidden = ['password', 'remember_token'];
 
-    protected $casts = ['email_verified_at' => 'datetime'];
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'dob' => 'date', // Chuyển đổi trường 'dob' thành kiểu ngày
+    ];
 
     public function reviews()
     {
@@ -29,5 +35,3 @@ class User extends Authenticatable
         return $this->hasMany(Wishlist::class);
     }
 }
-
-

@@ -68,6 +68,8 @@ Route::delete('/user/{id}', [UserController::class, 'destroy'])->name('user.dest
 Route::get('/add-user', [UserController::class, 'create'])->name('user.create');
 Route::post('/add-user', [UserController::class, 'store'])->name('user.store');
 
+
+
 // Route cho trang chi tiết sản phẩm
 Route::get('/product-detail', function () {
     return view('viewUser.product-detail');
@@ -87,6 +89,8 @@ Route::get('/edit_user', function () {
     return view('viewAdmin.edit_user');
 });
 Route::get('/user/{id}/edit', [UserController::class, 'edit'])->name('user.edit');
+Route::put('/user/{id}', [UserController::class, 'update'])->name('user.update');
+
 
 
 Route::get('/blogs/{blog_id}', [BlogController::class, 'show'])->name('blog.detail');
@@ -101,6 +105,7 @@ Route::get('/admin/blogs/create', function () {
 
 // thêm
 Route::post('/admin/blogs', [BlogController::class, 'store'])->name('admin.blog.store');
+
 
 Route::get('/blogs_admin', function () {
     $blogs = Blog::orderBy('created_at', 'desc')->paginate(6);

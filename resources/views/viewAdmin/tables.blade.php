@@ -61,7 +61,7 @@
             <tr>
               <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">ID</th>
               <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Họ và tên</th>
-              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">email</th>
+              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">sdt vs email</th>
               <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Role</th>
               <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Action</th>
             </tr>
@@ -76,8 +76,12 @@
               <td>
                 <div class="d-flex px-2 py-1">
                   <div>
-                    <img src="../assets/img/team-2.jpg" class="avatar avatar-sm me-3 border-radius-lg"
-                      alt="user1">
+                    <!-- <img src="{{ asset('storage/' . $user->profile_image) }}" class="avatar avatar-sm me-3 border-radius-lg" alt="avatar"> -->
+                    <img src="{{ asset($user->profile_image) }}" class="avatar avatar-sm me-3 border-radius-lg" alt="avatar">
+
+
+
+
                   </div>
                   <div class="d-flex flex-column justify-content-center">
 
@@ -86,6 +90,11 @@
                 </div>
               </td>
               <td>
+                <div class="d-flex px-2 py-1">
+                  <div class="d-flex flex-column justify-content-center">
+                    <h6 class="mb-0 text-sm">{{ $user->phone }}</h6>
+                  </div>
+                </div>
                 <div class="d-flex px-2 py-1">
                   <div class="d-flex flex-column justify-content-center">
                     <h6 class="mb-0 text-sm">{{ $user->email }}</h6>
@@ -111,9 +120,10 @@
                   </button>
                 </form>
 
-                <button type="button" class="btn btn-info btn-sm px-3" style="border-radius: 5px; font-size: 14px;">
+                <a href="{{ route('user.edit', $user->id) }}" class="btn btn-info btn-sm px-3" style="border-radius: 5px; font-size: 14px;">
                   <i class="fas fa-edit"></i> Sửa
-                </button>
+                </a>
+
               </td>
 
 
@@ -131,61 +141,61 @@
 </div>
 
 <!-- Phân trang -->
-<<div class="d-flex justify-content-center mt-4" id="pagination">
-
-  <ul class="pagination">
-    {{-- Lặp qua tất cả các trang --}}
-    @foreach ($users->getUrlRange(1, $users->lastPage()) as $page => $url)
-    @if ($page == $users->currentPage())
-    <li class="page-item active">
-      <span class="page-link">{{ $page }}</span>
-    </li>
-    @else
-    <li class="page-item">
-      <a class="page-link" href="{{ $url }}">{{ $page }}</a>
-    </li>
-    @endif
-    @endforeach
-  </ul>
-  </div>
-
+<div class="d-flex justify-content-center mt-4" id="pagination">
+    <ul class="pagination">
+        {{-- Lặp qua tất cả các trang --}}
+        @foreach ($users->getUrlRange(1, $users->lastPage()) as $page => $url)
+            @if ($page == $users->currentPage())
+                <li class="page-item active">
+                    <span class="page-link">{{ $page }}</span>
+                </li>
+            @else
+                <li class="page-item">
+                    <a class="page-link" href="{{ $url }}">{{ $page }}</a>
+                </li>
+            @endif
+        @endforeach
+    </ul>
+</div>
 
 
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script>
-    // hiển thông báo 3s
-    setTimeout(function() {
-      var successMessage = document.getElementById('success-message');
-      if (successMessage) {
-        successMessage.style.display = 'none';
-      }
-
-      var errorMessage = document.getElementById('error-message');
-      if (errorMessage) {
-        errorMessage.style.display = 'none';
-      }
-    }, 3000); // 3000 milliseconds = 3 giây
 
 
-    $(document).on('click', '.pagination a', function(event) {
-      event.preventDefault();
-      var page = $(this).attr('href').split('page=')[1];
-      fetch_data(page);
-    });
-
-    function fetch_data(page) {
-      $.ajax({
-        url: "/tables?page=" + page,
-        success: function(data) {
-          $('#user-data').html($(data).find('#user-data').html());
-          $('#pagination').html($(data).find('#pagination').html());
-        },
-        error: function(xhr) {
-          console.log(xhr.responseText); // Hiển thị lỗi nếu có
-        }
-      });
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  // hiển thông báo 3s
+  setTimeout(function() {
+    var successMessage = document.getElementById('success-message');
+    if (successMessage) {
+      successMessage.style.display = 'none';
     }
-  </script>
+
+    var errorMessage = document.getElementById('error-message');
+    if (errorMessage) {
+      errorMessage.style.display = 'none';
+    }
+  }, 3000); // 3000 milliseconds = 3 giây
 
 
-  @endsection
+  $(document).on('click', '.pagination a', function(event) {
+    event.preventDefault();
+    var page = $(this).attr('href').split('page=')[1];
+    fetch_data(page);
+  });
+
+  function fetch_data(page) {
+    $.ajax({
+      url: "/tables?page=" + page,
+      success: function(data) {
+        $('#user-data').html($(data).find('#user-data').html()); // Cập nhật bảng người dùng
+        $('#pagination').html($(data).find('#pagination').html()); // Cập nhật phân trang
+      },
+      error: function(xhr) {
+        console.log(xhr.responseText); // Hiển thị lỗi nếu có
+      }
+    });
+  }
+</script>
+
+
+@endsection

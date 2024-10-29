@@ -61,7 +61,7 @@
             <tr>
               <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">ID</th>
               <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Họ và tên</th>
-              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">email</th>
+              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">sdt vs email</th>
               <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Role</th>
               <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Action</th>
             </tr>
@@ -76,8 +76,12 @@
               <td>
                 <div class="d-flex px-2 py-1">
                   <div>
-                    <img src="../assets/img/team-2.jpg" class="avatar avatar-sm me-3 border-radius-lg"
-                      alt="user1">
+                    <!-- <img src="<?php echo e(asset('storage/' . $user->profile_image)); ?>" class="avatar avatar-sm me-3 border-radius-lg" alt="avatar"> -->
+                    <img src="<?php echo e(asset($user->profile_image)); ?>" class="avatar avatar-sm me-3 border-radius-lg" alt="avatar">
+
+
+
+
                   </div>
                   <div class="d-flex flex-column justify-content-center">
 
@@ -86,6 +90,11 @@
                 </div>
               </td>
               <td>
+                <div class="d-flex px-2 py-1">
+                  <div class="d-flex flex-column justify-content-center">
+                    <h6 class="mb-0 text-sm"><?php echo e($user->phone); ?></h6>
+                  </div>
+                </div>
                 <div class="d-flex px-2 py-1">
                   <div class="d-flex flex-column justify-content-center">
                     <h6 class="mb-0 text-sm"><?php echo e($user->email); ?></h6>
@@ -110,6 +119,7 @@
                     <i class="fas fa-trash"></i> Xóa
                   </button>
                 </form>
+
                 <a href="<?php echo e(route('user.edit', $user->id)); ?>" class="btn btn-info btn-sm px-3" style="border-radius: 5px; font-size: 14px;">
                   <i class="fas fa-edit"></i> Sửa
                 </a>
@@ -131,62 +141,62 @@
 </div>
 
 <!-- Phân trang -->
-<<div class="d-flex justify-content-center mt-4" id="pagination">
-
-  <ul class="pagination">
-    
-    <?php $__currentLoopData = $users->getUrlRange(1, $users->lastPage()); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $page => $url): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-    <?php if($page == $users->currentPage()): ?>
-    <li class="page-item active">
-      <span class="page-link"><?php echo e($page); ?></span>
-    </li>
-    <?php else: ?>
-    <li class="page-item">
-      <a class="page-link" href="<?php echo e($url); ?>"><?php echo e($page); ?></a>
-    </li>
-    <?php endif; ?>
-    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-  </ul>
-  </div>
-
+<div class="d-flex justify-content-center mt-4" id="pagination">
+    <ul class="pagination">
+        
+        <?php $__currentLoopData = $users->getUrlRange(1, $users->lastPage()); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $page => $url): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+            <?php if($page == $users->currentPage()): ?>
+                <li class="page-item active">
+                    <span class="page-link"><?php echo e($page); ?></span>
+                </li>
+            <?php else: ?>
+                <li class="page-item">
+                    <a class="page-link" href="<?php echo e($url); ?>"><?php echo e($page); ?></a>
+                </li>
+            <?php endif; ?>
+        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+    </ul>
+</div>
 
 
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script>
-    // hiển thông báo 3s
-    setTimeout(function() {
-      var successMessage = document.getElementById('success-message');
-      if (successMessage) {
-        successMessage.style.display = 'none';
-      }
-
-      var errorMessage = document.getElementById('error-message');
-      if (errorMessage) {
-        errorMessage.style.display = 'none';
-      }
-    }, 3000); // 3000 milliseconds = 3 giây
 
 
-    $(document).on('click', '.pagination a', function(event) {
-      event.preventDefault();
-      var page = $(this).attr('href').split('page=')[1];
-      fetch_data(page);
-    });
-
-    function fetch_data(page) {
-      $.ajax({
-        url: "/tables?page=" + page,
-        success: function(data) {
-          $('#user-data').html($(data).find('#user-data').html());
-          $('#pagination').html($(data).find('#pagination').html());
-        },
-        error: function(xhr) {
-          console.log(xhr.responseText); // Hiển thị lỗi nếu có
-        }
-      });
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  // hiển thông báo 3s
+  setTimeout(function() {
+    var successMessage = document.getElementById('success-message');
+    if (successMessage) {
+      successMessage.style.display = 'none';
     }
-  </script>
+
+    var errorMessage = document.getElementById('error-message');
+    if (errorMessage) {
+      errorMessage.style.display = 'none';
+    }
+  }, 3000); // 3000 milliseconds = 3 giây
 
 
-  <?php $__env->stopSection(); ?>
+  $(document).on('click', '.pagination a', function(event) {
+    event.preventDefault();
+    var page = $(this).attr('href').split('page=')[1];
+    fetch_data(page);
+  });
+
+  function fetch_data(page) {
+    $.ajax({
+      url: "/tables?page=" + page,
+      success: function(data) {
+        $('#user-data').html($(data).find('#user-data').html()); // Cập nhật bảng người dùng
+        $('#pagination').html($(data).find('#pagination').html()); // Cập nhật phân trang
+      },
+      error: function(xhr) {
+        console.log(xhr.responseText); // Hiển thị lỗi nếu có
+      }
+    });
+  }
+</script>
+
+
+<?php $__env->stopSection(); ?>
 <?php echo $__env->make('viewAdmin.navigation', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\Project-CDW2_24_nhomD\resources\views/viewAdmin/tables.blade.php ENDPATH**/ ?>
