@@ -17,9 +17,13 @@ return new class extends Migration
             $table->string('email', 100)->unique();
             $table->string('password', 255);
             $table->string('phone', 15)->nullable();
-            $table->string('address', 255)->nullable();
             $table->string('role', 20)->default('1');
+            $table->enum('gender', ['male', 'female', 'other'])->nullable(); // Cột giới tính
+            $table->date('dob')->nullable(); // Cột ngày sinh
+            $table->boolean('is_active')->default(1); // Cột hoạt động
+            $table->string('profile_image', 255)->nullable(); // Cột ảnh đại diện, cho phép null
             $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->nullable();
         });
     }
 
@@ -28,7 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        // Xóa bảng nếu cần rollback
         Schema::dropIfExists('users');
     }
 };

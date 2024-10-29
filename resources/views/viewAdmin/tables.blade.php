@@ -70,11 +70,17 @@
             @foreach($users as $user)
             <tr>
               <td class="align-middle text-center">
+
                 <span class="text-secondary text-xs font-weight-bold">{{ $user->id }}</span>
               </td>
               <td>
                 <div class="d-flex px-2 py-1">
+                  <div>
+                    <img src="../assets/img/team-2.jpg" class="avatar avatar-sm me-3 border-radius-lg"
+                      alt="user1">
+                  </div>
                   <div class="d-flex flex-column justify-content-center">
+
                     <h6 class="mb-0 text-sm">{{ $user->name }}</h6>
                   </div>
                 </div>
@@ -94,18 +100,21 @@
                 @endif
               </td>
               <td class="actions" style="text-align: center;">
-    <form action="{{ route('user.destroy', $user->id) }}" method="POST" style="display: inline;">
-        @csrf
-        @method('DELETE')
-        <button type="submit" class="btn btn-danger btn-sm px-3" style="border-radius: 5px; font-size: 14px;" onclick="return confirm('Bạn có chắc chắn muốn xóa người dùng này?')">
-            <i class="fas fa-trash"></i> Xóa
-        </button>
-    </form>
+                <button type="button" class="btn btn-warning btn-sm px-3" style="border-radius: 5px; font-size: 14px;">
+                  <i class="fas fa-eye"></i> Xem
+                </button>
+                <form action="{{ route('user.destroy', $user->id) }}" method="POST" style="display: inline;">
+                  @csrf
+                  @method('DELETE')
+                  <button type="submit" class="btn btn-danger btn-sm px-3" style="border-radius: 5px; font-size: 14px;" onclick="return confirm('Bạn có chắc chắn muốn xóa người dùng này?')">
+                    <i class="fas fa-trash"></i> Xóa
+                  </button>
+                </form>
 
-    <button type="button" class="btn btn-info btn-sm px-3" style="border-radius: 5px; font-size: 14px;">
-        <i class="fas fa-edit"></i> Sửa
-    </button>
-</td>
+                <button type="button" class="btn btn-info btn-sm px-3" style="border-radius: 5px; font-size: 14px;">
+                  <i class="fas fa-edit"></i> Sửa
+                </button>
+              </td>
 
 
 

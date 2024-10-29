@@ -83,6 +83,12 @@ Route::get('/blogs_Detal', function () {
     return view('viewUser.blogs_Detal');
 });
 
+Route::get('/edit_user', function () {
+    return view('viewAdmin.edit_user');
+});
+Route::get('/user/{id}/edit', [UserController::class, 'edit'])->name('user.edit');
+
+
 Route::get('/blogs/{blog_id}', [BlogController::class, 'show'])->name('blog.detail');
 
 Route::post('/blogs/{blog_id}/comment', [BlogController::class, 'storeComment'])->name('blog.comment');
