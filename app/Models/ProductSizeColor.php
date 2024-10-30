@@ -8,11 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 class ProductSizeColor extends Model
 {
     use HasFactory;
+
+    protected $table = 'product_size_color';
+    
     protected $fillable = [
         'product_id',
         'size_id',
         'color_id',
-        'quantity'
+        'quantity',
+        'price'
     ];
 
     // Nếu bạn muốn định nghĩa các mối quan hệ
