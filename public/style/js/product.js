@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', function() {
             document.querySelector('.comparison-section').classList.add('d-none');
             document.getElementById('comparison-table').classList.add('d-none');
         });
-    });    
+    });
     // Sự kiện click cho nút "Thêm sản phẩm"
     document.querySelector('.btn-add-product').addEventListener('click', function(event) {
         event.preventDefault(); // Ngăn chặn hành vi mặc định của thẻ <a>
@@ -220,5 +220,104 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Đóng modal "Add Product"
         document.getElementById('add-product-modal').classList.add('d-none');
+    });
+
+    // Sự kiến chatbox online
+    document.querySelector('.chatbox-toggle').addEventListener('click', function() {
+        document.querySelector('.chatbox-content').classList.toggle('active');
+        document.querySelector('.chatbox-toggle').classList.toggle('d-none'); 
+        console.log('Nút chatbox-toggle đã được nhấn');
+      });
+      
+    document.querySelector('.close-chatbox').addEventListener('click', function() {
+        document.querySelector('.chatbox-content').classList.remove('active');
+        document.querySelector('.chatbox-toggle').classList.remove('d-none');
+        console.log('Nút close-chatbox đã được nhấn');
+    });
+
+    // Sự kiện chọn "Chủ đề support"
+    document.querySelectorAll('.chat-option').forEach(button => {
+        button.addEventListener('click', function() {
+            const selectedMessage = this.getAttribute('data-message');
+            addMessage(selectedMessage, 'customer-message');
+
+            // Ẩn các nút lựa chọn sau khi nhấn
+            document.querySelectorAll('.chat-option').forEach(btn => btn.style.display = 'none');
+            console.log('Đã ẩn các nút lựa chọn');
+            
+            proceedToNextStep();
+        });
+    });
+
+    let currentStep = 0;
+    let userName = '';
+    let userPhone = '';
+
+    // Hàm thêm tin nhắn vào phần chatbox
+    function addMessage(text, messageType) {
+        const messageElement = document.createElement('p');
+        messageElement.textContent = text;
+        messageElement.classList.add(messageType);
+        document.querySelector('.chatbox-messages').appendChild(messageElement);
+    }
+
+    // Hàm điều hướng các bước hỏi thông tin khách hàng
+    function proceedToNextStep() {
+        const inputField = document.querySelector('.chatbox-input');
+        const sendButton = document.querySelector('.chatbox-send');
+
+        switch (currentStep) {
+            case 0:
+                addMessage("Hệ thống: Bạn có thể cung cấp cho chúng tôi thông tin được không?", 'system-message');
+                addMessage("Hệ thống: Tên của bạn là gì?", 'system-message');
+                inputField.style.display = 'block';
+                sendButton.style.display = 'inline';
+                inputField.value = '';
+                inputField.placeholder = "Chỉ nhập chữ và dấu tiếng Việt";
+                currentStep++;
+                break;
+            case 1:
+                const name = inputField.value.trim();
+                if (/^[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\s]+$/.test(name)) {
+                    userName = name;
+                    addMessage(userName, 'customer-message');
+                    addMessage("Hệ thống: Số điện thoại của bạn là gì?", 'system-message');
+                    inputField.value = '';
+                    inputField.placeholder = "Chỉ nhập số, đủ 11 chữ số";
+                    currentStep++;
+                } else {
+                    addMessage("Hệ thống: Vui lòng chỉ nhập chữ cái và dấu tiếng Việt.", 'system-message');
+                }
+                break;
+            case 2:
+                const phone = inputField.value.trim();
+                if (/^\d{11}$/.test(phone)) {
+                    userPhone = phone;
+                    addMessage(userPhone, 'customer-message');
+                    addMessage("Hệ thống: Cảm ơn bạn đã cung cấp thông tin. Nhân viên sẽ sớm liên hệ với bạn", 'system-message');
+                    inputField.style.display = 'none';
+                    sendButton.style.display = 'none';
+                    currentStep = 0;
+                } else {
+                    addMessage("Hệ thống: Số điện thoại phải có đúng 11 chữ số.", 'system-message');
+                }
+                break;
+        }
+    }
+
+    // Xử lý sự kiện khi nhấn nút gửi
+    document.querySelector('.chatbox-send').addEventListener('click', function() {
+        proceedToNextStep();
+    });
+
+    // Xử lý sự kiện khi nhấn nút reset
+    document.querySelector('.reset-chatbox').addEventListener('click', function() {
+        document.querySelector('.chatbox-messages').innerHTML = '<div class="system-message col-6">Xin chào! Tôi có thể giúp gì cho bạn?</div>';
+        document.querySelectorAll('.chat-option').forEach(btn => btn.style.display = 'block');
+        document.querySelector('.chatbox-input').style.display = 'none';
+        document.querySelector('.chatbox-send').style.display = 'none';
+        currentStep = 0;
+        userName = '';
+        userPhone = '';
     });
 });

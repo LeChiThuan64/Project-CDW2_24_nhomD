@@ -22,17 +22,27 @@ class ProductController extends Controller
     {
         $product_id = $request->query('product_id');
         $product_name = $request->query('name');
-        if ($product_id) {
-            $product = Product::find($product_id);
-        } elseif ($product_name) {
-            $product = Product::where('name', 'like', '%' . $product_name . '%')->first();
+    
+        if ($product_id || $product_name) {
+            $query = Product::query();
+    
+            if ($product_id) {
+                $query->where('product_id', $product_id);
+            }
+    
+            if ($product_name) {
+                $query->orWhere('name', 'like', '%' . $product_name . '%');
+            }
+    
+            $product = $query->first();
+    
+            if ($product) {
+                return response()->json(['success' => true, 'product' => $product]);
+            } else {
+                return response()->json(['success' => false, 'message' => 'Product not found'], 404);
+            }
         } else {
             return response()->json(['success' => false, 'message' => 'No search criteria provided'], 400);
-        }
-        if ($product) {
-            return response()->json(['success' => true, 'product' => $product]);
-        } else {
-            return response()->json(['success' => false, 'message' => 'Product not found'], 404);
         }
     }
 }
