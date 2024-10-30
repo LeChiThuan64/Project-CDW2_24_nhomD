@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
-   
+
     public function index(Request $request)
     {
         // Lấy từ khóa tìm kiếm từ người dùng
@@ -33,6 +33,23 @@ class UserController extends Controller
         // Trả về view chính khi không phải AJAX
         return view('viewAdmin.tables', compact('users'));
     }
+
+    // Hiển thị model
+    public function show($id)
+{
+    $user = User::find($id);
+    if ($user) {
+        // Đảm bảo chỉ thêm 'uploads/' một lần
+        $user->profile_image = $user->profile_image ? asset(  ltrim($user->profile_image, '/')) : asset('path/to/default-image.jpg');
+        return response()->json($user);
+    }
+    return response()->json(['error' => 'User not found'], 404);
+}
+
+    
+    
+
+
 
 
     public function destroy($id)
@@ -64,26 +81,26 @@ class UserController extends Controller
             'dob' => 'nullable|date',
             'profile_image' => 'nullable|image|mimes:jpeg,png|max:1024',
         ]);
-    
+
         try {
             $profileImagePath = null;
-            
+
             // Đường dẫn thư mục lưu ảnh
             $directoryPath = public_path('uploads');
-            
+
             // Tạo thư mục nếu chưa tồn tại
             if (!file_exists($directoryPath)) {
                 mkdir($directoryPath, 0755, true);
             }
-    
+
             if ($request->hasFile('profile_image')) {
                 $profileImageName = $request->file('profile_image')->getClientOriginalName();
                 $request->file('profile_image')->move($directoryPath, $profileImageName);
-    
+
                 // Lưu đường dẫn ảnh để lưu vào cơ sở dữ liệu
                 $profileImagePath = 'uploads/' . $profileImageName;
             }
-    
+
             User::create([
                 'name' => $request->input('name'),
                 'email' => $request->input('email'),
@@ -94,13 +111,13 @@ class UserController extends Controller
                 'role' => 1,
                 'profile_image' => $profileImagePath,
             ]);
-    
+
             return redirect()->route('tables')->with('success', 'Người dùng đã được thêm thành công!');
         } catch (\Exception $e) {
             return redirect()->back()->withErrors('Không thể thêm user, vui lòng thử lại.');
         }
     }
-    
+
 
 
 

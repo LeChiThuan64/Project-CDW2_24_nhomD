@@ -15,7 +15,16 @@
   {{ session('error') }}
 </div>
 @endif
+<head>
+  <style>
+    .avatar-large {
+    width: 150px; /* Hoặc kích thước bạn muốn */
+    height: 150px;
+    border-radius: 10px; /* Giữ bo góc nếu cần */
+}
 
+  </style>
+</head>
 
 
 
@@ -109,9 +118,18 @@
                 @endif
               </td>
               <td class="actions" style="text-align: center;">
-                <button type="button" class="btn btn-warning btn-sm px-3" style="border-radius: 5px; font-size: 14px;">
+                <!-- <button type="button" class="btn btn-warning btn-sm px-3" style="border-radius: 5px; font-size: 14px;" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                  <i class="fas fa-eye"></i> Xem
+                </button> -->
+                <!-- <button type="button" class="btn btn-warning btn-sm px-3" style="border-radius: 5px; font-size: 14px;" data-id="{{ $user->id }}" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                  <i class="fas fa-eye"></i> Xem
+                </button> -->
+                <button type="button" class="btn btn-warning btn-sm px-3" style="border-radius: 5px; font-size: 14px;"
+                  data-id="{{ $user->id }}" data-bs-toggle="modal" data-bs-target="#exampleModal">
                   <i class="fas fa-eye"></i> Xem
                 </button>
+
+
                 <form action="{{ route('user.destroy', $user->id) }}" method="POST" style="display: inline;">
                   @csrf
                   @method('DELETE')
@@ -125,11 +143,6 @@
                 </a>
 
               </td>
-
-
-
-
-
             </tr>
             @endforeach
           </tbody>
@@ -138,24 +151,48 @@
     </div>
   </div>
 </div>
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p><strong>Tên đăng nhập:</strong> <span id="username"></span></p>
+        <p><strong>Email:</strong> <span id="email"></span></p>
+        <p><strong>Số điện thoại:</strong> <span id="phone"></span></p>
+        <p><strong>Giới tính:</strong> <span id="gender"></span></p>
+        <p><strong>Ngày sinh:</strong> <span id="dob"></span></p>
+
+        <img id="profileImage" src="{{ asset('path/to/default-image.jpg') }}" class="avatar-large" alt="avatar">
+        </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- Phân trang -->
 <div class="d-flex justify-content-center mt-4" id="pagination">
-    <ul class="pagination">
-        {{-- Lặp qua tất cả các trang --}}
-        @foreach ($users->getUrlRange(1, $users->lastPage()) as $page => $url)
-            @if ($page == $users->currentPage())
-                <li class="page-item active">
-                    <span class="page-link">{{ $page }}</span>
-                </li>
-            @else
-                <li class="page-item">
-                    <a class="page-link" href="{{ $url }}">{{ $page }}</a>
-                </li>
-            @endif
-        @endforeach
-    </ul>
+  <ul class="pagination">
+    {{-- Lặp qua tất cả các trang --}}
+    @foreach ($users->getUrlRange(1, $users->lastPage()) as $page => $url)
+    @if ($page == $users->currentPage())
+    <li class="page-item active">
+      <span class="page-link">{{ $page }}</span>
+    </li>
+    @else
+    <li class="page-item">
+      <a class="page-link" href="{{ $url }}">{{ $page }}</a>
+    </li>
+    @endif
+    @endforeach
+  </ul>
 </div>
 
 
@@ -195,6 +232,33 @@
       }
     });
   }
+
+  // Hiển thị model
+  $(document).on('click', '.btn-warning', function() {
+    var userId = $(this).data('id');
+    $.ajax({
+      url: `/users/${userId}`, // Route lấy dữ liệu người dùng
+      type: 'GET',
+      success: function(data) {
+        // Cập nhật thông tin user trong modal
+        $('#exampleModal .modal-title').text(data.name);
+        $('#exampleModal #email').text(data.email);
+        $('#exampleModal #phone').text(data.phone);
+        $('#exampleModal #gender').text(data.gender);
+       // Lấy phần ngày từ chuỗi ngày giờ
+            let formattedDob = data.dob ? data.dob.split('T')[0] : '';
+            $('#exampleModal #dob').text(formattedDob);
+
+        // Sử dụng đường dẫn đầy đủ từ backend cho ảnh
+        $('#profileImage').attr('src', data.profile_image);
+
+        $('#exampleModal').modal('show');
+      },
+      error: function(xhr) {
+        console.log(xhr.responseText);
+      }
+    });
+  });
 </script>
 
 

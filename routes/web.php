@@ -68,6 +68,8 @@ Route::delete('/user/{id}', [UserController::class, 'destroy'])->name('user.dest
 Route::get('/add-user', [UserController::class, 'create'])->name('user.create');
 Route::post('/add-user', [UserController::class, 'store'])->name('user.store');
 
+// Hiển thị model
+Route::get('/users/{id}', [UserController::class, 'show'])->name('user.show');
 
 
 // Route cho trang chi tiết sản phẩm
@@ -84,7 +86,9 @@ Route::get('/blog_list', function () {
 Route::get('/blogs_Detal', function () {
     return view('viewUser.blogs_Detal');
 });
-
+Route::get('/contact', function () {
+    return view('viewUser.contact');
+});
 Route::get('/edit_user', function () {
     return view('viewAdmin.edit_user');
 });
