@@ -61,14 +61,14 @@
         <div class="contact-us__form">
             <form name="contact-us-form" class="needs-validation" novalidate>
                 <h3 class="mb-5" style="padding-top: 28px;">Get In Touch</h3>
-                <div class="form-floating my-4">
+                <!-- <div class="form-floating my-4">
                     <input type="text" class="form-control" id="contact_us_name" placeholder="Name *" required>
                     <label for="contact_us_name">Name *</label>
                 </div>
                 <div class="form-floating my-4">
                     <input type="email" class="form-control" id="contact_us_email" placeholder="Email address *" required>
                     <label for="contact_us_name">Email address *</label>
-                </div>
+                </div> -->
                 <div class="my-4">
                     <textarea class="form-control form-control_gray" placeholder="Your Message" cols="30" rows="8" required></textarea>
                 </div>

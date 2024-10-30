@@ -36,18 +36,18 @@ class UserController extends Controller
 
     // Hiển thị model
     public function show($id)
-{
-    $user = User::find($id);
-    if ($user) {
-        // Đảm bảo chỉ thêm 'uploads/' một lần
-        $user->profile_image = $user->profile_image ? asset(  ltrim($user->profile_image, '/')) : asset('path/to/default-image.jpg');
-        return response()->json($user);
+    {
+        $user = User::find($id);
+        if ($user) {
+            // Đảm bảo chỉ thêm 'uploads/' một lần
+            $user->profile_image = $user->profile_image ? asset(ltrim($user->profile_image, '/')) : asset('path/to/default-image.jpg');
+            return response()->json($user);
+        }
+        return response()->json(['error' => 'User not found'], 404);
     }
-    return response()->json(['error' => 'User not found'], 404);
-}
 
-    
-    
+
+
 
 
 
@@ -130,27 +130,52 @@ class UserController extends Controller
     }
 
     public function update(Request $request, $id)
-    {
-        $request->validate([
-            'name' => 'required|string|max:100',
-            'email' => 'required|email|regex:/@gmail\.com$/|unique:users,email,' . $id,
-            'phone' => 'required|numeric|digits:10',
-            'gender' => 'required|in:male,female,other',
-            'dob' => 'required|date',
-            'profile_image' => 'nullable|image|mimes:jpeg,png|max:1024',
-        ]);
+{
+    $request->validate([
+        'name' => 'required|string|max:100',
+        'email' => 'required|email|regex:/@gmail\.com$/|unique:users,email,' . $id,
+        'phone' => 'nullable|numeric|digits:10', // Cho phép phone là null
+        'gender' => 'required|in:male,female,other',
+        'dob' => 'nullable|date', // Cho phép dob là null
+        'profile_image' => 'nullable|image|mimes:jpeg,png|max:1024',
+    ]);
 
-        $user = User::findOrFail($id);
-        $user->update($request->only(['name', 'email', 'phone', 'gender', 'dob']));
+    $user = User::findOrFail($id);
 
-        if ($request->hasFile('profile_image')) {
-            if ($user->profile_image) {
-                Storage::delete($user->profile_image); // Xóa ảnh cũ trước khi cập nhật
-            }
-            $path = $request->file('profile_image')->store('uploads');
-            $user->update(['profile_image' => $path]);
+    // Cập nhật thông tin người dùng bao gồm cả các trường trống trước đó
+    $user->update([
+        'name' => $request->input('name'),
+        'email' => $request->input('email'),
+        'phone' => $request->input('phone') ?: $user->phone, // Giữ giá trị cũ nếu không có input
+        'gender' => $request->input('gender'),
+        'dob' => $request->input('dob') ?: $user->dob, // Giữ giá trị cũ nếu không có input
+    ]);
+
+    // Kiểm tra và lưu ảnh nếu có file ảnh tải lên
+    if ($request->hasFile('profile_image')) {
+        // Nếu người dùng đã có ảnh trước đó, xóa ảnh cũ
+        if ($user->profile_image) {
+            Storage::delete($user->profile_image);
         }
 
-        return redirect()->route('tables')->with('success', 'Cập nhật thành công!');
+        // Đường dẫn thư mục lưu ảnh
+        $directoryPath = public_path('uploads');
+
+        // Tạo thư mục nếu chưa tồn tại
+        if (!file_exists($directoryPath)) {
+            mkdir($directoryPath, 0755, true);
+        }
+
+        // Lưu ảnh mới
+        $profileImageName = $request->file('profile_image')->getClientOriginalName();
+        $request->file('profile_image')->move($directoryPath, $profileImageName);
+
+        // Cập nhật đường dẫn ảnh vào cơ sở dữ liệu
+        $profileImagePath = 'uploads/' . $profileImageName;
+        $user->update(['profile_image' => $profileImagePath]);
     }
+
+    return redirect()->route('tables')->with('success', 'Cập nhật thành công!');
+}
+
 }
