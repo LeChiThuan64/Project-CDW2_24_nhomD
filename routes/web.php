@@ -10,6 +10,7 @@ use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\AdminBlogController;
+use App\Http\Controllers\ContactController;
 use App\Models\Blog;
 /*
 |--------------------------------------------------------------------------
@@ -86,9 +87,14 @@ Route::get('/blog_list', function () {
 Route::get('/blogs_Detal', function () {
     return view('viewUser.blogs_Detal');
 });
+
+// Liên hệ CONTACT
 Route::get('/contact', function () {
     return view('viewUser.contact');
-});
+})->name('contact'); // Đặt tên cho route này nếu cần
+
+Route::post('/contact', [ContactController::class, 'store'])->name('contact.store')->middleware('auth');
+
 Route::get('/edit_user', function () {
     return view('viewAdmin.edit_user');
 });
