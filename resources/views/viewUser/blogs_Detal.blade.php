@@ -4,8 +4,6 @@
 
 <HEad>
   <STYle>
-    /* Chọn font Arial hoặc font gần giống */
-
     .blog-image {
       max-width: 50%;
       /* Đặt kích thước tối đa của hình ảnh (thay đổi tùy ý) */
@@ -66,22 +64,91 @@
 
     <!-- Hiển thị các bình luận -->
     <div class="blog-single__reviews mw-930" style="font-family: Arial, sans-serif;">
-      <h2 class="blog-single__reviews-title">Comments</h2>
+      <h2 class="blog-single__reviews-title" style="padding-top: 10px;">Comments</h2>
 
+      <!-- Hiển thị ba bình luận gần nhất -->
       @if ($comments && count($comments) > 0)
-      @foreach ($comments as $comment)
-      <div class="blog-single__reviews-item">
-        <div class="customer-review">
-          <h6>Tên : {{ $comment->name }}</h6>
-          <!-- <h6>Tên : {{ $comment->email }}</h6> -->
-          <div class="review-date">{{ $comment->email }}</div>
-          <div class="review-date">{{ $comment->created_at->format('F d, Y') }}</div>
-          <div class="review-textt">
-            <p> nội dung : {{ $comment->comment }}</p>
+@php
+    $visibleComments = $comments->sortByDesc('created_at')->take(3);
+@endphp
+@foreach ($visibleComments as $comment)
+<div class="blog-single__reviews-item">
+  <div class="customer-review">
+    <h6>Tên : {{ $comment->name }}</h6>
+    <div class="review-date">{{ $comment->email }}</div>
+    <div class="review-date">{{ $comment->created_at->format('F d, Y') }}</div>
+    <div class="review-textt">
+      <p class="comment-content" data-full-content="{{ $comment->comment }}">
+        nội dung: {{ Str::limit($comment->comment, 50) }}
+      </p>
+      @if(strlen($comment->comment) > 50)
+      <button class="toggle-button" onclick="toggleContent(this)" style="
+               background-color: #007bff; 
+               color: white; 
+               border: none; 
+               padding: 8px 12px; 
+               font-size: 14px; 
+               border-radius: 4px; 
+               cursor: pointer; 
+               margin-top: 8px; 
+               margin-bottom: 30px;
+               transition: background-color 0.3s ease;">
+        Xem thêm
+      </button>
+      @endif
+    </div>
+  </div>
+</div>
+@endforeach
+
+      <!-- Nút "Xem thêm comment" nếu có hơn 3 bình luận -->
+      @if ($comments->count() > 3)
+      <button id="showMoreButton" onclick="showAllComments()" style="
+            background-color: #28a745; 
+            color: white; 
+            border: none; 
+            padding: 10px 15px; 
+            font-size: 16px; 
+            border-radius: 5px; 
+            cursor: pointer; 
+            margin-top: 15px; 
+            transition: background-color 0.3s ease;">
+                Xem thêm comment
+              </button>
+              @endif
+
+      <!-- Phần hiển thị toàn bộ comment, mặc định ẩn -->
+      <div id="allComments" style="display: none;">
+        @foreach ($comments->skip(3) as $comment)
+        <div class="blog-single__reviews-item">
+          <div class="customer-review">
+            <h6>Tên : {{ $comment->name }}</h6>
+            <div class="review-date">{{ $comment->email }}</div>
+            <div class="review-date">{{ $comment->created_at->format('F d, Y') }}</div>
+            <div class="review-textt">
+              <p class="comment-content" data-full-content="{{ $comment->comment }}">
+                nội dung: {{ Str::limit($comment->comment, 50) }}
+              </p>
+              @if(strlen($comment->comment) > 50)
+              <button class="toggle-button" onclick="toggleContent(this)" style="
+                   background-color: #007bff; 
+                   color: white; 
+                   border: none; 
+                   padding: 8px 12px; 
+                   font-size: 14px; 
+                   border-radius: 4px; 
+                   cursor: pointer; 
+                   margin-top: 8px; 
+                   margin-bottom: 30px;
+                   transition: background-color 0.3s ease;">
+                Xem thêm
+              </button>
+              @endif
+            </div>
           </div>
         </div>
+        @endforeach
       </div>
-      @endforeach
       @else
       <p>No comments yet. Be the first to comment!</p>
       @endif
@@ -89,21 +156,12 @@
 
     <!-- Form gửi bình luận -->
     <div class="blog-single__review-form">
-
       <form action="{{ route('blog.comment', $blog->blog_id) }}" method="POST">
-
         @csrf
-
-
-
         <div class="mb-4">
-
           <textarea id="form-input-review" class="form-control form-control_gray" name="comment" placeholder="Your Review" cols="30" rows="8" required></textarea>
 
         </div>
-
-
-
         @guest
 
         <!-- Hiển thị các trường name và email nếu người dùng chưa đăng nhập -->
@@ -151,6 +209,25 @@
     </div>
   </section>
 </main>
+<script>
+  function toggleContent(button) {
+    const contentElement = button.previousElementSibling;
+    const fullContent = contentElement.getAttribute('data-full-content');
+    const isExpanded = button.textContent === 'Thu gọn';
 
+    if (isExpanded) {
+      contentElement.textContent = 'nội dung: ' + fullContent.slice(0, 50) + '...';
+      button.textContent = 'Xem thêm';
+    } else {
+      contentElement.textContent = 'nội dung: ' + fullContent;
+      button.textContent = 'Thu gọn';
+    }
+  }
+
+  function showAllComments() {
+    document.getElementById('allComments').style.display = 'block';
+    document.getElementById('showMoreButton').style.display = 'none';
+  }
+</script>
 <div class="mb-5 pb-xl-5"></div>
 @endsection
