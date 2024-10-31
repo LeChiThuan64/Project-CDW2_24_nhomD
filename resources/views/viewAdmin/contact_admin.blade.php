@@ -5,9 +5,9 @@
 @section('content')
 
 @if(session('success'))
-    <div id="success-message" class="alert alert-success">
-        {{ session('success') }}
-    </div>
+<div id="success-message" class="alert alert-success">
+  {{ session('success') }}
+</div>
 @endif
 
 
@@ -95,9 +95,16 @@
               </div>
             </td>
             <td class="actions" style="text-align: center;">
-              <button type="button" class="btn btn-warning btn-sm px-3" style="border-radius: 5px; font-size: 14px;" data-bs-toggle="modal" data-bs-target="#exampleModal">
+              <button type="button" class="btn btn-warning btn-sm px-3" style="border-radius: 5px; font-size: 14px;"
+                data-bs-toggle="modal"
+                data-bs-target="#exampleModal"
+                data-name="{{ $message->name }}"
+                data-email="{{ $message->email }}"
+                data-message="{{ $message->message }}">
                 <i class="fas fa-eye"></i> Xem
               </button>
+
+
               <form action="{{ route('contact.destroy', $message->id) }}" method="POST" style="display: inline;">
                 @csrf
                 @method('DELETE')
@@ -116,6 +123,26 @@
 </div>
 <!-- Modal -->
 
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Chi tiết tin nhắn</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p><strong>Name:</strong> <span id="modalName"></span></p>
+        <p><strong>Email:</strong> <span id="modalEmail"></span></p>
+        <p><strong>Message:</strong> <span id="modalMessage"></span></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 
 <!-- Phân trang -->
 
@@ -126,13 +153,29 @@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    setTimeout(function() {
-        var successMessage = document.getElementById('success-message');
-        if (successMessage) {
-            successMessage.style.display = 'none';
-        }
-    }, 3000); // 3000 milliseconds = 3 giây
+  setTimeout(function() {
+    var successMessage = document.getElementById('success-message');
+    if (successMessage) {
+      successMessage.style.display = 'none';
+    }
+  }, 3000); // 3000 milliseconds = 3 giây
+
+  var exampleModal = document.getElementById('exampleModal')
+  exampleModal.addEventListener('show.bs.modal', function (event) {
+    // Nút đã kích hoạt modal
+    var button = event.relatedTarget
+    // Lấy dữ liệu từ các thuộc tính data-*
+    var name = button.getAttribute('data-name')
+    var email = button.getAttribute('data-email')
+    var message = button.getAttribute('data-message')
+    
+    // Cập nhật nội dung modal
+    document.getElementById('modalName').textContent = name
+    document.getElementById('modalEmail').textContent = email
+    document.getElementById('modalMessage').textContent = message
+  })
 </script>
+
 
 
 

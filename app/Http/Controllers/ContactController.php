@@ -37,10 +37,10 @@ class ContactController extends Controller
         return redirect()->back()->with('success', 'gửi thành công!');
     }
 
-    public function __construct()
-    {
-        $this->middleware('auth')->except('store');
-    }
+    // public function __construct()
+    // {
+    //     $this->middleware('auth')->except('store');
+    // }
     
     public function destroy($id)
     {
