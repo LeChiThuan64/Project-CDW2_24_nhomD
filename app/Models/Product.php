@@ -9,12 +9,12 @@ class Product extends Model
 {
     use HasFactory;
     
-    protected $primaryKey = 'product_id';
+    protected $table = 'products'; // Tên bảng
+    protected $primaryKey = 'product_id'; // Khóa chính
 
     protected $fillable = [
         'name',
         'description',
-        'price',
         'category_id',
         'created_at',
         'updated_at'
@@ -49,7 +49,7 @@ class Product extends Model
     public function sizesAndColors()
 {
     return $this->belongsToMany(Size::class, 'product_size_color')
-                ->withPivot('color_id', 'size_id', 'quantity')
+                ->withPivot('color_id', 'size_id', 'quantity', 'price')
                 ->withTimestamps();
 }
 

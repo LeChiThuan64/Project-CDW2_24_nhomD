@@ -47,6 +47,9 @@
   <link id="pagestyle" href="{{ asset('assets/css/material-dashboard.mine63c.css?v=3.1.0') }}" rel="stylesheet" />
   <link href="{{ asset('assets/css/addProducts.css') }}" rel="stylesheet" />
 
+  <!-- Toastr CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
   <script src="{{ asset('assets/js/kit.fontawesome.js') }}" crossorigin="anonymous"></script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
@@ -174,6 +177,8 @@
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.ckeditor.com/ckeditor5/37.0.0/classic/ckeditor.js"></script>
+    <!-- Toastr JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script src="{{ asset('assets/js/addProducts.js') }}"></script>
 </body>
 </html>

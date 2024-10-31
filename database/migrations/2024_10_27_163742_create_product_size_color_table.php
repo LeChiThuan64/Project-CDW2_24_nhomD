@@ -16,7 +16,8 @@ return new class extends Migration
             $table->unsignedBigInteger('product_id');
             $table->unsignedBigInteger('size_id');
             $table->unsignedBigInteger('color_id');
-            $table->decimal('quantity', 10, 2); // Số lượng sản phẩm với màu sắc và kích thước cụ thể
+            $table->integer('quantity')->default(0);
+            $table->integer('price')->default(0);
             $table->timestamps();
         
             // Thiết lập khóa ngoại và ràng buộc

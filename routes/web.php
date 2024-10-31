@@ -27,9 +27,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/addProducts', function () {
-    return view('viewAdmin.addProducts');
-});
+Route::get('/addProducts', [ProductsController::class, 'showForm']);
 
 
 
