@@ -91,7 +91,24 @@ Route::get('/contact', function () {
     return view('viewUser.contact');
 })->name('contact'); // Đặt tên cho route này nếu cần
 
-Route::post('/contact', [ContactController::class, 'store'])->name('contact.store')->middleware('auth');
+// ấu hình này, khi người dùng chưa đăng nhập mà nhấn "Submit", họ sẽ được chuyển hướng đến trang đăng nhập.
+// Route::post('/contact', [ContactController::class, 'store'])->name('contact.store')->middleware('auth');
+Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
+
+
+Route::get('/contact', function () {
+    return view('viewUser.contact'); // Đường dẫn view tới contact.blade.php
+})->name('contact');
+
+
+Route::get('/admin/contact', [ContactController::class, 'index'])->name('contact.index');
+// Route phụ để sử dụng URL /contact_admin
+Route::get('/contact_admin', [ContactController::class, 'index'])->name('contact.admin');
+Route::delete('/admin/contact/{id}', [ContactController::class, 'destroy'])->name('contact.destroy');
+
+Route::get('/contact_admin', [ContactController::class, 'index'])->name('contact.admin');
+
+// hết Liên hệ CONTACT
 
 Route::get('/edit_user', function () {
     return view('viewAdmin.edit_user');
@@ -106,6 +123,7 @@ Route::get('/blogs/{blog_id}', [BlogController::class, 'show'])->name('blog.deta
 Route::post('/blogs/{blog_id}/comment', [BlogController::class, 'storeComment'])->name('blog.comment');
 
 Route::get('/blogs', [BlogController::class, 'index'])->name('blog.index');
+
  
 Route::get('/admin/blogs/create', function () {
     return view('viewAdmin.add_blog');

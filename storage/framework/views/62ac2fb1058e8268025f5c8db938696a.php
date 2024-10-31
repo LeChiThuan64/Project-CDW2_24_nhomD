@@ -65,10 +65,12 @@
       <?php $__currentLoopData = $comments; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $comment): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
       <div class="blog-single__reviews-item">
         <div class="customer-review">
-          <h6><?php echo e($comment->name); ?></h6>
+          <h6>Tên : <?php echo e($comment->name); ?></h6>
+          <!-- <h6>Tên : <?php echo e($comment->email); ?></h6> -->
+          <div class="review-date"><?php echo e($comment->email); ?></div>
           <div class="review-date"><?php echo e($comment->created_at->format('F d, Y')); ?></div>
           <div class="review-textt">
-            <p><?php echo e($comment->comment); ?></p>
+            <p> nội dung : <?php echo e($comment->comment); ?></p>
           </div>
         </div>
       </div>
@@ -80,23 +82,65 @@
 
     <!-- Form gửi bình luận -->
     <div class="blog-single__review-form">
+
       <form action="<?php echo e(route('blog.comment', $blog->blog_id)); ?>" method="POST">
+
         <?php echo csrf_field(); ?>
+
+
+
         <div class="mb-4">
+
           <textarea id="form-input-review" class="form-control form-control_gray" name="comment" placeholder="Your Review" cols="30" rows="8" required></textarea>
+
         </div>
+
+
+
+        <?php if(auth()->guard()->guest()): ?>
+
+        <!-- Hiển thị các trường name và email nếu người dùng chưa đăng nhập -->
+
         <div class="form-label-fixed mb-4">
+
           <label for="form-input-name" class="form-label">Name *</label>
+
           <input id="form-input-name" class="form-control form-control-md form-control_gray" name="name" required>
+
         </div>
+
         <div class="form-label-fixed mb-4">
+
           <label for="form-input-email" class="form-label">Email address *</label>
+
           <input id="form-input-email" type="email" class="form-control form-control-md form-control_gray" name="email" required>
+
         </div>
+
+        <?php endif; ?>
+
+
+
+        <?php if(auth()->guard()->check()): ?>
+
+        <!-- Lấy name và email từ người dùng đã đăng nhập -->
+
+        <input type="hidden" name="name" value="<?php echo e(auth()->user()->name); ?>">
+
+        <input type="hidden" name="email" value="<?php echo e(auth()->user()->email); ?>">
+
+        <?php endif; ?>
+
+
+
         <div class="form-action">
+
           <button type="submit" class="btn btn-primary">Submit</button>
+
         </div>
+
       </form>
+
     </div>
   </section>
 </main>

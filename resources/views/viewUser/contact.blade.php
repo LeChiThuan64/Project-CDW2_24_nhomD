@@ -17,9 +17,9 @@
 
     <!-- Thông báo flash thành công -->
     @if(session('success'))
-        <div id="success-message" class="alert alert-success">
-            {{ session('success') }}
-        </div>
+    <div id="success-message" class="alert alert-success">
+        {{ session('success') }}
+    </div>
     @endif
 
     <div class="main-container">
@@ -60,6 +60,7 @@
         </div>
     </div>
 
+   
     <section class="contact-us container">
         <div class="contact-us__form">
             <form action="{{ route('contact.store') }}" method="POST" class="needs-validation" novalidate>
@@ -68,7 +69,11 @@
 
                 @auth
                 <div class="my-4">
-                    <textarea class="form-control form-control_gray" name="message" placeholder="Your Message" cols="30" rows="8" required></textarea>
+                    <textarea class="form-control form-control_gray" name="message" id="message" placeholder="Your Message" 
+                              cols="30" rows="8" maxlength="500" required></textarea>
+                    <div class="invalid-feedback">
+                        Vui lòng nhập tin nhắn của bạn (tối đa 500 ký tự, không chứa khoảng trắng).
+                    </div>
                 </div>
                 @else
                 <div class="form-floating my-4">
@@ -80,26 +85,47 @@
                     <label for="contact_us_email">Email address *</label>
                 </div>
                 <div class="my-4">
-                    <textarea class="form-control form-control_gray" name="message" placeholder="Your Message" cols="30" rows="8" required></textarea>
+                    <textarea class="form-control form-control_gray" name="message" id="message" placeholder="Your Message" 
+                              cols="30" rows="8" maxlength="500" required></textarea>
+                    <div class="invalid-feedback">
+                        Vui lòng nhập tin nhắn của bạn (tối đa 500 ký tự, không chứa khoảng trắng).
+                    </div>
                 </div>
                 @endauth
 
                 <div class="my-4">
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="submit" class="btn btn-primary" id="submitBtn">Submit</button>
                 </div>
             </form>
         </div>
     </section>
 </main>
 
-<!-- JavaScript để ẩn thông báo sau 3 giây -->
+<!-- JavaScript để ẩn thông báo sau 3 giây và kiểm tra ký tự -->
 <script>
+    // Ẩn thông báo thành công sau 3 giây
     setTimeout(function() {
         var successMessage = document.getElementById('success-message');
         if (successMessage) {
             successMessage.style.display = 'none';
         }
-    }, 3000); // 3000 milliseconds = 3 giây
+    }, 3000);
+
+    // Kiểm tra độ dài của tin nhắn và không cho phép chỉ nhập khoảng trắng
+    document.getElementById('message').addEventListener('input', function() {
+        const message = document.getElementById('message');
+        const submitBtn = document.getElementById('submitBtn');
+        const feedback = document.querySelector('.invalid-feedback');
+
+        // Kiểm tra xem tin nhắn có chứa ít nhất một ký tự không phải khoảng trắng và không vượt quá 500 ký tự
+        if (message.value.trim().length === 0 || message.value.length > 500) {
+            feedback.style.display = 'block';
+            submitBtn.disabled = true; // Vô hiệu hóa nút submit
+        } else {
+            feedback.style.display = 'none';
+            submitBtn.disabled = false; // Bật lại nút submit
+        }
+    });
 </script>
 
 <div class="mb-5 pb-xl-5"></div>

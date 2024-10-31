@@ -178,22 +178,25 @@
 </div>
 
 <!-- Phân trang -->
+<?php if($users->lastPage() > 1): ?>
 <div class="d-flex justify-content-center mt-4" id="pagination">
-  <ul class="pagination">
-    
-    <?php $__currentLoopData = $users->getUrlRange(1, $users->lastPage()); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $page => $url): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-    <?php if($page == $users->currentPage()): ?>
-    <li class="page-item active">
-      <span class="page-link"><?php echo e($page); ?></span>
-    </li>
-    <?php else: ?>
-    <li class="page-item">
-      <a class="page-link" href="<?php echo e($url); ?>"><?php echo e($page); ?></a>
-    </li>
-    <?php endif; ?>
-    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-  </ul>
+    <ul class="pagination">
+        
+        <?php $__currentLoopData = $users->getUrlRange(1, $users->lastPage()); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $page => $url): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+            <?php if($page == $users->currentPage()): ?>
+                <li class="page-item active">
+                    <span class="page-link"><?php echo e($page); ?></span>
+                </li>
+            <?php else: ?>
+                <li class="page-item">
+                    <a class="page-link" href="<?php echo e($url); ?>"><?php echo e($page); ?></a>
+                </li>
+            <?php endif; ?>
+        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+    </ul>
 </div>
+<?php endif; ?>
+
 
 
 
