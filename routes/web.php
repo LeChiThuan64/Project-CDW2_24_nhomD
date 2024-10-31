@@ -10,6 +10,7 @@ use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\AdminBlogController;
+use App\Http\Controllers\ContactController;
 use App\Models\Blog;
 /*
 |--------------------------------------------------------------------------
@@ -66,6 +67,10 @@ Route::delete('/user/{id}', [UserController::class, 'destroy'])->name('user.dest
 Route::get('/add-user', [UserController::class, 'create'])->name('user.create');
 Route::post('/add-user', [UserController::class, 'store'])->name('user.store');
 
+// Hiển thị model
+Route::get('/users/{id}', [UserController::class, 'show'])->name('user.show');
+
+
 // Route cho trang chi tiết sản phẩm
 Route::get('/product-detail', function () {
     return view('viewUser.product-detail');
@@ -81,6 +86,21 @@ Route::get('/blogs_Detal', function () {
     return view('viewUser.blogs_Detal');
 });
 
+// Liên hệ CONTACT
+Route::get('/contact', function () {
+    return view('viewUser.contact');
+})->name('contact'); // Đặt tên cho route này nếu cần
+
+Route::post('/contact', [ContactController::class, 'store'])->name('contact.store')->middleware('auth');
+
+Route::get('/edit_user', function () {
+    return view('viewAdmin.edit_user');
+});
+Route::get('/user/{id}/edit', [UserController::class, 'edit'])->name('user.edit');
+Route::put('/user/{id}', [UserController::class, 'update'])->name('user.update');
+
+
+
 Route::get('/blogs/{blog_id}', [BlogController::class, 'show'])->name('blog.detail');
 
 Route::post('/blogs/{blog_id}/comment', [BlogController::class, 'storeComment'])->name('blog.comment');
@@ -93,6 +113,7 @@ Route::get('/admin/blogs/create', function () {
 
 // thêm
 Route::post('/admin/blogs', [BlogController::class, 'store'])->name('admin.blog.store');
+
 
 Route::get('/blogs_admin', function () {
     $blogs = Blog::orderBy('created_at', 'desc')->paginate(6);
