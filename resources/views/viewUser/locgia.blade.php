@@ -137,11 +137,7 @@
                             <span class="money price">$62</span>
                         </div>
 
-                        <div class="d-flex align-items-center mt-1">
-                            <a href="#" class="swatch-color pc__swatch-color" style="color: #222222"></a>
-                            <a href="#" class="swatch-color swatch_active pc__swatch-color" style="color: #b9a16b"></a>
-                            <a href="#" class="swatch-color pc__swatch-color" style="color: #f5e6e0"></a>
-                        </div>
+                       
 
                         <button class="pc__btn-wl position-absolute top-0 end-0 bg-transparent border-0 js-add-wishlist" title="Add To Wishlist">
                             <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -196,7 +192,50 @@
                 </div>
             </div>
 
-          
+            <div class="product-card-wrapper">
+                <div class="product-card mb-3 mb-md-4 mb-xxl-5">
+                    <div class="pc__img-wrapper">
+                        <div class="swiper-container background-img js-swiper-slider" data-settings='{"resizeObserver": true}'>
+                            <div class="swiper-wrapper">
+                                <div class="swiper-slide">
+                                    <a href="product1_simple.html"><img loading="lazy" src="../images/products/product_4.jpg" width="330" height="400" alt="Cropped Faux leather Jacket" class="pc__img"></a>
+                                </div><!-- /.pc__img-wrapper -->
+                                <div class="swiper-slide">
+                                    <a href="product1_simple.html"><img loading="lazy" src="../images/products/product_4-1.jpg" width="330" height="400" alt="Cropped Faux leather Jacket" class="pc__img"></a>
+                                </div><!-- /.pc__img-wrapper -->
+                            </div>
+                            <span class="pc__img-prev"><svg width="7" height="11" viewBox="0 0 7 11" xmlns="http://www.w3.org/2000/svg">
+                                    <use href="#icon_prev_sm" />
+                                </svg></span>
+                            <span class="pc__img-next"><svg width="7" height="11" viewBox="0 0 7 11" xmlns="http://www.w3.org/2000/svg">
+                                    <use href="#icon_next_sm" />
+                                </svg></span>
+                        </div>
+                        <button class="pc__atc btn anim_appear-bottom btn position-absolute border-0 text-uppercase fw-medium js-add-cart js-open-aside" data-aside="cartDrawer" title="Add To Cart">Add To Cart</button>
+                    </div>
+
+                    <div class="pc__info position-relative">
+                        <p class="pc__category">Dresses</p>
+                        <h6 class="pc__title"><a href="product1_simple.html">Cableknit Shawl</a></h6>
+                        <div class="product-card__price d-flex">
+                            <span class="money price price-old">$129</span>
+                            <span class="money price price-sale">$99</span>
+                        </div>
+
+                        <button class="pc__btn-wl position-absolute top-0 end-0 bg-transparent border-0 js-add-wishlist" title="Add To Wishlist">
+                            <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <use href="#icon_heart" />
+                            </svg>
+                        </button>
+                    </div>
+
+                    <div class="pc-labels position-absolute top-0 start-0 w-100 d-flex justify-content-between">
+                        <div class="pc-labels__left">
+                            <span class="pc-label pc-label_new d-block bg-white">NEW</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
          
            
