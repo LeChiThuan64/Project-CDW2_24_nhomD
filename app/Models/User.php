@@ -24,6 +24,10 @@ protected $fillable = [
         'email_verified_at' => 'datetime',
         'dob' => 'date', // Chuyển đổi trường 'dob' thành kiểu ngày
     ];
+    public function vochers()
+    {
+        return $this->hasMany(Vocher::class);
+    }
 
     public function reviews()
     {

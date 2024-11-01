@@ -10,6 +10,7 @@ use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\AdminBlogController;
+use App\Http\Controllers\VocherController;
 use App\Http\Controllers\ContactController;
 use App\Models\Blog;
 /*
@@ -174,7 +175,20 @@ Route::get('/vocher', function () {
 Route::get('/giamgia', function () {
     return view('viewAdmin.giamgia');
 });
+//Thêm vocher
+Route::get('/vocher', [VocherController::class, 'index'])->name('vocher.index');
+Route::get('/vocher/create', [VocherController::class, 'create'])->name('vocher.create');
+// Sửa Vocher
 
+Route::put('/vocher/{id}', [VocherController::class, 'update'])->name('vocher.update');
+Route::get('/vocher/{id}/edit', [VocherController::class, 'edit'])->name('vocher.edit');
+
+// xóa
+Route::delete('/vocher/{id}', [VocherController::class, 'destroy'])->name('vocher.destroy');
+
+
+// hiển thị
+Route::post('/vocher/store', [VocherController::class, 'store'])->name('vocher.store');
 //Het blog cho admin
 
 
