@@ -47,6 +47,9 @@
   <link id="pagestyle" href="<?php echo e(asset('assets/css/material-dashboard.mine63c.css?v=3.1.0')); ?>" rel="stylesheet" />
   <link href="<?php echo e(asset('assets/css/addProducts.css')); ?>" rel="stylesheet" />
 
+  <!-- Toastr CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
   <script src="<?php echo e(asset('assets/js/kit.fontawesome.js')); ?>" crossorigin="anonymous"></script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
@@ -108,19 +111,19 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white " href="virtual-reality.html">
+          <a class="nav-link text-white " href="<?php echo e(url('contact_admin')); ?>">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">view_in_ar</i>
             </div>
-            <span class="nav-link-text ms-1">Virtual Reality</span>
+            <span class="nav-link-text ms-1">Contact</span>
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white " href="rtl.html">
+          <a class="nav-link text-white " href="<?php echo e(url('vocher_home')); ?>">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">format_textdirection_r_to_l</i>
             </div>
-            <span class="nav-link-text ms-1">RTL</span>
+            <span class="nav-link-text ms-1">Vocher</span>
           </a>
         </li>
         <li class="nav-item">
@@ -174,6 +177,8 @@
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.ckeditor.com/ckeditor5/37.0.0/classic/ckeditor.js"></script>
+    <!-- Toastr JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script src="<?php echo e(asset('assets/js/addProducts.js')); ?>"></script>
 </body>
 </html>
