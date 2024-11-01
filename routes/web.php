@@ -157,6 +157,12 @@ Route::post('/admin/blogs/{blog_id}/update', [BlogController::class, 'update'])-
 // Route::get('/admin/search', 'AdminBlogController@search')->name('admin.search');
 // Route::get('/admin/search', [AdminBlogController::class, 'search'])->name('admin.search');
 
+
+
+
+Route::get('/locgia', function () {
+    return view('viewUser.locgia'); // Đường dẫn view tới contact.blade.php
+})->name('locgia');
 //Het blog cho admin
 
 
