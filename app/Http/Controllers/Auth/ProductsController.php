@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\ProductImage;
 use App\Models\Product;
 use App\Models\Category;
-use App\Models\ProductImage;
+use App\Models\ProductSizeColor;
+use Illuminate\Support\Facades\Log;
 
 class ProductsController extends Controller
 {
@@ -19,42 +21,69 @@ class ProductsController extends Controller
 
     public function store(Request $request)
     {
-        // Validate dữ liệu
+
+        $data = $request->all();
+        
+
+        // Xác thực dữ liệu
         $request->validate([
-            'productName' => 'required|string|max:50', // Sửa max từ 100 thành 50
+            'productName' => 'required|string|max:50',
             'productContent' => 'nullable|string',
-            'price' => 'required|integer|min:0', // Kiểu dữ liệu sửa thành integer
-            'quantity' => 'required|numeric|min:0', // Kiểu dữ liệu là DECIMAL nên dùng numeric
             'category' => 'required|integer',
-            'images.*' => 'image|mimes:jpeg,png,jpg|max:1024', // Validate ảnh
+            'images.*' => 'image|mimes:jpeg,png,jpg|max:1024',
+            'quantities' => 'required|array',
+            'prices' => 'required|array',
+            'imageNames' => 'nullable|string' // Xác thực imageNames
         ]);
 
         // Lưu thông tin sản phẩm vào bảng products
         $product = new Product();
         $product->name = $request->productName;
         $product->description = $request->productContent;
-        $product->price = $request->price;
-        $product->quantity = $request->quantity;
         $product->category_id = $request->category;
-        $product->color = $request->selectedColorIds; // Lưu màu đã chọn
-        $product->size = implode(',', $request->sizes); // Lưu kích thước đã chọn
         $product->save();
 
-        // Lưu hình ảnh vào bảng product_images
-        if ($request->hasFile('images')) {
-            foreach ($request->file('images') as $image) {
-                // Lưu ảnh vào thư mục storage
-                $imagePath = $image->store('product_images', 'public');
+        // ID của sản phẩm vừa lưu
+        $productId = $product->product_id;
 
-                // Lưu đường dẫn ảnh vào bảng product_images
-                $productImage = new ProductImage();
-                $productImage->product_id = $product->product_id;
-                $productImage->image_url = $imagePath;
-                $productImage->save();
+        // Xử lý từng kết hợp kích thước-màu
+        foreach ($request->quantities as $key => $quantity) {
+            // $key có định dạng "colorId-sizeId"
+            list($colorId, $sizeId) = explode('-', $key);
+
+            // Kiểm tra xem màu và kích thước đã được chọn và nhập giá trị chưa
+            if (!isset($request->prices[$key])) {
+                continue; // Bỏ qua nếu không có giá trị giá tương ứng
             }
+
+            $price = $request->prices[$key]; // Giá đã nhập
+
+            // Tạo bản ghi mới trong bảng product_size_color
+            ProductSizeColor::create([
+                'product_id' => $productId,
+                'size_id' => $sizeId,
+                'color_id' => $colorId,
+                'quantity' => $quantity,
+                'price' => $price
+            ]);
         }
 
-        // Trả về thông báo thành công
+
+
+        $imageNames = $request->input('imageNames'); // Lấy giá trị từ trường ẩn
+        $imageNamesArray = explode(',', $imageNames); // Chia chuỗi thành mảng
+
+
+        foreach ($imageNamesArray as $image) {
+            // Lưu ảnh vào thư mục storage
+
+            // Lưu đường dẫn ảnh vào bảng product_images
+            $productImage = new ProductImage();
+            $productImage->product_id = $product->product_id;
+            $productImage->image_url = $image;
+            $productImage->save();
+        }
+
         return redirect()->back()->with('success', 'Sản phẩm đã được thêm thành công!');
     }
 }

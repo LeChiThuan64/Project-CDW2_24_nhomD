@@ -12,7 +12,7 @@ class Color extends Model
     public function products()
     {
         return $this->belongsToMany(Product::class, 'product_size_color')
-                    ->withPivot('size_id', 'quantity')
+                    ->withPivot('size_id', 'quantity',  'price')
                     ->withTimestamps();
     }
 }

@@ -9,7 +9,7 @@
     </div>
 
     <div id="login-container" class="form-container {{ request('showRegister') ? '' : 'active' }}">
-        <form id="login-form" method="POST">
+    <form id="login-form" method="POST" action="{{ route('login.signin') }}">
             @csrf
             <div class="form-group">
                 <input type="email" name="email" id="login-email" placeholder="Email address *" required>
