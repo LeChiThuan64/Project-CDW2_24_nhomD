@@ -1,0 +1,111 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.container.bg {
+    margin: 40px auto;
+    width: 100%;
+    /* Full width of the parent */
+    background-color: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* Ensure form controls expand to full width */
+.form-control,
+.form-select {
+    width: 100%;
+    /* Take full width */
+    background-color: #f9f9f9;
+    border: 2px solid #ccc;
+    padding: 10px;
+    font-size: 14px;
+}
+
+/* Focus state for form controls */
+.form-control:focus,
+.form-select:focus {
+    border-color: #4CAF50;
+    box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+}
+
+/* Border for color and size sections */
+.bordered {
+    border: 2px solid #4CAF50;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+/* Labels styling */
+.form-label {
+    font-weight: bold;
+    color: #333;
+}
+
+/* Image placeholder styling */
+#imagePlaceholderContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    /* Khoảng cách giữa các ảnh */
+}
+
+.image-placeholder {
+    flex: 1 1 48%;
+    /* Mỗi ảnh chiếm gần 50% chiều rộng */
+    max-width: 48%;
+    position: relative;
+    /* Cần cho vị trí của nút xóa */
+}
+
+
+
+/* Color button styling */
+.color-button {
+    width: 80px;
+    /* Đặt cùng chiều rộng với nút "+" */
+    height: 45px;
+    /* Đặt cùng chiều cao với nút "+" */
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.remove-color {
+    position: absolute;
+    top: -7px;
+    right: -5px;
+    background-color: #ff6347;
+    color: white;
+    border-radius: 5px;
+    padding: 3px 7px;
+    cursor: pointer;
+}
+
+
+
+/* Thêm CSS cho trạng thái được chọn */
+.active {
+    background-color: rgba(0, 123, 255, 0.2);
+    /* Nền sáng hơn cho nút được chọn */
+    opacity: 0.7;
+}
+
+.click {
+    border: 2px solid #007bff;
+    /* Viền màu xanh cho nút được chọn */
+    color: #007bff;
+    transform: scale(1.1);
+}
+
+/* Tùy chọn thêm hiệu ứng chuyển tiếp cho nút */
+.color-button,
+.size-button {
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+
+

@@ -13,19 +13,15 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id('product_id');
-            $table->string('name', 100);
+            $table->string('name', 50);
             $table->text('description')->nullable();
-            $table->decimal('price', 10, 2);
-            $table->integer('quantity');
             $table->unsignedBigInteger('category_id')->nullable();
-            $table->timestamp('created_at')->useCurrent();
-            $table->timestamp('updated_at')->nullable();
-        });
+            $table->timestamps();
+        });        
     }
-    
+
     public function down()
     {
         Schema::dropIfExists('products');
     }
-    
 };

@@ -15,11 +15,12 @@ return new class extends Migration
             $table->id('blog_id');
             $table->unsignedBigInteger('user_id')->nullable();
             $table->string('title', 100);
-            $table->text('content')->nullable();
+            $table->longText('content')->nullable(); // Đổi từ text sang longText
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->nullable();
             $table->string('image_url', 255)->nullable();
         });
+        
     }
     
     public function down()

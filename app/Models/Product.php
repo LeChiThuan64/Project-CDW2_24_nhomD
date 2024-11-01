@@ -9,9 +9,17 @@ class Product extends Model
 {
     use HasFactory;
     
-    protected $primaryKey = 'product_id';
+    protected $table = 'products'; // Tên bảng
+    protected $primaryKey = 'product_id'; // Khóa chính
 
-    protected $fillable = ['name', 'description', 'price', 'quantity', 'category_id', 'created_at', 'updated_at'];
+    protected $fillable = [
+        'name',
+        'description',
+        'category_id',
+        'created_at',
+        'updated_at'
+    ];
+    
 
     public $timestamps = false;
 
@@ -37,4 +45,12 @@ class Product extends Model
     {
         return $this->hasMany(Wishlist::class);
     }
+
+    public function sizesAndColors()
+{
+    return $this->belongsToMany(Size::class, 'product_size_color')
+                ->withPivot('color_id', 'size_id', 'quantity', 'price')
+                ->withTimestamps();
+}
+
 }

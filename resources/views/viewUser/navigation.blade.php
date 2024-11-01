@@ -6,7 +6,7 @@
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <meta name="author" content="flexkit">
 
-    <link rel="shortcut icon" href="https://uomo-html.flexkitux.com/images/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="{{ asset('assets/img/logos/logoJ97.png') }}" type="image/x-icon">
     <link rel="preconnect" href="https://fonts.gstatic.com/">
 
     <!-- Fonts -->
@@ -269,7 +269,7 @@
 
             <div class="logo">
                 <a href="index-2.html">
-                    <img src="../images/logo.png" alt="J97" class="logo__image d-block">
+                    <img src="{{ asset('logoJ97.jpg') }}" alt="J97" class="logo__image d-block">
                 </a>
             </div><!-- /.logo -->
 
@@ -576,9 +576,9 @@
     <header id="header" class="header header_sticky">
         <div class="container">
             <div class="header-desk header-desk_type_1">
-                <div class="logo">
+                <div class="logo"
                     <a href="index-2.html">
-                        <img src="../images/logo.png" alt="J97" class="logo__image d-block">
+                        <img src="{{ asset('assets/img/logos/logoJ97.png') }}" alt="J97" class="logo__image d-block" style="width:2em;">
                     </a>
                 </div><!-- /.logo -->
 
@@ -636,11 +636,17 @@
                                 </div><!-- /.container d-flex -->
                             </div>
                         </li>
+
+
                         <li class="navigation__item">
-                            <a href="#" class="navigation__link">Blog</a>
+                            <a href="{{ route('blog.index') }}" class="navigation__link">Blog</a>
                             <ul class="default-menu list-unstyled">
+                                <!-- Bạn có thể thêm các menu phụ tại đây nếu cần -->
                             </ul><!-- /.box-menu -->
                         </li>
+
+
+
                         <li class="navigation__item">
                             <a href="#" class="navigation__link">Pages</a>
                             <ul class="default-menu list-unstyled">
@@ -703,27 +709,7 @@
                             </form>
                         </div>
 
-                        <!-- Kết quả tìm kiếm -->
-                        @if (isset($products))
-                            <h1>Search Results for "{{ $keyword }}"</h1>
 
-                            @if ($products->isEmpty())
-                                <p>No products found.</p>
-                            @else
-                                <div class="row">
-                                    @foreach ($products as $product)
-                                        <div class="col-md-3">
-                                            <div class="product-card">
-                                                <img src="{{ $product->image_url }}" alt="{{ $product->name }}"
-                                                    class="img-fluid">
-                                                <h5>{{ $product->name }}</h5>
-                                                <p>{{ $product->price }}</p>
-                                            </div>
-                                        </div>
-                                    @endforeach
-                                </div>
-                            @endif
-                        @endif
                     </div><!-- /.header-tools__item hover-container -->
 
                     <div class="header-tools__item hover-container">
@@ -912,7 +898,7 @@
                             <option class="footer-select__option" value="1">United States | English</option>
                             <option class="footer-select__option" value="2">German</option>
                             <option class="footer-select__option" value="3">French</option>
-                            <option class="footer-select__option" value="4">Swedish</option>
+                            <option class="footer-select__option" value="4">Vietnamese</option>
                         </select>
                     </div>
 
@@ -920,9 +906,10 @@
                         <label for="footerSettingsCurrency" class="ms-md-3 me-2 text-secondary">Currency</label>
                         <select id="footerSettingsCurrency" class="form-select form-select-sm bg-transparent"
                             aria-label="Default select example" name="store-language">
-                            <option selected>$ USD</option>
-                            <option value="1">£ GBP</option>
-                            <option value="2">€ EURO</option>
+                            <option value="1" selected>$ USD</option>
+                            <option value="2">£ GBP</option>
+                            <option value="3">€ EURO</option>
+                            <option value="4">đ VND</option>
                         </select>
                     </div>
                 </div><!-- /.footer-settings -->
@@ -1427,6 +1414,8 @@
     <script src="{{ asset('assets/js/plugins/swiper.min.js') }}"></script>
     <script src="{{ asset('assets/js/plugins/countdown.js') }}"></script>
     <script src="{{ asset('assets/js/plugins/jquery.fancybox.js') }}"></script>
+    <script src="{{ asset('assets/js/details-disclosure.js') }}" defer="defer"></script>
+    <script src="{{ asset('assets/js/share.js') }}" defer="defer"></script>
 
     <!-- Footer Scripts -->
     <script src="{{ asset('assets/js/theme.js') }}"></script>
