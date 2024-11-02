@@ -72,8 +72,11 @@ Route::get('/users/{id}', [UserController::class, 'show'])->name('user.show');
 
 
 // Route cho trang chi tiết sản phẩm
-Route::get('/product-detail', function () {
-    return view('viewUser.product-detail');
+Route::get('/cart', function () {
+    return view('viewUser.cart');
+});
+Route::get('/home', function () {
+    return view('viewUser.home');
 });
 Route::get('/wishlist', function () {
     return view('viewUser.wishlist');
