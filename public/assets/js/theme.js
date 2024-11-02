@@ -1470,3 +1470,8 @@ window.addEventListener('load', () => {
 
   }
 });
+
+function changeMainImage(imageUrl) {
+  const mainImage = document.getElementById('mainImage');
+  mainImage.src = imageUrl;
+}

@@ -10,24 +10,50 @@ class ProductController extends Controller
     // Hiển thị chi tiết sản phẩm
     public function show($id)
     {
-        // Lấy sản phẩm theo ID cùng với đánh giá, danh mục và hình ảnh
-        $product = Product::with(['reviews', 'category', 'images'])->find($id);
-
+        // Lấy sản phẩm theo ID cùng với các thông tin liên quan
+        $product = Product::with([
+                'reviews', 
+                'category', 
+                'images', 
+                'productSizeColors.size', 
+                'productSizeColors.color'  
+            ])
+            ->where('product_id', $id)
+            ->first(); // Sử dụng first() để lấy một sản phẩm duy nhất
+    
+        // Kiểm tra nếu sản phẩm không tồn tại
+        if (!$product) {
+            abort(404, 'Product not found');
+        }
+    
         // Tính trung bình rating và số lượng đánh giá
-        $averageRating = $product->reviews->avg('rating') ?? 0; // Đảm bảo không bị lỗi khi không có đánh giá
-        $reviewCount = $product->reviews->count();
-
+        $averageRating = $product->reviews->avg('rating') ?? 0; // Sử dụng $product->reviews thay vì optional()
+        $reviewCount = $product->reviews->count(); // Sử dụng $product->reviews
+    
         // Lấy danh sách hình ảnh của sản phẩm
         $images = $product->images->pluck('image_url')->toArray(); // Sử dụng `pluck` để lấy mảng các URL ảnh
-
+    
+        // Lấy thông tin kích thước và màu sắc cùng với thông tin từ bảng trung gian
+        $sizesAndColors = $product->sizesAndColors->map(function ($item) {
+            return [
+                'size' => optional($item->size)->name, // Lấy tên kích thước
+                'color' => optional($item->color)->name, // Lấy tên màu sắc
+                'quantity' => $item->pivot->quantity, // Lấy thông tin từ bảng trung gian
+                'price' => $item->pivot->price, // Lấy giá từ bảng trung gian
+            ];
+        });
+    
         // Trả về view product-detail và truyền dữ liệu cho view
         return view('viewUser.product-detail', [
             'product' => $product,
             'averageRating' => $averageRating,
             'reviewCount' => $reviewCount,
             'images' => $images,
+            'sizesAndColors' => $sizesAndColors,
         ]);
     }
+    
+
 
     // Thêm đánh giá cho sản phẩm
     public function addReview(Request $request, $productId)
