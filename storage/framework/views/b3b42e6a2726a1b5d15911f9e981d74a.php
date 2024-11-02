@@ -5,6 +5,8 @@
 
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <meta name="author" content="flexkit">
+    <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>">
+
 
     <link rel="shortcut icon" href="<?php echo e(asset('assets/img/logos/logoJ97.png')); ?>" type="image/x-icon">
     <link rel="preconnect" href="https://fonts.gstatic.com/">
@@ -19,6 +21,7 @@
     <link rel="stylesheet" href="<?php echo e(asset('assets/css/plugins/swiper.min.css')); ?>" type="text/css">
     <link rel="stylesheet" href="<?php echo e(asset('assets/css/plugins/jquery.fancybox.css')); ?>" type="text/css">
     <link rel="stylesheet" href="<?php echo e(asset('assets/css/style.css')); ?>" type="text/css">
+    <link rel="stylesheet" href="<?php echo e(asset('assets/css/auth.css')); ?>" type="text/css">
 
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -1270,7 +1273,7 @@
 
                     <div class="customer-option mt-4 text-center">
                         <span class="text-secondary">No account yet?</span>
-                        <a href="login_register.html#register-tab" class="btn-text js-show-register">Create
+                        <a href="<?php echo e(route('auth', ['showRegister' => true])); ?>" class="btn-text js-show-register">Create
                             Account</a>
                     </div>
                 </form>
@@ -1326,7 +1329,7 @@
     <!-- Cart Drawer -->
     <div class="aside aside_right overflow-hidden cart-drawer" id="cartDrawer">
         <div class="aside-header d-flex align-items-center">
-            <h3 class="text-uppercase fs-6 mb-0">SHOPPING BAG ( <span
+            <h3 class="text-uppercase fs-6 mb-0">CART ( <span
                     class="cart-amount js-cart-items-count">1</span> )
             </h3>
             <button class="btn-close-lg js-close-aside btn-close-aside ms-auto"></button>
@@ -1417,9 +1420,15 @@
     <script src="<?php echo e(asset('assets/js/plugins/jquery.fancybox.js')); ?>"></script>
     <script src="<?php echo e(asset('assets/js/details-disclosure.js')); ?>" defer="defer"></script>
     <script src="<?php echo e(asset('assets/js/share.js')); ?>" defer="defer"></script>
+    <script src="<?php echo e(asset('assets/js/auth.js')); ?>" defer="defer"></script>
 
     <!-- Footer Scripts -->
     <script src="<?php echo e(asset('assets/js/theme.js')); ?>"></script>
+    <script>
+        const loginUrl = "<?php echo e(route('login.signin')); ?>";
+        const registerUrl = "<?php echo e(route('register')); ?>";
+        const authUrl = "<?php echo e(route('auth')); ?>";
+    </script>
 
 </body>
 
