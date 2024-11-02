@@ -81,7 +81,13 @@
             </div>
 
             <div class="text-end">
-                <button type="submit" class="btn btn-outline-secondary">Thêm</button>
+                <div class="text-end">
+                    <a href="{{ route('products.showListProducts') }}" class="btn btn-outline-secondary btn-custom-size">
+                        Quay Lại
+                    </a>
+                    <button type="submit" class="btn btn-outline-secondary btn-custom-size">Thêm</button>
+                </div>
+
             </div>
         </div>
     </form>

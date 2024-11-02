@@ -180,3 +180,11 @@ Route::get('/search-results', [ProductController::class, 'search'])->name('produ
 // Thêm sản phẩm
 Route::get('/products/add', [ProductsController::class, 'showForm'])->name('products.add');
 Route::post('/products/store', [ProductsController::class, 'store'])->name('products.store');
+Route::get('/products/showList', [ProductsController::class, 'showListProducts'])->name('products.showListProducts');
+
+// Xóa
+// routes/web.php
+Route::delete('/products/destroy/{id}', [ProductsController::class, 'destroy'])->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
+
+
+
