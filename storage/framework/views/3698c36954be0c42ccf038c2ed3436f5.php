@@ -21,6 +21,11 @@
     width: 150px; /* Hoặc kích thước bạn muốn */
     height: 150px;
     border-radius: 10px; /* Giữ bo góc nếu cần */
+
+    .form-control[name="search"] {
+    height: 42px;
+}
+
 }
 
   </style>
@@ -46,8 +51,8 @@
                   <i class="fas fa-search"></i>
                 </button>
               </div>
-              <input type="text" name="search" class="form-control" placeholder="Tìm kiếm khách hàng..." aria-label="Tìm kiếm khách hàng" value="<?php echo e(request()->get('search')); ?>">
-            </div>
+              <input type="text" name="search" class="form-control" style="height: 42px;" placeholder="Tìm kiếm khách hàng..." aria-label="Tìm kiếm khách hàng" value="<?php echo e(request()->get('search')); ?>">
+              </div>
           </form>
         </div>
 
