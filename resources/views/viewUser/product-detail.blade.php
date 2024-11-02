@@ -10,75 +10,42 @@
                     <div class="product-single__image">
                         <div class="swiper-container">
                             <div class="swiper-wrapper">
+                                @if (!empty($product->images) && isset($product->images[0]))
                                 <div class="swiper-slide product-single__image-item">
-                                    <img loading="lazy" class="h-auto" src="../images/products/product_0.jpg"
-                                        width="674" height="674" alt="">
-                                    <a data-fancybox="gallery" href="../images/products/product_0.jpg"
-                                        data-bs-toggle="tooltip" data-bs-placement="left" title="Zoom">
-                                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
-                                            xmlns="http://www.w3.org/2000/svg">
-                                            <use href="#icon_zoom" />
-                                        </svg>
-                                    </a>
+                                    <img id="mainImage" loading="lazy" class="h-auto"
+                                        src="{{ asset('assets/img/products/' . $product->images[0]->image_url) }}"
+                                        width="674" height="674" alt="Product Image">
                                 </div>
-                                <div class="swiper-slide product-single__image-item">
-                                    <img loading="lazy" class="h-auto" src="../images/products/product_0-1.jpg"
-                                        width="674" height="674" alt="">
-                                    <a data-fancybox="gallery" href="../images/products/product_0-1.jpg"
-                                        data-bs-toggle="tooltip" data-bs-placement="left" title="Zoom">
-                                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
-                                            xmlns="http://www.w3.org/2000/svg">
-                                            <use href="#icon_zoom" />
-                                        </svg>
-                                    </a>
-                                </div>
-                                <div class="swiper-slide product-single__image-item">
-                                    <img loading="lazy" class="h-auto" src="../images/products/product_0-2.jpg"
-                                        width="674" height="674" alt="">
-                                    <a data-fancybox="gallery" href="../images/products/product_0-2.jpg"
-                                        data-bs-toggle="tooltip" data-bs-placement="left" title="Zoom">
-                                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
-                                            xmlns="http://www.w3.org/2000/svg">
-                                            <use href="#icon_zoom" />
-                                        </svg>
-                                    </a>
-                                </div>
-                                <div class="swiper-slide product-single__image-item">
-                                    <img loading="lazy" class="h-auto" src="../images/products/product_0-3.jpg"
-                                        width="674" height="674" alt="">
-                                    <a data-fancybox="gallery" href="../images/products/product_0-3.jpg"
-                                        data-bs-toggle="tooltip" data-bs-placement="left" title="Zoom">
-                                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
-                                            xmlns="http://www.w3.org/2000/svg">
-                                            <use href="#icon_zoom" />
-                                        </svg>
-                                    </a>
-                                </div>
+                                @else
+                                <p>No images available</p>
+                                @endif
                             </div>
-                            <div class="swiper-button-prev"><svg width="7" height="11" viewBox="0 0 7 11"
+
+                            <!-- <div class="swiper-button-prev"><svg width="7" height="11" viewBox="0 0 7 11"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <use href="#icon_prev_sm" />
                                 </svg></div>
                             <div class="swiper-button-next"><svg width="7" height="11" viewBox="0 0 7 11"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <use href="#icon_next_sm" />
-                                </svg></div>
+                                </svg></div> -->
                         </div>
                     </div>
                     <div class="product-single__thumbnail">
                         <div class="swiper-container">
                             <div class="swiper-wrapper">
-                                <div class="swiper-slide product-single__image-item"><img loading="lazy" class="h-auto"
-                                        src="../images/products/product_0.jpg" width="104" height="104" alt=""></div>
-                                <div class="swiper-slide product-single__image-item"><img loading="lazy" class="h-auto"
-                                        src="../images/products/product_0-1.jpg" width="104" height="104" alt=""></div>
-                                <div class="swiper-slide product-single__image-item"><img loading="lazy" class="h-auto"
-                                        src="../images/products/product_0-2.jpg" width="104" height="104" alt=""></div>
-                                <div class="swiper-slide product-single__image-item"><img loading="lazy" class="h-auto"
-                                        src="../images/products/product_0-3.jpg" width="104" height="104" alt=""></div>
+                                @foreach ($product->images as $image)
+                                <div class="swiper-slide product-single__image-item">
+                                    <img loading="lazy" class="h-auto"
+                                        src="{{ asset('assets/img/products/' . $image->image_url) }}" width="104"
+                                        height="104" alt=""
+                                        onclick="changeMainImage('{{ asset('assets/img/products/' . $image->image_url) }}')">
+                                </div>
+                                @endforeach
                             </div>
                         </div>
                     </div>
+
                 </div>
             </div>
             <div class="col-lg-5">
@@ -273,8 +240,8 @@
                 <div class="tab-pane fade" id="tab-reviews" role="tabpanel" aria-labelledby="tab-reviews-tab">
                     <h2 class="product-single__reviews-title">Reviews</h2>
                     <div class="product-single__reviews-list">
-                      @foreach ($product->reviews as $review)
-                      <div class="product-single__reviews-item">
+                        @foreach ($product->reviews as $review)
+                        <div class="product-single__reviews-item">
                             <!-- <div class="customer-avatar">
                                 <img loading="lazy" src="../images/avatar.jpg" alt="">
                             </div> -->
@@ -294,7 +261,7 @@
                                                 viewBox="0 0 9 9" xmlns="http://www.w3.org/2000/svg">
                                                 <use href="#icon_star_empty" />
                                                 </svg>
-                                            @endfor
+                                                @endfor
                                     </div>
                                 </div>
                                 <div class="review-date">
@@ -303,14 +270,14 @@
                                 <div class="review-text">
                                     {{ $review->comment }}
                                 </div>
-                              </div>
                             </div>
-                            @endforeach
-                          </div>
+                        </div>
+                        @endforeach
+                    </div>
                     <div class="product-single__review-form">
                         <form name="customer-review-form">
-                            <h5>Be the first to review “Message Cotton T-Shirt”</h5>
-                            <p>Your email address will not be published. Required fields are marked *</p>
+                            <!-- <h5>Be the first to review “Message Cotton T-Shirt”</h5> -->
+                            <!-- <p>Your email address will not be published. Required fields are marked *</p> -->
                             <div class="select-star-rating">
                                 <label>Your rating *</label>
                                 <span class="star-rating">
@@ -345,9 +312,9 @@
                             <div class="mb-4">
                                 <textarea id="form-input-review" class="form-control form-control_gray"
                                     placeholder="Your Review" cols="30" rows="8"></textarea>
-                            </div>
-                            <div class="form-action">
-                                <button type="submit" class="btn btn-primary">Submit</button>
+                                <div class="form-action">
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                </div>
                             </div>
                         </form>
                     </div>

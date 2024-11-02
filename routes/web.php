@@ -158,6 +158,8 @@ Route::delete('/wishlist/remove/{wishlistId}', [WishlistController::class, 'remo
 // Tìm kiếm
 Route::get('/search-results', [ProductController::class, 'search'])->name('product.search');
 
+// Review
+Route::post('/products/{product_id}/review', [ProductController::class, 'addReview'])->name('addReview');
 
 
 
