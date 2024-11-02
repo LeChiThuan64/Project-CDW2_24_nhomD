@@ -9,40 +9,81 @@ class ProductController extends Controller
 {
     public function show($product_id)
     {
-        $product = Product::find($product_id);
-
-        if (!$product) {
+        try {
+            // Lấy sản phẩm cùng với các hình ảnh liên quan
+            $product = Product::with('images')->findOrFail($product_id);
+            // Kiểm tra đường dẫn image_url
+            foreach ($product->images as $image) {
+                console.log($image->image_url); // In ra từng đường dẫn hình ảnh
+            }            
+            return view('product.show', compact('product'));
+        } catch (\Exception $e) {
             return abort(404, 'Product not found');
         }
-
-        return view('product.show', compact('product'));
     }
 
     public function search(Request $request)
     {
-        $product_id = $request->query('product_id');
-        $product_name = $request->query('name');
+        try {
+            $product_id = $request->query('product_id');
+            $product_name = $request->query('product_name');
+        
+            if ($product_id || $product_name) {
+                $query = Product::with('images'); // Thêm relationship images
     
-        if ($product_id || $product_name) {
-            $query = Product::query();
+                // Nhóm điều kiện tìm kiếm với hàm nặc danh (closure)
+                $query->where(function ($q) use ($product_id, $product_name) {
+                    if ($product_id) {
+                        $q->where('product_id', $product_id);
+                    }
     
-            if ($product_id) {
-                $query->where('product_id', $product_id);
+                    if ($product_name) {
+                        $q->orWhere('name', 'like', '%' . $product_name . '%');
+                    }
+                });
+    
+                $product = $query->first();
+        
+                if ($product) {
+                    // Transform dữ liệu trước khi trả về
+                    $productData = [
+                        'product_id' => $product->product_id,
+                        'name' => $product->name,
+                        'description' => $product->description,
+                        'price' => $product->price,
+                        'quantity' => $product->quantity,
+                        'images' => $product->images->map(function($image) {
+                            return [
+                                'image_id' => $image->image_id,
+                                'image_url' => $image->image_url
+                            ];
+                        })
+                    ];
+        
+                    return response()->json([
+                        'success' => true, 
+                        'product' => $productData
+                    ]);
+                }
+        
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Product not found'
+                ], 404);
             }
+        
+            return response()->json([
+                'success' => false,
+                'message' => 'No search criteria provided'
+            ], 400);
     
-            if ($product_name) {
-                $query->orWhere('name', 'like', '%' . $product_name . '%');
-            }
-    
-            $product = $query->first();
-    
-            if ($product) {
-                return response()->json(['success' => true, 'product' => $product]);
-            } else {
-                return response()->json(['success' => false, 'message' => 'Product not found'], 404);
-            }
-        } else {
-            return response()->json(['success' => false, 'message' => 'No search criteria provided'], 400);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error occurred while searching for product',
+                'error' => $e->getMessage()
+            ], 500);
         }
     }
+    
 }

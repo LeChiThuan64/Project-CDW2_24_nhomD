@@ -23,8 +23,18 @@ document.addEventListener('DOMContentLoaded', function() {
                 return response.json();
             })
             .then(data => {
+                console.log('Dữ liệu trả về từ server:', data); // Log dữ liệu trả về từ server
                 // Trả về thông tin sản phẩm nếu thành công
-                return data.success ? data.product   : null; 
+                if (data.success) {
+                    const product = data.product;
+                    console.log('Product data:', product); // Log dữ liệu sản phẩm
+                    console.log('Product images:', product.images); // Log dữ liệu hình ảnh
+
+                    return product;
+                } else {
+                    console.log('Dữ liệu trả về không thành công:', data);
+                    return null;
+                }
             })
             .catch(error => {
                 console.error('Có lỗi xảy ra khi lấy thông tin sản phẩm:', error);
@@ -32,24 +42,44 @@ document.addEventListener('DOMContentLoaded', function() {
             });
     }
 
+    function changeImage(imageSrc) {
+        const mainImg = document.getElementById('main-img');
+        if (mainImg) {
+            mainImg.src = imageSrc;
+        } else {
+            console.error('Phần tử main-img không tồn tại');
+        }
+    }
 
     // Lấy thông tin chi tiết của sản phẩm 1 và cập nhật vào HTML
     if (currentProductId) {
         fetchProductDetails(currentProductId).then(product => {
             if (product) {
+                console.log('Thông tin sản phẩm đã được cập nhật');
                 document.getElementById('product1-name').textContent = product.name;
                 console.log(`Tên sản phẩm 1: ${product.name}`); // Log tên sản phẩm 1
+
                 const productDetails = `
                 <div class="product-details product-1">
                     <div><strong>Name:</strong> ${product.name}</div>
                     <div><strong>Description:</strong> ${product.description}</div>
                     <div><strong>Price:</strong> ${product.price}</div>
                 </div>
-            `;
-            document.querySelector('.details-card.product-1 span').innerHTML = productDetails;
+                `;
+                document.querySelector('.details-card.product-1 span').innerHTML = productDetails;
+
+                // Cập nhật hình ảnh cho sản phẩm 1
+                if (product.images.length > 0) {
+                    const product1Img = document.querySelector('#product1-card img');
+                    if (product1Img) {
+                        product1Img.src = product.images[0].image_url;
+                        product1Img.alt = product.name;
+                    }
+                }
             }
         });
-    }    
+    }
+
     // Sự kiện click cho nút "So sánh ngay"
     document.querySelector('.btn-comparison').addEventListener('click', function(event) {
         event.preventDefault();
@@ -134,21 +164,30 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('product-name').textContent = product2name;
             document.getElementById('add-product-modal').classList.add('d-none'); // Ẩn modal
 
-            // Lấy thông tin chi tiết của sản phẩm 2 và cập nhật vào HTML
-            if (product2Id) {
-                fetchProductDetails(product2Id).then(product => {
-                    if (product) {
-                        const product2Details = `
-                            <div class="product-details product-2">
-                                <div><strong>Name:</strong> ${product.name}</div>
-                                <div><strong>Description:</strong> ${product.description}</div>
-                                <div><strong>Price:</strong> ${product.price}</div>
-                            </div>
-                        `;
-                        document.querySelector('.details-card.product-2 span').innerHTML = product2Details;
+        // Lấy thông tin chi tiết của sản phẩm 2 và cập nhật vào HTML
+        if (product2Id) {
+            fetchProductDetails(product2Id).then(product => {
+                if (product) {
+                    const product2Details = `
+                        <div class="product-details product-2">
+                            <div><strong>Name:</strong> ${product.name}</div>
+                            <div><strong>Description:</strong> ${product.description}</div>
+                            <div><strong>Price:</strong> ${product.price}</div>
+                        </div>
+                    `;
+                    document.querySelector('.details-card.product-2 span').innerHTML = product2Details;
+
+                    // Cập nhật hình ảnh cho sản phẩm 2
+                    if (product.images.length > 0) {
+                        const product2Img = document.querySelector('#product2-card img');
+                        if (product2Img) {
+                            product2Img.src = product.images[0].image_url;
+                            product2Img.alt = product.name;
+                        }
                     }
-                });
-            }
+                }
+            });
+        }
 
             // Tạo thẻ h2 chứa tên sản phẩm và thêm vào div.comparison-item.product2
             const comparisonItem = document.querySelector('.comparison-item.product2');

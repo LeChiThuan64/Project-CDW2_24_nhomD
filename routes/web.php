@@ -21,7 +21,7 @@ Route::get('/', function () {
 // Route để hiển thị sản phẩm theo ID
 Route::get('/product/{product_id}', [ProductController::class, 'show'])->name('product');
 // Route để tìm kiếm sản phẩm
-Route::get('/search-product', [ProductController::class, 'search']);
+Route::get('/search-product', [ProductController::class, 'search'])->name('product.search');
 // Route để lưu dữ liệu người dùng hiệnchatbox
 Route::post('/api/save-chatbox-data', [ChatboxController::class, 'saveChatboxData']);
 // Route để hiện thị admin supprort chatbox
