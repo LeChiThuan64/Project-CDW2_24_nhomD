@@ -108,4 +108,13 @@
 }
 
 
+.btn-custom-size {
+    width: 100px; /* Adjust width as needed */
+    height: 40px; /* Set desired height */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
 
