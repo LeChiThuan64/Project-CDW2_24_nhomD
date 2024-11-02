@@ -8,6 +8,13 @@ use App\Models\ContactMessage; // Nếu bạn tạo model cho contact_messages
 
 class ContactController extends Controller
 {
+    public function index()
+    {
+        $messages = ContactMessage::all(); // Lấy tất cả tin nhắn từ bảng contact_messages
+        return view('viewAdmin.contact_admin', compact('messages')); // Truyền biến $messages vào view
+    }
+
+
     public function store(Request $request)
     {
         // Kiểm tra xem người dùng đã đăng nhập hay chưa
@@ -30,8 +37,17 @@ class ContactController extends Controller
         return redirect()->back()->with('success', 'gửi thành công!');
     }
 
-    public function __construct()
+    // public function __construct()
+    // {
+    //     $this->middleware('auth')->except('store');
+    // }
+    
+    public function destroy($id)
     {
-        $this->middleware('auth');
+        // Tìm và xóa tin nhắn theo id
+        ContactMessage::findOrFail($id)->delete();
+
+        // Chuyển hướng lại trang contact admin với thông báo thành công
+        return redirect()->route('contact.index')->with('success', 'Tin nhắn đã được xóa thành công!');
     }
 }

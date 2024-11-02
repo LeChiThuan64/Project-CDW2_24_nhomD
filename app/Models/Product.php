@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Product extends Model
 {
     use HasFactory;
-    
+
     protected $table = 'products'; // Tên bảng
     protected $primaryKey = 'product_id';
 
@@ -20,7 +20,7 @@ class Product extends Model
         'created_at',
         'updated_at'
     ];
-    
+
 
     public $timestamps = false;
 
@@ -48,14 +48,14 @@ class Product extends Model
     }
 
     public function sizesAndColors()
-{
-    return $this->belongsToMany(Size::class, 'product_size_color', 'product_id')
-                ->withPivot('color_id', 'size_id', 'quantity', 'price')
-                ->withTimestamps();
-}
+    {
+        return $this->belongsToMany(Size::class, 'product_size_color', 'product_id')
+            ->withPivot('color_id', 'size_id', 'quantity', 'price')
+            ->withTimestamps();
+    }
     public function productSizeColors()
-{
-    return $this->hasMany(ProductSizeColor::class, 'product_id');
-}
+    {
+        return $this->hasMany(ProductSizeColor::class, 'product_id');
+    }
 
 }

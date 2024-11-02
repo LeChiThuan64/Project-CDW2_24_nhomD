@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ProductsController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\ProductController;
@@ -10,6 +11,7 @@ use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\AdminBlogController;
+use App\Http\Controllers\VocherController;
 use App\Http\Controllers\ContactController;
 use App\Models\Blog;
 /*
@@ -34,7 +36,13 @@ Route::get('/addProducts', [ProductsController::class, 'showForm']);
 // Route dashboard
 Route::get('/dashboard', function () {
     return view('viewAdmin.dashboard');
-});
+})->name("dashboard");
+
+
+
+Route::get('/auth', function () {
+    return view('viewUser.auth');
+})->name('auth');
 
 Route::get('/logout', function () {
     return view('viewUser.logout');
@@ -46,12 +54,15 @@ Route::post('/logout', function () {
 })->name('logout');
 
 
-Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
-Route::post('/login', [LoginController::class, 'login']);
+
+Route::get('/login/show', [LoginController::class, 'showLoginForm'])->name('login.show');
+Route::post('/login/signin', [LoginController::class, 'login'])->name('login.signin');
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
 Route::post('/register', [RegisterController::class, 'register']);
 
+Route::get('password/reset', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
+Route::post('password/email', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
     
 
 // Route trang hiển thị danh sách người dùng (tables.blade.php)
@@ -94,7 +105,24 @@ Route::get('/contact', function () {
     return view('viewUser.contact');
 })->name('contact'); // Đặt tên cho route này nếu cần
 
-Route::post('/contact', [ContactController::class, 'store'])->name('contact.store')->middleware('auth');
+// ấu hình này, khi người dùng chưa đăng nhập mà nhấn "Submit", họ sẽ được chuyển hướng đến trang đăng nhập.
+// Route::post('/contact', [ContactController::class, 'store'])->name('contact.store')->middleware('auth');
+Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
+
+
+Route::get('/contact', function () {
+    return view('viewUser.contact'); // Đường dẫn view tới contact.blade.php
+})->name('contact');
+
+
+Route::get('/admin/contact', [ContactController::class, 'index'])->name('contact.index');
+// Route phụ để sử dụng URL /contact_admin
+Route::get('/contact_admin', [ContactController::class, 'index'])->name('contact.admin');
+Route::delete('/admin/contact/{id}', [ContactController::class, 'destroy'])->name('contact.destroy');
+
+Route::get('/contact_admin', [ContactController::class, 'index'])->name('contact.admin');
+
+// hết Liên hệ CONTACT
 
 Route::get('/edit_user', function () {
     return view('viewAdmin.edit_user');
@@ -109,6 +137,7 @@ Route::get('/blogs/{blog_id}', [BlogController::class, 'show'])->name('blog.deta
 Route::post('/blogs/{blog_id}/comment', [BlogController::class, 'storeComment'])->name('blog.comment');
 
 Route::get('/blogs', [BlogController::class, 'index'])->name('blog.index');
+
  
 Route::get('/admin/blogs/create', function () {
     return view('viewAdmin.add_blog');
@@ -142,6 +171,37 @@ Route::post('/admin/blogs/{blog_id}/update', [BlogController::class, 'update'])-
 // Route::get('/admin/search', 'AdminBlogController@search')->name('admin.search');
 // Route::get('/admin/search', [AdminBlogController::class, 'search'])->name('admin.search');
 
+
+
+
+Route::get('/locgia', function () {
+    return view('viewUser.locgia'); // Đường dẫn view tới contact.blade.php
+})->name('locgia');
+
+Route::get('/vocher_home', function () {
+    return view('viewAdmin.vocher_home');
+});
+Route::get('/vocher', function () {
+    return view('viewAdmin.vocher');
+});
+
+Route::get('/giamgia', function () {
+    return view('viewAdmin.giamgia');
+});
+//Thêm vocher
+Route::get('/vocher', [VocherController::class, 'index'])->name('vocher.index');
+Route::get('/vocher/create', [VocherController::class, 'create'])->name('vocher.create');
+// Sửa Vocher
+
+Route::put('/vocher/{id}', [VocherController::class, 'update'])->name('vocher.update');
+Route::get('/vocher/{id}/edit', [VocherController::class, 'edit'])->name('vocher.edit');
+
+// xóa
+Route::delete('/vocher/{id}', [VocherController::class, 'destroy'])->name('vocher.destroy');
+
+
+// hiển thị
+Route::post('/vocher/store', [VocherController::class, 'store'])->name('vocher.store');
 //Het blog cho admin
 
 
@@ -167,3 +227,11 @@ Route::post('/products/{product_id}/review', [ProductController::class, 'addRevi
 // Thêm sản phẩm
 Route::get('/products/add', [ProductsController::class, 'showForm'])->name('products.add');
 Route::post('/products/store', [ProductsController::class, 'store'])->name('products.store');
+Route::get('/products/showList', [ProductsController::class, 'showListProducts'])->name('products.showListProducts');
+
+// Xóa
+// routes/web.php
+Route::delete('/products/destroy/{id}', [ProductsController::class, 'destroy'])->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
+
+
+

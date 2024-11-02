@@ -21,6 +21,11 @@
     width: 150px; /* Hoặc kích thước bạn muốn */
     height: 150px;
     border-radius: 10px; /* Giữ bo góc nếu cần */
+
+    .form-control[name="search"] {
+    height: 42px;
+}
+
 }
 
   </style>
@@ -46,8 +51,8 @@
                   <i class="fas fa-search"></i>
                 </button>
               </div>
-              <input type="text" name="search" class="form-control" placeholder="Tìm kiếm khách hàng..." aria-label="Tìm kiếm khách hàng" value="{{ request()->get('search') }}">
-            </div>
+              <input type="text" name="search" class="form-control" style="height: 42px;" placeholder="Tìm kiếm khách hàng..." aria-label="Tìm kiếm khách hàng" value="{{ request()->get('search') }}">
+              </div>
           </form>
         </div>
 
@@ -178,22 +183,25 @@
 </div>
 
 <!-- Phân trang -->
+@if ($users->lastPage() > 1)
 <div class="d-flex justify-content-center mt-4" id="pagination">
-  <ul class="pagination">
-    {{-- Lặp qua tất cả các trang --}}
-    @foreach ($users->getUrlRange(1, $users->lastPage()) as $page => $url)
-    @if ($page == $users->currentPage())
-    <li class="page-item active">
-      <span class="page-link">{{ $page }}</span>
-    </li>
-    @else
-    <li class="page-item">
-      <a class="page-link" href="{{ $url }}">{{ $page }}</a>
-    </li>
-    @endif
-    @endforeach
-  </ul>
+    <ul class="pagination">
+        {{-- Lặp qua tất cả các trang --}}
+        @foreach ($users->getUrlRange(1, $users->lastPage()) as $page => $url)
+            @if ($page == $users->currentPage())
+                <li class="page-item active">
+                    <span class="page-link">{{ $page }}</span>
+                </li>
+            @else
+                <li class="page-item">
+                    <a class="page-link" href="{{ $url }}">{{ $page }}</a>
+                </li>
+            @endif
+        @endforeach
+    </ul>
 </div>
+@endif
+
 
 
 
