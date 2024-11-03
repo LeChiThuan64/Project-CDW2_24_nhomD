@@ -659,7 +659,7 @@
                             <a href="about.html" class="navigation__link">About</a>
                         </li>
                         <li class="navigation__item">
-                            <a href="" class="navigation__link">Contact</a>
+                            <a href="{{ route('contact') }}" class="navigation__link">Contact</a>
                         </li>
 
                     </ul><!-- /.navigation__list -->
