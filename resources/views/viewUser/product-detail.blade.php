@@ -178,6 +178,83 @@
                     </share-button>
                     <script src="js/details-disclosure.js" defer="defer"></script>
                     <script src="js/share.js" defer="defer"></script>
+                    <!-- Button comparison product -->
+                    <button
+                        class="menu-link menu-link_us-s to-share border-0 bg-transparent d-flex align-items-center comparison-button">
+                        <svg width="16" height="19" viewBox="0 0 16 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <use href="#icon_comparison" />
+                        </svg>
+                        <span>Comparison</span>
+                    </button>
+                    <!-- Comparison Table -->
+                    <div id="comparison-table" class="comparison-table d-none">
+                        <button class="close-btn">&times;</button>
+                        <div class="comparison-item">
+                            <h2>{{ $product->name }}</h2>
+                        </div>
+                        <div class="comparison-item product2">
+                            <a href="#" class="btn btn-outline-secondary btn-add-product">Thêm sản phẩm</a>
+                        </div>
+                        <div class="comparison-item btn-comparsion">
+                            <button class="btn-table comparsion">So sánh ngay</button>
+                            <button class="btn-table delete-product">Xóa sản phẩm</button>
+                        </div>
+                    </div>
+
+                    <!-- Modal for adding products -->
+                    <div id="add-product-modal" class="modal d-none">
+                        <div class="modal-content">
+                            <span class="close">&times;</span>
+                            <h2>Add Product</h2>
+                            <div class="product-info">
+                                <h3 id="product-name" class="text-center">{{ $product->name }}</h3>
+                                <div class="search-container">
+                                    <input type="text" id="product-search" placeholder="Nhập tên sản phẩm...">
+                                </div>
+                                <div id="search-results" class="search-results"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="comparison-section d-none">
+                        <div class="comparison-content">
+                            <button class="close-btn">&times;</button>
+                            <div class="comparison-header">
+                                <div class="col-3">
+                                    <h2 class="title-comparsion">So sánh sản phẩm</h2>
+                                </div>
+                                <div class="col-9">
+                                    <div class="product-wrapper">
+                                        <div class="product-card" id="product1-card">
+                                            <p><img src="{{ asset('assets/img/products/' . $product->images[0]->image_url) }}"
+                                                    alt="img-product-1"></p>
+                                            <span id="product1-name">Sản phẩm 1</span>
+                                        </div>
+                                        <div class="product-card" id="product2-card">
+                                            <p><img src="#" alt="img-product-2"></p>
+                                            <span id="product2-name">Sản phẩm 2</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="comparison-details">
+                                <div class="col-3 ">
+                                    <h3 class="title-details">Thông tin chi tiết</h3>
+                                </div>
+                                <div class="col-9">
+                                    <div class="details-wrapper">
+                                        <div class="details-card product-1">
+                                            <span>Thông tin sản phẩm 1</span>
+                                        </div>
+                                        <div class="details-card product-2">
+                                            <span>Thông tin sản phẩm 2</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="product-single__meta-info">
                     <div class="meta-item">

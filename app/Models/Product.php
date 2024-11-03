@@ -24,6 +24,8 @@ class Product extends Model
 
     public $timestamps = false;
 
+    protected $guarded = [];
+
     // Product thuộc về một Category
     public function category()
     {

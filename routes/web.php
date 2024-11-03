@@ -206,9 +206,11 @@ Route::post('/vocher/store', [VocherController::class, 'store'])->name('vocher.s
 
 
 Route::get('/product/{id}', [ProductController::class, 'show'])->name('product.show');
-
+//Route tìm kiếm product
+Route::get('/search-product', [ProductController::class, 'search']);
 // Route để hiển thị wishlist
 Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist.index');
+
 
 // Route để thêm sản phẩm vào wishlist
 Route::post('/wishlist/add/{productId}', [WishlistController::class, 'add'])->name('wishlist.add');
@@ -232,6 +234,3 @@ Route::get('/products/showList', [ProductsController::class, 'showListProducts']
 // Xóa
 // routes/web.php
 Route::delete('/products/destroy/{id}', [ProductsController::class, 'destroy'])->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
-
-
-
