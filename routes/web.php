@@ -30,8 +30,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/addProducts', [ProductsController::class, 'showForm']);
-
 
 
 // Route dashboard
@@ -44,10 +42,6 @@ Route::get('/dashboard', function () {
 Route::get('/auth', function () {
     return view('viewUser.auth');
 })->name('auth');
-
-Route::get('/logout', function () {
-    return view('viewUser.logout');
-})->name('logout');
 
 Route::post('/logout', function () {
     Auth::logout();
@@ -241,7 +235,10 @@ Route::get('/products/showList', [ProductsController::class, 'showListProducts']
 
 // Xóa
 // routes/web.php
-Route::delete('/products/destroy/{id}', [ProductsController::class, 'destroy'])->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);// Route để lưu dữ liệu người dùng hiệnchatbox
+Route::delete('/products/destroy/{id}', [ProductsController::class, 'destroy'])->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
+Route::get('/products/search', [ProductsController::class, 'searchProducts'])->name('products.search');
+Route::post('/search', [ProductsController::class, 'search'])->name('products.instant');
+
 
 // Route để lưu dữ liệu chatbox chatbox
 Route::post('/api/save-chatbox-data', [ChatboxController::class, 'saveChatboxData']);
