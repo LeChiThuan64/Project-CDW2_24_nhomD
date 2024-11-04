@@ -110,7 +110,11 @@
           <p>Bạn chưa có voucher nào!</p>
           @endif
           @else
-          <p>Vui lòng <a href="{{ route('login') }}" class="btn btn-link">đăng nhập</a> để sử dụng voucher.</p>
+          <div class="text-center mt-3">
+            <p>Vui lòng đăng nhập để sử dụng voucher:</p>
+            <a href="{{ route('auth') }}" class="btn btn-primary">Đăng nhập</a>
+          </div>
+
           @endauth
         </div>
 
