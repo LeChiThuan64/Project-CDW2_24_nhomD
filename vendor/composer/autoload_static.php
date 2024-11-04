@@ -619,7 +619,7 @@ class ComposerStaticInit08bd8dbb14e45880343ffd83e374ae8c
         'App\\Models\\Review' => __DIR__ . '/../..' . '/app/Models/Review.php',
         'App\\Models\\Size' => __DIR__ . '/../..' . '/app/Models/Size.php',
         'App\\Models\\User' => __DIR__ . '/../..' . '/app/Models/User.php',
-        'App\\Models\\Vocher' => __DIR__ . '/../..' . '/app/Models/Vocher.php',
+        'App\\Models\\Voucher' => __DIR__ . '/../..' . '/app/Models/Voucher.php',
         'App\\Models\\Wishlist' => __DIR__ . '/../..' . '/app/Models/Wishlist.php',
         'App\\Policies\\ProductPolicy' => __DIR__ . '/../..' . '/app/Policies/ProductPolicy.php',
         'App\\Providers\\AppServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AppServiceProvider.php',

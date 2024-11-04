@@ -46,7 +46,7 @@ return array(
     'App\\Models\\Review' => $baseDir . '/app/Models/Review.php',
     'App\\Models\\Size' => $baseDir . '/app/Models/Size.php',
     'App\\Models\\User' => $baseDir . '/app/Models/User.php',
-    'App\\Models\\Vocher' => $baseDir . '/app/Models/Vocher.php',
+    'App\\Models\\Voucher' => $baseDir . '/app/Models/Voucher.php',
     'App\\Models\\Wishlist' => $baseDir . '/app/Models/Wishlist.php',
     'App\\Policies\\ProductPolicy' => $baseDir . '/app/Policies/ProductPolicy.php',
     'App\\Providers\\AppServiceProvider' => $baseDir . '/app/Providers/AppServiceProvider.php',
