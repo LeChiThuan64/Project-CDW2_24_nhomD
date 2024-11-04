@@ -1652,7 +1652,7 @@ document.addEventListener('DOMContentLoaded', function() {
                               <div><strong>Name:</strong> ${product.name}</div>
                               <div><strong>Description:</strong> ${product.description}</div>
                               <div><strong>Price:</strong> ${price}</div>
-                              div><strong>Price:</strong> ${quanlity}</div>
+                              <div><strong>Price:</strong> ${quanlity}</div>
                           </div>
                       `;
                       document.querySelector('.details-card.product-2 span').innerHTML = product2Details;

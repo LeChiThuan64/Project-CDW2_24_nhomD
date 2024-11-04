@@ -403,4 +403,6 @@
 
 
 <div class="mb-5 pb-xl-5"></div>
+<!-- Bao gồm component chatbox -->
+<x-chatbox />
 @endsection

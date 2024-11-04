@@ -13,6 +13,7 @@ use App\Http\Controllers\BlogController;
 use App\Http\Controllers\AdminBlogController;
 use App\Http\Controllers\VocherController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\ChatboxController;
 use App\Models\Blog;
 /*
 |--------------------------------------------------------------------------
@@ -80,6 +81,13 @@ Route::post('/add-user', [UserController::class, 'store'])->name('user.store');
 
 // Hiển thị model
 Route::get('/users/{id}', [UserController::class, 'show'])->name('user.show');
+
+// Route để hiện thị admin supprort chatbox
+Route::prefix('admin')->group(function () {
+    Route::get('/chatbox', [ChatboxController::class, 'index'])->name('admin.chatbox.index');
+    Route::post('/chatbox/update-status/{id}', [ChatboxController::class, 'updateStatus'])->name('admin.chatbox.updateStatus');
+    Route::delete('/chatbox/delete/{id}', [ChatboxController::class, 'delete'])->name('admin.chatbox.delete');
+});
 
 
 // Route cho trang chi tiết sản phẩm
@@ -233,4 +241,7 @@ Route::get('/products/showList', [ProductsController::class, 'showListProducts']
 
 // Xóa
 // routes/web.php
-Route::delete('/products/destroy/{id}', [ProductsController::class, 'destroy'])->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
+Route::delete('/products/destroy/{id}', [ProductsController::class, 'destroy'])->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);// Route để lưu dữ liệu người dùng hiệnchatbox
+
+// Route để lưu dữ liệu chatbox chatbox
+Route::post('/api/save-chatbox-data', [ChatboxController::class, 'saveChatboxData']);

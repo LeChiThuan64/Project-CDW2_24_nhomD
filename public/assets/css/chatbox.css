@@ -1,0 +1,135 @@
+/* CSS của chức năng chatbox online */
+.chatbox-content {
+    display: none;
+}
+
+.chatbox-content.active {
+    display: block;
+}
+
+.chatbox {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 400px;
+}
+
+.chatbox-toggle {
+    position: fixed;
+    bottom: 20px; /* Khoảng cách từ cạnh dưới */
+    right: 20px; /* Khoảng cách từ cạnh phải */
+    background-color: #4caf50; /* Màu nền cho nút */
+    border: none;
+    border-radius: 50%;
+    color: #fff;
+    font-size: 24px;
+    padding: 15px;
+    cursor: pointer;
+    outline: none;
+}
+
+.chatbox-content {
+    display: none;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 15px;
+}
+
+.chatbox-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.chatbox-header div {
+    display: flex;
+    gap: 10px;
+}
+
+.close-chatbox,
+.reset-chatbox {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.chatbox-messages {
+    max-height: 200px;
+    overflow-y: auto;
+    margin: 10px 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.system-message {
+    text-align: left;
+    background-color: #f1f1f1;
+    padding: 10px;
+    border-radius: 10px;
+    margin: 5px 0;
+    width: 50%;
+}
+
+.customer-message {
+    text-align: center;
+    background-color: #d1e7dd;
+    padding: 10px;
+    border-radius: 10px;
+    margin: 5px 0;
+    width: 50%;
+    align-self: flex-end;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.chatbox-options {
+    display: flex;
+    flex-direction: column; /* Đặt các phần tử theo chiều dọc */
+    gap: 10px; /* Khoảng cách giữa các nút */
+    margin-top: 10px;
+}
+
+.chat-option {
+    padding: 8px 15px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.chat-option:hover {
+    background-color: #45a049;
+}
+
+.chatbox-input-container {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.chatbox-input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-right: 10px;
+}
+
+.chatbox-send {
+    padding: 10px 20px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.chatbox-send:hover {
+    background-color: #0056b3;
+}
