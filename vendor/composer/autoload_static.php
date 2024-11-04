@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitbfe12996eeecb6fdc8713a9fd9d431f8
+class ComposerStaticInit08bd8dbb14e45880343ffd83e374ae8c
 {
     public static $files = array (
         '6e3fae29631ef280660b3cdad06f25a8' => __DIR__ . '/..' . '/symfony/deprecation-contracts/function.php',
@@ -587,6 +587,8 @@ class ComposerStaticInitbfe12996eeecb6fdc8713a9fd9d431f8
         'App\\Http\\Controllers\\Auth\\ProductsController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/ProductsController.php',
         'App\\Http\\Controllers\\Auth\\RegisterController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/RegisterController.php',
         'App\\Http\\Controllers\\BlogController' => __DIR__ . '/../..' . '/app/Http/Controllers/BlogController.php',
+        'App\\Http\\Controllers\\CartController' => __DIR__ . '/../..' . '/app/Http/Controllers/CartController.php',
+        'App\\Http\\Controllers\\ChatboxController' => __DIR__ . '/../..' . '/app/Http/Controllers/ChatboxController.php',
         'App\\Http\\Controllers\\ContactController' => __DIR__ . '/../..' . '/app/Http/Controllers/ContactController.php',
         'App\\Http\\Controllers\\Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/Controller.php',
         'App\\Http\\Controllers\\ProductController' => __DIR__ . '/../..' . '/app/Http/Controllers/ProductController.php',
@@ -604,7 +606,10 @@ class ComposerStaticInitbfe12996eeecb6fdc8713a9fd9d431f8
         'App\\Http\\Middleware\\ValidateSignature' => __DIR__ . '/../..' . '/app/Http/Middleware/ValidateSignature.php',
         'App\\Http\\Middleware\\VerifyCsrfToken' => __DIR__ . '/../..' . '/app/Http/Middleware/VerifyCsrfToken.php',
         'App\\Models\\Blog' => __DIR__ . '/../..' . '/app/Models/Blog.php',
+        'App\\Models\\Cart' => __DIR__ . '/../..' . '/app/Models/Cart.php',
+        'App\\Models\\CartItem' => __DIR__ . '/../..' . '/app/Models/CartItem.php',
         'App\\Models\\Category' => __DIR__ . '/../..' . '/app/Models/Category.php',
+        'App\\Models\\ChatboxData' => __DIR__ . '/../..' . '/app/Models/ChatboxData.php',
         'App\\Models\\Color' => __DIR__ . '/../..' . '/app/Models/Color.php',
         'App\\Models\\Comment' => __DIR__ . '/../..' . '/app/Models/Comment.php',
         'App\\Models\\ContactMessage' => __DIR__ . '/../..' . '/app/Models/ContactMessage.php',
@@ -623,6 +628,7 @@ class ComposerStaticInitbfe12996eeecb6fdc8713a9fd9d431f8
         'App\\Providers\\ElasticsearchServiceProvider' => __DIR__ . '/../..' . '/app/Providers/ElasticsearchServiceProvider.php',
         'App\\Providers\\EventServiceProvider' => __DIR__ . '/../..' . '/app/Providers/EventServiceProvider.php',
         'App\\Providers\\RouteServiceProvider' => __DIR__ . '/../..' . '/app/Providers/RouteServiceProvider.php',
+        'App\\View\\Components\\Chatbox' => __DIR__ . '/../..' . '/app/View/Components/Chatbox.php',
         'Attribute' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
         'Brick\\Math\\BigDecimal' => __DIR__ . '/..' . '/brick/math/src/BigDecimal.php',
         'Brick\\Math\\BigInteger' => __DIR__ . '/..' . '/brick/math/src/BigInteger.php',
@@ -740,6 +746,8 @@ class ComposerStaticInitbfe12996eeecb6fdc8713a9fd9d431f8
         'Database\\Seeders\\DatabaseSeeder' => __DIR__ . '/../..' . '/database/seeders/DatabaseSeeder.php',
         'Database\\Seeders\\ProductSeeder' => __DIR__ . '/../..' . '/database/seeders/ProductSeeder.php',
         'Database\\Seeders\\ProductSeederTC' => __DIR__ . '/../..' . '/database/seeders/ProductSeederTC.php',
+        'Database\\Seeders\\ProductSizeColorSeeder' => __DIR__ . '/../..' . '/database/seeders/ProductSizeColorSeeder.php',
+        'Database\\Seeders\\ReviewSeeder' => __DIR__ . '/../..' . '/database/seeders/ReviewSeeder.php',
         'Database\\Seeders\\SizeSeeder' => __DIR__ . '/../..' . '/database/seeders/SizeSeeder.php',
         'Database\\Seeders\\UserSeeder' => __DIR__ . '/../..' . '/database/seeders/UserSeeder.php',
         'DateError' => __DIR__ . '/..' . '/symfony/polyfill-php83/Resources/stubs/DateError.php',
@@ -6992,9 +7000,9 @@ class ComposerStaticInitbfe12996eeecb6fdc8713a9fd9d431f8
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInitbfe12996eeecb6fdc8713a9fd9d431f8::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitbfe12996eeecb6fdc8713a9fd9d431f8::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInitbfe12996eeecb6fdc8713a9fd9d431f8::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit08bd8dbb14e45880343ffd83e374ae8c::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit08bd8dbb14e45880343ffd83e374ae8c::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit08bd8dbb14e45880343ffd83e374ae8c::$classMap;
 
         }, null, ClassLoader::class);
     }
