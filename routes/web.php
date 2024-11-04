@@ -14,6 +14,7 @@ use App\Http\Controllers\AdminBlogController;
 use App\Http\Controllers\VocherController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ChatboxController;
+use App\Http\Controllers\CartController;
 use App\Models\Blog;
 /*
 |--------------------------------------------------------------------------
@@ -108,6 +109,11 @@ Route::get('/blogs_Detal', function () {
     return view('viewUser.blogs_Detal');
 });
 
+Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+
+Route::post('/cart/apply-voucher', [CartController::class, 'applyVoucher'])->name('cart.applyVoucher');
+
+
 // Liên hệ CONTACT
 Route::get('/contact', function () {
     return view('viewUser.contact');
@@ -196,20 +202,13 @@ Route::get('/vocher', function () {
 Route::get('/giamgia', function () {
     return view('viewAdmin.giamgia');
 });
-//Thêm vocher
+// Các route liên quan đến Voucher
 Route::get('/vocher', [VocherController::class, 'index'])->name('vocher.index');
 Route::get('/vocher/create', [VocherController::class, 'create'])->name('vocher.create');
-// Sửa Vocher
-
-Route::put('/vocher/{id}', [VocherController::class, 'update'])->name('vocher.update');
-Route::get('/vocher/{id}/edit', [VocherController::class, 'edit'])->name('vocher.edit');
-
-// xóa
-Route::delete('/vocher/{id}', [VocherController::class, 'destroy'])->name('vocher.destroy');
-
-
-// hiển thị
 Route::post('/vocher/store', [VocherController::class, 'store'])->name('vocher.store');
+Route::get('/vocher/{id}/edit', [VocherController::class, 'edit'])->name('vocher.edit');
+Route::put('/vocher/{id}', [VocherController::class, 'update'])->name('vocher.update');
+Route::delete('/vocher/{id}', [VocherController::class, 'destroy'])->name('vocher.destroy');
 //Het blog cho admin
 
 

@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use App\Models\Voucher;
 
 class User extends Authenticatable
 {
@@ -15,8 +16,16 @@ class User extends Authenticatable
 
     // Cho phép các trường này có thể được ghi vào cơ sở dữ liệu
     // protected $fillable = ['name', 'email', 'password', 'role', 'phone', 'gender', 'dob', 'profile_image'];
-protected $fillable = [
-        'name', 'email', 'password', 'phone', 'role', 'gender', 'dob', 'is_active', 'profile_image'
+    protected $fillable = [
+        'name',
+        'email',
+        'password',
+        'phone',
+        'role',
+        'gender',
+        'dob',
+        'is_active',
+        'profile_image'
     ];
     protected $hidden = ['password', 'remember_token'];
 
@@ -24,10 +33,11 @@ protected $fillable = [
         'email_verified_at' => 'datetime',
         'dob' => 'date', // Chuyển đổi trường 'dob' thành kiểu ngày
     ];
-    public function vochers()
+    public function vouchers()
     {
-        return $this->hasMany(Vocher::class);
+        return $this->hasMany(Voucher::class);
     }
+
 
     public function reviews()
     {

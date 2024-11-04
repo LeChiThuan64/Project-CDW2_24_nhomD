@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Vocher;
+use App\Models\Voucher;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -10,9 +10,8 @@ class VocherController extends Controller
 {
     public function index()
     {
-        // Lấy danh sách tất cả các voucher
-        $vochers = Vocher::all();
-        return view('viewAdmin.vocher', compact('vochers'));
+        $vouchers = Voucher::all(); // Sửa 'Vocher::all()' thành 'Voucher::all()'
+        return view('viewAdmin.vocher', compact('vouchers'));
     }
     public function create()
     {
@@ -23,7 +22,7 @@ class VocherController extends Controller
 
     public function store(Request $request)
     {
-        $vocher = new Vocher();
+        $vocher = new Voucher();
         $vocher->name = $request->name;
         $vocher->description = $request->description;
         $vocher->discount = $request->discount;
@@ -44,7 +43,7 @@ class VocherController extends Controller
 
     public function destroy($id)
     {
-        $vocher = Vocher::findOrFail($id);
+        $vocher = Voucher::findOrFail($id);
         $vocher->delete();
 
         return redirect()->route('vocher.index')->with('success', 'Voucher đã được xóa thành công!');
@@ -54,13 +53,13 @@ class VocherController extends Controller
     public function edit($id)
     {
         // Lấy voucher theo ID
-        $vocher = Vocher::findOrFail($id);
+        $vocher = Voucher::findOrFail($id);
         $users = User::all(); // Lấy danh sách người dùng để chọn trong trường "áp dụng cho"
         return view('viewAdmin.edit_vocher', compact('vocher', 'users'));
     }
     public function update(Request $request, $id)
     {
-        $vocher = Vocher::findOrFail($id);
+        $vocher = Voucher::findOrFail($id);
 
         $vocher->name = $request->name;
         $vocher->description = $request->description;

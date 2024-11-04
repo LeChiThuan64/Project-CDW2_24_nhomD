@@ -1,6 +1,6 @@
 @extends('viewAdmin.navigation')
 
-@section('title', 'Voucher')
+@section('title', 'vocher')
 
 @section('content')
 <div class="container">
@@ -16,7 +16,7 @@
     <div class="card my-4">
       <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
         <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
-          <h6 class="text-white text-capitalize ps-3">Voucher</h6>
+          <h6 class="text-white text-capitalize ps-3">vocher</h6>
         </div>
       </div>
       <div class="row p-3">
@@ -35,7 +35,7 @@
         </div>
         <div class="col-md-2 text-right">
           <a href="{{ route('vocher.create') }}" class="btn btn-outline-primary">
-            <i class="fas fa-plus"></i> Tạo Voucher
+            <i class="fas fa-plus"></i> Tạo vocher
           </a>
         </div>
       </div>
@@ -46,7 +46,7 @@
         <table class="table align-items-center mb-0">
           <thead>
             <tr>
-              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Tên voucher</th>
+              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Tên vocher</th>
               <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Mô tả</th>
               <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Giảm giá</th>
               <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Ngày bắt đầu</th>
@@ -57,7 +57,7 @@
             </tr>
           </thead>
           <tbody>
-            @foreach($vochers as $vocher)
+            @foreach($vouchers as $vocher)
             <tr>
               <td>
                 <h6 class="mb-0 text-sm">{{ $vocher->name }}</h6>
@@ -94,7 +94,7 @@
                 <button type="button" class="btn btn-warning btn-sm px-3" style="border-radius: 5px; font-size: 14px;">
                   <i class="fas fa-eye"></i> Xem
                 </button>
-                <form action="{{ route('vocher.destroy', $vocher->id) }}" method="POST" style="display: inline;" onsubmit="return confirm('Bạn có chắc chắn muốn xóa voucher này?');">
+                <form action="{{ route('vocher.destroy', $vocher->id) }}" method="POST" style="display: inline;" onsubmit="return confirm('Bạn có chắc chắn muốn xóa vocher này?');">
                   @csrf
                   @method('DELETE')
                   <button type="submit" class="btn btn-danger btn-sm px-3" style="border-radius: 5px; font-size: 14px;">
