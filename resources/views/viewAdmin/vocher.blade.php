@@ -51,6 +51,7 @@
               <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Giảm giá</th>
               <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Ngày bắt đầu</th>
               <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Ngày kết thúc</th>
+              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Trạng thái</th> <!-- Thêm cột Trạng thái -->
               <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Áp dụng cho</th>
               <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Action</th>
             </tr>
@@ -74,7 +75,16 @@
               <td>
                 <h6 class="mb-0 text-sm">{{ \Carbon\Carbon::parse($vocher->end_date)->format('d/m/Y') }}</h6>
               </td>
-
+              <td>
+                <h6 class="mb-0 text-sm">
+                  <!-- Kiểm tra trạng thái hạn sử dụng -->
+                  @if(\Carbon\Carbon::now()->lte(\Carbon\Carbon::parse($vocher->end_date)))
+                  <span class="badge bg-success">Còn hạn</span>
+                  @else
+                  <span class="badge bg-danger">Hết hạn</span>
+                  @endif
+                </h6>
+              </td>
               <td>
                 <h6 class="mb-0 text-sm">
                   {{ $vocher->is_global ? 'Tất cả người dùng' : ($vocher->user->name ?? 'N/A') }}

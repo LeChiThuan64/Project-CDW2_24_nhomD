@@ -10,7 +10,8 @@ class Product extends Model
     use HasFactory;
 
     protected $table = 'products'; // Tên bảng
-    protected $primaryKey = 'product_id'; // Khóa chính
+    protected $primaryKey = 'product_id';
+
 
     protected $fillable = [
         'name',
@@ -22,6 +23,8 @@ class Product extends Model
 
 
     public $timestamps = false;
+
+    protected $guarded = [];
 
     // Product thuộc về một Category
     public function category()
@@ -48,14 +51,13 @@ class Product extends Model
 
     public function sizesAndColors()
     {
-        return $this->belongsToMany(Size::class, 'product_size_color')
+        return $this->belongsToMany(Size::class, 'product_size_color', 'product_id')
             ->withPivot('color_id', 'size_id', 'quantity', 'price')
             ->withTimestamps();
     }
-
-
     public function productSizeColors()
     {
         return $this->hasMany(ProductSizeColor::class, 'product_id');
     }
+
 }

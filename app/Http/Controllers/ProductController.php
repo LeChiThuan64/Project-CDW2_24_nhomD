@@ -10,24 +10,50 @@ class ProductController extends Controller
     // Hiển thị chi tiết sản phẩm
     public function show($id)
     {
-        // Lấy sản phẩm theo ID cùng với đánh giá, danh mục và hình ảnh
-        $product = Product::with(['reviews', 'category', 'images'])->find($id);
-
+        // Lấy sản phẩm theo ID cùng với các thông tin liên quan
+        $product = Product::with([
+                'reviews', 
+                'category', 
+                'images', 
+                'productSizeColors.size', 
+                'productSizeColors.color'  
+            ])
+            ->where('product_id', $id)
+            ->first(); // Sử dụng first() để lấy một sản phẩm duy nhất
+    
+        // Kiểm tra nếu sản phẩm không tồn tại
+        if (!$product) {
+            return response()->json(['success' => false, 'message' => 'Không tìm thấy sản phẩm'], 404);
+        }
+    
         // Tính trung bình rating và số lượng đánh giá
-        $averageRating = $product->reviews->avg('rating') ?? 0; // Đảm bảo không bị lỗi khi không có đánh giá
-        $reviewCount = $product->reviews->count();
-
+        $averageRating = $product->reviews->avg('rating') ?? 0; // Sử dụng $product->reviews thay vì optional()
+        $reviewCount = $product->reviews->count(); // Sử dụng $product->reviews
+    
         // Lấy danh sách hình ảnh của sản phẩm
         $images = $product->images->pluck('image_url')->toArray(); // Sử dụng `pluck` để lấy mảng các URL ảnh
-
+    
+        // Lấy thông tin kích thước và màu sắc cùng với thông tin từ bảng trung gian
+        $sizesAndColors = $product->sizesAndColors->map(function ($item) {
+            return [
+                'size' => optional($item->size)->name, // Lấy tên kích thước
+                'color' => optional($item->color)->name, // Lấy tên màu sắc
+                'quantity' => $item->pivot->quantity, // Lấy thông tin từ bảng trung gian
+                'price' => $item->pivot->price, // Lấy giá từ bảng trung gian
+            ];
+        });
+    
         // Trả về view product-detail và truyền dữ liệu cho view
         return view('viewUser.product-detail', [
             'product' => $product,
             'averageRating' => $averageRating,
             'reviewCount' => $reviewCount,
             'images' => $images,
+            'sizesAndColors' => $sizesAndColors,
         ]);
     }
+    
+
 
     // Thêm đánh giá cho sản phẩm
     public function addReview(Request $request, $productId)
@@ -53,15 +79,63 @@ class ProductController extends Controller
 
     public function search(Request $request)
     {
-        // Lấy từ khóa tìm kiếm từ request
-        $keyword = $request->input('search-keyword');
+        try {
+            $product_id = $request->query('product_id');
+            $product_name = $request->query('product_name');
+        
+            if ($product_id || $product_name) {
+                $query = Product::with(['images', 'productSizeColors']); // Thêm relationship images              
+    
+                // Nhóm điều kiện tìm kiếm với hàm nặc danh (closure)
+                $query->where(function ($q) use ($product_id, $product_name) {
+                    if ($product_id) {
+                        $q->where('product_id', $product_id);
+                    }
+    
+                    if ($product_name) {
+                        $q->orWhere('name', 'like', '%' . $product_name . '%');
+                    }
+                });
+    
+                $product = $query->first();
+        
+                if ($product) {
+                    // Lấy danh sách hình ảnh của sản phẩm
+                    $images = $product->images->pluck('image_url')->toArray(); // Sử dụng `pluck` để lấy mảng các URL ảnh
 
-        // Tìm kiếm sản phẩm dựa trên từ khóa
-        $products = Product::where('name', 'like', '%' . $keyword . '%')
-                            ->orWhere('description', 'like', '%' . $keyword . '%')
-                            ->get();
+                    // Transform dữ liệu trước khi trả về
+                    $productData = [
+                        'product_id' => $product->product_id,
+                        'name' => $product->name,
+                        'description' => $product->description,
+                        'price' => $product->price,
+                        'quantity' => $product->quantity,
+                        'images' => $images,
+                    ];
+        
+                    return response()->json([
+                        'success' => true, 
+                        'product' => $productData
+                    ]);
+                }
+        
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Product not found'
+                ], 404);
+            }
+        
+            return response()->json([
+                'success' => false,
+                'message' => 'No search criteria provided'
+            ], 400);
 
-        // Trả về view kết quả tìm kiếm
-        return view('viewUser.search-results', compact('products', 'keyword'));
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error occurred while searching for product',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 }

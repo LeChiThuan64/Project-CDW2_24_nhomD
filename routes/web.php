@@ -13,6 +13,7 @@ use App\Http\Controllers\BlogController;
 use App\Http\Controllers\AdminBlogController;
 use App\Http\Controllers\VocherController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\ChatboxController;
 use App\Models\Blog;
 /*
 |--------------------------------------------------------------------------
@@ -75,10 +76,20 @@ Route::post('/add-user', [UserController::class, 'store'])->name('user.store');
 // Hiển thị model
 Route::get('/users/{id}', [UserController::class, 'show'])->name('user.show');
 
+// Route để hiện thị admin supprort chatbox
+Route::prefix('admin')->group(function () {
+    Route::get('/chatbox', [ChatboxController::class, 'index'])->name('admin.chatbox.index');
+    Route::post('/chatbox/update-status/{id}', [ChatboxController::class, 'updateStatus'])->name('admin.chatbox.updateStatus');
+    Route::delete('/chatbox/delete/{id}', [ChatboxController::class, 'delete'])->name('admin.chatbox.delete');
+});
+
 
 // Route cho trang chi tiết sản phẩm
-Route::get('/product-detail', function () {
-    return view('viewUser.product-detail');
+Route::get('/cart', function () {
+    return view('viewUser.cart');
+});
+Route::get('/home', function () {
+    return view('viewUser.home');
 });
 Route::get('/wishlist', function () {
     return view('viewUser.wishlist');
@@ -197,9 +208,11 @@ Route::post('/vocher/store', [VocherController::class, 'store'])->name('vocher.s
 
 
 Route::get('/product/{id}', [ProductController::class, 'show'])->name('product.show');
-
+//Route tìm kiếm product
+Route::get('/search-product', [ProductController::class, 'search']);
 // Route để hiển thị wishlist
 Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist.index');
+
 
 // Route để thêm sản phẩm vào wishlist
 Route::post('/wishlist/add/{productId}', [WishlistController::class, 'add'])->name('wishlist.add');
@@ -209,6 +222,8 @@ Route::delete('/wishlist/remove/{wishlistId}', [WishlistController::class, 'remo
 // Tìm kiếm
 Route::get('/search-results', [ProductController::class, 'search'])->name('product.search');
 
+// Review
+Route::post('/products/{product_id}/review', [ProductController::class, 'addReview'])->name('addReview');
 
 
 
@@ -225,5 +240,5 @@ Route::get('/products/search', [ProductsController::class, 'searchProducts'])->n
 Route::post('/search', [ProductsController::class, 'search'])->name('products.instant');
 
 
-
-
+// Route để lưu dữ liệu chatbox chatbox
+Route::post('/api/save-chatbox-data', [ChatboxController::class, 'saveChatboxData']);

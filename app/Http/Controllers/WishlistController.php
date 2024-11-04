@@ -13,27 +13,27 @@ class WishlistController extends Controller
 {
     // Hiển thị wishlist
     public function index()
-    {
-        // Giả lập người dùng đã đăng nhập
-        $user = User::find(1);
-        // $user = Auth::user();
+{
+    // Giả lập người dùng đã đăng nhập
+    $user = User::find(1); // Thay thế bằng Auth::user() nếu bạn muốn sử dụng người dùng đã đăng nhập
 
     // Kiểm tra xem người dùng đã đăng nhập chưa
     if ($user) {
         // Lấy tất cả wishlist items của người dùng
         $wishlistItems = Wishlist::where('user_id', $user->id)->get();
 
-        // Sử dụng map để thêm thông tin sản phẩm vào wishlist
+        // Sử dụng map để thêm thông tin sản phẩm và hình ảnh vào wishlist
         $wishlistItems = $wishlistItems->map(function ($wishlistItem) {
-            $wishlistItem->product = Product::find($wishlistItem->product_id);
+            $wishlistItem->product = Product::with('images')->find($wishlistItem->product_id); // Lấy sản phẩm và mối quan hệ images
             return $wishlistItem;
         });
     } else {
         $wishlistItems = collect(); // Nếu chưa đăng nhập, tạo một collection rỗng
     }
 
-    return view('viewUser.wishlist', data: compact('wishlistItems'));
-    }
+    return view('viewUser.wishlist', compact('wishlistItems')); // Truyền dữ liệu vào view
+}
+
 
     // Thêm sản phẩm vào wishlist
     public function add($productId)

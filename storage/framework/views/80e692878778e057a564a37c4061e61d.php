@@ -7,6 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link rel="apple-touch-icon" sizes="76x76" href="<?php echo e(asset('assets/img/apple-icon.png')); ?>" />
   <link rel="icon" type="image/png" href="<?php echo e(asset('assets/img/favicon.png')); ?>">
+  <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>">
   <title>
     Material Dashboard 2 by Creative Tim
   </title>
@@ -46,6 +47,7 @@
   <link href="<?php echo e(asset('assets/css/nucleo-svg.css')); ?>" rel="stylesheet" />
   <link id="pagestyle" href="<?php echo e(asset('assets/css/material-dashboard.mine63c.css?v=3.1.0')); ?>" rel="stylesheet" />
   <link href="<?php echo e(asset('assets/css/addProducts.css')); ?>" rel="stylesheet" />
+  <link href="<?php echo e(asset('assets/css/list_products.css')); ?>" rel="stylesheet" />
 
   <!-- Toastr CSS -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
@@ -55,15 +57,18 @@
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
   <script defer data-site="demos.creative-tim.com" src="<?php echo e(asset('assets/js/nepcha-analytics.js')); ?>"></script>
   <style>
+    /*
     .pagination .page-item.active .page-link {
-        background-color: red; /* Màu nền đỏ */
-        color: white; /* Màu chữ trắng */
-        border-color: red; /* Màu viền đỏ */
+        background-color: red; 
+        color: white; 
+        border-color: red; 
     }
 
     .pagination .page-item .page-link {
-        color: #007bff; /* Màu mặc định cho các trang không active */
+        color: #007bff; 
     }
+
+    */
 </style>
 
 </head>
@@ -100,6 +105,14 @@
               <i class="material-icons opacity-10">table_view</i>
             </div>
             <span class="nav-link-text ms-1">Tables</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white " href="<?php echo e(route('products.showListProducts')); ?>">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="material-icons opacity-10">receipt_long</i>
+            </div>
+            <span class="nav-link-text ms-1">Products</span>
           </a>
         </li>
         <li class="nav-item">
@@ -180,6 +193,10 @@
     <!-- Toastr JS -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script src="<?php echo e(asset('assets/js/addProducts.js')); ?>"></script>
+    <script src="<?php echo e(asset('assets/js/list_products.js')); ?>"></script>
+
+    <!-- Thêm jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </body>
 </html>
 <?php /**PATH C:\xampp\htdocs\Project-CDW2_24_nhomD\resources\views/viewAdmin/navigation.blade.php ENDPATH**/ ?>
