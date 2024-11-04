@@ -50,10 +50,12 @@
   <link href="{{ asset('assets/css/list_products.css') }}" rel="stylesheet" />
 
   <!-- Toastr CSS -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
+
 
   <script src="{{ asset('assets/js/kit.fontawesome.js') }}" crossorigin="anonymous"></script>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
   <script defer data-site="demos.creative-tim.com" src="{{ asset('assets/js/nepcha-analytics.js') }}"></script>
   <style>
@@ -69,7 +71,7 @@
     }
 
     */
-</style>
+  </style>
 
 </head>
 
@@ -132,11 +134,11 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white " href="rtl.html">
+          <a class="nav-link text-white " href="{{ url('vocher_home') }}">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">format_textdirection_r_to_l</i>
             </div>
-            <span class="nav-link-text ms-1">RTL</span>
+            <span class="nav-link-text ms-1">Vocher</span>
           </a>
         </li>
         <li class="nav-item">
@@ -158,27 +160,45 @@
             <span class="nav-link-text ms-1">Profile</span>
           </a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link text-white " href="sign-in.html">
+        @if (auth()->check())
+    <!-- Nếu đã đăng nhập, hiển thị nút Logout -->
+    <li class="nav-item">
+        <form action="{{ route('logout') }}" method="POST" class="d-inline">
+            @csrf
+            <button type="submit" class="nav-link text-white border-0" style="background: none; cursor: pointer;">
+                <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                    <i class="material-icons opacity-10">logout</i>
+                </div>
+                <span class="nav-link-text ms-1">Logout</span>
+            </button>
+        </form>
+    </li>
+@else
+    <!-- Nếu chưa đăng nhập, hiển thị nút Sign In và Sign Up -->
+    <li class="nav-item">
+        <a class="nav-link text-white" href="{{ route('auth') }}">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="material-icons opacity-10">login</i>
+                <i class="material-icons opacity-10">login</i>
             </div>
             <span class="nav-link-text ms-1">Sign In</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-white " href="sign-up.html">
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link text-white" href="{{ route('auth') }}">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="material-icons opacity-10">assignment</i>
+                <i class="material-icons opacity-10">assignment</i>
             </div>
             <span class="nav-link-text ms-1">Sign Up</span>
-          </a>
-        </li>
+        </a>
+    </li>
+@endif
+
+
         <!-- Other menu items -->
         <!-- Add other menu items similarly, replacing static links -->
       </ul>
     </div>
-   
+
   </aside>
 
   <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg">
@@ -189,13 +209,16 @@
 
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.ckeditor.com/ckeditor5/37.0.0/classic/ckeditor.js"></script>
-    <!-- Toastr JS -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-    <script src="{{ asset('assets/js/addProducts.js') }}"></script>
-    <script src="{{ asset('assets/js/list_products.js') }}"></script>
+  <script src="https://cdn.ckeditor.com/ckeditor5/37.0.0/classic/ckeditor.js"></script>
+  <!-- Toastr JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+  <script src="{{ asset('assets/js/addProducts.js') }}"></script>
+  <script src="{{ asset('assets/js/list_products.js') }}"></script>
 
-    <!-- Thêm jQuery -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <!-- Thêm jQuery -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mark.js/dist/mark.min.js"></script>
+
 </body>
+
 </html>

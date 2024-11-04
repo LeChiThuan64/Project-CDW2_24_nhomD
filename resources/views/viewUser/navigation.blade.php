@@ -5,6 +5,8 @@
 
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <meta name="author" content="flexkit">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
 
     <link rel="shortcut icon" href="{{ asset('assets/img/logos/logoJ97.png') }}" type="image/x-icon">
     <link rel="preconnect" href="https://fonts.gstatic.com/">
@@ -19,6 +21,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/plugins/swiper.min.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('assets/css/plugins/jquery.fancybox.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('assets/css/auth.css') }}" type="text/css">
 
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -656,7 +659,7 @@
                             <a href="about.html" class="navigation__link">About</a>
                         </li>
                         <li class="navigation__item">
-                            <a href="{{ route('contact') }}" class="navigation__link">Contact</a>
+                            <a href="" class="navigation__link">Contact</a>
                         </li>
 
                     </ul><!-- /.navigation__list -->
@@ -1270,7 +1273,7 @@
 
                     <div class="customer-option mt-4 text-center">
                         <span class="text-secondary">No account yet?</span>
-                        <a href="login_register.html#register-tab" class="btn-text js-show-register">Create
+                        <a href="{{ route('auth', ['showRegister' => true]) }}" class="btn-text js-show-register">Create
                             Account</a>
                     </div>
                 </form>
@@ -1417,9 +1420,15 @@
     <script src="{{ asset('assets/js/plugins/jquery.fancybox.js') }}"></script>
     <script src="{{ asset('assets/js/details-disclosure.js') }}" defer="defer"></script>
     <script src="{{ asset('assets/js/share.js') }}" defer="defer"></script>
+    <script src="{{ asset('assets/js/auth.js') }}" defer="defer"></script>
 
     <!-- Footer Scripts -->
     <script src="{{ asset('assets/js/theme.js') }}"></script>
+    <script>
+        const loginUrl = "{{ route('login.signin') }}";
+        const registerUrl = "{{ route('register') }}";
+        const authUrl = "{{ route('auth') }}";
+    </script>
 
 </body>
 
