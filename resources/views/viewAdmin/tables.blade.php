@@ -143,7 +143,9 @@
                   </button>
                 </form>
 
-                <a href="{{ route('user.edit', $user->id) }}" class="btn btn-info btn-sm px-3" style="border-radius: 5px; font-size: 14px;">
+                <a href="{{ route('user.edit', Crypt::encryptString($user->id)) }}" 
+                class="btn btn-info btn-sm px-3" 
+                style="border-radius: 5px; font-size: 14px;">
                   <i class="fas fa-edit"></i> Sửa
                 </a>
 

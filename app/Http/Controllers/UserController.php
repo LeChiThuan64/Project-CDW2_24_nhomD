@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Crypt;
 
 class UserController extends Controller
 {
@@ -123,59 +124,67 @@ class UserController extends Controller
 
 
 
-    public function edit($id)
+    // public function edit($id)
+    // {
+    //     $user = User::findOrFail($id);
+    //     return view('viewAdmin.edit_user', compact('user'));
+    // }
+
+
+    public function edit($encryptedId)
     {
+        $id = Crypt::decryptString($encryptedId);
         $user = User::findOrFail($id);
         return view('viewAdmin.edit_user', compact('user'));
     }
 
+
     public function update(Request $request, $id)
-{
-    $request->validate([
-        'name' => 'required|string|max:100',
-        'email' => 'required|email|regex:/@gmail\.com$/|unique:users,email,' . $id,
-        'phone' => 'nullable|numeric|digits:10', // Cho phép phone là null
-        'gender' => 'required|in:male,female,other',
-        'dob' => 'nullable|date', // Cho phép dob là null
-        'profile_image' => 'nullable|image|mimes:jpeg,png|max:1024',
-    ]);
+    {
+        $request->validate([
+            'name' => 'required|string|max:100',
+            'email' => 'required|email|regex:/@gmail\.com$/|unique:users,email,' . $id,
+            'phone' => 'nullable|numeric|digits:10', // Cho phép phone là null
+            'gender' => 'required|in:male,female,other',
+            'dob' => 'nullable|date', // Cho phép dob là null
+            'profile_image' => 'nullable|image|mimes:jpeg,png|max:1024',
+        ]);
 
-    $user = User::findOrFail($id);
+        $user = User::findOrFail($id);
 
-    // Cập nhật thông tin người dùng bao gồm cả các trường trống trước đó
-    $user->update([
-        'name' => $request->input('name'),
-        'email' => $request->input('email'),
-        'phone' => $request->input('phone') ?: $user->phone, // Giữ giá trị cũ nếu không có input
-        'gender' => $request->input('gender'),
-        'dob' => $request->input('dob') ?: $user->dob, // Giữ giá trị cũ nếu không có input
-    ]);
+        // Cập nhật thông tin người dùng bao gồm cả các trường trống trước đó
+        $user->update([
+            'name' => $request->input('name'),
+            'email' => $request->input('email'),
+            'phone' => $request->input('phone') ?: $user->phone, // Giữ giá trị cũ nếu không có input
+            'gender' => $request->input('gender'),
+            'dob' => $request->input('dob') ?: $user->dob, // Giữ giá trị cũ nếu không có input
+        ]);
 
-    // Kiểm tra và lưu ảnh nếu có file ảnh tải lên
-    if ($request->hasFile('profile_image')) {
-        // Nếu người dùng đã có ảnh trước đó, xóa ảnh cũ
-        if ($user->profile_image) {
-            Storage::delete($user->profile_image);
+        // Kiểm tra và lưu ảnh nếu có file ảnh tải lên
+        if ($request->hasFile('profile_image')) {
+            // Nếu người dùng đã có ảnh trước đó, xóa ảnh cũ
+            if ($user->profile_image) {
+                Storage::delete($user->profile_image);
+            }
+
+            // Đường dẫn thư mục lưu ảnh
+            $directoryPath = public_path('uploads');
+
+            // Tạo thư mục nếu chưa tồn tại
+            if (!file_exists($directoryPath)) {
+                mkdir($directoryPath, 0755, true);
+            }
+
+            // Lưu ảnh mới
+            $profileImageName = $request->file('profile_image')->getClientOriginalName();
+            $request->file('profile_image')->move($directoryPath, $profileImageName);
+
+            // Cập nhật đường dẫn ảnh vào cơ sở dữ liệu
+            $profileImagePath = 'uploads/' . $profileImageName;
+            $user->update(['profile_image' => $profileImagePath]);
         }
 
-        // Đường dẫn thư mục lưu ảnh
-        $directoryPath = public_path('uploads');
-
-        // Tạo thư mục nếu chưa tồn tại
-        if (!file_exists($directoryPath)) {
-            mkdir($directoryPath, 0755, true);
-        }
-
-        // Lưu ảnh mới
-        $profileImageName = $request->file('profile_image')->getClientOriginalName();
-        $request->file('profile_image')->move($directoryPath, $profileImageName);
-
-        // Cập nhật đường dẫn ảnh vào cơ sở dữ liệu
-        $profileImagePath = 'uploads/' . $profileImageName;
-        $user->update(['profile_image' => $profileImagePath]);
+        return redirect()->route('tables')->with('success', 'Cập nhật thành công!');
     }
-
-    return redirect()->route('tables')->with('success', 'Cập nhật thành công!');
-}
-
 }
