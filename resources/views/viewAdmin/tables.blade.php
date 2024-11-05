@@ -185,22 +185,28 @@
 <!-- Phân trang -->
 @if ($users->lastPage() > 1)
 <div class="d-flex justify-content-center mt-4" id="pagination">
-    <ul class="pagination">
+    <ul class="pagination" style="display: flex; gap: 10px; border-radius: 5px; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);">
         {{-- Lặp qua tất cả các trang --}}
         @foreach ($users->getUrlRange(1, $users->lastPage()) as $page => $url)
             @if ($page == $users->currentPage())
-                <li class="page-item active">
-                    <span class="page-link">{{ $page }}</span>
+                <li class="page-item active" style="margin: 0; list-style: none;">
+                    <span class="page-link" style="background-color: #007bff; color: #fff; border-color: #007bff; border-radius: 5px; padding: 8px 12px;">
+                        {{ $page }}
+                    </span>
                 </li>
             @else
-                <li class="page-item">
-                    <a class="page-link" href="{{ $url }}">{{ $page }}</a>
+                <li class="page-item" style="margin: 0; list-style: none;">
+                    <a class="page-link" href="{{ $url }}" style="color: #007bff; border-radius: 5px; border-color: #ddd; padding: 8px 12px;">
+                        {{ $page }}
+                    </a>
                 </li>
             @endif
         @endforeach
     </ul>
 </div>
 @endif
+
+
 
 
 
