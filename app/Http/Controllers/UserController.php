@@ -50,6 +50,17 @@ class UserController extends Controller
 
 
 
+    //khóa user
+    public function toggleStatus($id, Request $request)
+    {
+        $user = User::findOrFail($id);
+        $user->is_active = $request->input('is_active');
+        $user->save();
+
+        return response()->json([
+            'message' => $user->is_active == 1 ? 'Tài khoản đã được mở khóa!' : 'Tài khoản đã bị khóa!',
+        ]);
+    }
 
 
 
