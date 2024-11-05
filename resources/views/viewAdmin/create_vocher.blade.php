@@ -56,10 +56,15 @@
                     <small id="discount-error" class="text-danger" style="display: none;">Giảm giá phải là số từ 1 đến 100%.</small>
                 </div>
 
-                <div class="form-group mb-4">
+                <!-- <div class="form-group mb-4">
                     <label for="start_date" class="form-label">Ngày bắt đầu:</label>
                     <input type="date" name="start_date" id="start_date" class="form-control" required>
+                </div> -->
+                <div class="form-group mb-4">
+                    <label for="start_date" class="form-label">Ngày bắt đầu:</label>
+                    <input type="date" name="start_date" id="start_date" class="form-control" min="{{ \Carbon\Carbon::now()->format('Y-m-d') }}" required>
                 </div>
+
 
                 <div class="form-group mb-4">
                     <label for="end_date" class="form-label">Ngày kết thúc:</label>
@@ -67,7 +72,11 @@
                     <small id="date-error" class="text-danger" style="display: none;">Ngày kết thúc phải sau ngày bắt đầu.</small>
                 </div>
 
-                <button type="submit" class="btn btn-primary w-100">Tạo Voucher</button>
+                <div class="buttons">
+         
+                    <button type="button" class="btn btn-danger" onclick="window.history.back();">Hủy</button>
+                    <button type="submit" class="btn btn-primary w-100">Tạo Voucher</button>
+                </div>
             </form>
         </div>
     </div>

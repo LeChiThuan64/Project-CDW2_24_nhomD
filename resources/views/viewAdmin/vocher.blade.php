@@ -29,7 +29,7 @@
                   <i class="fas fa-search"></i>
                 </button>
               </div>
-              <input type="text" name="search" class="form-control" placeholder="Tìm kiếm khách hàng..." aria-label="Tìm kiếm khách hàng">
+              <input type="text" name="search" style="height: 42px;" class="form-control" placeholder="Tìm kiếm khách hàng..." aria-label="Tìm kiếm khách hàng">
             </div>
           </form>
         </div>

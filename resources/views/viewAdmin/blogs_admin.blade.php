@@ -40,7 +40,7 @@
                 </button>
               </div>
               <input type="text" name="query" class="form-control" placeholder="Tìm kiếm bài viết theo tên hoặc ID..."
-                aria-label="Tìm kiếm bài viết" value="{{ request()->get('query') }}">
+                aria-label="Tìm kiếm bài viết" value="{{ request()->get('query') }}"style="height: 42px;">
             </div>
           </form>
         </div>
