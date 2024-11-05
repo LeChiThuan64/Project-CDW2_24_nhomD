@@ -14,6 +14,7 @@ use App\Http\Controllers\AdminBlogController;
 use App\Http\Controllers\VocherController;
 use App\Http\Controllers\ContactController;
 use App\Models\Blog;
+use App\Http\Controllers\ProfileController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -230,3 +231,9 @@ Route::delete('/products/destroy/{id}', [ProductsController::class, 'destroy'])-
 
 
 
+
+// Profile
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'show'])->name('profile');
+});
+Route::put('/profile/{id}', [ProfileController::class, 'update'])->name('profile.update');

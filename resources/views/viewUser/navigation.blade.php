@@ -22,6 +22,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/plugins/jquery.fancybox.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('assets/css/auth.css') }}" type="text/css">
+    
 
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -1421,6 +1422,7 @@
     <script src="{{ asset('assets/js/details-disclosure.js') }}" defer="defer"></script>
     <script src="{{ asset('assets/js/share.js') }}" defer="defer"></script>
     <script src="{{ asset('assets/js/auth.js') }}" defer="defer"></script>
+
 
     <!-- Footer Scripts -->
     <script src="{{ asset('assets/js/theme.js') }}"></script>
