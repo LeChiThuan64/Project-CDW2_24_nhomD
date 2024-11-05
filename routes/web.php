@@ -79,7 +79,7 @@ Route::get('/users/{id}', [UserController::class, 'show'])->name('user.show');
 
 // Route để hiện thị admin supprort chatbox
 Route::prefix('admin')->group(function () {
-    Route::get('/chatbox', [ChatboxController::class, 'index'])->name('admin.chatbox.index');
+    Route::get('/chatbox', [ChatboxController::class, 'index'])->name('admin.chatbox');
     Route::post('/chatbox/update-status/{id}', [ChatboxController::class, 'updateStatus'])->name('admin.chatbox.updateStatus');
     Route::delete('/chatbox/delete/{id}', [ChatboxController::class, 'delete'])->name('admin.chatbox.delete');
 });

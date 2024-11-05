@@ -181,8 +181,12 @@
                     <!-- Button comparison product -->
                     <button
                         class="menu-link menu-link_us-s to-share border-0 bg-transparent d-flex align-items-center comparison-button">
-                        <svg width="16" height="19" viewBox="0 0 16 19" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <use href="#icon_comparison" />
+                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
+                            fill="#5f6368">
+                            <path
+                                d="m320-160-56-57 103-103H80v-80h287L264-503l56-57 200 200-200 200Zm320-240L440-600l200-200 56 57-103 103h287v80H593l103 103-56 57Z" />
+                        </svg>
+                        <use href="#icon_comparison" />
                         </svg>
                         <span>Comparison</span>
                     </button>
