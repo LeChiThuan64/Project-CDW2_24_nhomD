@@ -67,6 +67,10 @@ Route::get('/tables', [UserController::class, 'index'])->name('tables');
 //blog
 Route::get('/blogs', [BlogController::class, 'index']);
 
+//khóa người dùng
+Route::post('/users/{id}/toggle-status', [UserController::class, 'toggleStatus']);
+
+
 // Route xóa người dùng
 Route::delete('/user/{id}', [UserController::class, 'destroy'])->name('user.destroy');
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Voucher;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
 
 class VocherController extends Controller
 {
@@ -50,13 +51,30 @@ class VocherController extends Controller
     }
 
 
-    public function edit($id)
+    // public function edit($id)
+    // {
+    //     // Lấy voucher theo ID
+    //     $vocher = Voucher::findOrFail($id);
+    //     $users = User::all(); // Lấy danh sách người dùng để chọn trong trường "áp dụng cho"
+    //     return view('viewAdmin.edit_vocher', compact('vocher', 'users'));
+    // }
+    public function edit($encryptedId)
     {
-        // Lấy voucher theo ID
-        $vocher = Voucher::findOrFail($id);
-        $users = User::all(); // Lấy danh sách người dùng để chọn trong trường "áp dụng cho"
-        return view('viewAdmin.edit_vocher', compact('vocher', 'users'));
+        try {
+            // Giải mã `id`
+            $id = Crypt::decrypt($encryptedId);
+    
+            // Lấy dữ liệu voucher dựa vào `id` đã giải mã
+            $vocher = Voucher::findOrFail($id);
+            $users = User::all(); // Lấy danh sách người dùng để chọn trong trường "áp dụng cho"
+            
+            return view('viewAdmin.edit_vocher', compact('vocher', 'users'));
+        } catch (\Exception $e) {
+            // Xử lý lỗi khi giải mã thất bại
+            return redirect()->route('vocher.index')->with('error', 'Không thể truy cập voucher này.');
+        }
     }
+
     public function update(Request $request, $id)
     {
         $vocher = Voucher::findOrFail($id);
