@@ -67,7 +67,11 @@
                     <small id="date-error" class="text-danger" style="display: none;">Ngày kết thúc phải sau ngày bắt đầu.</small>
                 </div>
 
-                <button type="submit" class="btn btn-primary w-100">Cập Nhật Voucher</button>
+                <div class="buttons">
+
+                    <button type="button" class="btn btn-danger" onclick="window.history.back();">Hủy</button>
+                    <button type="submit" class="btn btn-primary w-100">Cập Nhật Voucher</button>
+                </div>
             </form>
         </div>
     </div>
