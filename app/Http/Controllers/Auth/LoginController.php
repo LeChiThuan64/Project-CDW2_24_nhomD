@@ -16,19 +16,19 @@ class LoginController extends Controller
     public function login(Request $request)
     {
         // Kiểm tra xem email và mật khẩu có được cung cấp hay không
-        // if (!$request->filled('email') || !$request->filled('password')) {
-        //     return response()->json(['status' => 'error', 'message' => 'Vui lòng nhập đầy đủ thông tin đăng nhập.'], 422);
-        // }
+        if (!$request->filled('email') || !$request->filled('password')) {
+            return response()->json(['status' => 'error', 'message' => 'Vui lòng nhập đầy đủ thông tin đăng nhập.'], 422);
+        }
         
         // Kiểm tra xem email có tồn tại trong cơ sở dữ liệu hay không
-        $user = \App\Models\User::where('name', $request->name)->first();
+        $user = \App\Models\User::where('email', $request->email)->first();
         
         if (!$user) {
-            return response()->json(['status' => 'error', 'message' => 'username không tồn tại.'], 401);
+            return response()->json(['status' => 'error', 'message' => 'Email không tồn tại.'], 401);
         }
     
         // Kiểm tra thông tin đăng nhập
-        if (Auth::attempt(['name' => $request->name, 'password' => $request->password], $request->remember)) {
+        if (Auth::attempt(['email' => $request->email, 'password' => $request->password], $request->remember)) {
             // Lấy thông tin người dùng đã xác thực
             $user = Auth::user();
             

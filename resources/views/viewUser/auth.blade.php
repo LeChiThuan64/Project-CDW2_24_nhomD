@@ -12,8 +12,8 @@
     <form id="login-form" method="POST" action="{{ route('login.signin') }}">
             @csrf
             <div class="form-group">
-                <input type="text" name="name" id="login-name" placeholder="name  *" required>
-                <span class="text-danger" id="login-name-error"></span> <!-- Thông báo lỗi cho email -->
+                <input type="email" name="email" id="login-email" placeholder="Email address *" required>
+                <span class="text-danger" id="login-email-error"></span> <!-- Thông báo lỗi cho email -->
             </div>
             <div class="form-group">
                 <input type="password" name="password" id="login-password" placeholder="Password *" required>

@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", function() {
     if (loginForm) {
         loginForm.addEventListener('submit', function(e) {
             e.preventDefault();
-            document.getElementById('login-name-error').innerHTML = '';
+            document.getElementById('login-email-error').innerHTML = '';
             document.getElementById('login-password-error').innerHTML = '';
             document.getElementById('login-error').innerHTML = '';
 
