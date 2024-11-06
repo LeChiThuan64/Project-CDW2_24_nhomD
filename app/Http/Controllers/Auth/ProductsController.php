@@ -22,14 +22,28 @@ class ProductsController extends Controller
     {
         // Lấy tất cả sản phẩm cùng với hình ảnh và danh mục
         $products = Product::with('images', 'category')->get();
-    
+
         // Truyền biến $products vào view
         return view('viewUser.locgia', compact('products'));
     }
-    
-    
-    
-    
+
+    public function filterProducts(Request $request)
+{
+    $minPrice = $request->input('minPrice');
+    $maxPrice = $request->input('maxPrice');
+
+    $products = Product::whereHas('productSizeColors', function($query) use ($minPrice, $maxPrice) {
+        $query->whereBetween('price', [$minPrice, $maxPrice]);
+    })->with('images', 'productSizeColors.size', 'productSizeColors.color')->get();
+
+    return response()->json($products);
+}
+
+
+
+
+
+
 
     private $client;
     public function __construct()
