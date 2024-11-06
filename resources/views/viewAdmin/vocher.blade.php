@@ -1,6 +1,6 @@
 @extends('viewAdmin.navigation')
 
-@section('title', 'Voucher')
+@section('title', 'vocher')
 
 @section('content')
 <div class="container">
@@ -16,7 +16,7 @@
     <div class="card my-4">
       <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
         <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
-          <h6 class="text-white text-capitalize ps-3">Voucher</h6>
+          <h6 class="text-white text-capitalize ps-3">vocher</h6>
         </div>
       </div>
       <div class="row p-3">
@@ -29,13 +29,13 @@
                   <i class="fas fa-search"></i>
                 </button>
               </div>
-              <input type="text" name="search" class="form-control" placeholder="Tìm kiếm khách hàng..." aria-label="Tìm kiếm khách hàng">
+              <input type="text" name="search" style="height: 42px;" class="form-control" placeholder="Tìm kiếm khách hàng..." aria-label="Tìm kiếm khách hàng">
             </div>
           </form>
         </div>
         <div class="col-md-2 text-right">
           <a href="{{ route('vocher.create') }}" class="btn btn-outline-primary">
-            <i class="fas fa-plus"></i> Tạo Voucher
+            <i class="fas fa-plus"></i> Tạo vocher
           </a>
         </div>
       </div>
@@ -46,17 +46,18 @@
         <table class="table align-items-center mb-0">
           <thead>
             <tr>
-              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Tên voucher</th>
+              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Tên vocher</th>
               <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Mô tả</th>
               <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Giảm giá</th>
               <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Ngày bắt đầu</th>
               <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Ngày kết thúc</th>
+              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Trạng thái</th> <!-- Thêm cột Trạng thái -->
               <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Áp dụng cho</th>
               <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Action</th>
             </tr>
           </thead>
           <tbody>
-            @foreach($vochers as $vocher)
+            @foreach($vouchers as $vocher)
             <tr>
               <td>
                 <h6 class="mb-0 text-sm">{{ $vocher->name }}</h6>
@@ -74,7 +75,16 @@
               <td>
                 <h6 class="mb-0 text-sm">{{ \Carbon\Carbon::parse($vocher->end_date)->format('d/m/Y') }}</h6>
               </td>
-
+              <td>
+                <h6 class="mb-0 text-sm">
+                  <!-- Kiểm tra trạng thái hạn sử dụng -->
+                  @if(\Carbon\Carbon::now()->lte(\Carbon\Carbon::parse($vocher->end_date)))
+                  <span class="badge bg-success">Còn hạn</span>
+                  @else
+                  <span class="badge bg-danger">Hết hạn</span>
+                  @endif
+                </h6>
+              </td>
               <td>
                 <h6 class="mb-0 text-sm">
                   {{ $vocher->is_global ? 'Tất cả người dùng' : ($vocher->user->name ?? 'N/A') }}
@@ -84,7 +94,7 @@
                 <button type="button" class="btn btn-warning btn-sm px-3" style="border-radius: 5px; font-size: 14px;">
                   <i class="fas fa-eye"></i> Xem
                 </button>
-                <form action="{{ route('vocher.destroy', $vocher->id) }}" method="POST" style="display: inline;" onsubmit="return confirm('Bạn có chắc chắn muốn xóa voucher này?');">
+                <form action="{{ route('vocher.destroy', $vocher->id) }}" method="POST" style="display: inline;" onsubmit="return confirm('Bạn có chắc chắn muốn xóa vocher này?');">
                   @csrf
                   @method('DELETE')
                   <button type="submit" class="btn btn-danger btn-sm px-3" style="border-radius: 5px; font-size: 14px;">

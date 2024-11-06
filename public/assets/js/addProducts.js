@@ -1,5 +1,5 @@
-// Initialize CKEditor on the specific textarea
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
+
     // Initialize CKEditor
     let productEditor;
     ClassicEditor.create(document.querySelector('#productContent'))
@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
     // Prevent form submission if CKEditor content is empty
-    document.querySelector('form').addEventListener('submit', function(event) {
+    document.querySelector('form').addEventListener('submit', function (event) {
         if (productEditor && !productEditor.getData().trim()) {
             // alert('Nội dung sản phẩm không được để trống.');
             event.preventDefault(); // Prevent form submission
@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const dataToSend = collectDataForSubmission();
         // Gửi dữ liệu đến controller thông qua form submission
-    
+
         sendDataToServer(dataToSend).then(() => {
             // Allow the form to submit via the traditional method after data collection
             event.target.submit(); // or document.getElementById('submitForm').submit();
@@ -30,358 +30,375 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Tự động tắt thông báo sau 3 giây
-    setTimeout(function() {
+    setTimeout(function () {
         var successMessage = document.getElementById('successMessage');
         if (successMessage) {
             successMessage.style.transition = 'opacity 0.5s';
             successMessage.style.opacity = 0; // Giảm độ sáng
-            setTimeout(function() {
+            setTimeout(function () {
                 successMessage.style.display = 'none'; // Ẩn thông báo
             }, 500); // Chờ cho đến khi hoàn thành hiệu ứng giảm sáng
         }
     }, 1500); // 3 giây
-    
+
 });
 
 // Function to handle image input
-document.getElementById('chooseImageButton').addEventListener('click', function(event) {
+document.getElementById('chooseImageButton').addEventListener('click', function (event) {
     event.preventDefault(); // Ngăn chặn form submit
     document.getElementById('imageInput').click();
 });
+const imageInput = document.getElementById('imageInput');
+const container = document.getElementById('imagePlaceholderContainer');
+const imageNamesInput = document.getElementById('imageNames');
+let selectedFiles = []; // Mảng để giữ tất cả file đã chọn
 
-document.getElementById('imageInput').addEventListener('change', function(event) {
-    const files = event.target.files; // Get selected files
-    const container = document.getElementById('imagePlaceholderContainer');
-    const imageNamesInput = document.getElementById('imageNames');
-    let imageNames = imageNamesInput.value ? imageNamesInput.value.split(',') : []; // Keep track of image names
+imageInput.addEventListener('change', function (event) {
+    const files = event.target.files; // Lấy danh sách file mới được chọn
 
-    // Check current number of images and disable the button if 4 images are selected
-    if (imageNames.length >= 4) {
-        document.getElementById('chooseImageButton').disabled = true; // Disable button if 4 images selected
-        return; // Stop if already selected 4 images
+    // Nếu đã có 4 ảnh, ngăn chặn việc thêm mới
+    if (selectedFiles.length >= 4) {
+        document.getElementById('chooseImageButton').disabled = true;
+        return;
     }
 
-    // Loop through selected files
+    // Thêm file vào mảng selectedFiles nếu chưa có
     for (let i = 0; i < files.length; i++) {
-        // Check again before adding images
-        if (imageNames.length >= 4) break; // Stop if already at 4 images
-
         const file = files[i];
 
-        // Add image name to the array
-        imageNames.push(file.name); // Save image name to array
+        // Giới hạn kích thước file
+        if (file.size <= 1048576) { // 1 MB
+            if (!selectedFiles.some(f => f.name === file.name)) { // Nếu file chưa có trong danh sách
+                selectedFiles.push(file); // Thêm file vào mảng
 
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            const img = document.createElement('img');
-            img.src = e.target.result;
-            img.className = 'img-thumbnail w-100'; // Add Bootstrap class for thumbnail
+                // Hiển thị ảnh đã chọn
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.className = 'img-thumbnail w-100';
 
-            const imgPlaceholder = document.createElement('div');
-            imgPlaceholder.className = 'image-placeholder'; // Add class for image placeholder
-            imgPlaceholder.appendChild(img);
+                    const imgPlaceholder = document.createElement('div');
+                    imgPlaceholder.className = 'image-placeholder';
+                    imgPlaceholder.appendChild(img);
 
-            // Add remove functionality
-            const closeButton = document.createElement('button');
-            closeButton.innerHTML = '&times;';
-            closeButton.className = 'btn btn-danger btn-sm position-absolute'; // Bootstrap position
-            closeButton.style.top = '5px';
-            closeButton.style.right = '5px';
-            closeButton.addEventListener('click', function() {
-                container.removeChild(imgPlaceholder);
-                imageNames.splice(imageNames.indexOf(file.name), 1); // Remove image name from array
-                imageNamesInput.value = imageNames.join(','); // Update hidden field with new image names
+                    // Thêm nút xóa ảnh
+                    const closeButton = document.createElement('button');
+                    closeButton.innerHTML = '&times;';
+                    closeButton.className = 'btn btn-danger btn-sm position-absolute';
+                    closeButton.style.top = '5px';
+                    closeButton.style.right = '5px';
+                    closeButton.addEventListener('click', function () {
+                        container.removeChild(imgPlaceholder);
 
-                // Re-enable the button if number of images drops below 4
-                if (imageNames.length < 4) {
-                    document.getElementById('chooseImageButton').disabled = false; // Re-enable button
-                }
-            });
+                        // Xóa file khỏi selectedFiles và cập nhật input
+                        selectedFiles = selectedFiles.filter(f => f.name !== file.name);
+                        updateImageInput();
 
-            imgPlaceholder.appendChild(closeButton);
-            container.appendChild(imgPlaceholder);
-        };
+                        // Kích hoạt lại nút nếu số ảnh < 4
+                        if (selectedFiles.length < 4) {
+                            document.getElementById('chooseImageButton').disabled = false;
+                        }
+                    });
 
-        // **Add file to the input**
-        let dataTransfer = new DataTransfer(); // Use DataTransfer to handle multiple files
-        for (let j = 0; j < files.length; j++) {
-            dataTransfer.items.add(files[j]); // Add files to DataTransfer
+                    imgPlaceholder.appendChild(closeButton);
+                    container.appendChild(imgPlaceholder);
+                };
+                reader.readAsDataURL(file);
+            } else {
+                alert('Hình ảnh này đã được chọn: ' + file.name);
+            }
+        } else {
+            alert('File quá lớn: ' + file.name);
         }
-        document.getElementById('imageInput').files = dataTransfer.files; // Update input files
-
-        reader.readAsDataURL(file);
     }
 
-    imageNamesInput.value = imageNames.join(','); // Assign image names to hidden input
-    console.log("Selected images:", imageNamesInput.value); // Log selected images
+    // Cập nhật input với danh sách file
+    updateImageInput();
+
+    // Kiểm tra nếu đã đủ 4 ảnh để vô hiệu hóa nút chọn
+    document.getElementById('chooseImageButton').disabled = selectedFiles.length >= 4;
 });
 
+// Hàm cập nhật input với selectedFiles
+function updateImageInput() {
+    const dataTransfer = new DataTransfer();
+    selectedFiles.forEach(file => dataTransfer.items.add(file));
+    imageInput.files = dataTransfer.files;
 
+    // Cập nhật hidden input nếu cần
+    imageNamesInput.value = selectedFiles.map(file => file.name).join(',');
+}
 
+// Hiển thị các size khi chọn màu
+function showSizeOptions(color) {
+    // Ẩn container của tất cả màu
+    const allColorContainers = document.querySelectorAll('[id$="SizeContainer"]');
+    allColorContainers.forEach(container => {
+        container.style.display = 'none';
+    });
 
+    // Hiển thị container tương ứng với màu đã chọn
+    const selectedColorContainer = document.getElementById(color + 'SizeContainer');
+    selectedColorContainer.style.display = 'block';
+}
 
-// Sửa Lý =============================================================================
+// ===============================================
 
+// Khởi tạo các nút màu và kích thước
 const colorButtons = document.querySelectorAll('.color-button');
 const sizeButtons = document.querySelectorAll('.size-button');
 const sizeContainer = document.getElementById('sizeContainer');
 const quantityInputs = document.getElementById('quantityInputs');
 
 let selectedColorId = null;
-let activeColors = new Set(); // Tập hợp các màu được active
 let activeSizeId = null; // Kích thước hiện tại
-let activeSizes = {}; // Đối tượng lưu trữ các kích thước active theo màu
+let activeColors = {
+    1: [],  // Đen
+    2: [],  // Đỏ
+    3: []   // Xám
+};
+
+let activeSizes = {
+    XS: [],  // XS
+    S: [],   // S
+    M: [],   // M
+    L: [],   // L
+    XL: []   // XL
+};
 
 let savedQuantities = {}; // Đối tượng lưu trữ số lượng đã nhập
 let savedPrices = {}; // Đối tượng lưu trữ giá đã nhập
 
 // Cập nhật số lượng và giá đã nhập
-function updateSavedInputs(key) {
-    const quantityInput = document.querySelector(`input[name="quantities[${key}]"]`);
-    const priceInput = document.querySelector(`input[name="prices[${key}]"]`);
-
-    if (quantityInput) {
-        savedQuantities[key] = quantityInput.value;
-    }
-    if (priceInput) {
-        savedPrices[key] = priceInput.value;
-    }
-}
-
-quantityInputs.addEventListener('input', function(event) {
-    const key = event.target.name.split('[')[1].split(']')[0]; // Lấy key từ name
-    updateSavedInputs(key); // Cập nhật thông tin đã lưu
-});
-
-// Cập nhật ô nhập liệu
-// Cập nhật ô nhập liệu
-function updateQuantityInput() {
-    quantityInputs.innerHTML = ''; // Xóa tất cả ô nhập liệu hiện tại
-
-    // Chỉ hiển thị ô nhập liệu nếu có màu và kích thước đã chọn
-    if (selectedColorId && activeSizeId) {
-        const key = `${selectedColorId}-${activeSizeId}`;
-        const inputGroup = document.createElement('div');
-        inputGroup.classList.add('row', 'mb-2');
-        inputGroup.id = key.replace('-', '_');
-
-        const quantityValue = savedQuantities[key] || 0; // Lấy số lượng đã lưu hoặc mặc định là 0
-        const priceValue = savedPrices[key] || 0; // Lấy giá đã lưu hoặc mặc định là 0
-
-        inputGroup.innerHTML = `
-            <div class="col-6">
-                <label>Số lượng (${selectedColorId} - ${activeSizeId})</label>
-                <input type="number" name="quantities[${key}]" class="form-control" placeholder="Số lượng" min="0" value="${quantityValue}">
-            </div>
-            <div class="col-6">
-                <label>Giá (${selectedColorId} - ${activeSizeId})</label>
-                <input type="number" name="prices[${key}]" class="form-control" placeholder="Giá" min="0" value="${priceValue}">
-            </div>
-        `;
-        
-        quantityInputs.appendChild(inputGroup); // Thêm ô nhập liệu mới
-
-        // Thêm sự kiện cho ô nhập liệu
-        const quantityInput = inputGroup.querySelector(`input[name="quantities[${key}]"]`);
-        const priceInput = inputGroup.querySelector(`input[name="prices[${key}]"]`);
-
-        // Gọi hàm khi có sự thay đổi giá trị trong ô nhập liệu
-        quantityInput.addEventListener('input', function() {
-            const quantity = quantityInput.value;
-            const price = priceInput.value;
-            onInputUpdate(selectedColorId, activeSizeId, quantity, price); // Cập nhật thông tin vào hidden inputs
-        });
-
-        priceInput.addEventListener('input', function() {
-            const quantity = quantityInput.value;
-            const price = priceInput.value;
-            onInputUpdate(selectedColorId, activeSizeId, quantity, price); // Cập nhật thông tin vào hidden inputs
-        });
-    }
-}
-
-
+const colorss = {
+    1: 'den',
+    2: 'do',
+    3: 'xam'
+};
 // Xử lý click cho các nút màu
 colorButtons.forEach(colorButton => {
     let clickCount = 0;
+    let singleClickTimer;
 
     colorButton.addEventListener('click', () => {
         clickCount++;
         const colorId = colorButton.getAttribute('data-color-id');
 
-        setTimeout(() => {
-            if (clickCount === 1) {
-                // Chọn màu và hiển thị các kích thước
+        if (clickCount === 1) {
+            // Set a timeout to handle single-click event
+            singleClickTimer = setTimeout(() => {
                 selectedColorId = colorId;
-                sizeContainer.style.display = 'block';
 
-                // Xóa các kích thước đã active và ô nhập liệu trước đó
-                sizeButtons.forEach(btn => {
-                    btn.classList.remove('active'); // Xóa lớp active từ tất cả
-                    if (activeSizes[colorId] && activeSizes[colorId].has(btn.getAttribute('data-size-id'))) {
-                        btn.classList.add('active'); // Giữ lại lớp active cho kích thước đã chọn
-                    }
-                });
+                // Hide all color groups and input fields
+                document.querySelectorAll('#group-1').forEach(inputGroup => inputGroup.style.display = 'none');
+                document.querySelectorAll('#group-2').forEach(inputGroup => inputGroup.style.display = 'none');
+                document.querySelectorAll('#group-3').forEach(inputGroup => inputGroup.style.display = 'none');
 
-                // Cập nhật kích thước hiện tại
-                activeSizeId = activeSizes[colorId] ? Array.from(activeSizes[colorId])[0] : null;
-                updateQuantityInput(); // Cập nhật ô nhập liệu nếu có kích thước active
-            } else if (clickCount === 2) {
-                // Double click để toggle active màu
-                if (activeColors.has(colorId)) {
-                    activeColors.delete(colorId);
-                    colorButton.classList.remove('active');
-                } else {
-                    activeColors.add(colorId);
-                    colorButton.classList.add('active');
-                }
+
+
+                // document.querySelectorAll('#group-3').forEach(inputGroup => inputGroup.style.display = 'none');
+                document.querySelectorAll(`#group-${selectedColorId}`).forEach(inputGroup => inputGroup.style.display = 'block');
+
+                clickCount = 0; // Reset click count
+            }, 300);
+        } else if (clickCount === 2) {
+            // Handle double-click event
+            clearTimeout(singleClickTimer);
+            document.querySelectorAll(`#group-${selectedColorId}`).forEach(inputGroup => inputGroup.style.display = 'block');
+            // Toggle active state for the color button
+            colorButton.classList.toggle('active');
+            selectedColorId = colorId;
+
+            // Update activeColors array for the selected color
+            if (colorButton.classList.contains('active')) {
+                activeColors[colorId] = Array.from(document.querySelectorAll(`.size-button[data-color-id="${colorId}"]`))
+                    .filter(sizeButton => sizeButton.classList.contains('active'))
+                    .map(sizeButton => sizeButton.getAttribute('data-size-id'));
+
+        
+
+            } else {
+                activeColors[colorId] = [];
+            document.querySelectorAll(`#group-${selectedColorId}`).forEach(inputGroup => inputGroup.style.display = 'none');
+            document.querySelectorAll(`#${colorss[colorId]}SizeContainer`).forEach(inputGroup => inputGroup.style.display = 'none');
+            
+
             }
 
-            // Thêm class click cho màu được chọn
-            colorButtons.forEach(btn => {
-                if (btn !== colorButton) {
-                    btn.classList.remove('click'); // Xóa click từ nút màu khác
-                } else {
-                    btn.classList.add('click'); // Thêm click cho nút màu hiện tại
-                }
-            });
-
-            clickCount = 0;
-        }, 250);
+            // Update the hidden input with active color-size combinations
+            updateHiddenInputs();
+            clickCount = 0; // Reset click count
+        }
     });
 });
 
-// Xử lý click cho các nút kích thước
+// Handling size button clicks
 sizeButtons.forEach(sizeButton => {
     let clickCount = 0;
+    let singleClickTimer;
 
     sizeButton.addEventListener('click', () => {
         clickCount++;
+
         const sizeId = sizeButton.getAttribute('data-size-id');
 
-        setTimeout(() => {
-            if (clickCount === 1) {
-                // Chọn kích thước và cập nhật ô nhập liệu
-                if (selectedColorId) { // Kiểm tra xem đã chọn màu chưa
-                    if (activeSizeId === sizeId) {
-                        activeSizeId = null; // Hủy kích thước nếu đã active
-                        sizeButton.classList.remove('active');
-                        quantityInputs.innerHTML = ''; // Xóa ô nhập liệu
-                        // Xóa kích thước khỏi activeSizes
-                        if (activeSizes[selectedColorId]) {
-                            activeSizes[selectedColorId].delete(sizeId);
-                        }
-                    } else {
-                        activeSizeId = sizeId; // Cập nhật kích thước đã active
-                        // Lưu kích thước vào activeSizes
-                        if (!activeSizes[selectedColorId]) {
-                            activeSizes[selectedColorId] = new Set();
-                        }
-                        activeSizes[selectedColorId].add(sizeId);
-                        updateQuantityInput(); // Cập nhật ô nhập liệu
-                    }
+        if (clickCount === 1) {
+            // Set a timeout to handle single-click event
+            singleClickTimer = setTimeout(() => {
+                if (selectedColorId) { // Ensure a color is selected
+                    activeSizeId = sizeId;
+
+                    // Hide all input groups
+                    document.querySelectorAll(`#group-${selectedColorId}`).forEach(inputGroup => inputGroup.style.display = 'block');
+
+                    // Show the input group corresponding to the selected color and size
+                    const key = `${selectedColorId}-${activeSizeId}`;
+                    const inputGroup = document.getElementById(`input-${key}`);
+                   
+                    inputGroup.style.display = 'block';
+                    
                 }
-            } else if (clickCount === 2) {
-                // Double click để toggle active kích thước
-                sizeButton.classList.toggle('active');
-                if (activeSizes[selectedColorId]) {
-                    if (activeSizes[selectedColorId].has(sizeId)) {
-                        activeSizes[selectedColorId].delete(sizeId);
-                    } else {
-                        activeSizes[selectedColorId].add(sizeId);
-                    }
-                } else {
-                    activeSizes[selectedColorId] = new Set([sizeId]);
-                }
-                updateQuantityInput(); // Cập nhật ô nhập liệu
+                clickCount = 0; // Reset click count
+            }, 300);
+        } else if (clickCount === 2) {
+            // Handle double-click event
+            clearTimeout(singleClickTimer);
+            document.querySelectorAll(`#group-${selectedColorId}`).forEach(inputGroup => inputGroup.style.display = 'block');
+            // Toggle active state for the size button
+            sizeButton.classList.toggle('active');
+            activeSizeId = sizeId;
+
+            const key = `${selectedColorId}-${activeSizeId}`;
+            const inputGroup = document.getElementById(`input-${key}`);
+
+            if (inputGroup) {
+                inputGroup.style.display = 'block';
             }
 
-            clickCount = 0;
-        }, 250);
+            const colorId = selectedColorId;
+            if (sizeButton.classList.contains('active')) {
+                // Ensure the size is stored under the correct color
+                if (!activeColors[colorId]) {
+                    activeColors[colorId] = [];
+                }
+                activeColors[colorId].push(sizeId);
+                
+            } else {
+                // Remove the size from the active list
+                if (activeColors[colorId]) {
+                    const inputGroup = document.getElementById(`input-${key}`);
+                    inputGroup.style.display = 'none';
+                    activeColors[colorId] = activeColors[colorId].filter(id => id !== sizeId);
+                }
+            }
+
+            // Update the hidden input with active color-size combinations
+            updateHiddenInputs();
+
+            clickCount = 0; // Reset click count
+        }
     });
 });
 
 
-// Thu thập dữ liệu để gửi đến server
-function collectDataForSubmission() {
-    const data = [];
 
-    activeColors.forEach(colorId => {
-        if (activeSizes[colorId]) {
-            activeSizes[colorId].forEach(sizeId => {
-                const key = `${colorId}-${sizeId}`;
-                const quantity = savedQuantities[key] || 0; // Hoặc giá trị mặc định
-                const price = savedPrices[key] || 0; // Hoặc giá trị mặc định
 
-                data.push({
-                    colorId: colorId,
-                    sizeId: sizeId,
-                    quantity: quantity,
-                    price: price
-                });
-            });
-        }
+
+
+
+// Function to update the hidden inputs with the active color-size combinations
+function updateHiddenInputs() {
+    // Initialize an empty array to store the active color-size combinations
+    let activeCombinations = [];
+
+    // Loop through each active color
+    Object.keys(activeColors).forEach(colorId => {
+        // Loop through each size that is selected for this color
+        activeColors[colorId].forEach(sizeId => {
+            // Add the color-size combination (e.g., "1:1", "1:2") to the array
+            activeCombinations.push(`${colorId}:${sizeId}`);
+        });
     });
 
-    return data; // Trả về mảng chứa dữ liệu đã thu thập
-}
-
-
-// Gửi dữ liệu đến server
-function sendDataToServer(data) {
-    // Cập nhật hidden inputs cho mỗi mục trong data
-    data.forEach(item => {
-        addOrUpdateHiddenInput(item.colorId, item.sizeId, item.quantity, item.price);
-    });
-
-    return fetch('/products/store', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-    })
-    .then(response => response.json())
-    .then(result => {
-        console.log('Success:', result);
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        throw error; // Re-throw error to handle in form submission
-    });
+    // Join the combinations with commas and update the hidden input value
+    document.getElementById('activeColors').value = activeCombinations.join(',');
 }
 
 
 
+// Hàm kiểm tra dữ liệu của các trường hợp màu và kích thước// Function to validate the form data
+// Mảng màu
+const colors = {
+    1: 'Đen',
+    2: 'Đỏ',
+    3: 'Xám'
+};
 
-// Function to update or add hidden inputs to the form
-function addOrUpdateHiddenInput(colorId, sizeId, quantity, price) {
-    const form = document.querySelector('form');
-    const key = `${colorId}-${sizeId}`;
-    
-    // Check if hidden inputs already exist for this key, if not, create them
-    let quantityInput = document.querySelector(`input[name="quantities[${key}]"]`);
-    let priceInput = document.querySelector(`input[name="prices[${key}]"]`);
+// Mảng kích thước
+const sizes = {
+    1: 'XS',
+    2: 'S',
+    3: 'M',
+    4: 'L',
+    5: 'XL'
+};
 
-    if (!quantityInput) {
-        quantityInput = document.createElement('input');
-        quantityInput.type = 'hidden';
-        quantityInput.name = `quantities[${key}]`;
-        form.appendChild(quantityInput);
+// Hàm kiểm tra dữ liệu của các trường hợp màu và kích thước
+function validateData() {
+    let isValid = true;
+    const errorMessageClass = 'input-error'; // Class for error messages
+
+    // Hide any existing error messages
+    document.querySelectorAll(`.${errorMessageClass}`).forEach(error => {
+        error.remove();
+    });
+
+    // Iterate over each color and size combination
+    Object.keys(activeColors).forEach(colorId => {
+        activeColors[colorId].forEach(sizeId => {
+            const colorName = colors[colorId]; // Get the color name based on ID
+            const sizeName = sizes[sizeId]; // Get the size name based on ID
+
+            // Create the key in the format 'Color-Size' (e.g., 'Đen-XS')
+            const key = `${colorName}-${sizeName}`;
+
+            // Get the quantity and price inputs by name
+            const quantityInput = document.querySelector(`input[name="quantities[${key}]"]`);
+            const priceInput = document.querySelector(`input[name="prices[${key}]"]`);
+
+            // Validate quantity and price inputs
+            if (!quantityInput || !quantityInput.value.trim()) {
+                isValid = false;
+                showError(quantityInput, 'Số lượng không được để trống.');
+            }
+            if (!priceInput || !priceInput.value.trim()) {
+                isValid = false;
+                showError(priceInput, 'Giá không được để trống.');
+            }
+        });
+    });
+
+    return isValid;
+}
+
+// Function to show error message under the input field
+function showError(inputElement, message) {
+    const errorElement = document.createElement('div');
+    errorElement.className = 'text-danger ' + 'input-error';
+    errorElement.textContent = message;
+
+    // Append the error message under the input field
+    inputElement.parentElement.appendChild(errorElement);
+}
+
+
+// Attach event listener to the form's submit event
+document.querySelector('#addForm').addEventListener('submit', function(event) {
+    alert(validateData())
+    if (!validateData()) {
+        event.preventDefault(); // Prevent form submission if validation fails
+        alert('Vui lòng kiểm tra các trường dữ liệu!');
     }
-    if (!priceInput) {
-        priceInput = document.createElement('input');
-        priceInput.type = 'hidden';
-        priceInput.name = `prices[${key}]`;
-        form.appendChild(priceInput);
-    }
+});
 
-    // Set values
-    quantityInput.value = quantity;
-    priceInput.value = price;
-}
-
-// Call this function whenever the user enters data for quantity or price
-function onInputUpdate(colorId, sizeId, quantity, price) {
-    addOrUpdateHiddenInput(colorId, sizeId, quantity, price);
-}

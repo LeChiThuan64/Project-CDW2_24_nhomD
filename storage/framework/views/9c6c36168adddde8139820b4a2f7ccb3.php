@@ -17,51 +17,53 @@
 
 <body>
 
-        <div class="container">
-            <div class="form-title">Thêm Blog</div>
+    <div class="container">
+        <div class="form-title">Thêm Blog</div>
 
-            <form id="blog-form" action="<?php echo e(route('admin.blog.store')); ?>" method="POST" enctype="multipart/form-data">
-                <?php echo csrf_field(); ?>
-                <div class="form-group">
-                    <!-- Form Left -->
-                    <div class="form-left">
-                        <label for="title">Tên Blog</label>
-                        <input type="text" id="title" name="title" placeholder="Nhập tên blog..." class="form-control" required>
+        <form id="blog-form" action="<?php echo e(route('admin.blog.store')); ?>" method="POST" enctype="multipart/form-data">
+            <?php echo csrf_field(); ?>
+            <div class="form-group">
+                <!-- Form Left -->
+                <div class="form-left">
+                    <label for="title">Tên Blog</label>
+                    <input type="text" id="title" name="title" placeholder="Nhập tên blog..." class="form-control" required>
 
-                        <label for="content">Nội dung</label>
-                        <div id="toolbar">
-                            <!-- Toolbar của Quill -->
-                            <select class="ql-font"></select>
-                            <select class="ql-size"></select>
-                            <button class="ql-bold"></button>
-                            <button class="ql-italic"></button>
-                            <button class="ql-underline"></button>
-                            <button class="ql-strike"></button>
-                            <select class="ql-align"></select>
-                            <button class="ql-list" value="ordered"></button>
-                            <button class="ql-list" value="bullet"></button>
-                            <button class="ql-image"></button>
-                            <button class="ql-link"></button>
-                        </div>
-                        <div id="editor-container"></div>
+                    <label for="content">Nội dung</label>
+                    <div id="toolbar">
+                        <!-- Toolbar của Quill -->
+                        <select class="ql-font"></select>
+                        <select class="ql-size"></select>
+                        <button class="ql-bold"></button>
+                        <button class="ql-italic"></button>
+                        <button class="ql-underline"></button>
+                        <button class="ql-strike"></button>
+                        <select class="ql-align"></select>
+                        <button class="ql-list" value="ordered"></button>
+                        <button class="ql-list" value="bullet"></button>
+                        <button class="ql-image"></button>
+                        <button class="ql-link"></button>
                     </div>
-
-                    <!-- Form Right -->
-                    <div class="form-right">
-                        <img src="#" alt="Ảnh" id="image-preview">
-                        <label for="image">Chọn ảnh</label>
-                        <input type="file" id="image" name="image" accept="image/jpeg, image/png"
-                            onchange="previewImage(event)">
-                        <p>Dung lượng file tối đa 1 MB<br>Định dạng: .JPEG, .PNG</p>
-                    </div>
+                    <div id="editor-container"></div>
                 </div>
 
-                <div class="form-footer">
-                    <button type="submit" class="btn btn-success">Thêm Blog</button>
+                <!-- Form Right -->
+                <div class="form-right">
+                    <img src="#" alt="Ảnh" id="image-preview">
+                    <label for="image">Chọn ảnh</label>
+                    <input type="file" id="image" name="image" accept="image/jpeg, image/png"
+                        onchange="previewImage(event)">
+                    <p>Dung lượng file tối đa 1 MB<br>Định dạng: .JPEG, .PNG</p>
                 </div>
-            </form>
-        </div>
-    
+            </div>
+
+           
+            <button type="button" class="btn btn-danger" onclick="window.history.back();">Hủy</button>
+            <div class="form-footer">
+                <button type="submit" class="btn btn-success">Thêm Blog</button>
+            </div>
+        </form>
+    </div>
+
 
     <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
 

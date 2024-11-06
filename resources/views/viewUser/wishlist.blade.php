@@ -33,7 +33,7 @@
                                                         @foreach ($item->product->images as $image)
                                                             <!-- Giả sử bạn có mối quan hệ images trong Product -->
                                                             <div class="swiper-slide">
-                                                                <img loading="lazy" src="{{ asset($image->image_url) }}"
+                                                                <img loading="lazy" src="{{ asset('assets/img/products/' . $image->image_url) }}"
                                                                     width="330" height="400"
                                                                     alt="{{ $item->product->name }}" class="pc__img">
                                                             </div>

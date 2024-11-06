@@ -15,7 +15,7 @@
         <div class="col-md-3 sidebar">
             <div class="text-center">
             <img alt="User profile picture" class="rounded-circle" height="100"
-     src="{{ Auth::check() ? asset(Auth::user()->profile_image) : asset('uploads/user.png') }}"
+     src="{{ $user->profile_image ? asset($user->profile_image) : 'https://storage.googleapis.com/a1aa/image/JvrL8IccnN7JEFHYrd8lG4Pkxxr1MJyu5roHmDKfPBx2sy1JA.jpg' }}"
      width="100" />
 
                 <p>jzpu2v0e9k</p>

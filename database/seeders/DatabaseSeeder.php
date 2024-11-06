@@ -25,10 +25,12 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         // Gọi UserSeeder
-        $this->call(UserSeeder::class);
+        // $this->call(UserSeeder::class);
         $this->call(CategorySeeder::class);
         $this->call(ColorSeeder::class);
         $this->call(SizeSeeder::class);
         $this->call(ProductSeeder::class);
+        $this->call(ProductSizeColorSeeder::class);
+        $this->call(BlogSeeder::class);
     }
 }

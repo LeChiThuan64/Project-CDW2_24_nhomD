@@ -46,7 +46,7 @@
                 <p>Dung lượng file tối đa 1 MB<br>Định dạng: .JPEG, .PNG</p>
             </div>
         </div>
-
+        <button type="button" class="btn btn-danger" onclick="window.history.back();">Hủy</button>
         <div class="form-footer">
             <button type="submit" class="btn btn-success">Cập nhật Blog</button>
         </div>

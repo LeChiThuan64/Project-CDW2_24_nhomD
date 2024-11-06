@@ -39,7 +39,6 @@ document.addEventListener("DOMContentLoaded", function () {
         yearSelect.innerHTML += `<option value="${i}">${i}</option>`;
     }
 
-    // Lấy tất cả các trường có thể chỉnh sửa trong biểu mẫu
     const inputs = document.querySelectorAll('#username, #email, #phone, input[name="gender"], #day, #month, #year');
     const saveButton = document.getElementById('saveButton');
     const originalValues = {};
@@ -78,41 +77,93 @@ document.addEventListener("DOMContentLoaded", function () {
         saveButton.disabled = !hasChanges;
     }
 
+    // Gọi checkChanges khi trang tải để đặt trạng thái của nút "Lưu"
+    checkChanges();
+
     const profileImage = document.getElementById('profileImage');
     const imageUpload = document.getElementById('imageUpload');
     const chooseImageButton = document.getElementById('chooseImageButton');
-
-    // Lưu trữ URL hiện tại của hình ảnh
-    const currentImageURL = profileImage.src;
 
     chooseImageButton.addEventListener('click', function() {
         imageUpload.click(); // Kích hoạt thẻ input file
     });
 
     imageUpload.addEventListener('change', function(event) {
-        const file = event.target.files[0]; // Lấy tệp được chọn
+        const file = event.target.files[0];
         if (file) {
+            const maxSizeInMB = 1; // Giới hạn dung lượng tối đa 1 MB
+            const maxSizeInBytes = maxSizeInMB * 1024 * 1024; // Chuyển đổi MB sang Bytes
+            const validTypes = ['image/jpeg', 'image/png'];
+
+            // Kiểm tra loại file
+            if (!validTypes.includes(file.type)) {
+                alert('Vui lòng chọn file định dạng JPG hoặc PNG.');
+                this.value = ''; // Xóa giá trị input
+                return;
+            }
+
+            // Kiểm tra dung lượng file
+            if (file.size > maxSizeInBytes) {
+                alert('Dung lượng file không được vượt quá 1 MB.');
+                this.value = ''; // Xóa giá trị input
+                return;
+            }
+
             const reader = new FileReader();
             reader.onload = function(e) {
-                // Cập nhật src của img với ảnh mới được chọn
                 profileImage.src = e.target.result;
-
-                // Kích hoạt nút "Lưu" nếu hình ảnh mới khác với hình ảnh hiện tại
-                saveButton.disabled = e.target.result === currentImageURL; // Kích hoạt hoặc vô hiệu hóa nút "Lưu"
+                saveButton.disabled = false; // Bật nút lưu vì đã có thay đổi
             };
-            reader.readAsDataURL(file); // Đọc tệp như URL
+            reader.readAsDataURL(file);
+        }
+    });
+
+    // Kiểm tra xem có thông báo thành công không
+    window.onload = function() {
+        var successMessage = document.getElementById('successMessage');
+        if (successMessage) {
+            setTimeout(function() {
+                successMessage.style.display = 'none';
+            }, 2000); // 2000 milliseconds = 2 seconds
+        }
+    };
+
+    document.getElementById('profileForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        
+        // Clear previous error messages
+        document.getElementById('usernameError').textContent = '';
+        document.getElementById('emailError').textContent = '';
+        document.getElementById('phoneError').textContent = '';
+        
+        let hasError = false;
+
+        // Validate Username
+        const username = document.getElementById('username').value;
+        if (username.length < 3 || username.length > 50) {
+            document.getElementById('usernameError').textContent = 'Tên tài khoản phải có độ dài từ 3 đến 255 ký tự.';
+            hasError = true;
+        }
+
+        // Validate Email
+        const email = document.getElementById('email').value;
+        const emailPattern = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+        if (!emailPattern.test(email)) {
+            document.getElementById('emailError').textContent = 'Email không hợp lệ.';
+            hasError = true;
+        }
+
+        // Validate Phone
+        const phone = document.getElementById('phone').value;
+        const phonePattern = /^(0[1-9])[0-9]{8,9}$/; // Matches numbers starting with '0' and has 10-11 digits
+        if (!phonePattern.test(phone)) {
+            document.getElementById('phoneError').textContent = 'Số điện thoại không hợp lệ. Chỉ cho phép số và tối đa 11 chữ số.';
+            hasError = true;
+        }
+
+        // Submit the form if no validation errors
+        if (!hasError) {
+            this.submit();
         }
     });
 });
-
-
- // Kiểm tra xem có thông báo thành công không
- window.onload = function() {
-    var successMessage = document.getElementById('successMessage');
-    if (successMessage) {
-        // Ẩn thông báo sau 2 giây
-        setTimeout(function() {
-            successMessage.style.display = 'none';
-        }, 2000); // 2000 milliseconds = 2 seconds
-    }
-};

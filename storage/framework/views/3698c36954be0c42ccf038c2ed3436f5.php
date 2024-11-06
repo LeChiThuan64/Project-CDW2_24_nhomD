@@ -21,6 +21,11 @@
     width: 150px; /* Hoặc kích thước bạn muốn */
     height: 150px;
     border-radius: 10px; /* Giữ bo góc nếu cần */
+
+    .form-control[name="search"] {
+    height: 42px;
+}
+
 }
 
   </style>
@@ -46,8 +51,8 @@
                   <i class="fas fa-search"></i>
                 </button>
               </div>
-              <input type="text" name="search" class="form-control" placeholder="Tìm kiếm khách hàng..." aria-label="Tìm kiếm khách hàng" value="<?php echo e(request()->get('search')); ?>">
-            </div>
+              <input type="text" name="search" class="form-control" style="height: 42px;" placeholder="Tìm kiếm khách hàng..." aria-label="Tìm kiếm khách hàng" value="<?php echo e(request()->get('search')); ?>">
+              </div>
           </form>
         </div>
 
@@ -180,22 +185,30 @@
 <!-- Phân trang -->
 <?php if($users->lastPage() > 1): ?>
 <div class="d-flex justify-content-center mt-4" id="pagination">
-    <ul class="pagination">
+    <ul class="pagination" style="display: flex; gap: 10px; border-radius: 5px; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);">
         
         <?php $__currentLoopData = $users->getUrlRange(1, $users->lastPage()); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $page => $url): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
             <?php if($page == $users->currentPage()): ?>
-                <li class="page-item active">
-                    <span class="page-link"><?php echo e($page); ?></span>
+                <li class="page-item active" style="margin: 0; list-style: none;">
+                    <span class="page-link" style="background-color: #007bff; color: #fff; border-color: #007bff; border-radius: 5px; padding: 8px 12px;">
+                        <?php echo e($page); ?>
+
+                    </span>
                 </li>
             <?php else: ?>
-                <li class="page-item">
-                    <a class="page-link" href="<?php echo e($url); ?>"><?php echo e($page); ?></a>
+                <li class="page-item" style="margin: 0; list-style: none;">
+                    <a class="page-link" href="<?php echo e($url); ?>" style="color: #007bff; border-radius: 5px; border-color: #ddd; padding: 8px 12px;">
+                        <?php echo e($page); ?>
+
+                    </a>
                 </li>
             <?php endif; ?>
         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
     </ul>
 </div>
 <?php endif; ?>
+
+
 
 
 

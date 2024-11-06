@@ -12,7 +12,7 @@ class ProductSizeColor extends Model
     protected $table = 'product_size_color';
     
     protected $fillable = [
-        'product_id',
+        'product_id',  // Sử dụng tên cột là product_id
         'size_id',
         'color_id',
         'quantity',
@@ -22,16 +22,16 @@ class ProductSizeColor extends Model
     // Nếu bạn muốn định nghĩa các mối quan hệ
     public function product()
     {
-        return $this->belongsTo(Product::class);
+        return $this->belongsTo(Product::class, 'product_id'); // Đảm bảo tham chiếu đúng cột
     }
 
     public function size()
     {
-        return $this->belongsTo(Size::class);
+        return $this->belongsTo(Size::class, 'size_id');
     }
 
     public function color()
     {
-        return $this->belongsTo(Color::class);
+        return $this->belongsTo(Color::class, 'color_id');
     }
 }

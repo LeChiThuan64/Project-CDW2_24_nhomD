@@ -660,7 +660,7 @@
                             <a href="about.html" class="navigation__link">About</a>
                         </li>
                         <li class="navigation__item">
-                            <a href="" class="navigation__link">Contact</a>
+                            <a href="{{ route('contact') }}" class="navigation__link">Contact</a>
                         </li>
 
                     </ul><!-- /.navigation__list -->
@@ -1330,7 +1330,7 @@
     <!-- Cart Drawer -->
     <div class="aside aside_right overflow-hidden cart-drawer" id="cartDrawer">
         <div class="aside-header d-flex align-items-center">
-            <h3 class="text-uppercase fs-6 mb-0">SHOPPING BAG ( <span
+            <h3 class="text-uppercase fs-6 mb-0">CART ( <span
                     class="cart-amount js-cart-items-count">1</span> )
             </h3>
             <button class="btn-close-lg js-close-aside btn-close-aside ms-auto"></button>

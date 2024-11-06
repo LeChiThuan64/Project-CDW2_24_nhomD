@@ -13,6 +13,8 @@ use App\Http\Controllers\BlogController;
 use App\Http\Controllers\AdminBlogController;
 use App\Http\Controllers\VocherController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\ChatboxController;
+use App\Http\Controllers\CartController;
 use App\Models\Blog;
 use App\Http\Controllers\ProfileController;
 /*
@@ -30,8 +32,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/addProducts', [ProductsController::class, 'showForm']);
-
 
 
 // Route dashboard
@@ -45,20 +45,11 @@ Route::get('/auth', function () {
     return view('viewUser.auth');
 })->name('auth');
 
-Route::get('/logout', function () {
-    return view('viewUser.logout');
-})->name('logout');
-
-Route::post('/logout', function () {
-    Auth::logout();
-    return redirect('/');
-})->name('logout');
-
 
 
 Route::get('/login/show', [LoginController::class, 'showLoginForm'])->name('login.show');
 Route::post('/login/signin', [LoginController::class, 'login'])->name('login.signin');
-Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
 Route::post('/register', [RegisterController::class, 'register']);
 
@@ -82,10 +73,20 @@ Route::post('/add-user', [UserController::class, 'store'])->name('user.store');
 // Hiển thị model
 Route::get('/users/{id}', [UserController::class, 'show'])->name('user.show');
 
+// Route để hiện thị admin supprort chatbox
+Route::prefix('admin')->group(function () {
+    Route::get('/chatbox', [ChatboxController::class, 'index'])->name('admin.chatbox.index');
+    Route::post('/chatbox/update-status/{id}', [ChatboxController::class, 'updateStatus'])->name('admin.chatbox.updateStatus');
+    Route::delete('/chatbox/delete/{id}', [ChatboxController::class, 'delete'])->name('admin.chatbox.delete');
+});
+
 
 // Route cho trang chi tiết sản phẩm
-Route::get('/product-detail', function () {
-    return view('viewUser.product-detail');
+Route::get('/cart', function () {
+    return view('viewUser.cart');
+});
+Route::get('/home', function () {
+    return view('viewUser.home');
 });
 Route::get('/wishlist', function () {
     return view('viewUser.wishlist');
@@ -97,6 +98,11 @@ Route::get('/blog_list', function () {
 Route::get('/blogs_Detal', function () {
     return view('viewUser.blogs_Detal');
 });
+
+Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+
+Route::post('/cart/apply-voucher', [CartController::class, 'applyVoucher'])->name('cart.applyVoucher');
+
 
 // Liên hệ CONTACT
 Route::get('/contact', function () {
@@ -186,27 +192,22 @@ Route::get('/vocher', function () {
 Route::get('/giamgia', function () {
     return view('viewAdmin.giamgia');
 });
-//Thêm vocher
+// Các route liên quan đến Voucher
 Route::get('/vocher', [VocherController::class, 'index'])->name('vocher.index');
 Route::get('/vocher/create', [VocherController::class, 'create'])->name('vocher.create');
-// Sửa Vocher
-
-Route::put('/vocher/{id}', [VocherController::class, 'update'])->name('vocher.update');
-Route::get('/vocher/{id}/edit', [VocherController::class, 'edit'])->name('vocher.edit');
-
-// xóa
-Route::delete('/vocher/{id}', [VocherController::class, 'destroy'])->name('vocher.destroy');
-
-
-// hiển thị
 Route::post('/vocher/store', [VocherController::class, 'store'])->name('vocher.store');
+Route::get('/vocher/{id}/edit', [VocherController::class, 'edit'])->name('vocher.edit');
+Route::put('/vocher/{id}', [VocherController::class, 'update'])->name('vocher.update');
+Route::delete('/vocher/{id}', [VocherController::class, 'destroy'])->name('vocher.destroy');
 //Het blog cho admin
 
 
 Route::get('/product/{id}', [ProductController::class, 'show'])->name('product.show');
-
+//Route tìm kiếm product
+Route::get('/search-product', [ProductController::class, 'search']);
 // Route để hiển thị wishlist
 Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist.index');
+
 
 // Route để thêm sản phẩm vào wishlist
 Route::post('/wishlist/add/{productId}', [WishlistController::class, 'add'])->name('wishlist.add');
@@ -216,6 +217,8 @@ Route::delete('/wishlist/remove/{wishlistId}', [WishlistController::class, 'remo
 // Tìm kiếm
 Route::get('/search-results', [ProductController::class, 'search'])->name('product.search');
 
+// Review
+Route::post('/products/{product_id}/review', [ProductController::class, 'addReview'])->name('addReview');
 
 
 
@@ -228,6 +231,8 @@ Route::get('/products/showList', [ProductsController::class, 'showListProducts']
 // Xóa
 // routes/web.php
 Route::delete('/products/destroy/{id}', [ProductsController::class, 'destroy'])->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
+Route::get('/products/search', [ProductsController::class, 'searchProducts'])->name('products.search');
+Route::post('/search', [ProductsController::class, 'search'])->name('products.instant');
 
 
 
@@ -237,3 +242,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile');
 });
 Route::put('/profile/{id}', [ProfileController::class, 'update'])->name('profile.update');
+
+// Route để lưu dữ liệu chatbox chatbox
+Route::post('/api/save-chatbox-data', [ChatboxController::class, 'saveChatboxData']);
