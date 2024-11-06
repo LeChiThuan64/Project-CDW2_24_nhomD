@@ -10,7 +10,7 @@ let UomoSelectors = {
   quantityControl: '.qty-control',
   scrollToTopId: 'scrollTop',
   $pageBackDrop: document.querySelector('.page-overlay'),
-  scrollWidth:   window.innerWidth - document.body.clientWidth + 'px',
+  scrollWidth: window.innerWidth - document.body.clientWidth + 'px',
   jsContentVisible: '.js-content_visible',
   starRatingControl: '.star-rating .star-rating__star-icon',
 }
@@ -23,7 +23,7 @@ let UomoHelpers = {
   debounce: (callback, wait, immediate = false) => {
     let timeout = null;
 
-    return function() {
+    return function () {
       const callNow = immediate && !timeout;
       const next = () => callback.apply(this, arguments);
 
@@ -55,7 +55,7 @@ let UomoHelpers = {
   },
 
   hideHoverComponents: () => {
-    document.querySelectorAll(UomoSelectors.jsContentVisible).forEach( el => {
+    document.querySelectorAll(UomoSelectors.jsContentVisible).forEach(el => {
       el.classList.remove(UomoSelectors.jsContentVisible.substring(1));
     });
   },
@@ -94,7 +94,7 @@ function pureFadeOut(e) {
 
   // Components appear after click
   UomoElements.JsHoverContent = (function () {
-    function JsHoverContent () {
+    function JsHoverContent() {
       const visibleClass = UomoSelectors.jsContentVisible.substring(1);
 
       document.querySelectorAll('.js-hover__open').forEach(el => {
@@ -124,8 +124,8 @@ function pureFadeOut(e) {
   })();
 
   UomoElements.QtyControl = (function () {
-    function QtyControl () {
-      document.querySelectorAll(UomoSelectors.quantityControl).forEach(function($qty) {
+    function QtyControl() {
+      document.querySelectorAll(UomoSelectors.quantityControl).forEach(function ($qty) {
         if ($qty.classList.contains('qty-initialized')) {
           return;
         }
@@ -135,11 +135,11 @@ function pureFadeOut(e) {
         const $increase = $qty.querySelector('.qty-control__increase');
         const $number = $qty.querySelector('.qty-control__number');
 
-        $reduce.addEventListener('click', function() {
+        $reduce.addEventListener('click', function () {
           $number.value = parseInt($number.value) > 1 ? parseInt($number.value) - 1 : parseInt($number.value);
         });
 
-        $increase.addEventListener('click', function() {
+        $increase.addEventListener('click', function () {
           $number.value = parseInt($number.value) + 1;
         });
       });
@@ -149,27 +149,27 @@ function pureFadeOut(e) {
   })();
 
   UomoElements.ScrollToTop = (function () {
-    function ScrollToTop () {
+    function ScrollToTop() {
       const $scrollTop = document.getElementById(UomoSelectors.scrollToTopId);
 
       if (!$scrollTop) {
         return;
       }
 
-      $scrollTop.addEventListener('click', function(event) {
+      $scrollTop.addEventListener('click', function (event) {
         event.preventDefault();
         event.stopPropagation();
         window.scrollTo(window.scrollX, 0);
       });
 
       let scrolled = false;
-      window.addEventListener('scroll', function() {
-        if ( 250 < window.scrollY && !scrolled ) {
+      window.addEventListener('scroll', function () {
+        if (250 < window.scrollY && !scrolled) {
           $scrollTop.classList.remove('visually-hidden');
           scrolled = true;
         }
 
-        if ( 250 > window.scrollY && scrolled ) {
+        if (250 > window.scrollY && scrolled) {
           $scrollTop.classList.add('visually-hidden');
           scrolled = false;
         }
@@ -179,7 +179,7 @@ function pureFadeOut(e) {
     return ScrollToTop;
   })();
 
-  UomoElements.Search = (function() {
+  UomoElements.Search = (function () {
     function Search() {
       // Declare variables
       this.selectors = {
@@ -209,7 +209,7 @@ function pureFadeOut(e) {
     Search.prototype = Object.assign({}, Search.prototype, {
       _initSearchSelect: function () {
         const _this = this;
-        this.$containers.forEach( el => {
+        this.$containers.forEach(el => {
           /**
            * Filter suggestion list on input
            */
@@ -217,7 +217,7 @@ function pureFadeOut(e) {
           const $inputBox = el.querySelector(_this.selectors.inputBox);
           $inputBox && $inputBox.addEventListener('keyup', (e) => {
             const filterValue = e.currentTarget.value.toUpperCase();
-            el.querySelectorAll(_this.selectors.searchSuggestItem).forEach( el => {
+            el.querySelectorAll(_this.selectors.searchSuggestItem).forEach(el => {
               const txtValue = el.innerText;
 
               if (txtValue.toUpperCase().indexOf(filterValue) > -1) {
@@ -231,8 +231,8 @@ function pureFadeOut(e) {
           /**
            * Search category selector
            */
-          el.querySelectorAll(_this.selectors.searchCategorySelector).forEach( scs => {
-            scs.addEventListener('click', function(e) {
+          el.querySelectorAll(_this.selectors.searchCategorySelector).forEach(scs => {
+            scs.addEventListener('click', function (e) {
               e.preventDefault();
               const $s_f_a = el.querySelector(_this.selectors.searchFieldActor);
               if ($s_f_a) {
@@ -250,8 +250,8 @@ function pureFadeOut(e) {
 
       _initSearchReset: function () {
         const _this = this;
-        document.querySelectorAll(this.selectors.resetButton).forEach( el => {
-          el.addEventListener('click', function(e) {
+        document.querySelectorAll(this.selectors.resetButton).forEach(el => {
+          el.addEventListener('click', function (e) {
             const $parentDiv = e.target.closest(_this.selectors.container);
             const $inputBox = $parentDiv.querySelector(_this.selectors.inputBox);
             const $rc = $parentDiv.querySelector(_this.selectors.resultContainer);
@@ -266,8 +266,8 @@ function pureFadeOut(e) {
       _initSearchInputFocus: function () {
         const _this = this;
 
-        document.querySelectorAll(this.selectors.inputBox).forEach( el => {
-          el.addEventListener('blur', function(e) {
+        document.querySelectorAll(this.selectors.inputBox).forEach(el => {
+          el.addEventListener('blur', function (e) {
             if (e.target.value.length == 0) {
               _this._removeFormActiveClass(e.target);
             }
@@ -277,7 +277,7 @@ function pureFadeOut(e) {
 
       _initAjaxSearch: function () {
         const _this = this;
-        document.querySelectorAll(this.selectors.inputBox).forEach( el => {
+        document.querySelectorAll(this.selectors.inputBox).forEach(el => {
           el.addEventListener('keyup', (event) => {
             if (event.target.value.length == 0) {
               _this._removeFormActiveClass(event.target);
@@ -299,14 +299,14 @@ function pureFadeOut(e) {
           } else {
             return Promise.reject(response);
           }
-        }).then(function(data) {
+        }).then(function (data) {
           _this._updateSearchResult(data, $form);
         }).catch(function (err) {
           _this._handleAjaxSearchError(err.message, $form);
         });
       }, 180),
 
-      _updateSearchResult: function(data, $form) {
+      _updateSearchResult: function (data, $form) {
         const $ajaxDom = new DOMParser().parseFromString(data, 'text/html');
         // Get filtered result dom
         const $f_r = $ajaxDom.querySelector('.search-result');
@@ -325,11 +325,11 @@ function pureFadeOut(e) {
 
   // Aside Popup
   UomoElements.Aside = (function () {
-    function Aside () {
+    function Aside() {
       this.selectors = {
-        activator:    '.js-open-aside',
-        closeBtn:     '.js-close-aside',
-        activeClass:  'aside_visible'
+        activator: '.js-open-aside',
+        closeBtn: '.js-close-aside',
+        activeClass: 'aside_visible'
       }
 
       this.$asideActivators = document.querySelectorAll(this.selectors.activator);
@@ -343,9 +343,9 @@ function pureFadeOut(e) {
     Aside.prototype = Object.assign({}, Aside.prototype, {
       _init: function () {
         const _this = this;
-        $(document).on("click", this.selectors.activator, function(e) {
+        $(document).on("click", this.selectors.activator, function (e) {
           e.preventDefault();
-          
+
           const targetElId = $(this).data("aside");
           const $targetAside = document.getElementById(targetElId);
 
@@ -356,7 +356,7 @@ function pureFadeOut(e) {
 
       _initCloseActions: function () {
         const _this = this;
-        this.$closeBtns.forEach( el => {
+        this.$closeBtns.forEach(el => {
           el.addEventListener('click', (event) => {
             event.preventDefault();
             _this._closeAside();
@@ -374,7 +374,7 @@ function pureFadeOut(e) {
 
       _closeAside: function () {
         UomoHelpers.hidePageBackdrop();
-        document.querySelectorAll('.' + this.selectors.activeClass).forEach( el => {
+        document.querySelectorAll('.' + this.selectors.activeClass).forEach(el => {
           el.classList.remove(this.selectors.activeClass);
         });
       }
@@ -384,7 +384,7 @@ function pureFadeOut(e) {
   })();
 
   UomoElements.Countdown = (function () {
-    function Countdown (container) {
+    function Countdown(container) {
       this.selectors = {
         element: '.js-countdown'
       }
@@ -398,7 +398,7 @@ function pureFadeOut(e) {
       _init: function () {
         const _this = this;
         const $countdowns = this.$container.querySelectorAll(this.selectors.element);
-        $countdowns.forEach(function($el) {
+        $countdowns.forEach(function ($el) {
           _this._initElement($el);
         });
       },
@@ -416,7 +416,7 @@ function pureFadeOut(e) {
   })();
 
   UomoElements.ShopViewChange = (function () {
-    function ShopViewChange () {
+    function ShopViewChange() {
       this.selectors = {
         element: '.js-cols-size',
         activeClass: 'btn-link_active'
@@ -430,8 +430,8 @@ function pureFadeOut(e) {
     ShopViewChange.prototype = Object.assign({}, ShopViewChange.prototype, {
       _init: function () {
         const _this = this;
-        this.$buttons.forEach(function($btn) {
-          $btn.addEventListener('click', function(event) {
+        this.$buttons.forEach(function ($btn) {
+          $btn.addEventListener('click', function (event) {
             event.preventDefault();
             const targetDomId = $btn.dataset.target;
             _this._resetActiveLinks();
@@ -464,7 +464,7 @@ function pureFadeOut(e) {
   })();
 
   UomoElements.Filters = (function () {
-    function Filters () {
+    function Filters() {
       this.selectors = {
         element: '.js-filter',
         activeClass: 'swatch_active',
@@ -478,8 +478,8 @@ function pureFadeOut(e) {
     Filters.prototype = Object.assign({}, Filters.prototype, {
       _init: function () {
         const _this = this;
-        this.$buttons.forEach(function($btn) {
-          $btn.addEventListener('click', function(event) {
+        this.$buttons.forEach(function ($btn) {
+          $btn.addEventListener('click', function (event) {
             event.preventDefault();
             _this._toggleActive($btn);
           });
@@ -500,7 +500,7 @@ function pureFadeOut(e) {
   })();
 
   UomoElements.StickyElement = (function () {
-    function StickyElement () {
+    function StickyElement() {
       this.selectors = {
         element: '.side-sticky'
       }
@@ -516,7 +516,7 @@ function pureFadeOut(e) {
           return;
         }
 
-        this.$stickies.forEach(function($sticky) {
+        this.$stickies.forEach(function ($sticky) {
           const $grid = $sticky.previousElementSibling || $sticky.nextElementSibling;
           const $target = $grid.offsetHeight > $sticky.offsetHeight ? $sticky : $grid;
 
@@ -537,13 +537,13 @@ function pureFadeOut(e) {
       _updateStatus() {
         const _this = this;
 
-        _this.$stickies.forEach(function($sticky) {
+        _this.$stickies.forEach(function ($sticky) {
           const $grid = $sticky.previousElementSibling || $sticky.nextElementSibling;
           const $target = $grid.offsetHeight > $sticky.offsetHeight ? $sticky : $grid;
 
           var bounds = $target.getBoundingClientRect(),
-              maxTop = bounds.top + window.scrollY - $target.offsetTop + UomoHelpers.sideStkEl.initialTopOffset,
-              minTop = $target.clientHeight - window.innerHeight + 30;
+            maxTop = bounds.top + window.scrollY - $target.offsetTop + UomoHelpers.sideStkEl.initialTopOffset,
+            minTop = $target.clientHeight - window.innerHeight + 30;
 
           if (window.scrollY < $target.lastKnownY) {
             UomoHelpers.sideStkEl.currentTop -= window.scrollY - $target.lastKnownY;
@@ -566,7 +566,7 @@ function pureFadeOut(e) {
 
   // Header Section
   UomoSections.Header = (function () {
-    function Header () {
+    function Header() {
       this.selectors = {
         header: '.header',
         mobileHeader: '.header-mobile',
@@ -610,13 +610,13 @@ function pureFadeOut(e) {
         this._initStickyHeader();
       },
 
-      _initMobileMenu: function() {
+      _initMobileMenu: function () {
         const _this = this;
         const mobileMenuActivator = this.$header.querySelector(this.selectors.mobileMenuActivator);
         const $mobileDropdown = this.$header.querySelector(this.selectors.mobileMenu);
         let transformLeft = 0;
         if ($mobileDropdown) {
-          mobileMenuActivator && $(mobileMenuActivator).off('click').on('click', function(event) {
+          mobileMenuActivator && $(mobileMenuActivator).off('click').on('click', function (event) {
             event.preventDefault();
             if (document.body.classList.contains(_this.selectors.mobileMenuActiveClass)) {
               document.body.classList.remove(_this.selectors.mobileMenuActiveClass);
@@ -632,7 +632,7 @@ function pureFadeOut(e) {
           const $mobileMenu = $mobileDropdown.querySelector('.navigation__list');
           let menuMaxHeight = $mobileMenu.offsetHeight;
           $mobileMenu && $mobileMenu.querySelectorAll(_this.selectors.mobileSubNavOpen).forEach($btn => {
-            $btn.addEventListener('click', function(event) {
+            $btn.addEventListener('click', function (event) {
               event.preventDefault;
               $btn.nextElementSibling.classList.remove(_this.selectors.mobileSubNavHiddenClass);
 
@@ -649,7 +649,7 @@ function pureFadeOut(e) {
 
 
           $mobileMenu && $mobileMenu.querySelectorAll(_this.selectors.mobileSubNavClose).forEach($btn => {
-            $btn.addEventListener('click', function(event) {
+            $btn.addEventListener('click', function (event) {
               event.preventDefault;
               transformLeft += 100;
               $mobileMenu.style.transform = 'translateX(' + transformLeft.toString() + '%)';
@@ -671,10 +671,10 @@ function pureFadeOut(e) {
 
         const _this = this;
         let headerHeight = this.$header.offsetHeight;
-        if(this.$header.classList.contains("header-transparent-bg")) {
+        if (this.$header.classList.contains("header-transparent-bg")) {
           headerHeight = 0;
 
-          if(document.querySelectorAll(".header-transparent-bg .header-top").length > 0) {
+          if (document.querySelectorAll(".header-transparent-bg .header-top").length > 0) {
             headerHeight = document.querySelector(".header-transparent-bg .header-top").offsetHeight;
           }
         }
@@ -686,18 +686,18 @@ function pureFadeOut(e) {
         document.addEventListener('scroll', this._stickyScrollHander);
       },
 
-      _initMenuPosition () {
+      _initMenuPosition() {
         const _this = this;
-        _this.$header.querySelectorAll('.box-menu').forEach( el => {
+        _this.$header.querySelectorAll('.box-menu').forEach(el => {
           _this._setBoxMenuPosition(el)
         });
 
-        _this.$header.querySelectorAll('.default-menu').forEach( el => {
+        _this.$header.querySelectorAll('.default-menu').forEach(el => {
           _this._setDefaultMenuPosition(el)
         });
       },
 
-      _setBoxMenuPosition (menu) {
+      _setBoxMenuPosition(menu) {
         const limitR = window.innerWidth - menu.offsetWidth - scrollBarWidth;
         const limitL = 0;
         const menuPaddingLeft = parseInt(window.getComputedStyle(menu, null).getPropertyValue('padding-left'));
@@ -714,7 +714,7 @@ function pureFadeOut(e) {
         menu.style.left = `${menuPos}px`;
       },
 
-      _setDefaultMenuPosition (menu) {
+      _setDefaultMenuPosition(menu) {
         const limitR = window.innerWidth - menu.offsetWidth - scrollBarWidth;
         const limitL = 0;
         const menuPaddingLeft = parseInt(window.getComputedStyle(menu, null).getPropertyValue('padding-left'));
@@ -755,7 +755,7 @@ function pureFadeOut(e) {
 
   // Footer Section
   UomoSections.Footer = (function () {
-    function Footer () {
+    function Footer() {
       this.selectors = {
         footer: '.footer-mobile'
       }
@@ -767,7 +767,7 @@ function pureFadeOut(e) {
     }
 
     Footer.prototype = Object.assign({}, Footer.prototype, {
-      _init: function() {
+      _init: function () {
         if (!this.$footer || !UomoHelpers.isMobile) {
           return;
         }
@@ -794,12 +794,12 @@ function pureFadeOut(e) {
 
   // Customer login form
   UomoSections.CustomerSideForm = (function () {
-    function CustomerSideForm () {
+    function CustomerSideForm() {
       this.selectors = {
-        aside:        '.aside.customer-forms',
-        formsWrapper:  '.customer-forms__wrapper',
-        registerActivator:  '.js-show-register',
-        loginActivator:     '.js-show-login'
+        aside: '.aside.customer-forms',
+        formsWrapper: '.customer-forms__wrapper',
+        registerActivator: '.js-show-register',
+        loginActivator: '.js-show-login'
       }
 
       this.$aside = document.querySelector(this.selectors.aside);
@@ -833,13 +833,13 @@ function pureFadeOut(e) {
   })();
 
   UomoSections.CartDrawer = (function () {
-    function CartDrawer () {
+    function CartDrawer() {
       this.selectors = {
-        aside:            '.aside.cart-drawer',
-        asideHeader:      '.aside-header',
-        cartItemRemover:  '.js-cart-item-remove',
-        cartActions:      '.cart-drawer-actions',
-        cartItemsList:    '.cart-drawer-items-list'
+        aside: '.aside.cart-drawer',
+        asideHeader: '.aside-header',
+        cartItemRemover: '.js-cart-item-remove',
+        cartActions: '.cart-drawer-actions',
+        cartItemsList: '.cart-drawer-items-list'
       }
 
       this.asideContentMargin = 30;
@@ -875,11 +875,11 @@ function pureFadeOut(e) {
       },
 
       _initCartItemRemoval: function () {
-        this.$aside.querySelectorAll(this.selectors.cartItemRemover).forEach( el => {
+        this.$aside.querySelectorAll(this.selectors.cartItemRemover).forEach(el => {
           el.addEventListener('click', (event) => {
             event.preventDefault();
             const $parentEl = event.target.parentElement;
-            const $divider  = $parentEl.nextElementSibling;
+            const $divider = $parentEl.nextElementSibling;
             $parentEl.classList.add('_removed');
             $divider && $divider.classList.contains('cart-drawer-divider') && $divider.classList.add('_removed');
             setTimeout(() => {
@@ -895,7 +895,7 @@ function pureFadeOut(e) {
   })();
 
   UomoSections.SwiperSlideshow = (function () {
-    function SwiperSlideshow () {
+    function SwiperSlideshow() {
       this.selectors = {
         container: '.js-swiper-slider'
       }
@@ -906,7 +906,7 @@ function pureFadeOut(e) {
 
     SwiperSlideshow.prototype = Object.assign({}, SwiperSlideshow.prototype, {
       _initSliders() {
-        this.$containers.forEach(function($sliderContainer) {
+        this.$containers.forEach(function ($sliderContainer) {
           if ($sliderContainer.classList.contains('swiper-container-initialized')) {
             return;
           }
@@ -927,7 +927,7 @@ function pureFadeOut(e) {
                 "el": ".slideshow-pagination",
                 "type": "bullets",
                 "clickable": true,
-                renderBullet: function(index, className) {
+                renderBullet: function (index, className) {
                   return '<span class="' + className + '">' + (index + 1).toString().padStart(2, '0') + '</span>';
                 }
               }
@@ -954,7 +954,7 @@ function pureFadeOut(e) {
   })();
 
   UomoSections.ProductSingleMedia = (function () {
-    function ProductSingleMedia () {
+    function ProductSingleMedia() {
       this.selectors = {
         container: '.product-single__media'
       }
@@ -963,18 +963,18 @@ function pureFadeOut(e) {
       this._initProductMedia();
     }
 
-    function setSlideHeight(that){
-      $('.product-single__thumbnail .swiper-slide').css({height:'auto'});
-          var currentSlide = that.activeIndex;
-          var newHeight = $(that.slides[currentSlide]).height();
-  
-          $('.product-single__thumbnail .swiper-wrapper, .product-single__thumbnail .swiper-slide').css({ height : newHeight })
-          that.update();
-     }
+    function setSlideHeight(that) {
+      $('.product-single__thumbnail .swiper-slide').css({ height: 'auto' });
+      var currentSlide = that.activeIndex;
+      var newHeight = $(that.slides[currentSlide]).height();
+
+      $('.product-single__thumbnail .swiper-wrapper, .product-single__thumbnail .swiper-slide').css({ height: newHeight })
+      that.update();
+    }
 
     ProductSingleMedia.prototype = Object.assign({}, ProductSingleMedia.prototype, {
       _initProductMedia() {
-        this.$containers.each(function() {
+        this.$containers.each(function () {
           if ($(this).hasClass('product-media-initialized')) {
             return;
           }
@@ -999,10 +999,10 @@ function pureFadeOut(e) {
                 }
               },
               on: {
-                init:function(){
+                init: function () {
                   setSlideHeight(this);
                 },
-                slideChangeTransitionEnd:function(){
+                slideChangeTransitionEnd: function () {
                   setSlideHeight(this);
                 }
               }
@@ -1021,7 +1021,7 @@ function pureFadeOut(e) {
                 swiper: galleryThumbs
               },
               on: {
-                slideChangeTransitionStart: function() {
+                slideChangeTransitionStart: function () {
                   galleryThumbs.slideTo(galleryMain.activeIndex);
                 }
               }
@@ -1078,7 +1078,7 @@ function pureFadeOut(e) {
                 swiper: galleryThumbs
               },
               on: {
-                slideChangeTransitionStart: function() {
+                slideChangeTransitionStart: function () {
                   galleryThumbs.slideTo(galleryMain.activeIndex);
                 }
               }
@@ -1094,7 +1094,7 @@ function pureFadeOut(e) {
   })();
 
   UomoElements.StarRating = (function () {
-    function StarRating () {
+    function StarRating() {
       let stars = Array.from(document.querySelectorAll(UomoSelectors.starRatingControl));
       let user_selected_star = document.querySelector('#form-input-rating');
 
@@ -1109,14 +1109,14 @@ function pureFadeOut(e) {
             }
           })
         })
-      
+
         // Mouseover event
         star.addEventListener('mouseleave', (e) => {
           stars.forEach((item) => {
             item.classList.remove('is-overed');
           })
         })
-      
+
         // Click event
         star.addEventListener('click', (e) => {
           const selected_index = stars.indexOf(e.target);
@@ -1164,20 +1164,20 @@ function pureFadeOut(e) {
 
     initCookieConsient() {
       const purecookieDesc = "In order to provide you a personalized shopping experience, our site uses cookies. By continuing to use this site, you are agreeing to our cookie policy.",
-      purecookieButton = "Accept";
+        purecookieButton = "Accept";
 
       function pureFadeIn(e, o) {
         var i = document.getElementById(e);
         i.style.opacity = 0, i.style.display = o || "block",
-        function e() {
-          var o = parseFloat(i.style.opacity);
-          (o += .02) > 1 || (i.style.opacity = o, requestAnimationFrame(e))
-        }()
+          function e() {
+            var o = parseFloat(i.style.opacity);
+            (o += .02) > 1 || (i.style.opacity = o, requestAnimationFrame(e))
+          }()
       }
 
       function getCookie(e) {
         for (var o = e + "=", i = document.cookie.split(";"), t = 0; t < i.length; t++) {
-          for (var n = i[t];" " == n.charAt(0);) {
+          for (var n = i[t]; " " == n.charAt(0);) {
             n = n.substring(1, n.length);
           }
           if (0 == n.indexOf(o))
@@ -1199,7 +1199,7 @@ function pureFadeOut(e) {
 
     initAccessories() {
       // Check if device is mobile on resize
-      window.addEventListener('resize', function() {
+      window.addEventListener('resize', function () {
         UomoHelpers.isMobile = UomoHelpers.updateDeviceSize();
       });
     }
@@ -1212,7 +1212,7 @@ function pureFadeOut(e) {
     }
 
     _initMultiSelect($containers) {
-      $containers.forEach( el => {
+      $containers.forEach(el => {
         const $component = el;
         const $list = el.querySelector('.multi-select__list');
         const $select = $component.querySelector('select');
@@ -1222,8 +1222,8 @@ function pureFadeOut(e) {
          * Change hero value when selecting item
          */
         const $selectArray = $component.querySelectorAll('.js-multi-select');
-        $selectArray.forEach( el => {
-          el.addEventListener('click', function(e) {
+        $selectArray.forEach(el => {
+          el.addEventListener('click', function (e) {
             e.preventDefault();
 
             const optionIndex = (Array.prototype.indexOf.call($list.children, e.currentTarget)).toString();
@@ -1280,7 +1280,7 @@ function pureFadeOut(e) {
           // eslint-disable-next-line no-undef
           const priceRange = new Slider($se, {
             tooltip_split: true,
-            formatter: function(value) {
+            formatter: function (value) {
               return currency + value;
             },
           });
@@ -1296,48 +1296,48 @@ function pureFadeOut(e) {
     }
   }
 
-  document.addEventListener("DOMContentLoaded", function() {
+  document.addEventListener("DOMContentLoaded", function () {
     // Init theme
     UomoHelpers.isMobile = UomoHelpers.updateDeviceSize();
     new Uomo();
   });
 
-  $('a[data-bs-toggle="tab"]').on('shown.bs.tab', function(e) {
+  $('a[data-bs-toggle="tab"]').on('shown.bs.tab', function (e) {
     var paneTarget = $(e.target).attr('href');
     var $thePane = $('.tab-pane' + paneTarget);
     if ($thePane.find('.swiper-container').length > 0 && 0 === $thePane.find('.swiper-slide-active').length) {
-      document.querySelectorAll('.tab-pane' + paneTarget + ' .swiper-container').forEach( function(item) {
+      document.querySelectorAll('.tab-pane' + paneTarget + ' .swiper-container').forEach(function (item) {
         item.swiper.update();
         item.swiper.lazy.load();
       });
-     }
+    }
   });
 
-  $('#quickView.modal').on('shown.bs.modal', function(e) {
+  $('#quickView.modal').on('shown.bs.modal', function (e) {
     var paneTarget = "#quickView";
     var $thePane = $('.modal' + paneTarget);
     if ($thePane.find('.swiper-container').length > 0 && 0 === $thePane.find('.swiper-slide-active').length) {
-      document.querySelectorAll('.modal' + paneTarget + ' .swiper-container').forEach( function(item) {
+      document.querySelectorAll('.modal' + paneTarget + ' .swiper-container').forEach(function (item) {
         item.swiper.update();
         item.swiper.lazy.load();
       });
-     }
+    }
   });
 
   var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
   var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
-    return new bootstrap.Popover(popoverTriggerEl, {'html':true})
+    return new bootstrap.Popover(popoverTriggerEl, { 'html': true })
   });
 
-  $('.shopping-cart .btn-checkout').on('click', function() {
-    window.location.href='./shop_checkout.html';
+  $('.shopping-cart .btn-checkout').on('click', function () {
+    window.location.href = './shop_checkout.html';
   });
 
-  $('.checkout-form .btn-checkout').on('click', function() {
-    window.location.href='./shop_order_complete.html';
+  $('.checkout-form .btn-checkout').on('click', function () {
+    window.location.href = './shop_order_complete.html';
   });
 
-  $(document).on('click', '.cart-table .remove-cart', function(e) {
+  $(document).on('click', '.cart-table .remove-cart', function (e) {
     e.preventDefault();
 
     let parentEl = $(this).closest('tr');
@@ -1347,34 +1347,34 @@ function pureFadeOut(e) {
     }, 350);
   });
 
-  document.querySelector('.js-show-register').addEventListener('click', function(e) {
+  document.querySelector('.js-show-register').addEventListener('click', function (e) {
     document.querySelector(this.getAttribute("href")).click();
   });
 
-  $(document).on('click', 'button.js-add-wishlist, a.add-to-wishlist', function() {
-    if($(this).hasClass("active"))
+  $(document).on('click', 'button.js-add-wishlist, a.add-to-wishlist', function () {
+    if ($(this).hasClass("active"))
       $(this).removeClass("active");
     else
       $(this).addClass("active");
     return false;
   });
 
-  if($('[data-fancybox="gallery"]').length > 0) {
+  if ($('[data-fancybox="gallery"]').length > 0) {
     $('[data-fancybox="gallery"]').fancybox({
       backFocus: false
     });
   }
 
-  $(window).on("scroll", function() {
-    if($(".mobile_fixed-btn_wrapper").length > 0) {
-      if($(this).width() < 992 && $(this).width() >= 768) {
-        if($(this).scrollTop() + $(this).height() - 76 <= $(".mobile_fixed-btn_wrapper").offset().top && $(this).scrollTop() > $(this).height()) {
+  $(window).on("scroll", function () {
+    if ($(".mobile_fixed-btn_wrapper").length > 0) {
+      if ($(this).width() < 992 && $(this).width() >= 768) {
+        if ($(this).scrollTop() + $(this).height() - 76 <= $(".mobile_fixed-btn_wrapper").offset().top && $(this).scrollTop() > $(this).height()) {
           $(".mobile_fixed-btn_wrapper > .button-wrapper").addClass("fixed-btn");
         } else {
           $(".mobile_fixed-btn_wrapper > .button-wrapper").removeClass("fixed-btn");
         }
-      } else if($(this).width() < 768) {
-        if($(this).scrollTop() + $(this).height() - 124 <= $(".mobile_fixed-btn_wrapper").offset().top && $(this).scrollTop() > $(this).height()) {
+      } else if ($(this).width() < 768) {
+        if ($(this).scrollTop() + $(this).height() - 124 <= $(".mobile_fixed-btn_wrapper").offset().top && $(this).scrollTop() > $(this).height()) {
           $(".mobile_fixed-btn_wrapper > .button-wrapper").addClass("fixed-btn");
         } else {
           $(".mobile_fixed-btn_wrapper > .button-wrapper").removeClass("fixed-btn");
@@ -1386,11 +1386,11 @@ function pureFadeOut(e) {
   });
 
   window.onload = () => {
-    if($("#newsletterPopup").length > 0)
+    if ($("#newsletterPopup").length > 0)
       $("#newsletterPopup").modal("show");
 
-    $('.btn-video-player').each(function() {
-      $(this).on("click", function() {
+    $('.btn-video-player').each(function () {
+      $(this).on("click", function () {
         if ($(this).hasClass("playing")) {
           $(this).removeClass("playing");
           $($(this).data("video")).get(0).pause();
@@ -1401,8 +1401,8 @@ function pureFadeOut(e) {
       });
 
       const btn_player = $(this);
-  
-      $($(this).data("video")).on("ended", function() {
+
+      $($(this).data("video")).on("ended", function () {
         $(btn_player).removeClass("playing");
         this.currentTime = 0;
       });
@@ -1426,7 +1426,7 @@ function pureFadeOut(e) {
         }
 
         form.querySelectorAll("input[data-cf-pwd]").forEach(function (el) {
-          if(form.querySelector(el.getAttribute("data-cf-pwd")).value != el.value) {
+          if (form.querySelector(el.getAttribute("data-cf-pwd")).value != el.value) {
             event.preventDefault();
             event.stopPropagation();
           }
@@ -1465,7 +1465,7 @@ function pureFadeOut(e) {
 window.addEventListener('load', () => {
   try {
     let url = window.location.href.split('#').pop();
-    document.querySelector('#'+url).click();
+    document.querySelector('#' + url).click();
   } catch {
 
   }
@@ -1476,14 +1476,14 @@ function changeMainImage(imageUrl) {
   mainImage.src = imageUrl;
 }
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   console.log('DOM đã được tải');
 
   // Hàm để lấy ID sản phẩm từ URL
   function getProductIdFromUrl() {
-      const url = window.location.href;
-      const match = url.match(/\/product\/(\d+)/);
-      return match ? match[1] : null;
+    const url = window.location.href;
+    const match = url.match(/\/product\/(\d+)/);
+    return match ? match[1] : null;
   }
 
   // Lấy ID sản phẩm từ URL
@@ -1492,56 +1492,56 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Hàm để lấy thông tin chi tiết của sản phẩm từ server
   function fetchProductDetails(productId) {
-      return fetch(`/search-product?product_id=${productId}`) // Gọi phương thức search
-          .then(response => {
-              console.log('Trạng thái phản hồi:', response.status); // Log trạng thái phản hồi
-              if (!response.ok) {
-                  throw new Error('Không thể lấy thông tin sản phẩm');
-              }
-              return response.json();
-          })
-          .then(data => {
-              console.log('Dữ liệu trả về từ server:', data); // Log dữ liệu trả về từ server
-              // Trả về thông tin sản phẩm nếu thành công
-              if (data.success) {
-                  const product = data.product;
-                  console.log('Product data:', product); // Log dữ liệu sản phẩm
-                  console.log('Product images:', product.images); // Log dữ liệu hình ảnh
+    return fetch(`/search-product?product_id=${productId}`) // Gọi phương thức search
+      .then(response => {
+        console.log('Trạng thái phản hồi:', response.status); // Log trạng thái phản hồi
+        if (!response.ok) {
+          throw new Error('Không thể lấy thông tin sản phẩm');
+        }
+        return response.json();
+      })
+      .then(data => {
+        console.log('Dữ liệu trả về từ server:', data); // Log dữ liệu trả về từ server
+        // Trả về thông tin sản phẩm nếu thành công
+        if (data.success) {
+          const product = data.product;
+          console.log('Product data:', product); // Log dữ liệu sản phẩm
+          console.log('Product images:', product.images); // Log dữ liệu hình ảnh
 
-                  return product;
-              } else {
-                  console.log('Dữ liệu trả về không thành công:', data);
-                  return null;
-              }
-          })
-          .catch(error => {
-              console.error('Có lỗi xảy ra khi lấy thông tin sản phẩm:', error);
-              return null; // Trả về null nếu có lỗi
-          });
+          return product;
+        } else {
+          console.log('Dữ liệu trả về không thành công:', data);
+          return null;
+        }
+      })
+      .catch(error => {
+        console.error('Có lỗi xảy ra khi lấy thông tin sản phẩm:', error);
+        return null; // Trả về null nếu có lỗi
+      });
   }
 
   function changeImage(imageSrc) {
-      const mainImg = document.getElementById('main-img');
-      if (mainImg) {
-          mainImg.src = imageSrc;
-      } else {
-          console.error('Phần tử main-img không tồn tại');
-      }
+    const mainImg = document.getElementById('main-img');
+    if (mainImg) {
+      mainImg.src = imageSrc;
+    } else {
+      console.error('Phần tử main-img không tồn tại');
+    }
   }
 
-    // Lấy thông tin chi tiết của sản phẩm 1 và cập nhật vào HTML
-    if (currentProductId) {
-      fetchProductDetails(currentProductId).then(product => {
-          if (product) {
-              // Lấy giá trị từ productSizeColors
-              const price = product.productSizeColors ? product.productSizeColors.price : 'N/A';
-              const quanlity = product.productSizeColors ? product.productSizeColors.quantily : 'N/A';
-              console.log(`Giá sản phẩm: ${price}`); // Log giá sản phẩm
-              console.log('Thông tin sản phẩm đã được cập nhật');
-              document.getElementById('product1-name').textContent = product.name;
-              console.log(`Tên sản phẩm 1: ${product.name}`); // Log tên sản phẩm 1
+  // Lấy thông tin chi tiết của sản phẩm 1 và cập nhật vào HTML
+  if (currentProductId) {
+    fetchProductDetails(currentProductId).then(product => {
+      if (product) {
+        // Lấy giá trị từ productSizeColors
+        const price = product.productSizeColors ? product.productSizeColors.price : 'N/A';
+        const quanlity = product.productSizeColors ? product.productSizeColors.quantily : 'N/A';
+        console.log(`Giá sản phẩm: ${price}`); // Log giá sản phẩm
+        console.log('Thông tin sản phẩm đã được cập nhật');
+        document.getElementById('product1-name').textContent = product.name;
+        console.log(`Tên sản phẩm 1: ${product.name}`); // Log tên sản phẩm 1
 
-              const productDetails = `
+        const productDetails = `
               <div class="product-details product-1">
                   <div><strong>Name:</strong> ${product.name}</div>
                   <div><strong>Description:</strong> ${product.description}</div>
@@ -1549,105 +1549,105 @@ document.addEventListener('DOMContentLoaded', function() {
                   <div><strong>Price:</strong> ${quanlity}</div>
               </div>
               `;
-              console.log('Product 1 Details:', productDetails); // Log dữ liệu của productDetails
-              document.querySelector('.details-card.product-1 span').innerHTML = productDetails;
-          }
-      });
+        console.log('Product 1 Details:', productDetails); // Log dữ liệu của productDetails
+        document.querySelector('.details-card.product-1 span').innerHTML = productDetails;
+      }
+    });
   }
 
   // Sự kiện click cho button "Comparison"
-  document.querySelector('.comparison-button').addEventListener('click', function(event) {
-      event.preventDefault();
-      document.getElementById('comparison-table').classList.toggle('d-none');
+  document.querySelector('.comparison-button').addEventListener('click', function (event) {
+    event.preventDefault();
+    document.getElementById('comparison-table').classList.toggle('d-none');
   });
 
   // Sự kiện click cho nút "Đóng" trong bảng so sánh
-  document.querySelectorAll('.close-btn').forEach(function(button) {
-      button.addEventListener('click', function() {
-          // Ẩn bảng so sánh
-          document.querySelector('.comparison-section').classList.add('d-none');
-          document.getElementById('comparison-table').classList.add('d-none');
-      });
+  document.querySelectorAll('.close-btn').forEach(function (button) {
+    button.addEventListener('click', function () {
+      // Ẩn bảng so sánh
+      document.querySelector('.comparison-section').classList.add('d-none');
+      document.getElementById('comparison-table').classList.add('d-none');
+    });
   });
   // Sự kiện click cho nút "Thêm sản phẩm"
-  document.querySelector('.btn-add-product').addEventListener('click', function(event) {
-      event.preventDefault(); // Ngăn chặn hành vi mặc định của thẻ <a>
-      const modal = document.getElementById('add-product-modal');
-      modal.classList.remove('d-none'); // Xóa lớp d-none để hiển thị modal
-      console.log('Modal đã được hiển thị:', modal.classList); // Xem lớp hiện tại của modal
+  document.querySelector('.btn-add-product').addEventListener('click', function (event) {
+    event.preventDefault(); // Ngăn chặn hành vi mặc định của thẻ <a>
+    const modal = document.getElementById('add-product-modal');
+    modal.classList.remove('d-none'); // Xóa lớp d-none để hiển thị modal
+    console.log('Modal đã được hiển thị:', modal.classList); // Xem lớp hiện tại của modal
   });
   // Sự kiện click cho nút "Đóng" trong modal "Add Product"
-  document.querySelector('.close').addEventListener('click', function() {
-      console.log('Nút đóng đã được nhấn');
-      const modal = document.getElementById('add-product-modal');
-      modal.classList.add('d-none');
-      console.log('Modal đã bị ẩn:', modal.classList);
+  document.querySelector('.close').addEventListener('click', function () {
+    console.log('Nút đóng đã được nhấn');
+    const modal = document.getElementById('add-product-modal');
+    modal.classList.add('d-none');
+    console.log('Modal đã bị ẩn:', modal.classList);
   });
   // Sự kiện nhập tên tìm kiếm sản phẩm
-  document.getElementById('product-search').addEventListener('input', function(event) {
-      const query = event.target.value;
-      const resultsContainer = document.getElementById('search-results');
-      resultsContainer.innerHTML = ''; // Xóa kết quả trước đó
+  document.getElementById('product-search').addEventListener('input', function (event) {
+    const query = event.target.value;
+    const resultsContainer = document.getElementById('search-results');
+    resultsContainer.innerHTML = ''; // Xóa kết quả trước đó
 
-      if (query) {
-          fetch(`/search-product?product_name=${query}`) // URL phải đúng với route
-              .then(response => {
-                  console.log('Trạng thái phản hồi:', response.status); // Log trạng thái phản hồi
-                  if (!response.ok) {
-                      throw new Error('Phản hồi mạng không thành công');
-                  }
-                  return response.json();
-              })
-              .then(data => {
-                  if (data.success) {
-                      const product = data.product;
-                      const resultItem = document.createElement('div');
-                      resultItem.classList.add('search-result-item');
-                      resultItem.innerHTML = `
+    if (query) {
+      fetch(`/search-product?product_name=${query}`) // URL phải đúng với route
+        .then(response => {
+          console.log('Trạng thái phản hồi:', response.status); // Log trạng thái phản hồi
+          if (!response.ok) {
+            throw new Error('Phản hồi mạng không thành công');
+          }
+          return response.json();
+        })
+        .then(data => {
+          if (data.success) {
+            const product = data.product;
+            const resultItem = document.createElement('div');
+            resultItem.classList.add('search-result-item');
+            resultItem.innerHTML = `
                           <span>${product.name}</span>
                           <button class="btn-add" data-product-id="${product.product_id}" data-product-name="${product.name}">Thêm sản phẩm</button>
                       `;
-                      resultsContainer.appendChild(resultItem);
-                  } else {
-                      resultsContainer.innerHTML = '<div class="search-result-item">Không tìm thấy sản phẩm</div>';
-                  }
-              })
-              .catch(error => {
-                  console.error('Có lỗi xảy ra:', error);
-                  resultsContainer.innerHTML = '<div class="search-result-item">Không tìm thấy sản phẩm</div>';
-              });
-      }
+            resultsContainer.appendChild(resultItem);
+          } else {
+            resultsContainer.innerHTML = '<div class="search-result-item">Không tìm thấy sản phẩm</div>';
+          }
+        })
+        .catch(error => {
+          console.error('Có lỗi xảy ra:', error);
+          resultsContainer.innerHTML = '<div class="search-result-item">Không tìm thấy sản phẩm</div>';
+        });
+    }
   });
 
 
-    // Chức năng thêm sản phẩm vào mục so sánh
-    document.getElementById('search-results').addEventListener('click', function(event) {
-      console.log('Kết quả tìm kiếm đã được nhấn'); // Log khi kết quả tìm kiếm được nhấn
-      if (event.target.classList.contains('btn-add')) {
-          console.log('Nút thêm sản phẩm đã được nhấn'); // Log khi nút thêm sản phẩm được nhấn
-          const product2name = event.target.getAttribute('data-product-name');
-          const product2Id = event.target.getAttribute('data-product-id');
-          console.log('Tên sản phẩm:', product2name); // Log tên sản phẩm
-          console.log('ID sản phẩm:', product2Id); // Log ID sản phẩm
+  // Chức năng thêm sản phẩm vào mục so sánh
+  document.getElementById('search-results').addEventListener('click', function (event) {
+    console.log('Kết quả tìm kiếm đã được nhấn'); // Log khi kết quả tìm kiếm được nhấn
+    if (event.target.classList.contains('btn-add')) {
+      console.log('Nút thêm sản phẩm đã được nhấn'); // Log khi nút thêm sản phẩm được nhấn
+      const product2name = event.target.getAttribute('data-product-name');
+      const product2Id = event.target.getAttribute('data-product-id');
+      console.log('Tên sản phẩm:', product2name); // Log tên sản phẩm
+      console.log('ID sản phẩm:', product2Id); // Log ID sản phẩm
 
-          // Kiểm tra nếu productId là null hoặc undefined
-          if (!product2Id) {
-              console.error('ID sản phẩm không hợp lệ:', product2Id);
-              return;
-          }
+      // Kiểm tra nếu productId là null hoặc undefined
+      if (!product2Id) {
+        console.error('ID sản phẩm không hợp lệ:', product2Id);
+        return;
+      }
 
-          // Cập nhật modal so sánh với tên sản phẩm
-          document.getElementById('product-name').textContent = product2name;
-          document.getElementById('add-product-modal').classList.add('d-none'); // Ẩn modal
+      // Cập nhật modal so sánh với tên sản phẩm
+      document.getElementById('product-name').textContent = product2name;
+      document.getElementById('add-product-modal').classList.add('d-none'); // Ẩn modal
 
-          // Lấy thông tin chi tiết của sản phẩm 2 và cập nhật vào HTML
-          if (product2Id) {
-              fetchProductDetails(product2Id).then(product => {
-                  if (product) {
-                      // Lấy giá trị price từ productSizeColors
-                      const price = product.productSizeColors ? product.productSizeColors.price : 'N/A';
-                      const quanlity = product.productSizeColors ? product.productSizeColors.quantily : 'N/A';
-                      const product2Details = `
+      // Lấy thông tin chi tiết của sản phẩm 2 và cập nhật vào HTML
+      if (product2Id) {
+        fetchProductDetails(product2Id).then(product => {
+          if (product) {
+            // Lấy giá trị price từ productSizeColors
+            const price = product.productSizeColors ? product.productSizeColors.price : 'N/A';
+            const quanlity = product.productSizeColors ? product.productSizeColors.quantily : 'N/A';
+            const product2Details = `
                           <div class="product-details product-2">
                               <div><strong>Name:</strong> ${product.name}</div>
                               <div><strong>Description:</strong> ${product.description}</div>
@@ -1655,102 +1655,213 @@ document.addEventListener('DOMContentLoaded', function() {
                               <div><strong>Price:</strong> ${quanlity}</div>
                           </div>
                       `;
-                      document.querySelector('.details-card.product-2 span').innerHTML = product2Details;
-                        if (product.images.length > 0) {
-                            const product2Img = document.querySelector('#product2-card img');
-                            if (product2Img) {
-                                product2Img.src = `/assets/img/products/${product.images[0]}`;
-                                product2Img.alt = product.name;
-                                console.log('Hình ảnh sản phẩm 2 đã được cập nhật:', product2Img.src); // Log hình ảnh sản phẩm 2
-                            }
-                        } else {
-                            console.log('Không có hình ảnh cho sản phẩm 2 hoặc thuộc tính image_url không tồn tại');
-                        }
-                  }
-              });
-          }
-
-          // Tạo thẻ h2 chứa tên sản phẩm và thêm vào div.comparison-item.product2
-          const comparisonItem = document.querySelector('.comparison-item.product2');
-          if (comparisonItem) {
-              const productH2 = document.createElement('h2');
-              productH2.textContent = product2name;
-              productH2.setAttribute('data-product-id', product2Id); // Lưu trữ product_id trong thuộc tính data-
-              comparisonItem.appendChild(productH2);
-              console.log('Sản phẩm đã được thêm vào mục so sánh với ID:', product2Id); // Log khi sản phẩm được thêm
-
-              // Ẩn nút "Thêm sản phẩm"
-              const addButton = comparisonItem.querySelector('.btn-add-product');
-              if (addButton) {
-                  addButton.style.display = 'none';
-                  console.log('Nút thêm sản phẩm đã bị ẩn'); // Log khi nút thêm sản phẩm bị ẩn
-              } else {
-                  console.log('Không tìm thấy nút thêm sản phẩm để ẩn'); // Log nếu không tìm thấy nút thêm sản phẩm
+            document.querySelector('.details-card.product-2 span').innerHTML = product2Details;
+            if (product.images.length > 0) {
+              const product2Img = document.querySelector('#product2-card img');
+              if (product2Img) {
+                product2Img.src = `/assets/img/products/${product.images[0]}`;
+                product2Img.alt = product.name;
+                console.log('Hình ảnh sản phẩm 2 đã được cập nhật:', product2Img.src); // Log hình ảnh sản phẩm 2
               }
-
-              // Cập nhật tên sản phẩm trong phần tử .product-wrapper
-              document.getElementById('product2-name').textContent = product2name;
-              document.getElementById('product2-name').setAttribute('data-product-id', product2Id);
-              console.log(`Product 2 - ID: ${product2Id}, Name: ${product2name}`); // Log ID và tên của sản phẩm 2
-          } else {
-              console.log('Không tìm thấy phần tử comparison-item.product2'); // Log nếu không tìm thấy phần tử comparison-item.product2
+            } else {
+              console.log('Không có hình ảnh cho sản phẩm 2 hoặc thuộc tính image_url không tồn tại');
+            }
           }
+        });
       }
+
+      // Tạo thẻ h2 chứa tên sản phẩm và thêm vào div.comparison-item.product2
+      const comparisonItem = document.querySelector('.comparison-item.product2');
+      if (comparisonItem) {
+        const productH2 = document.createElement('h2');
+        productH2.textContent = product2name;
+        productH2.setAttribute('data-product-id', product2Id); // Lưu trữ product_id trong thuộc tính data-
+        comparisonItem.appendChild(productH2);
+        console.log('Sản phẩm đã được thêm vào mục so sánh với ID:', product2Id); // Log khi sản phẩm được thêm
+
+        // Ẩn nút "Thêm sản phẩm"
+        const addButton = comparisonItem.querySelector('.btn-add-product');
+        if (addButton) {
+          addButton.style.display = 'none';
+          console.log('Nút thêm sản phẩm đã bị ẩn'); // Log khi nút thêm sản phẩm bị ẩn
+        } else {
+          console.log('Không tìm thấy nút thêm sản phẩm để ẩn'); // Log nếu không tìm thấy nút thêm sản phẩm
+        }
+
+        // Cập nhật tên sản phẩm trong phần tử .product-wrapper
+        document.getElementById('product2-name').textContent = product2name;
+        document.getElementById('product2-name').setAttribute('data-product-id', product2Id);
+        console.log(`Product 2 - ID: ${product2Id}, Name: ${product2name}`); // Log ID và tên của sản phẩm 2
+      } else {
+        console.log('Không tìm thấy phần tử comparison-item.product2'); // Log nếu không tìm thấy phần tử comparison-item.product2
+      }
+    }
   });
 
   // Chức năng xóa tất cả sản phẩm khỏi mục so sánh
-  document.querySelector('.comparison-item.btn-comparsion').addEventListener('click', function(event) {
-      if (event.target.classList.contains('delete-product')) {
-          console.log('Nút xóa tất cả sản phẩm đã được nhấn'); // Log khi nút xóa tất cả sản phẩm được nhấn
+  document.querySelector('.comparison-item.btn-comparsion').addEventListener('click', function (event) {
+    if (event.target.classList.contains('delete-product')) {
+      console.log('Nút xóa tất cả sản phẩm đã được nhấn'); // Log khi nút xóa tất cả sản phẩm được nhấn
 
-          // Xóa tất cả thẻ h2 chứa tên sản phẩm và thuộc tính data-product-id
-          const comparisonItems = document.querySelectorAll('.comparison-item.product2 h2');
-          comparisonItems.forEach(function(item) {
-              const productId = item.getAttribute('data-product-id');
-              item.remove();
-              console.log('Sản phẩm với ID', productId, 'đã được xóa khỏi mục so sánh'); // Log khi sản phẩm được xóa
-          });
+      // Xóa tất cả thẻ h2 chứa tên sản phẩm và thuộc tính data-product-id
+      const comparisonItems = document.querySelectorAll('.comparison-item.product2 h2');
+      comparisonItems.forEach(function (item) {
+        const productId = item.getAttribute('data-product-id');
+        item.remove();
+        console.log('Sản phẩm với ID', productId, 'đã được xóa khỏi mục so sánh'); // Log khi sản phẩm được xóa
+      });
 
-          // Hiển thị lại nút "Thêm sản phẩm"
-          const addButtons = document.querySelectorAll('.comparison-item.product2 .btn-add-product');
-          addButtons.forEach(function(button) {
-              button.style.display = 'block';
-              console.log('Nút thêm sản phẩm đã được hiển thị lại'); // Log khi nút thêm sản phẩm được hiển thị lại
-          });
-          // Đặt lại tên sản phẩm trong phần tử .product-wrapper
-          document.getElementById('product2-name').textContent = 'Sản phẩm 2';
-          document.getElementById('product2-name').removeAttribute('data-product-id');
-          }
+      // Hiển thị lại nút "Thêm sản phẩm"
+      const addButtons = document.querySelectorAll('.comparison-item.product2 .btn-add-product');
+      addButtons.forEach(function (button) {
+        button.style.display = 'block';
+        console.log('Nút thêm sản phẩm đã được hiển thị lại'); // Log khi nút thêm sản phẩm được hiển thị lại
+      });
+      // Đặt lại tên sản phẩm trong phần tử .product-wrapper
+      document.getElementById('product2-name').textContent = 'Sản phẩm 2';
+      document.getElementById('product2-name').removeAttribute('data-product-id');
+    }
   });
 
   // Sự kiện click cho nút "So sánh ngay"
-  document.querySelector('.btn-table.comparsion').addEventListener('click', function(event) {
-      event.preventDefault();
-      
-      // Kiểm tra nếu không có sản phẩm nào được thêm vào mục so sánh
-      const comparisonItem = document.querySelector('.comparison-item.product2');
-      if (comparisonItem && comparisonItem.querySelectorAll('h2').length === 0) {
-          alert('Vui lòng thêm sản phẩm so sánh');
-          return;
-      }
-      
-      // Hiển thị bảng so sánh
-      document.querySelector('.comparison-section').classList.remove('d-none');
-      
-      // Đóng modal "Add Product"
-      document.getElementById('add-product-modal').classList.add('d-none');
+  document.querySelector('.btn-table.comparsion').addEventListener('click', function (event) {
+    event.preventDefault();
+
+    // Kiểm tra nếu không có sản phẩm nào được thêm vào mục so sánh
+    const comparisonItem = document.querySelector('.comparison-item.product2');
+    if (comparisonItem && comparisonItem.querySelectorAll('h2').length === 0) {
+      alert('Vui lòng thêm sản phẩm so sánh');
+      return;
+    }
+
+    // Hiển thị bảng so sánh
+    document.querySelector('.comparison-section').classList.remove('d-none');
+
+    // Đóng modal "Add Product"
+    document.getElementById('add-product-modal').classList.add('d-none');
   });
 
   // Sự kiến chatbox online
-  document.querySelector('.chatbox-toggle').addEventListener('click', function() {
-      document.querySelector('.chatbox-content').classList.toggle('active');
-      document.querySelector('.chatbox-toggle').classList.toggle('d-none'); 
-      console.log('Nút chatbox-toggle đã được nhấn');
-    });
-    
-  document.querySelector('.close-chatbox').addEventListener('click', function() {
-      document.querySelector('.chatbox-content').classList.remove('active');
-      document.querySelector('.chatbox-toggle').classList.remove('d-none');
-      console.log('Nút close-chatbox đã được nhấn');
+  document.querySelector('.chatbox-toggle').addEventListener('click', function () {
+    document.querySelector('.chatbox-content').classList.toggle('active');
+    document.querySelector('.chatbox-toggle').classList.toggle('d-none');
+    console.log('Nút chatbox-toggle đã được nhấn');
+  });
+
+  document.querySelector('.close-chatbox').addEventListener('click', function () {
+    document.querySelector('.chatbox-content').classList.remove('active');
+    document.querySelector('.chatbox-toggle').classList.remove('d-none');
+    console.log('Nút close-chatbox đã được nhấn');
   });
 });
+
+// Xoá sản phẩm khỏi giỏ hàng
+document.addEventListener('DOMContentLoaded', function () {
+  const removeButtons = document.querySelectorAll('.remove-cart');
+
+  removeButtons.forEach(button => {
+    button.addEventListener('click', function (event) {
+      event.preventDefault();
+
+      const cartItemId = button.getAttribute('data-id');
+
+      if (cartItemId) {
+        fetch(`cart/remove/${cartItemId}`, {
+          method: 'DELETE',
+          headers: {
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+            'Content-Type': 'application/json'
+          }
+        })
+          .then(response => response.json())
+          .then(data => {
+            if (data.success) {
+              // Xóa dòng sản phẩm khỏi giao diện
+              button.closest('tr').remove();
+              alert('Item removed from cart');
+            } else {
+              alert('Failed to remove item from cart');
+            }
+          })
+          .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred');
+          });
+      }
+    });
+  });
+});
+
+// Cập nhật giỏ hàng
+document.getElementById('update-cart').addEventListener('click', function () {
+  // Tạo một đối tượng FormData
+  const formData = new FormData();
+
+  // Thu thập tất cả các số lượng từ các ô input
+  const quantities = document.querySelectorAll('input[name^="quantity"]');
+  quantities.forEach(input => {
+    const cartItemId = input.dataset.id; // Lấy cartItemId từ data attribute
+    formData.append(`quantity[${cartItemId}]`, input.value);
+  });
+
+  // Gửi yêu cầu cập nhật giỏ hàng
+  fetch('cart/update', {
+    method: 'PUT',
+    headers: {
+      'X-CSRF-TOKEN': '{{ csrf_token() }}', // Nếu bạn cần CSRF token
+    },
+    body: formData,
+  })
+    .then(response => response.json())
+    .then(data => {
+      // Xử lý phản hồi từ server
+      if (data.success) {
+        alert(data.message); // Thông báo thành công
+        // Cập nhật lại nội dung giỏ hàng nếu cần
+      } else {
+        alert('Failed to update cart.'); // Thông báo thất bại
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      alert('An error occurred while updating the cart.');
+    });
+});
+
+//product detail
+    document.querySelectorAll('input[name="size"], input[name="color"]').forEach(function(element) {
+        element.addEventListener('change', function() {
+            const selectedSize = document.querySelector('input[name="size"]:checked');
+            const selectedColor = document.querySelector('input[name="color"]:checked');
+
+            let quantity = 0;
+
+            if (selectedSize && selectedColor) {
+                // Gửi yêu cầu AJAX đến server để lấy số lượng
+                fetch(`/product/quantity?product_id={{ $product['product_id'] }}&size_id=${selectedSize.id.split('-')[2]}&color_id=${selectedColor.id.split('-')[2]}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                      console.log(data);
+                        // Lấy quantity từ phản hồi, nếu không có thì sử dụng 0
+                        quantity = data.quantity ?? 0; // Nếu không có giá trị, sử dụng 0
+                        document.getElementById('product-quantity').textContent = quantity;
+                    })
+                    .catch(error => {
+                        console.error('Error fetching quantity:', error);
+                        document.getElementById('product-quantity').textContent = 0; // Xử lý lỗi
+                    });
+            } else {
+                // Nếu không có kích thước hoặc màu sắc đã chọn, đặt lại số lượng về 0
+                document.getElementById('product-quantity').textContent = 0;
+            }
+        });
+    });
+
+
+
+
