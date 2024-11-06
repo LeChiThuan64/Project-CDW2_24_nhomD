@@ -80,6 +80,7 @@ public function getProductDetailData()
         'product_id' => $this->product_id,
         'name' => $this->name,
         'description' => $this->description,
+        'category_name' => $this->category->category_name,
         'colors' => implode(', ', array_unique($colors)),
         'sizes' => implode(', ', array_unique($sizes)),
         'total_quantity' => $totalQuantity,

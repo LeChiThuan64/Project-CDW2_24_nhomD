@@ -1477,7 +1477,6 @@ function changeMainImage(imageUrl) {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-  console.log('DOM đã được tải');
 
   // Hàm để lấy ID sản phẩm từ URL
   function getProductIdFromUrl() {
@@ -1488,13 +1487,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // Lấy ID sản phẩm từ URL
   const currentProductId = getProductIdFromUrl();
-  console.log(`Current Product ID: ${currentProductId}`); // Log ID sản phẩm hiện tại
 
   // Hàm để lấy thông tin chi tiết của sản phẩm từ server
   function fetchProductDetails(productId) {
     return fetch(`/search-product?product_id=${productId}`) // Gọi phương thức search
       .then(response => {
-        console.log('Trạng thái phản hồi:', response.status); // Log trạng thái phản hồi
         if (!response.ok) {
           throw new Error('Không thể lấy thông tin sản phẩm');
         }
@@ -1505,17 +1502,13 @@ document.addEventListener('DOMContentLoaded', function () {
         // Trả về thông tin sản phẩm nếu thành công
         if (data.success) {
           const product = data.product;
-          console.log('Product data:', product); // Log dữ liệu sản phẩm
-          console.log('Product images:', product.images); // Log dữ liệu hình ảnh
 
           return product;
         } else {
-          console.log('Dữ liệu trả về không thành công:', data);
           return null;
         }
       })
       .catch(error => {
-        console.error('Có lỗi xảy ra khi lấy thông tin sản phẩm:', error);
         return null; // Trả về null nếu có lỗi
       });
   }
@@ -1530,30 +1523,30 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   // Lấy thông tin chi tiết của sản phẩm 1 và cập nhật vào HTML
-  if (currentProductId) {
-    fetchProductDetails(currentProductId).then(product => {
-      if (product) {
-        // Lấy giá trị từ productSizeColors
-        const price = product.productSizeColors ? product.productSizeColors.price : 'N/A';
-        const quanlity = product.productSizeColors ? product.productSizeColors.quantily : 'N/A';
-        console.log(`Giá sản phẩm: ${price}`); // Log giá sản phẩm
-        console.log('Thông tin sản phẩm đã được cập nhật');
-        document.getElementById('product1-name').textContent = product.name;
-        console.log(`Tên sản phẩm 1: ${product.name}`); // Log tên sản phẩm 1
+  // if (currentProductId) {
+  //   fetchProductDetails(currentProductId).then(product => {
+  //     if (product) {
+  //       // Lấy giá trị từ productSizeColors
+  //       const price = product.productSizeColors ? product.productSizeColors.price : 'N/A';
+  //       const quanlity = product.productSizeColors ? product.productSizeColors.quantily : 'N/A';
+  //       console.log(`Giá sản phẩm: ${price}`); // Log giá sản phẩm
+  //       console.log('Thông tin sản phẩm đã được cập nhật');
+  //       document.getElementById('product1-name').textContent = product.name;
+  //       console.log(`Tên sản phẩm 1: ${product.name}`); // Log tên sản phẩm 1
 
-        const productDetails = `
-              <div class="product-details product-1">
-                  <div><strong>Name:</strong> ${product.name}</div>
-                  <div><strong>Description:</strong> ${product.description}</div>
-                  <div><strong>Price:</strong> ${price}</div>
-                  <div><strong>Price:</strong> ${quanlity}</div>
-              </div>
-              `;
-        console.log('Product 1 Details:', productDetails); // Log dữ liệu của productDetails
-        document.querySelector('.details-card.product-1 span').innerHTML = productDetails;
-      }
-    });
-  }
+  //       const productDetails = `
+  //             <div class="product-details product-1">
+  //                 <div><strong>Name:</strong> ${product.name}</div>
+  //                 <div><strong>Description:</strong> ${product.description}</div>
+  //                 <div><strong>Price:</strong> ${price}</div>
+  //                 <div><strong>Price:</strong> ${quanlity}</div>
+  //             </div>
+  //             `;
+  //       console.log('Product 1 Details:', productDetails); // Log dữ liệu của productDetails
+  //       document.querySelector('.details-card.product-1 span').innerHTML = productDetails;
+  //     }
+  //   });
+  // }
 
   // Sự kiện click cho button "Comparison"
   document.querySelector('.comparison-button').addEventListener('click', function (event) {
@@ -1793,74 +1786,81 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 // Cập nhật giỏ hàng
-document.getElementById('update-cart').addEventListener('click', function () {
-  // Tạo một đối tượng FormData
-  const formData = new FormData();
+// document.getElementById('update-cart').addEventListener('click', function () {
+//   // Tạo một đối tượng FormData
+//   const formData = new FormData();
 
-  // Thu thập tất cả các số lượng từ các ô input
-  const quantities = document.querySelectorAll('input[name^="quantity"]');
-  quantities.forEach(input => {
-    const cartItemId = input.dataset.id; // Lấy cartItemId từ data attribute
-    formData.append(`quantity[${cartItemId}]`, input.value);
-  });
+//   // Thu thập tất cả các số lượng từ các ô input
+//   const quantities = document.querySelectorAll('input[name^="quantity"]');
+//   quantities.forEach(input => {
+//     const cartItemId = input.dataset.id; // Lấy cartItemId từ data attribute
+//     formData.append(`quantity[${cartItemId}]`, input.value);
+//   });
 
-  // Gửi yêu cầu cập nhật giỏ hàng
-  fetch('cart/update', {
-    method: 'PUT',
-    headers: {
-      'X-CSRF-TOKEN': '{{ csrf_token() }}', // Nếu bạn cần CSRF token
-    },
-    body: formData,
-  })
-    .then(response => response.json())
-    .then(data => {
-      // Xử lý phản hồi từ server
-      if (data.success) {
-        alert(data.message); // Thông báo thành công
-        // Cập nhật lại nội dung giỏ hàng nếu cần
-      } else {
-        alert('Failed to update cart.'); // Thông báo thất bại
-      }
-    })
-    .catch(error => {
-      console.error('Error:', error);
-      alert('An error occurred while updating the cart.');
-    });
-});
+//   // Gửi yêu cầu cập nhật giỏ hàng
+//   fetch('cart/update', {
+//     method: 'PUT',
+//     headers: {
+//       'X-CSRF-TOKEN': '{{ csrf_token() }}', // Nếu bạn cần CSRF token
+//     },
+//     body: formData,
+//   })
+//     .then(response => response.json())
+//     .then(data => {
+//       // Xử lý phản hồi từ server
+//       if (data.success) {
+//         alert(data.message); // Thông báo thành công
+//         // Cập nhật lại nội dung giỏ hàng nếu cần
+//       } else {
+//         alert('Failed to update cart.'); // Thông báo thất bại
+//       }
+//     })
+//     .catch(error => {
+//       console.error('Error:', error);
+//       alert('An error occurred while updating the cart.');
+//     });
+// });
 
 //product detail
-    document.querySelectorAll('input[name="size"], input[name="color"]').forEach(function(element) {
-        element.addEventListener('change', function() {
-            const selectedSize = document.querySelector('input[name="size"]:checked');
-            const selectedColor = document.querySelector('input[name="color"]:checked');
+document.addEventListener('DOMContentLoaded', function () {
+  // Lắng nghe sự kiện thay đổi trên các phần tử size và color
+  document.querySelectorAll('input[name="size"], input[name="color"]').forEach(function(element) {
+      element.addEventListener('change', function() {
+          const selectedSize = document.querySelector('input[name="size"]:checked');
+          const selectedColor = document.querySelector('input[name="color"]:checked');
+          const productId = document.getElementById('product-info').getAttribute('data-product-id');
 
-            let quantity = 0;
+          console.log('Selected Size ID:', selectedSize.id.split('-')[2]);
+          console.log('Selected Color ID:', selectedColor.id.split('-')[2]);
+          console.log('Product ID:',  productId );
 
-            if (selectedSize && selectedColor) {
-                // Gửi yêu cầu AJAX đến server để lấy số lượng
-                fetch(`/product/quantity?product_id={{ $product['product_id'] }}&size_id=${selectedSize.id.split('-')[2]}&color_id=${selectedColor.id.split('-')[2]}`)
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('Network response was not ok');
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                      console.log(data);
-                        // Lấy quantity từ phản hồi, nếu không có thì sử dụng 0
-                        quantity = data.quantity ?? 0; // Nếu không có giá trị, sử dụng 0
-                        document.getElementById('product-quantity').textContent = quantity;
-                    })
-                    .catch(error => {
-                        console.error('Error fetching quantity:', error);
-                        document.getElementById('product-quantity').textContent = 0; // Xử lý lỗi
-                    });
-            } else {
-                // Nếu không có kích thước hoặc màu sắc đã chọn, đặt lại số lượng về 0
-                document.getElementById('product-quantity').textContent = 0;
-            }
-        });
-    });
+          let quantity = 0;
+
+          if (selectedSize && selectedColor) {
+              // Gửi yêu cầu AJAX đến server để lấy số lượng
+              fetch(`/api/product/quantity?product_id=${productId}&size_id=${selectedSize.id.split('-')[2]}&color_id=${selectedColor.id.split('-')[2]}`)
+                  .then(response => {
+                      if (!response.ok) {
+                          throw new Error('Network response was not ok');
+                      }
+                      return response.json();
+                  })
+                  .then(data => {
+                      console.log(data); // Kiểm tra dữ liệu trả về
+                      quantity = data.quantity ?? 0;
+                      document.getElementById('product-quantity').textContent = quantity;
+                  })
+                  .catch(error => {
+                      console.error('Error fetching quantity:', error);
+                      document.getElementById('product-quantity').textContent = 0; 
+                  });
+          } else {
+              document.getElementById('product-quantity').textContent = 0;
+          }
+      });
+  });
+});
+
 
 
 

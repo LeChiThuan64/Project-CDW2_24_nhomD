@@ -124,6 +124,7 @@
                             data-aside="cartDrawer">Checkout</button><br>
                     </div>
                 </form>
+                <div id="product-info" data-product-id="{{ $product['product_id'] }}"></div>
                 <div class="product-single__addtolinks add-to-wishlist">
                     <form action="{{ route('wishlist.add', $product['product_id']) }}" method="POST"
                         class="add-to-wishlist-form">

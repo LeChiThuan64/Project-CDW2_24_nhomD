@@ -103,7 +103,6 @@
                     </tbody>
                 </table>
 
-
                 <div class="cart-table-footer">
                     @auth
                     @if(isset($userVouchers) && $userVouchers->isNotEmpty())

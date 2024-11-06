@@ -263,5 +263,3 @@ Route::prefix('cart')->group(function () {
     // Xóa tất cả sản phẩm khỏi giỏ hàng
     Route::delete('/clear', [CartController::class, 'clear'])->name('cart.clear');
 });
-
-Route::get('product/quantity', [ProductController::class, 'getQuantity']);
