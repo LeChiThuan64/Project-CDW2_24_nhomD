@@ -1,6 +1,6 @@
 @extends('viewAdmin.navigation')
 
-@section('title', 'Edit Blog')
+@section('title', 'Edit User')
 
 @section('content')
 <html>
@@ -18,18 +18,31 @@
         <form action="{{ route('user.update', $user->id) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
+            
             <div class="form-group">
                 <label for="username">Tên đăng nhập</label>
                 <input id="username" name="name" type="text" value="{{ old('name', $user->name) }}" />
+                @if ($errors->has('name'))
+                    <div class="text-danger">{{ $errors->first('name') }}</div>
+                @endif
             </div>
+
             <div class="form-group">
                 <label for="email">Email</label>
                 <input id="email" name="email" type="email" value="{{ old('email', $user->email) }}" />
+                @if ($errors->has('email'))
+                    <div class="text-danger">{{ $errors->first('email') }}</div>
+                @endif
             </div>
+
             <div class="form-group">
                 <label for="phone">Số điện thoại</label>
                 <input id="phone" name="phone" type="text" value="{{ old('phone', $user->phone) }}" />
+                @if ($errors->has('phone'))
+                    <div class="text-danger">{{ $errors->first('phone') }}</div>
+                @endif
             </div>
+
             <div class="form-group">
                 <label>Giới tính</label>
                 <div class="radio-group">
@@ -37,10 +50,17 @@
                     <label><input name="gender" type="radio" value="female" {{ $user->gender === 'female' ? 'checked' : '' }} /> Nữ</label>
                     <label><input name="gender" type="radio" value="other" {{ $user->gender === 'other' ? 'checked' : '' }} /> Khác</label>
                 </div>
+                @if ($errors->has('gender'))
+                    <div class="text-danger">{{ $errors->first('gender') }}</div>
+                @endif
             </div>
+
             <div class="form-group">
                 <label for="dob">Ngày sinh</label>
                 <input id="dob" name="dob" type="date" value="{{ old('dob', $user->dob ? $user->dob->format('Y-m-d') : '') }}" />
+                @if ($errors->has('dob'))
+                    <div class="text-danger">{{ $errors->first('dob') }}</div>
+                @endif
             </div>
 
             <div class="profile-pic">
@@ -48,6 +68,9 @@
                 <input id="uploadImage" name="profile_image" type="file" accept="image/*" onchange="previewImage(event)" style="display: none;" />
                 <label for="uploadImage" class="upload-button">Chọn ảnh</label>
                 <div class="file-info">Dung lượng file tối đa 1 MB<br />Định dạng: JPEG, PNG</div>
+                @if ($errors->has('profile_image'))
+                    <div class="text-danger">{{ $errors->first('profile_image') }}</div>
+                @endif
             </div>
 
             <div class="buttons">
@@ -59,19 +82,6 @@
     </div>
 
     <script>
-        const togglePassword = document.querySelector("#togglePassword");
-        const password = document.querySelector("#password");
-
-        togglePassword.addEventListener("click", function() {
-            // Toggle the password field type between password and text
-            const type = password.getAttribute("type") === "password" ? "text" : "password";
-            password.setAttribute("type", type);
-
-            // Toggle the eye icon between eye and eye-slash
-            this.classList.toggle("fa-eye");
-            this.classList.toggle("fa-eye-slash");
-        });
-
         function previewImage(event) {
             const file = event.target.files[0];
             if (file) {

@@ -395,7 +395,6 @@ function showError(inputElement, message) {
 
 // Attach event listener to the form's submit event
 document.querySelector('#addForm').addEventListener('submit', function(event) {
-    alert(validateData())
     if (!validateData()) {
         event.preventDefault(); // Prevent form submission if validation fails
         alert('Vui lòng kiểm tra các trường dữ liệu!');

@@ -15,8 +15,11 @@ return new class extends Migration
             $table->id('cart_item_id');
             $table->unsignedBigInteger('cart_id')->nullable();
             $table->unsignedBigInteger('product_id')->nullable();
-            $table->integer('quantity');
-            $table->timestamp('created_at')->useCurrent();
+            $table->unsignedBigInteger('size_id');
+            $table->unsignedBigInteger('color_id');
+            $table->integer('quantity')->default(0);
+            $table->timestamps();
+
         });
     }
     

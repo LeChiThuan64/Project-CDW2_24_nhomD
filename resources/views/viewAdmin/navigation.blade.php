@@ -50,16 +50,16 @@
     <link href="{{ asset('assets/css/list_products.css') }}" rel="stylesheet" />
     <link rel="stylesheet" href="{{ asset('assets/css/chatbox_admin.css') }}">
 
-  <!-- Toastr CSS -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <!-- Toastr CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 
 
 
-  <script src="{{ asset('assets/js/kit.fontawesome.js') }}" crossorigin="anonymous"></script>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
-  <script defer data-site="demos.creative-tim.com" src="{{ asset('assets/js/nepcha-analytics.js') }}"></script>
-  <style>
+    <script src="{{ asset('assets/js/kit.fontawesome.js') }}" crossorigin="anonymous"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+    <script defer data-site="demos.creative-tim.com" src="{{ asset('assets/js/nepcha-analytics.js') }}"></script>
+    <style>
     /*
     .pagination .page-item.active .page-link {
         background-color: red; 
@@ -72,7 +72,7 @@
     }
 
     */
-  </style>
+    </style>
 
 </head>
 
@@ -193,12 +193,12 @@
 @endif
 
 
-        <!-- Other menu items -->
-        <!-- Add other menu items similarly, replacing static links -->
-      </ul>
-    </div>
+                <!-- Other menu items -->
+                <!-- Add other menu items similarly, replacing static links -->
+            </ul>
+        </div>
 
-  </aside>
+    </aside>
 
     <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg">
         @yield('content')
@@ -207,16 +207,17 @@
 
 
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="https://cdn.ckeditor.com/ckeditor5/37.0.0/classic/ckeditor.js"></script>
-  <!-- Toastr JS -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-  <script src="{{ asset('assets/js/addProducts.js') }}"></script>
-  <script src="{{ asset('assets/js/list_products.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.ckeditor.com/ckeditor5/37.0.0/classic/ckeditor.js"></script>
+    <!-- Toastr JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="{{ asset('assets/js/addProducts.js') }}"></script>
+    <script src="{{ asset('assets/js/list_products.js') }}"></script>
+    <script src="{{ asset('assets/js/chatbox-admin.js') }}"></script>
 
-  <!-- Thêm jQuery -->
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mark.js/dist/mark.min.js"></script>
+    <!-- Thêm jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mark.js/dist/mark.min.js"></script>
 
 </body>
 

@@ -35,8 +35,8 @@ class ProductsController extends Controller
         // Số sản phẩm trên mỗi trang
         $perPage = 10;
 
-        // Lấy sản phẩm cùng với quan hệ images, productSizeColors, size, color và category
-        $products = Product::with(['images', 'productSizeColors.size', 'productSizeColors.color', 'category']) // Thêm 'category' vào đây
+        // Lấy sản phẩm cùng với các quan hệ cần thiết
+        $products = Product::with(['images', 'productSizeColors.size', 'productSizeColors.color'])
             ->orderBy('updated_at', 'desc')
             ->paginate($perPage);
 
@@ -75,6 +75,7 @@ class ProductsController extends Controller
                 'sizesAndColors' => $product->productSizeColors, // Dữ liệu cho modal
                 'images' => $images, // Thêm đường dẫn ảnh
             ];
+            return $product->getProductDetailData();
         });
         $categories = Category::all();
 
@@ -258,6 +259,7 @@ class ProductsController extends Controller
         return response()->json($combinedProducts);
     }
 
+
     public function store(Request $request)
     {
         // Mảng màu
@@ -275,6 +277,10 @@ class ProductsController extends Controller
             4 => 'L',
             5 => 'XL'
         ];
+
+        $data = $request->all();
+
+
 
         // Xác thực dữ liệu
         $request->validate([

@@ -31,11 +31,11 @@
                                                     data-settings='{"resizeObserver": true}'>
                                                     <div class="swiper-wrapper">
                                                         @foreach ($item->product->images as $image)
-                                                            <!-- Giả sử bạn có mối quan hệ images trong Product -->
                                                             <div class="swiper-slide">
-                                                                <img loading="lazy" src="{{ asset('assets/img/products/' . $image->image_url) }}"
+                                                            <a href="{{ route('product.show', $item['product_id']) }}"><img loading="lazy" src="{{ asset('assets/img/products/' . $image->image_url) }}"
                                                                     width="330" height="400"
                                                                     alt="{{ $item->product->name }}" class="pc__img">
+                                                                    </a>
                                                             </div>
                                                         @endforeach
                                                     </div>

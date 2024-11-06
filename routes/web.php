@@ -63,6 +63,10 @@ Route::get('/tables', [UserController::class, 'index'])->name('tables');
 //blog
 Route::get('/blogs', [BlogController::class, 'index']);
 
+//khóa người dùng
+Route::post('/users/{id}/toggle-status', [UserController::class, 'toggleStatus']);
+
+
 // Route xóa người dùng
 Route::delete('/user/{id}', [UserController::class, 'destroy'])->name('user.destroy');
 
@@ -75,7 +79,7 @@ Route::get('/users/{id}', [UserController::class, 'show'])->name('user.show');
 
 // Route để hiện thị admin supprort chatbox
 Route::prefix('admin')->group(function () {
-    Route::get('/chatbox', [ChatboxController::class, 'index'])->name('admin.chatbox.index');
+    Route::get('/chatbox', [ChatboxController::class, 'index'])->name('admin.chatbox');
     Route::post('/chatbox/update-status/{id}', [ChatboxController::class, 'updateStatus'])->name('admin.chatbox.updateStatus');
     Route::delete('/chatbox/delete/{id}', [ChatboxController::class, 'delete'])->name('admin.chatbox.delete');
 });
@@ -99,7 +103,7 @@ Route::get('/blogs_Detal', function () {
     return view('viewUser.blogs_Detal');
 });
 
-Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+// Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
 
 Route::post('/cart/apply-voucher', [CartController::class, 'applyVoucher'])->name('cart.applyVoucher');
 
@@ -182,15 +186,15 @@ Route::get('/locgia', function () {
     return view('viewUser.locgia'); // Đường dẫn view tới contact.blade.php
 })->name('locgia');
 
+//
+Route::get('/giamgia', function () {
+    return view('viewAdmin.giamgia');
+});
 Route::get('/vocher_home', function () {
     return view('viewAdmin.vocher_home');
 });
 Route::get('/vocher', function () {
     return view('viewAdmin.vocher');
-});
-
-Route::get('/giamgia', function () {
-    return view('viewAdmin.giamgia');
 });
 // Các route liên quan đến Voucher
 Route::get('/vocher', [VocherController::class, 'index'])->name('vocher.index');
@@ -245,3 +249,21 @@ Route::put('/profile/{id}', [ProfileController::class, 'update'])->name('profile
 
 // Route để lưu dữ liệu chatbox chatbox
 Route::post('/api/save-chatbox-data', [ChatboxController::class, 'saveChatboxData']);
+
+// Route cho Giỏ hàng
+Route::prefix('cart')->group(function () {
+    // Hiển thị giỏ hàng
+    Route::get('/', [CartController::class, 'show'])->name('cart.show');
+
+    // Thêm sản phẩm vào giỏ hàng
+    Route::post('/add', [CartController::class, 'add'])->name('cart.add');
+
+    // Cập nhật giỏ hàng
+    Route::put('/update', [CartController::class, 'update'])->name('cart.update');
+
+    // Xóa sản phẩm khỏi giỏ hàng
+    Route::delete('/remove/{cartItemId}', [CartController::class, 'remove'])->name('cart.remove');
+
+    // Xóa tất cả sản phẩm khỏi giỏ hàng
+    Route::delete('/clear', [CartController::class, 'clear'])->name('cart.clear');
+});

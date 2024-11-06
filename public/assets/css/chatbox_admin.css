@@ -5,12 +5,19 @@ body {
     padding: 0;
 }
 
+.container {
+    width: calc(100%); /* Tăng chiều rộng thêm 200px */
+    margin: 0; /* Loại bỏ margin để phần tử không bị thụt vào giữa */
+    padding: 0; /* Loại bỏ padding để phần tử không bị thụt vào giữa */
+    box-sizing: border-box; /* Đảm bảo padding không làm tăng kích thước của phần tử */
+}
+
 .chatbox-admin {
-    width: 90%;
-    margin: 50px auto;
-    background: #fff;
+    width: calc(100%);
+    margin: 0; /* Loại bỏ margin để phần tử không bị thụt vào giữa */
     padding: 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box; /* Đảm bảo padding không làm tăng kích thước của phần tử */
 }
 
 h1 {

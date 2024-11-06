@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Blog;
 use App\Models\Comment;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Crypt;
 
 class BlogController extends Controller
 {
@@ -106,8 +107,18 @@ class BlogController extends Controller
         return redirect()->route('admin.blog.index')->with('success', 'Blog đã được xóa thành công!');
     }
 
-    public function edit($blog_id)
+    // public function edit($blog_id)
+    // {
+    //     // Lấy blog cần sửa
+    //     $blog = Blog::where('blog_id', $blog_id)->firstOrFail();
+    //     return view('viewAdmin.sua_blog', compact('blog'));
+    // }
+
+    public function edit($encryptedBlogId)
     {
+        // Giải mã ID blog
+        $blog_id = Crypt::decryptString($encryptedBlogId);
+
         // Lấy blog cần sửa
         $blog = Blog::where('blog_id', $blog_id)->firstOrFail();
         return view('viewAdmin.sua_blog', compact('blog'));
