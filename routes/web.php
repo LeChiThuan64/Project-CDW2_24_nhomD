@@ -14,6 +14,7 @@ use App\Http\Controllers\AdminBlogController;
 use App\Http\Controllers\VocherController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ChatboxController;
+use App\Http\Controllers\CartController;
 use App\Models\Blog;
 /*
 |--------------------------------------------------------------------------
@@ -245,3 +246,23 @@ Route::delete('/products/destroy/{id}', [ProductsController::class, 'destroy'])-
 
 // Route để lưu dữ liệu chatbox chatbox
 Route::post('/api/save-chatbox-data', [ChatboxController::class, 'saveChatboxData']);
+
+// Route cho Giỏ hàng
+Route::prefix('cart')->group(function () {
+    // Hiển thị giỏ hàng
+    Route::get('/', [CartController::class, 'show'])->name('cart.show');
+
+    // Thêm sản phẩm vào giỏ hàng
+    Route::post('/add', [CartController::class, 'add'])->name('cart.add');
+
+    // Cập nhật giỏ hàng
+    Route::put('/update', [CartController::class, 'update'])->name('cart.update');
+
+    // Xóa sản phẩm khỏi giỏ hàng
+    Route::delete('/remove/{cartItemId}', [CartController::class, 'remove'])->name('cart.remove');
+
+    // Xóa tất cả sản phẩm khỏi giỏ hàng
+    Route::delete('/clear', [CartController::class, 'clear'])->name('cart.clear');
+});
+
+Route::get('product/quantity', [ProductController::class, 'getQuantity']);

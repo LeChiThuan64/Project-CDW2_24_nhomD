@@ -24,42 +24,14 @@ class ProductsController extends Controller
         // Số sản phẩm trên mỗi trang
         $perPage = 10;
 
-        // Lấy sản phẩm cùng với quan hệ images, productSizeColors, size, và color
+        // Lấy sản phẩm cùng với các quan hệ cần thiết
         $products = Product::with(['images', 'productSizeColors.size', 'productSizeColors.color'])
             ->orderBy('updated_at', 'desc')
             ->paginate($perPage);
 
         // Xử lý dữ liệu sản phẩm
         $productsData = $products->map(function ($product) {
-            $colors = [];
-            $sizes = [];
-            $totalQuantity = 0;
-            $images = $product->images->pluck('image_url')->map(function ($url) {
-                return asset('assets/img/products/' . $url);
-            })->toArray();
-
-
-            foreach ($product->productSizeColors as $sizeColor) {
-                $colors[] = $sizeColor->color->name ?? 'N/A';
-                $sizes[] = $sizeColor->size->name ?? 'N/A';
-                $totalQuantity += $sizeColor->quantity;
-            }
-
-            // Lấy đường dẫn ảnh từ quan hệ images
-            $imageUrls = $product->images->map(function ($image) {
-                return $image->image_url;
-            });
-
-            return [
-                'product_id' => $product->product_id,
-                'name' => $product->name,
-                'description' => $product->description,
-                'colors' => implode(', ', array_unique($colors)),
-                'sizes' => implode(', ', array_unique($sizes)),
-                'total_quantity' => $totalQuantity,
-                'sizesAndColors' => $product->productSizeColors, // Dữ liệu cho modal
-                'images' => $images, // Thêm đường dẫn ảnh
-            ];
+            return $product->getProductDetailData();
         });
 
         return view('viewAdmin.list_products', compact('productsData', 'products'));
@@ -67,11 +39,12 @@ class ProductsController extends Controller
 
 
 
+
     public function store(Request $request)
     {
 
         $data = $request->all();
-        
+
 
         // Xác thực dữ liệu
         $request->validate([

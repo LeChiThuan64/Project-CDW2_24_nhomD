@@ -10,11 +10,11 @@
                     <div class="product-single__image">
                         <div class="swiper-container">
                             <div class="swiper-wrapper">
-                                @if (!empty($product->images) && isset($product->images[0]))
+                                @if (!empty($product['images']) && isset($product['images'][0]))
                                 <div class="swiper-slide product-single__image-item">
                                     <img id="mainImage" loading="lazy" class="h-auto"
-                                        src="{{ asset('assets/img/products/' . $product->images[0]->image_url) }}"
-                                        width="674" height="674" alt="Product Image">
+                                        src="{{ asset($product['images'][0]) }}" width="674" height="674"
+                                        alt="Product Image">
                                 </div>
                                 @else
                                 <p>No images available</p>
@@ -34,12 +34,10 @@
                     <div class="product-single__thumbnail">
                         <div class="swiper-container">
                             <div class="swiper-wrapper">
-                                @foreach ($product->images as $image)
+                                @foreach ($product['images'] as $image)
                                 <div class="swiper-slide product-single__image-item">
-                                    <img loading="lazy" class="h-auto"
-                                        src="{{ asset('assets/img/products/' . $image->image_url) }}" width="104"
-                                        height="104" alt=""
-                                        onclick="changeMainImage('{{ asset('assets/img/products/' . $image->image_url) }}')">
+                                    <img loading="lazy" class="h-auto" src="{{ $image }}" width="104" height="104"
+                                        alt="" onclick="changeMainImage('{{ $image }}')">
                                 </div>
                                 @endforeach
                             </div>
@@ -56,66 +54,60 @@
                         <a href="#" class="menu-link menu-link_us-s text-uppercase fw-medium">The Shop</a>
                     </div><!-- /.breadcrumb -->
                 </div>
-                <h1 class="product-single__name">{{ $product->name }}</h1>
+                <h1 class="product-single__name">{{ $product['name'] }}</h1>
                 <div class="product-single__rating">
                     <div class="reviews-group d-flex">
                         @for ($i = 0; $i < 5; $i++) <svg class="review-star" viewBox="0 0 9 9"
                             xmlns="http://www.w3.org/2000/svg">
                             @if ($i
-                            < $averageRating) <use href="#icon_star" /> <!-- Sao đầy -->
+                            < $product['averageRating']) <use href="#icon_star" /> <!-- Sao đầy -->
                             @else
                             <use href="#icon_star_empty" /> <!-- Sao trống -->
                             @endif
                             </svg>
                             @endfor
                     </div>
-                    <span class="reviews-note text-lowercase text-secondary ms-1">{{ $reviewCount }} reviews</span>
                 </div>
                 <div class="product-single__price">
-                    <span class="current-price"></span>
+                    <p>{{ $product['price'] }} VND</p>
                 </div>
                 <div class="product-single__short-desc">
-                    <p>{{ $product->description }}</p>
+                    <p>{{ $product['description'] }}</p>
                 </div>
                 <form name="addtocart-form" method="post">
                     <div class="product-single__swatches">
+
                         <div class="product-swatch text-swatches">
                             <label>Sizes</label>
                             <div class="swatch-list">
-                                <input type="radio" name="size" id="swatch-1">
-                                <label class="swatch js-swatch" for="swatch-1" aria-label="Extra Small"
-                                    data-bs-toggle="tooltip" data-bs-placement="top" title="Extra Small">XS</label>
-                                <input type="radio" name="size" id="swatch-2" checked>
-                                <label class="swatch js-swatch" for="swatch-2" aria-label="Small"
-                                    data-bs-toggle="tooltip" data-bs-placement="top" title="Small">S</label>
-                                <input type="radio" name="size" id="swatch-3">
-                                <label class="swatch js-swatch" for="swatch-3" aria-label="Middle"
-                                    data-bs-toggle="tooltip" data-bs-placement="top" title="Middle">M</label>
-                                <input type="radio" name="size" id="swatch-4">
-                                <label class="swatch js-swatch" for="swatch-4" aria-label="Large"
-                                    data-bs-toggle="tooltip" data-bs-placement="top" title="Large">L</label>
-                                <input type="radio" name="size" id="swatch-5">
-                                <label class="swatch js-swatch" for="swatch-5" aria-label="Extra Large"
-                                    data-bs-toggle="tooltip" data-bs-placement="top" title="Extra Large">XL</label>
+                                @foreach($product['sizes'] as $size)
+                                @if ($size)
+                                <input type="radio" name="size" id="swatch-size-{{ $size->id }}"
+                                    value="{{ $size->id }}">
+                                <label class="swatch js-swatch" for="swatch-size-{{ $size->id }}"
+                                    title="{{ $size->name }}">{{ $size->name }}</label>
+                                @endif
+                                @endforeach
                             </div>
                         </div>
                         <div class="product-swatch color-swatches">
                             <label>Color</label>
                             <div class="swatch-list">
-                                <input type="radio" name="color" id="swatch-11">
-                                <label class="swatch swatch-color js-swatch" for="swatch-11" aria-label="Black"
-                                    data-bs-toggle="tooltip" data-bs-placement="top" title="Black"
-                                    style="color: #222"></label>
-                                <input type="radio" name="color" id="swatch-12" checked>
-                                <label class="swatch swatch-color js-swatch" for="swatch-12" aria-label="Red"
-                                    data-bs-toggle="tooltip" data-bs-placement="top" title="Red"
-                                    style="color: #C93A3E"></label>
-                                <input type="radio" name="color" id="swatch-13">
-                                <label class="swatch swatch-color js-swatch" for="swatch-13" aria-label="Grey"
-                                    data-bs-toggle="tooltip" data-bs-placement="top" title="Grey"
-                                    style="color: #E4E4E4"></label>
+                                @foreach($product['colors'] as $color)
+                                @if ($color)
+                                <input type="radio" name="color" id="swatch-color-{{ $color->id }}"
+                                    value="{{ $color->id }}">
+                                <label class="swatch swatch-color js-swatch" for="swatch-color-{{ $color->id }}"
+                                    style="color: {{ $color->color_code }};"
+                                    title="{{ $color->name }}"></label>
+                                @endif
+                                @endforeach
                             </div>
                         </div>
+                        <div>
+                            Quantities: 
+                            <span id="product-quantity">0</span>
+                        </div><br>
                     </div>
                     <div class="product-single__addtocart">
                         <div class="qty-control position-relative">
@@ -133,7 +125,7 @@
                     </div>
                 </form>
                 <div class="product-single__addtolinks add-to-wishlist">
-                    <form action="{{ route('wishlist.add', $product->product_id) }}" method="POST"
+                    <form action="{{ route('wishlist.add', $product['product_id']) }}" method="POST"
                         class="add-to-wishlist-form">
                         @csrf
                         <button type="submit" class="menu-link menu-link_us-s add-to-wishlist">
@@ -190,7 +182,7 @@
                     <div id="comparison-table" class="comparison-table d-none">
                         <button class="close-btn">&times;</button>
                         <div class="comparison-item">
-                            <h2>{{ $product->name }}</h2>
+                            <h2>{{ $product['name'] }}</h2>
                         </div>
                         <div class="comparison-item product2">
                             <a href="#" class="btn btn-outline-secondary btn-add-product">Thêm sản phẩm</a>
@@ -207,7 +199,7 @@
                             <span class="close">&times;</span>
                             <h2>Add Product</h2>
                             <div class="product-info">
-                                <h3 id="product-name" class="text-center">{{ $product->name }}</h3>
+                                <h3 id="product-name" class="text-center">{{ $product['name'] }}</h3>
                                 <div class="search-container">
                                     <input type="text" id="product-search" placeholder="Nhập tên sản phẩm...">
                                 </div>
@@ -226,8 +218,7 @@
                                 <div class="col-9">
                                     <div class="product-wrapper">
                                         <div class="product-card" id="product1-card">
-                                            <p><img src="{{ asset('assets/img/products/' . $product->images[0]->image_url) }}"
-                                                    alt="img-product-1"></p>
+                                            <p><img src="{{ asset($product['images'][0]) }}" alt="img-product-1"></p>
                                             <span id="product1-name">Sản phẩm 1</span>
                                         </div>
                                         <div class="product-card" id="product2-card">
@@ -259,7 +250,7 @@
                 <div class="product-single__meta-info">
                     <div class="meta-item">
                         <label>Categories:</label>
-                        <span>{{ $product->category->category_name }}</span>
+                        <span>{{ $product['category'] }}</span>
                     </div>
                 </div>
             </div>
@@ -279,14 +270,14 @@
                 <li class="nav-item" role="presentation">
                     <a class="nav-link nav-link_underscore" id="tab-reviews-tab" data-bs-toggle="tab"
                         href="#tab-reviews" role="tab" aria-controls="tab-reviews" aria-selected="false">Reviews
-                        ({{ $reviewCount }})</a>
+                        ({{ $product['reviewCount'] }})</a>
                 </li>
             </ul>
             <div class="tab-content">
                 <div class="tab-pane fade show active" id="tab-description" role="tabpanel"
                     aria-labelledby="tab-description-tab">
                     <div class="product-single__description">
-                        <p>{{ $product->description }}</p>
+                        <p>{{ $product['description'] }}</p>
                     </div>
                 </div>
                 <div class="tab-pane fade" id="tab-additional-info" role="tabpanel"
@@ -317,11 +308,8 @@
                 <div class="tab-pane fade" id="tab-reviews" role="tabpanel" aria-labelledby="tab-reviews-tab">
                     <h2 class="product-single__reviews-title">Reviews</h2>
                     <div class="product-single__reviews-list">
-                        @foreach ($product->reviews as $review)
+                        @foreach ($product['reviews'] as $review)
                         <div class="product-single__reviews-item">
-                            <!-- <div class="customer-avatar">
-                                <img loading="lazy" src="../images/avatar.jpg" alt="">
-                            </div> -->
                             <div class="customer-review">
                                 <div class="customer-name">
                                     <h6>{{ $review->user->name }}</h6>
@@ -334,6 +322,7 @@
                                             </svg>
                                             @endfor
 
+                                            {{-- Hiển thị các ngôi sao trống nếu rating dưới 5 --}}
                                             @for ($i = $review->rating; $i < 5; $i++) <svg class="review-star"
                                                 viewBox="0 0 9 9" xmlns="http://www.w3.org/2000/svg">
                                                 <use href="#icon_star_empty" />
@@ -350,6 +339,7 @@
                             </div>
                         </div>
                         @endforeach
+
                     </div>
                     <div class="product-single__review-form">
                         <form name="customer-review-form">

@@ -16,17 +16,40 @@ class CartItem extends Model
     protected $primaryKey = 'cart_item_id';
 
     // Các trường có thể được gán đại diện
-    protected $fillable = ['cart_id', 'product_id', 'quantity'];
+    protected $fillable = ['cart_id', 'product_id', 'size_id', 'color_id', 'quantity'];
 
     // Mối quan hệ với bảng Cart
     public function cart()
     {
-        return $this->belongsTo(Cart::class, 'cart_id', 'cart_id');
+        return $this->belongsTo(Cart::class, 'cart_id');
     }
 
-    // Mối quan hệ với bảng Product
     public function product()
     {
-        return $this->belongsTo(Product::class, 'product_id', 'product_id');
+        return $this->belongsTo(Product::class, 'product_id'); // Đảm bảo tham chiếu đúng cột
+    }
+
+    public function size()
+    {
+        return $this->belongsTo(Size::class, 'size_id');
+    }
+
+    public function color()
+    {
+        return $this->belongsTo(Color::class, 'color_id');
+    }
+
+    public function getPrice()
+    {
+        return ProductSizeColor::where('product_id', $this->product_id)
+            ->where('size_id', $this->size_id)
+            ->where('color_id', $this->color_id)
+            ->value('price');
+    }
+
+    // Phương thức tính tổng tiền cho giỏ hàng
+    public function getTotalPrice()
+    {
+        return $this->getPrice() * $this->quantity;
     }
 }
