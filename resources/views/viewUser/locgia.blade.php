@@ -37,27 +37,7 @@
                             <li class="list-item">
                                 <a href="#" class="menu-link py-1">Sweatshirts</a>
                             </li>
-                            <li class="list-item">
-                                <a href="#" class="menu-link py-1">Swimwear</a>
-                            </li>
-                            <li class="list-item">
-                                <a href="#" class="menu-link py-1">Jackets</a>
-                            </li>
-                            <li class="list-item">
-                                <a href="#" class="menu-link py-1">T-Shirts & Tops</a>
-                            </li>
-                            <li class="list-item">
-                                <a href="#" class="menu-link py-1">Jeans</a>
-                            </li>
-                            <li class="list-item">
-                                <a href="#" class="menu-link py-1">Trousers</a>
-                            </li>
-                            <li class="list-item">
-                                <a href="#" class="menu-link py-1">Men</a>
-                            </li>
-                            <li class="list-item">
-                                <a href="#" class="menu-link py-1">Jumpers & Cardigans</a>
-                            </li>
+
                         </ul>
                     </div>
                 </div>
@@ -90,11 +70,11 @@
                     <div class="price-range__info d-flex align-items-center mt-2">
                         <div class="me-auto">
                             <span class="text-secondary">Min Price: </span>
-                            <span class="price-range__min">$250</span>
+                            <span class="price-range__min">0VND</span>
                         </div>
                         <div>
                             <span class="text-secondary">Max Price: </span>
-                            <span class="price-range__max">$450</span>
+                            <span class="price-range__max">99000000VND</span>
                         </div>
                     </div>
                 </div>
@@ -103,47 +83,52 @@
     </div><!-- /.shop-sidebar -->
 
     <div class="products-grid row row-cols-2 row-cols-md-3" id="products-grid">
-    @foreach ($products as $product)
-<div class="product-card-wrapper">
-    <div class="product-card mb-3 mb-md-4 mb-xxl-5">
-        <div class="pc__img-wrapper">
-            <div class="swiper-container background-img js-swiper-slider" data-settings='{"resizeObserver": true}'>
-                <div class="swiper-wrapper">
-                    @foreach ($product->images as $image)
-                    <div class="swiper-slide">
-                        <a href="{{ route('product.show', $product->product_id) }}">
-                            <img loading="lazy" src="{{ asset('assets/img/products' . $image->image_url) }}" width="330" height="400" alt="{{ $product->name }}" class="pc__img">
-                        </a>
+        @foreach ($products as $product)
+        <div class="product-card-wrapper">
+            <div class="product-card mb-3 mb-md-4 mb-xxl-5">
+                <div class="pc__img-wrapper">
+                    <div class="swiper-container background-img js-swiper-slider" data-settings='{"resizeObserver": true}'>
+                        <div class="swiper-wrapper" id="swiper-wrapper-{{ $product->product_id }}">
+                            <!-- Swiper slides will be added here by JavaScript -->
+                        </div>
                     </div>
-                    @endforeach
+                </div>
+
+                <div class="pc__info position-relative">
+                    <h6 class="pc__title"><a href="{{ route('product.show', $product->product_id) }}">{{ $product->name }}</a></h6>
+                    <div class="product-card__price d-flex">
+                        @php
+                        $price = $product->productSizeColors->first()->price ?? 'N/A';
+                        @endphp
+                        <span class="money price">{{ $price }} VND</span>
+                    </div>
                 </div>
             </div>
         </div>
-
-        <div class="pc__info position-relative">
-            <!-- <p class="pc__category">{{ $product->category->name ?? 'No Category' }}</p> -->
-            <h6 class="pc__title"><a href="{{ route('product.show', $product->product_id) }}">{{ $product->name }}</a></h6>
-            <div class="product-card__price d-flex">
-                @php
-                    // Lấy giá đầu tiên từ bảng product_size_color, nếu có
-                    $price = $product->productSizeColors->first()->price ?? 'N/A';
-                @endphp
-                <span class="money price">{{ $price }}VND</span>
-            </div>
-        </div>
+        @endforeach
     </div>
-</div>
-@endforeach
+</section>
 
-    </div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const products = @json($products); // Lấy dữ liệu sản phẩm từ Blade
 
+        products.forEach(product => {
+            const swiperWrapper = document.getElementById(`swiper-wrapper-${product.product_id}`);
 
-</section><!-- /.shop-main container -->
-</main>
+            product.images.forEach(image => {
+                const imgElement = `
+                    <div class="swiper-slide">
+                        <a href="{{ route('product.show', '') }}/${product.product_id}">
+                            <img loading="lazy" src="{{ asset('assets/img/products') }}/${image.image_url}" width="330" height="400" alt="${product.name}" class="pc__img">
+                        </a>
+                    </div>`;
+                swiperWrapper.innerHTML += imgElement;
+            });
+        });
+    });
+</script>
+
 
 <div class="mb-5 pb-xl-5"></div>
-
-
-<!-- Footer Type 1 -->
-
 @endsection
