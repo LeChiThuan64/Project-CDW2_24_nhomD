@@ -40,7 +40,7 @@
                 </button>
               </div>
               <input type="text" name="query" class="form-control" placeholder="Tìm kiếm bài viết theo tên hoặc ID..."
-                aria-label="Tìm kiếm bài viết" value="{{ request()->get('query') }}">
+                aria-label="Tìm kiếm bài viết" value="{{ request()->get('query') }}"style="height: 42px;">
             </div>
           </form>
         </div>
@@ -71,9 +71,10 @@
             data-content="{{ $blog->content }}" data-image-url="{{ asset($blog->image_url) }}" style="color: black;">
             xem
           </button>
-          <button onclick="window.location.href='{{ route('admin.blog.edit', $blog->blog_id) }}'" class="btn btn-outline-secondary">
-            <i class="fas fa-edit"></i> Sửa
-          </button>
+          <button onclick="window.location.href='{{ route('admin.blog.edit', Crypt::encryptString($blog->blog_id)) }}'" class="btn btn-outline-secondary">
+    <i class="fas fa-edit"></i> Sửa
+</button>
+
 
           
           <form action="{{ route('admin.blog.destroy', $blog->blog_id) }}" method="POST" onsubmit="return confirm('Bạn có chắc chắn muốn xóa blog này không?');" style="display:inline;">

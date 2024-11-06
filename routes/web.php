@@ -31,8 +31,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/addProducts', [ProductsController::class, 'showForm']);
-
 
 
 // Route dashboard
@@ -45,10 +43,6 @@ Route::get('/dashboard', function () {
 Route::get('/auth', function () {
     return view('viewUser.auth');
 })->name('auth');
-
-Route::get('/logout', function () {
-    return view('viewUser.logout');
-})->name('logout');
 
 Route::post('/logout', function () {
     Auth::logout();
@@ -73,6 +67,10 @@ Route::get('/tables', [UserController::class, 'index'])->name('tables');
 //blog
 Route::get('/blogs', [BlogController::class, 'index']);
 
+//khóa người dùng
+Route::post('/users/{id}/toggle-status', [UserController::class, 'toggleStatus']);
+
+
 // Route xóa người dùng
 Route::delete('/user/{id}', [UserController::class, 'destroy'])->name('user.destroy');
 
@@ -85,7 +83,7 @@ Route::get('/users/{id}', [UserController::class, 'show'])->name('user.show');
 
 // Route để hiện thị admin supprort chatbox
 Route::prefix('admin')->group(function () {
-    Route::get('/chatbox', [ChatboxController::class, 'index'])->name('admin.chatbox.index');
+    Route::get('/chatbox', [ChatboxController::class, 'index'])->name('admin.chatbox');
     Route::post('/chatbox/update-status/{id}', [ChatboxController::class, 'updateStatus'])->name('admin.chatbox.updateStatus');
     Route::delete('/chatbox/delete/{id}', [ChatboxController::class, 'delete'])->name('admin.chatbox.delete');
 });
@@ -108,6 +106,11 @@ Route::get('/blog_list', function () {
 Route::get('/blogs_Detal', function () {
     return view('viewUser.blogs_Detal');
 });
+
+Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+
+Route::post('/cart/apply-voucher', [CartController::class, 'applyVoucher'])->name('cart.applyVoucher');
+
 
 // Liên hệ CONTACT
 Route::get('/contact', function () {
@@ -197,20 +200,13 @@ Route::get('/vocher', function () {
 Route::get('/giamgia', function () {
     return view('viewAdmin.giamgia');
 });
-//Thêm vocher
+// Các route liên quan đến Voucher
 Route::get('/vocher', [VocherController::class, 'index'])->name('vocher.index');
 Route::get('/vocher/create', [VocherController::class, 'create'])->name('vocher.create');
-// Sửa Vocher
-
-Route::put('/vocher/{id}', [VocherController::class, 'update'])->name('vocher.update');
-Route::get('/vocher/{id}/edit', [VocherController::class, 'edit'])->name('vocher.edit');
-
-// xóa
-Route::delete('/vocher/{id}', [VocherController::class, 'destroy'])->name('vocher.destroy');
-
-
-// hiển thị
 Route::post('/vocher/store', [VocherController::class, 'store'])->name('vocher.store');
+Route::get('/vocher/{id}/edit', [VocherController::class, 'edit'])->name('vocher.edit');
+Route::put('/vocher/{id}', [VocherController::class, 'update'])->name('vocher.update');
+Route::delete('/vocher/{id}', [VocherController::class, 'destroy'])->name('vocher.destroy');
 //Het blog cho admin
 
 
@@ -242,7 +238,10 @@ Route::get('/products/showList', [ProductsController::class, 'showListProducts']
 
 // Xóa
 // routes/web.php
-Route::delete('/products/destroy/{id}', [ProductsController::class, 'destroy'])->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);// Route để lưu dữ liệu người dùng hiệnchatbox
+Route::delete('/products/destroy/{id}', [ProductsController::class, 'destroy'])->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
+Route::get('/products/search', [ProductsController::class, 'searchProducts'])->name('products.search');
+Route::post('/search', [ProductsController::class, 'search'])->name('products.instant');
+
 
 // Route để lưu dữ liệu chatbox chatbox
 Route::post('/api/save-chatbox-data', [ChatboxController::class, 'saveChatboxData']);

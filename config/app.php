@@ -142,6 +142,11 @@ return [
         'driver' => 'file',
         // 'store'  => 'redis',
     ],
+    'providers' => [
+        // ...
+        App\Providers\ElasticsearchServiceProvider::class,
+    ],
+
 
     /*
     |--------------------------------------------------------------------------

@@ -83,8 +83,8 @@
                                 </div><!-- .qty-control -->
                             </td>
                             <td>
-                                <span
-                                    class="shopping-cart__subtotal">{{ $cartItem['quantity'] * $cartItem['price'] }} VND</span>
+                                <span class="shopping-cart__subtotal">{{ $cartItem['quantity'] * $cartItem['price'] }}
+                                    VND</span>
                             </td>
                             <td>
                                 <a href="#" class="remove-cart" data-id="{{ $cartItem['cart_item_id'] }}">
@@ -105,12 +105,36 @@
 
 
                 <div class="cart-table-footer">
-                    <form action="https://uomo-html.flexkitux.com/Demo10/" class="position-relative bg-body">
-                        <input class="form-control" type="text" name="coupon_code" placeholder="Coupon Code">
-                        <input class="btn-link fw-medium position-absolute top-0 end-0 h-100 px-4" type="submit"
-                            value="APPLY COUPON">
+                    @auth
+                    @if(isset($userVouchers) && $userVouchers->isNotEmpty())
+                    <form action="{{ route('cart.applyVoucher') }}" method="POST">
+                        @csrf
+                        <label for="voucher" class="form-label">Chọn Voucher:</label>
+                        <select id="voucher" name="voucher_id" class="form-select">
+                            @foreach($userVouchers as $voucher)
+                            <option value="{{ $voucher->id }}" @if(\Carbon\Carbon::now()->
+                                gt(\Carbon\Carbon::parse($voucher->end_date))) disabled @endif
+                                style="{{ \Carbon\Carbon::now()->gt(\Carbon\Carbon::parse($voucher->end_date)) ? 'color: gray;' : '' }}">
+                                {{ $voucher->name }} - Giảm {{ $voucher->discount }}% -
+                                {{ \Carbon\Carbon::parse($voucher->start_date)->format('d/m/Y') }} -
+                                {{ \Carbon\Carbon::parse($voucher->end_date)->format('d/m/Y') }}
+                                ({{ \Carbon\Carbon::now()->lte(\Carbon\Carbon::parse($voucher->end_date)) ? 'Còn hạn' : 'Hết hạn' }})
+                            </option>
+                            @endforeach
+                        </select>
+                        <button type="submit" class="btn btn-primary mt-3">Áp dụng Voucher</button>
                     </form>
-                    <button id="update-cart" class="btn btn-dark">UPDATE CART</button>
+                    @else
+                    <p>Bạn chưa có voucher nào!</p>
+                    @endif
+                    @else
+                    <div class="text-center mt-3">
+                        <p>Vui lòng đăng nhập để sử dụng voucher:</p>
+                        <a href="{{ route('auth') }}" class="btn btn-primary">Đăng nhập</a>
+                    </div>
+
+                    @endauth
+                    <div><button id="update-cart" class="btn btn-dark">UPDATE CART</button></div>
                 </div>
             </div>
             <div class="shopping-cart__totals-wrapper">
@@ -169,4 +193,5 @@
     </section>
 </main>
 
+<div class="mb-5 pb-xl-5"></div>
 <div class="mb-5 pb-xl-5"></div>

@@ -15,19 +15,47 @@
   {{ session('error') }}
 </div>
 @endif
+
 <head>
   <style>
     .avatar-large {
-    width: 150px; /* Hoặc kích thước bạn muốn */
-    height: 150px;
-    border-radius: 10px; /* Giữ bo góc nếu cần */
+      width: 150px;
+      /* Hoặc kích thước bạn muốn */
+      height: 150px;
+      border-radius: 10px;
+      /* Giữ bo góc nếu cần */
 
-    .form-control[name="search"] {
-    height: 42px;
-}
+      .form-control[name="search"] {
+        height: 42px;
+      }
 
-}
+    }
 
+    .status-toggle-btn {
+      border: none;
+      background-color: transparent;
+      cursor: pointer;
+      padding: 0;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .status-badge {
+      padding: 5px 10px;
+      border-radius: 5px;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    .status-badge-active {
+      background-color: #28a745;
+      color: #fff;
+    }
+
+    .status-badge-inactive {
+      background-color: #dc3545;
+      color: #fff;
+    }
   </style>
 </head>
 
@@ -52,7 +80,7 @@
                 </button>
               </div>
               <input type="text" name="search" class="form-control" style="height: 42px;" placeholder="Tìm kiếm khách hàng..." aria-label="Tìm kiếm khách hàng" value="{{ request()->get('search') }}">
-              </div>
+            </div>
           </form>
         </div>
 
@@ -77,6 +105,8 @@
               <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Họ và tên</th>
               <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">sdt vs email</th>
               <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Role</th>
+              <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Hoạt động</th>
+
               <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Action</th>
             </tr>
           </thead>
@@ -122,17 +152,34 @@
                 <span class="badge badge-sm bg-gradient-success">User</span>
                 @endif
               </td>
+
+              <!-- Nút Hoạt động/Khóa Tài khoản -->
+              <td class="align-middle text-center text-sm">
+                <button
+                  class="status-toggle-btn"
+                  data-status-id="{{ $user->id }}"
+                  data-status="{{ $user->is_active }}">
+                  @if($user->is_active == 1)
+                  <span class="status-badge status-badge-active">Hoạt động</span>
+                  @else
+                  <span class="status-badge status-badge-inactive">Khóa Tài khoản</span>
+                  @endif
+                </button>
+              </td>
+
+
+
+
               <td class="actions" style="text-align: center;">
-                <!-- <button type="button" class="btn btn-warning btn-sm px-3" style="border-radius: 5px; font-size: 14px;" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                  <i class="fas fa-eye"></i> Xem
-                </button> -->
-                <!-- <button type="button" class="btn btn-warning btn-sm px-3" style="border-radius: 5px; font-size: 14px;" data-id="{{ $user->id }}" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                  <i class="fas fa-eye"></i> Xem
-                </button> -->
-                <button type="button" class="btn btn-warning btn-sm px-3" style="border-radius: 5px; font-size: 14px;"
-                  data-id="{{ $user->id }}" data-bs-toggle="modal" data-bs-target="#exampleModal">
+
+                <!-- Nút Xem -->
+                <button type="button" class="btn btn-warning btn-sm px-3 view-btn" style="border-radius: 5px; font-size: 14px;"
+                  data-view-id="{{ $user->id }}" data-bs-toggle="modal" data-bs-target="#exampleModal">
                   <i class="fas fa-eye"></i> Xem
                 </button>
+
+
+
 
 
                 <form action="{{ route('user.destroy', $user->id) }}" method="POST" style="display: inline;">
@@ -143,7 +190,9 @@
                   </button>
                 </form>
 
-                <a href="{{ route('user.edit', $user->id) }}" class="btn btn-info btn-sm px-3" style="border-radius: 5px; font-size: 14px;">
+                <a href="{{ route('user.edit', Crypt::encryptString($user->id)) }}"
+                  class="btn btn-info btn-sm px-3"
+                  style="border-radius: 5px; font-size: 14px;">
                   <i class="fas fa-edit"></i> Sửa
                 </a>
 
@@ -172,11 +221,11 @@
         <p><strong>Ngày sinh:</strong> <span id="dob"></span></p>
 
         <img id="profileImage" src="{{ asset('path/to/default-image.jpg') }}" class="avatar-large" alt="avatar">
-        </div>
+      </div>
 
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+        <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
       </div>
     </div>
   </div>
@@ -185,22 +234,28 @@
 <!-- Phân trang -->
 @if ($users->lastPage() > 1)
 <div class="d-flex justify-content-center mt-4" id="pagination">
-    <ul class="pagination">
-        {{-- Lặp qua tất cả các trang --}}
-        @foreach ($users->getUrlRange(1, $users->lastPage()) as $page => $url)
-            @if ($page == $users->currentPage())
-                <li class="page-item active">
-                    <span class="page-link">{{ $page }}</span>
-                </li>
-            @else
-                <li class="page-item">
-                    <a class="page-link" href="{{ $url }}">{{ $page }}</a>
-                </li>
-            @endif
-        @endforeach
-    </ul>
+  <ul class="pagination" style="display: flex; gap: 10px; border-radius: 5px; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);">
+    {{-- Lặp qua tất cả các trang --}}
+    @foreach ($users->getUrlRange(1, $users->lastPage()) as $page => $url)
+    @if ($page == $users->currentPage())
+    <li class="page-item active" style="margin: 0; list-style: none;">
+      <span class="page-link" style="background-color: #007bff; color: #fff; border-color: #007bff; border-radius: 5px; padding: 8px 12px;">
+        {{ $page }}
+      </span>
+    </li>
+    @else
+    <li class="page-item" style="margin: 0; list-style: none;">
+      <a class="page-link" href="{{ $url }}" style="color: #007bff; border-radius: 5px; border-color: #ddd; padding: 8px 12px;">
+        {{ $page }}
+      </a>
+    </li>
+    @endif
+    @endforeach
+  </ul>
 </div>
 @endif
+
+
 
 
 
@@ -242,31 +297,98 @@
   }
 
   // Hiển thị model
-  $(document).on('click', '.btn-warning', function() {
-    var userId = $(this).data('id');
-    $.ajax({
-      url: `/users/${userId}`, // Route lấy dữ liệu người dùng
-      type: 'GET',
-      success: function(data) {
-        // Cập nhật thông tin user trong modal
-        $('#exampleModal .modal-title').text(data.name);
-        $('#exampleModal #email').text(data.email);
-        $('#exampleModal #phone').text(data.phone);
-        $('#exampleModal #gender').text(data.gender);
-       // Lấy phần ngày từ chuỗi ngày giờ
-            let formattedDob = data.dob ? data.dob.split('T')[0] : '';
-            $('#exampleModal #dob').text(formattedDob);
+  // $(document).on('click', '.btn-warning', function() {
+  //   var userId = $(this).data('id');
+  //   $.ajax({
+  //     url: `/users/${userId}`, // Route lấy dữ liệu người dùng
+  //     type: 'GET',
+  //     success: function(data) {
+  //       // Cập nhật thông tin user trong modal
+  //       $('#exampleModal .modal-title').text(data.name);
+  //       $('#exampleModal #email').text(data.email);
+  //       $('#exampleModal #phone').text(data.phone);
+  //       $('#exampleModal #gender').text(data.gender);
+  //       // Lấy phần ngày từ chuỗi ngày giờ
+  //       let formattedDob = data.dob ? data.dob.split('T')[0] : '';
+  //       $('#exampleModal #dob').text(formattedDob);
 
-        // Sử dụng đường dẫn đầy đủ từ backend cho ảnh
-        $('#profileImage').attr('src', data.profile_image);
+  //       // Sử dụng đường dẫn đầy đủ từ backend cho ảnh
+  //       $('#profileImage').attr('src', data.profile_image);
 
-        $('#exampleModal').modal('show');
-      },
-      error: function(xhr) {
-        console.log(xhr.responseText);
-      }
+  //       $('#exampleModal').modal('show');
+  //     },
+  //     error: function(xhr) {
+  //       console.log(xhr.responseText);
+  //     }
+  //   });
+  // });
+
+
+
+  //nút khóa tài khoản
+  $(document).ready(function() {
+    // Sự kiện cho nút "Xem"
+    $(document).on('click', '.view-btn', function() {
+        var userId = $(this).data('view-id'); // Sử dụng data-view-id cho nút "Xem"
+        $.ajax({
+            url: `/users/${userId}`, // Đường dẫn để lấy dữ liệu người dùng
+            type: 'GET',
+            success: function(data) {
+                // Cập nhật nội dung trong modal với thông tin người dùng
+                $('#exampleModal .modal-title').text(data.name);
+                $('#username').text(data.name);
+                $('#email').text(data.email);
+                $('#phone').text(data.phone);
+                $('#gender').text(data.gender);
+                let formattedDob = data.dob ? data.dob.split('T')[0] : '';
+                $('#dob').text(formattedDob);
+                $('#profileImage').attr('src', data.profile_image || 'path/to/default-image.jpg');
+                $('#exampleModal').modal('show'); // Hiển thị modal
+            },
+            error: function(xhr) {
+                console.log(xhr.responseText);
+                alert('Có lỗi xảy ra. Vui lòng thử lại.');
+            }
+        });
     });
-  });
+
+    // Sự kiện cho nút "Hoạt động/Khóa Tài khoản"
+    $(document).on('click', '.status-toggle-btn', function() {
+        var userId = $(this).data('status-id'); // Sử dụng data-status-id cho nút trạng thái
+        var currentStatus = $(this).data('status');
+        var newStatus = currentStatus === 1 ? 0 : 1;
+        var confirmationMessage = currentStatus === 1 ?
+            "Bạn có chắc chắn muốn khóa tài khoản này?" :
+            "Bạn có muốn mở khóa tài khoản này?";
+
+        if (confirm(confirmationMessage)) {
+            $.ajax({
+                url: `/users/${userId}/toggle-status`, // Route để xử lý thay đổi trạng thái
+                type: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}', // Token CSRF để bảo mật
+                    is_active: newStatus
+                },
+                success: function(response) {
+                    var button = $(`[data-status-id="${userId}"]`);
+                    button.data('status', newStatus);
+
+                    if (newStatus === 1) {
+                        button.html('<span class="status-badge status-badge-active">Hoạt động</span>');
+                    } else {
+                        button.html('<span class="status-badge status-badge-inactive">Khóa Tài khoản</span>');
+                    }
+                    alert(response.message);
+                },
+                error: function(xhr) {
+                    console.log(xhr.responseText);
+                    alert('Có lỗi xảy ra. Vui lòng thử lại.');
+                }
+            });
+        }
+    });
+});
+
 </script>
 
 

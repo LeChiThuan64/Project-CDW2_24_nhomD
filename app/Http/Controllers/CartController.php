@@ -6,9 +6,31 @@ use Illuminate\Http\Request;
 use App\Models\Cart;
 use App\Models\CartItem;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Voucher;
 
 class CartController extends Controller
 {
+
+    public function index()
+    {
+        $userVouchers = collect(); // Khởi tạo một collection rỗng.
+
+        // Kiểm tra nếu người dùng đã đăng nhập
+        if (auth()->check()) {
+            // Lấy danh sách các voucher cá nhân của người dùng
+            $userVouchers = auth()->user()->vouchers()->where('end_date', '>=', now())->get();
+
+            // Lấy danh sách các voucher dùng chung
+            $globalVouchers = Voucher::where('is_global', true)->where('end_date', '>=', now())->get();
+
+            // Gộp danh sách voucher dùng chung và riêng
+            $userVouchers = $userVouchers->merge($globalVouchers);
+        }
+
+        // Trả về view với danh sách voucher đã xử lý
+        return view('viewUser.cart', compact('userVouchers'));
+    }
+
     //
     // public function show(Request $request)
     // {
@@ -122,6 +144,7 @@ class CartController extends Controller
 
         // Tìm sản phẩm trong giỏ hàng
         $cartItem = CartItem::where('cart_id', $cart->cart_id)
+            ->where('product_id', $productId)
             ->where('product_id', $productId)
             ->first();
 

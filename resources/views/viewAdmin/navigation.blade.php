@@ -53,6 +53,8 @@
     <!-- Toastr CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 
+
+
     <script src="{{ asset('assets/js/kit.fontawesome.js') }}" crossorigin="anonymous"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
@@ -145,6 +147,14 @@
                     </a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link text-white " href="{{ route('admin.chatbox') }}">
+                        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="material-icons opacity-10">chat</i>
+                        </div>
+                        <span class="nav-link-text ms-1">Chatbox</span>
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link text-white " href="notifications.html">
                         <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                             <i class="material-icons opacity-10">notifications</i>
@@ -164,8 +174,24 @@
                         <span class="nav-link-text ms-1">Profile</span>
                     </a>
                 </li>
+                @if (auth()->check())
+                <!-- Nếu đã đăng nhập, hiển thị nút Logout -->
                 <li class="nav-item">
-                    <a class="nav-link text-white " href="sign-in.html">
+                    <form action="{{ route('logout') }}" method="POST" class="d-inline">
+                        @csrf
+                        <button type="submit" class="nav-link text-white border-0"
+                            style="background: none; cursor: pointer;">
+                            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                                <i class="material-icons opacity-10">logout</i>
+                            </div>
+                            <span class="nav-link-text ms-1">Logout</span>
+                        </button>
+                    </form>
+                </li>
+                @else
+                <!-- Nếu chưa đăng nhập, hiển thị nút Sign In và Sign Up -->
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="{{ route('auth') }}">
                         <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                             <i class="material-icons opacity-10">login</i>
                         </div>
@@ -173,13 +199,16 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-white " href="sign-up.html">
+                    <a class="nav-link text-white" href="{{ route('auth') }}">
                         <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                             <i class="material-icons opacity-10">assignment</i>
                         </div>
                         <span class="nav-link-text ms-1">Sign Up</span>
                     </a>
                 </li>
+                @endif
+
+
                 <!-- Other menu items -->
                 <!-- Add other menu items similarly, replacing static links -->
             </ul>
@@ -204,6 +233,9 @@
 
     <!-- Thêm jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mark.js/dist/mark.min.js"></script>
+
 </body>
+
 
 </html>

@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Vocher;
+use App\Models\Voucher;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
 
 class VocherController extends Controller
 {
     public function index()
     {
-        // Lấy danh sách tất cả các voucher
-        $vochers = Vocher::all();
-        return view('viewAdmin.vocher', compact('vochers'));
+        $vouchers = Voucher::all(); // Sửa 'Vocher::all()' thành 'Voucher::all()'
+        return view('viewAdmin.vocher', compact('vouchers'));
     }
     public function create()
     {
@@ -23,7 +23,7 @@ class VocherController extends Controller
 
     public function store(Request $request)
     {
-        $vocher = new Vocher();
+        $vocher = new Voucher();
         $vocher->name = $request->name;
         $vocher->description = $request->description;
         $vocher->discount = $request->discount;
@@ -44,23 +44,40 @@ class VocherController extends Controller
 
     public function destroy($id)
     {
-        $vocher = Vocher::findOrFail($id);
+        $vocher = Voucher::findOrFail($id);
         $vocher->delete();
 
         return redirect()->route('vocher.index')->with('success', 'Voucher đã được xóa thành công!');
     }
 
 
-    public function edit($id)
+    // public function edit($id)
+    // {
+    //     // Lấy voucher theo ID
+    //     $vocher = Voucher::findOrFail($id);
+    //     $users = User::all(); // Lấy danh sách người dùng để chọn trong trường "áp dụng cho"
+    //     return view('viewAdmin.edit_vocher', compact('vocher', 'users'));
+    // }
+    public function edit($encryptedId)
     {
-        // Lấy voucher theo ID
-        $vocher = Vocher::findOrFail($id);
-        $users = User::all(); // Lấy danh sách người dùng để chọn trong trường "áp dụng cho"
-        return view('viewAdmin.edit_vocher', compact('vocher', 'users'));
+        try {
+            // Giải mã `id`
+            $id = Crypt::decrypt($encryptedId);
+    
+            // Lấy dữ liệu voucher dựa vào `id` đã giải mã
+            $vocher = Voucher::findOrFail($id);
+            $users = User::all(); // Lấy danh sách người dùng để chọn trong trường "áp dụng cho"
+            
+            return view('viewAdmin.edit_vocher', compact('vocher', 'users'));
+        } catch (\Exception $e) {
+            // Xử lý lỗi khi giải mã thất bại
+            return redirect()->route('vocher.index')->with('error', 'Không thể truy cập voucher này.');
+        }
     }
+
     public function update(Request $request, $id)
     {
-        $vocher = Vocher::findOrFail($id);
+        $vocher = Voucher::findOrFail($id);
 
         $vocher->name = $request->name;
         $vocher->description = $request->description;

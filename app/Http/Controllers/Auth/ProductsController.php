@@ -9,9 +9,20 @@ use App\Models\Product;
 use App\Models\Category;
 use App\Models\ProductSizeColor;
 use Illuminate\Support\Facades\Log;
+use Elastic\Elasticsearch\ClientBuilder;
+use Illuminate\Support\Facades\DB;
+
+
+
 
 class ProductsController extends Controller
 {
+
+    private $client;
+    public function __construct()
+    {
+        $this->client = ClientBuilder::create()->build();
+    }
     public function showForm()
     {
         // Lấy tất cả danh mục từ bảng categories
@@ -33,8 +44,9 @@ class ProductsController extends Controller
         $productsData = $products->map(function ($product) {
             return $product->getProductDetailData();
         });
+        $categories = Category::all();
 
-        return view('viewAdmin.list_products', compact('productsData', 'products'));
+        return view('viewAdmin.list_products', compact('productsData', 'products', 'categories'));
     }
 
 
@@ -44,6 +56,7 @@ class ProductsController extends Controller
     {
 
         $data = $request->all();
+
 
 
         // Xác thực dữ liệu
@@ -89,11 +102,8 @@ class ProductsController extends Controller
             ]);
         }
 
-
-
         $imageNames = $request->input('imageNames'); // Lấy giá trị từ trường ẩn
         $imageNamesArray = explode(',', $imageNames); // Chia chuỗi thành mảng
-
 
         foreach ($imageNamesArray as $image) {
             // Lưu ảnh vào thư mục storage
@@ -113,16 +123,36 @@ class ProductsController extends Controller
     public function destroy($id)
     {
         try {
-            // Tìm và xóa sản phẩm
+            // Bắt đầu transaction
+            DB::beginTransaction();
+
+            // Tìm sản phẩm
             $product = Product::findOrFail($id);
+
+            // Kiểm tra quyền xóa sản phẩm (chỉ cho phép admin hoặc người có quyền)
+            $this->authorize('delete', $product);
+
+            // Xóa sản phẩm
             $product->delete();
 
-            // Tìm và xóa tất cả hình ảnh có product_id khớp với id của sản phẩm
+            // Xóa tất cả hình ảnh có liên kết với sản phẩm
             ProductImage::where('product_id', $id)->delete();
+
+            // Commit transaction nếu mọi thứ thành công
+            DB::commit();
+
+            // Ghi log việc xóa sản phẩm
+            Log::info('User ' . auth()->id() . ' deleted product ID: ' . $id);
 
             return response()->json(['success' => 'Sản phẩm và các hình ảnh liên quan đã được xóa thành công.']);
         } catch (\Exception $e) {
-            return response()->json(['error' => 'Có lỗi xảy ra.'], 500);
+            // Rollback transaction nếu có lỗi xảy ra
+            DB::rollBack();
+
+            // Ghi log lỗi
+            Log::error('Error deleting product ID: ' . $id . ' - ' . $e->getMessage());
+
+            return response()->json(['error' => 'Chỉ amdin có quyền xóa.'], 500);
         }
     }
 }

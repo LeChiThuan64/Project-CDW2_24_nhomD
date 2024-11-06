@@ -25,6 +25,7 @@ document.addEventListener('DOMContentLoaded', function() {
         messageElement.textContent = text;
         messageElement.classList.add(messageType);
         document.querySelector('.chatbox-messages').appendChild(messageElement);
+        scrollToBottom(); // Cuộn xuống cuối mỗi khi thêm tin nhắn mới
     }
 
     // Hàm điều hướng các bước hỏi thông tin khách hàng
@@ -130,4 +131,10 @@ document.addEventListener('DOMContentLoaded', function() {
         supportIssue = '';
         detailedSupportContent = '';
     });
+
+    // Hàm cuộn xuống cuối phần tử chứa tin nhắn
+    function scrollToBottom() {
+        const chatboxMessages = document.querySelector('.chatbox-messages');
+        chatboxMessages.scrollTop = chatboxMessages.scrollHeight;
+    }    
 });
