@@ -10,26 +10,10 @@ use App\Models\Voucher;
 
 class CartController extends Controller
 {
+  
 
-    public function index()
-    {
-        $userVouchers = collect(); // Khởi tạo một collection rỗng.
 
-        // Kiểm tra nếu người dùng đã đăng nhập
-        if (auth()->check()) {
-            // Lấy danh sách các voucher cá nhân của người dùng
-            $userVouchers = auth()->user()->vouchers()->where('end_date', '>=', now())->get();
 
-            // Lấy danh sách các voucher dùng chung
-            $globalVouchers = Voucher::where('is_global', true)->where('end_date', '>=', now())->get();
-
-            // Gộp danh sách voucher dùng chung và riêng
-            $userVouchers = $userVouchers->merge($globalVouchers);
-        }
-
-        // Trả về view với danh sách voucher đã xử lý
-        return view('viewUser.cart', compact('userVouchers'));
-    }
 
     //
     // public function show(Request $request)
@@ -84,10 +68,8 @@ class CartController extends Controller
     // }
     public function show(Request $request)
     {
-        // Gán tạm user_id = 1 để kiểm tra chức năng
+       // $user_id = Auth::id();
         $user_id = 1;
-
-        // Lấy giỏ hàng từ cơ sở dữ liệu cho người dùng với user_id đã gán
         $cartItems = CartItem::with([
             'product.images',
             'product.productSizeColors.size',
@@ -97,23 +79,17 @@ class CartController extends Controller
                 $query->where('user_id', $user_id);
             })
             ->get();
-
-        // Chuyển đổi dữ liệu từ cơ sở dữ liệu thành định dạng mong muốn
+    
         $cart = $cartItems->map(function ($item) {
             $product = $item->product;
-
-            // Lấy danh sách hình ảnh của sản phẩm
             $images = $product->images->pluck('image_url')->toArray();
-
-            // Lấy thông tin kích thước và màu sắc cùng với thông tin từ bảng trung gian
             $sizesAndColors = $product->productSizeColors->map(function ($sizeColor) {
                 return [
                     'size' => optional($sizeColor->size)->name,
                     'color' => optional($sizeColor->color)->name,
-                    // 'price' => $sizeColor->pivot->price,
                 ];
             });
-
+    
             return [
                 'cart_item_id' => $item->cart_item_id,
                 'product_id' => $product->product_id,
@@ -125,11 +101,18 @@ class CartController extends Controller
                 'price' => $item->getPrice(),
             ];
         })->toArray();
-
-        // Hiển thị trang giỏ hàng với dữ liệu
-        return view('viewUser.cart', ['cart' => $cart]);
+    
+        // Lấy danh sách voucher
+        $vouchers = Voucher::where('is_global', true)
+            ->orWhere('user_id', $user_id)
+            ->get();
+    
+        return view('viewUser.cart', [
+            'cart' => $cart,
+            'vouchers' => $vouchers, // Truyền voucher vào view
+        ]);
     }
-
+    
 
     // Thêm sản phẩm vào giỏ hàng
     public function add(Request $request, $productId)
@@ -167,7 +150,7 @@ class CartController extends Controller
     public function remove($cartItemId)
     {
         try {
-            $cartItem = CartItem::where('cart_item_id',$cartItemId);
+            $cartItem = CartItem::where('cart_item_id', $cartItemId);
             $cartItem->delete();
 
             return response()->json(['success' => true, 'message' => 'Item removed from cart']);
@@ -177,25 +160,24 @@ class CartController extends Controller
     }
 
     public function update(Request $request, $cartItemId)
-{
-    $request->validate([
-        'quantity' => 'required|integer|min:1', // Đảm bảo số lượng hợp lệ
-    ]); 
+    {
+        $request->validate([
+            'quantity' => 'required|integer|min:1', // Đảm bảo số lượng hợp lệ
+        ]);
 
-     // Xử lý logic cập nhật giỏ hàng
-     $quantities = $request->input('quantity');
+        // Xử lý logic cập nhật giỏ hàng
+        $quantities = $request->input('quantity');
 
-     foreach ($quantities as $cartItemId => $quantity) {
+        foreach ($quantities as $cartItemId => $quantity) {
 
-         $cartItem = CartItem::find($cartItemId);
-         if ($cartItem) {
-             $cartItem->quantity = $quantity;
-             $cartItem->save();
-         }
-     }
- 
-     // Trả về phản hồi JSON
-     return response()->json(['success' => true, 'message' => 'Cart updated successfully!']);
-}
+            $cartItem = CartItem::find($cartItemId);
+            if ($cartItem) {
+                $cartItem->quantity = $quantity;
+                $cartItem->save();
+            }
+        }
 
+        // Trả về phản hồi JSON
+        return response()->json(['success' => true, 'message' => 'Cart updated successfully!']);
+    }
 }
