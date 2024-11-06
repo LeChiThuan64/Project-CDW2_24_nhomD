@@ -2,6 +2,46 @@
 @section('title', 'contact')
 @section('content')
 
+<head>
+    <style>
+        .price-range {
+            position: relative;
+            margin: 20px 0;
+        }
+
+        input[type="range"] {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 5px;
+            background: #ddd;
+            border-radius: 5px;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            background: #333;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            background: #333;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .price-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
 <div class="mb-4 pb-lg-3"></div>
 
 <section class="shop-main container d-flex">
@@ -37,27 +77,7 @@
                             <li class="list-item">
                                 <a href="#" class="menu-link py-1">Sweatshirts</a>
                             </li>
-                            <li class="list-item">
-                                <a href="#" class="menu-link py-1">Swimwear</a>
-                            </li>
-                            <li class="list-item">
-                                <a href="#" class="menu-link py-1">Jackets</a>
-                            </li>
-                            <li class="list-item">
-                                <a href="#" class="menu-link py-1">T-Shirts & Tops</a>
-                            </li>
-                            <li class="list-item">
-                                <a href="#" class="menu-link py-1">Jeans</a>
-                            </li>
-                            <li class="list-item">
-                                <a href="#" class="menu-link py-1">Trousers</a>
-                            </li>
-                            <li class="list-item">
-                                <a href="#" class="menu-link py-1">Men</a>
-                            </li>
-                            <li class="list-item">
-                                <a href="#" class="menu-link py-1">Jumpers & Cardigans</a>
-                            </li>
+
                         </ul>
                     </div>
                 </div>
@@ -85,65 +105,95 @@
                         </svg>
                     </button>
                 </h5>
-                <div id="accordion-filter-price" class="accordion-collapse collapse show border-0" aria-labelledby="accordion-heading-price" data-bs-parent="#price-filters">
-                    <input class="price-range-slider" type="text" name="price_range" value="" data-slider-min="10" data-slider-max="1000" data-slider-step="5" data-slider-value="[250,450]" data-currency="$">
-                    <div class="price-range__info d-flex align-items-center mt-2">
-                        <div class="me-auto">
-                            <span class="text-secondary">Min Price: </span>
-                            <span class="price-range__min">$250</span>
-                        </div>
-                        <div>
-                            <span class="text-secondary">Max Price: </span>
-                            <span class="price-range__max">$450</span>
-                        </div>
+
+
+                <div class="price-range">
+                    <input type="range" id="minPrice" min="0" max="99000000" value="0">
+                    <input type="range" id="maxPrice" min="0" max="99000000" value="99000000">
+                    <div class="price-labels">
+                        <span>Min Price: <span id="minPriceLabel">0</span> VND</span>
+                        <span>Max Price: <span id="maxPriceLabel">99000000</span> VND</span>
                     </div>
                 </div>
+
             </div><!-- /.accordion-item -->
         </div><!-- /.accordion -->
     </div><!-- /.shop-sidebar -->
 
     <div class="products-grid row row-cols-2 row-cols-md-3" id="products-grid">
-    @foreach ($products as $product)
-<div class="product-card-wrapper">
-    <div class="product-card mb-3 mb-md-4 mb-xxl-5">
-        <div class="pc__img-wrapper">
-            <div class="swiper-container background-img js-swiper-slider" data-settings='{"resizeObserver": true}'>
-                <div class="swiper-wrapper">
-                    @foreach ($product->images as $image)
-                    <div class="swiper-slide">
-                        <a href="{{ route('product.show', $product->product_id) }}">
-                            <img loading="lazy" src="{{ asset('assets/img/products' . $image->image_url) }}" width="330" height="400" alt="{{ $product->name }}" class="pc__img">
-                        </a>
+        @foreach ($products as $product)
+        <div class="product-card-wrapper">
+            <div class="product-card mb-3 mb-md-4 mb-xxl-5">
+                <div class="pc__img-wrapper">
+                    <div class="swiper-container background-img js-swiper-slider" data-settings='{"resizeObserver": true}'>
+                        <div class="swiper-wrapper" id="swiper-wrapper-{{ $product->product_id }}">
+                            <!-- Swiper slides will be added here by JavaScript -->
+                        </div>
                     </div>
-                    @endforeach
+                </div>
+
+                <div class="pc__info position-relative">
+                    <h6 class="pc__title"><a href="{{ route('product.show', $product->product_id) }}">{{ $product->name }}</a></h6>
+                    <div class="product-card__price d-flex">
+                        @php
+                        $price = $product->productSizeColors->first()->price ?? 'N/A';
+                        @endphp
+                        <span class="money price">{{ $price }} VND</span>
+                    </div>
                 </div>
             </div>
         </div>
-
-        <div class="pc__info position-relative">
-            <!-- <p class="pc__category">{{ $product->category->name ?? 'No Category' }}</p> -->
-            <h6 class="pc__title"><a href="{{ route('product.show', $product->product_id) }}">{{ $product->name }}</a></h6>
-            <div class="product-card__price d-flex">
-                @php
-                    // Lấy giá đầu tiên từ bảng product_size_color, nếu có
-                    $price = $product->productSizeColors->first()->price ?? 'N/A';
-                @endphp
-                <span class="money price">{{ $price }}VND</span>
-            </div>
-        </div>
+        @endforeach
     </div>
-</div>
-@endforeach
+</section>
 
-    </div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const products = @json($products); // Lấy dữ liệu sản phẩm từ Blade
+
+        products.forEach(product => {
+            const swiperWrapper = document.getElementById(`swiper-wrapper-${product.product_id}`);
+
+            product.images.forEach(image => {
+                const imgElement = `
+                    <div class="swiper-slide">
+                        <a href="{{ route('product.show', '') }}/${product.product_id}">
+                            <img loading="lazy" src="{{ asset('assets/img/products') }}/${image.image_url}" width="330" height="400" alt="${product.name}" class="pc__img">
+                        </a>
+                    </div>`;
+                swiperWrapper.innerHTML += imgElement;
+            });
+        });
+    });
 
 
-</section><!-- /.shop-main container -->
-</main>
+
+
+    const minPriceInput = document.getElementById('minPrice');
+    const maxPriceInput = document.getElementById('maxPrice');
+    const minPriceLabel = document.getElementById('minPriceLabel');
+    const maxPriceLabel = document.getElementById('maxPriceLabel');
+
+    // Cập nhật giá trị hiển thị khi thay đổi giá trị thanh trượt
+    minPriceInput.addEventListener('input', function() {
+        minPriceLabel.textContent = minPriceInput.value;
+        // Đảm bảo giá trị tối đa không nhỏ hơn giá trị tối thiểu
+        if (parseInt(minPriceInput.value) > parseInt(maxPriceInput.value)) {
+            maxPriceInput.value = minPriceInput.value;
+            maxPriceLabel.textContent = maxPriceInput.value;
+        }
+    });
+
+    maxPriceInput.addEventListener('input', function() {
+        maxPriceLabel.textContent = maxPriceInput.value;
+        // Đảm bảo giá trị tối thiểu không lớn hơn giá trị tối đa
+        if (parseInt(maxPriceInput.value) < parseInt(minPriceInput.value)) {
+            minPriceInput.value = maxPriceInput.value;
+            minPriceLabel.textContent = minPriceInput.value;
+        }
+    });
+</script>
+
 
 <div class="mb-5 pb-xl-5"></div>
-
-
-<!-- Footer Type 1 -->
-
 @endsection
