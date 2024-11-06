@@ -10,21 +10,7 @@ use App\Models\Voucher;
 
 class CartController extends Controller
 {
-    public function getAvailableVouchers()
-    {
-        // Kiểm tra nếu người dùng đã đăng nhập
-        $user_id = Auth::id();
-        if (!$user_id) {
-            return response()->json(['error' => 'User not logged in'], 401);
-        }
-
-        // Lấy danh sách voucher áp dụng cho người dùng hiện tại hoặc là voucher áp dụng cho tất cả mọi người
-        $vouchers = Voucher::where('is_global', true)
-            ->orWhere('user_id', $user_id)
-            ->get();
-
-        return view('viewUser.partials.voucher_list', compact('vouchers'));
-    }
+  
 
 
 
@@ -82,8 +68,8 @@ class CartController extends Controller
     // }
     public function show(Request $request)
     {
-        $user_id = Auth::id();
-    
+       // $user_id = Auth::id();
+        $user_id = 1;
         $cartItems = CartItem::with([
             'product.images',
             'product.productSizeColors.size',
