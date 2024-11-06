@@ -108,13 +108,29 @@
 
 
                 <div class="price-range">
-                    <input type="range" id="minPrice" min="0" max="99000000" value="0">
-                    <input type="range" id="maxPrice" min="0" max="99000000" value="99000000">
+                    <input type="range" id="minPrice" min="0" max="5000000" value="0">
+                    <input type="range" id="maxPrice" min="0" max="5000000" value="5000000">
                     <div class="price-labels">
                         <span>Min Price: <span id="minPriceLabel">0</span> VND</span>
-                        <span>Max Price: <span id="maxPriceLabel">99000000</span> VND</span>
+                        <span>Max Price: <span id="maxPriceLabel">5.000.000</span> VND</span>
                     </div>
-                    <button>Loc</button>
+                    <button style="
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+"
+                        onmouseover="this.style.backgroundColor='#0056b3'; this.style.transform='scale(1.05)';"
+                        onmouseout="this.style.backgroundColor='#007bff'; this.style.transform='scale(1)';">
+                        Lọc
+                    </button>
+
                 </div>
 
             </div><!-- /.accordion-item -->
@@ -181,24 +197,29 @@
     const minPriceLabel = document.getElementById('minPriceLabel');
     const maxPriceLabel = document.getElementById('maxPriceLabel');
 
-    // Cập nhật giá trị hiển thị khi thay đổi giá trị thanh trượt
+    // Function to format numbers with dots as thousands separators
+    function formatCurrency(value) {
+        return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    }
+
+    // Update the displayed values when the slider values change
     minPriceInput.addEventListener('input', function() {
-        minPriceLabel.textContent = minPriceInput.value;
-        // Đảm bảo giá trị tối đa không nhỏ hơn giá trị tối thiểu
+        minPriceLabel.textContent = formatCurrency(minPriceInput.value);
         if (parseInt(minPriceInput.value) > parseInt(maxPriceInput.value)) {
             maxPriceInput.value = minPriceInput.value;
-            maxPriceLabel.textContent = maxPriceInput.value;
+            maxPriceLabel.textContent = formatCurrency(maxPriceInput.value);
         }
     });
 
     maxPriceInput.addEventListener('input', function() {
-        maxPriceLabel.textContent = maxPriceInput.value;
-        // Đảm bảo giá trị tối thiểu không lớn hơn giá trị tối đa
+        maxPriceLabel.textContent = formatCurrency(maxPriceInput.value);
         if (parseInt(maxPriceInput.value) < parseInt(minPriceInput.value)) {
             minPriceInput.value = maxPriceInput.value;
-            minPriceLabel.textContent = minPriceInput.value;
+            minPriceLabel.textContent = formatCurrency(minPriceInput.value);
         }
     });
+
+
 </script>
 
 
