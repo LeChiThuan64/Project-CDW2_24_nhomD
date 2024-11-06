@@ -16,6 +16,7 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ChatboxController;
 use App\Http\Controllers\CartController;
 use App\Models\Blog;
+use App\Http\Controllers\ProfileController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -44,16 +45,11 @@ Route::get('/auth', function () {
     return view('viewUser.auth');
 })->name('auth');
 
-Route::post('/logout', function () {
-    Auth::logout();
-    return redirect('/');
-})->name('logout');
-
 
 
 Route::get('/login/show', [LoginController::class, 'showLoginForm'])->name('login.show');
 Route::post('/login/signin', [LoginController::class, 'login'])->name('login.signin');
-Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
 Route::post('/register', [RegisterController::class, 'register']);
 
@@ -242,6 +238,14 @@ Route::delete('/products/destroy/{id}', [ProductsController::class, 'destroy'])-
 Route::get('/products/search', [ProductsController::class, 'searchProducts'])->name('products.search');
 Route::post('/search', [ProductsController::class, 'search'])->name('products.instant');
 
+
+
+
+// Profile
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'show'])->name('profile');
+});
+Route::put('/profile/{id}', [ProfileController::class, 'update'])->name('profile.update');
 
 // Route để lưu dữ liệu chatbox chatbox
 Route::post('/api/save-chatbox-data', [ChatboxController::class, 'saveChatboxData']);
