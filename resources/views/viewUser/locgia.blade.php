@@ -114,6 +114,7 @@
                         <span>Min Price: <span id="minPriceLabel">0</span> VND</span>
                         <span>Max Price: <span id="maxPriceLabel">99000000</span> VND</span>
                     </div>
+                    <button>Loc</button>
                 </div>
 
             </div><!-- /.accordion-item -->
@@ -136,9 +137,15 @@
                     <h6 class="pc__title"><a href="{{ route('product.show', $product->product_id) }}">{{ $product->name }}</a></h6>
                     <div class="product-card__price d-flex">
                         @php
-                        $price = $product->productSizeColors->first()->price ?? 'N/A';
+                        $price = $product->productSizeColors->first()->price ?? 0; // Gán giá về 0 nếu không có giá
                         @endphp
-                        <span class="money price">{{ $price }} VND</span>
+                        <span class="money price">
+                            @if($price > 0)
+                            {{ number_format($price, 0, ',', '.') }} VND
+                            @else
+                            N/A
+                            @endif
+                        </span>
                     </div>
                 </div>
             </div>
