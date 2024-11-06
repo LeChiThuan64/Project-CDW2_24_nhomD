@@ -2,6 +2,46 @@
 @section('title', 'contact')
 @section('content')
 
+<head>
+    <style>
+        .price-range {
+            position: relative;
+            margin: 20px 0;
+        }
+
+        input[type="range"] {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 5px;
+            background: #ddd;
+            border-radius: 5px;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            background: #333;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            background: #333;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .price-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
 <div class="mb-4 pb-lg-3"></div>
 
 <section class="shop-main container d-flex">
@@ -65,19 +105,17 @@
                         </svg>
                     </button>
                 </h5>
-                <div id="accordion-filter-price" class="accordion-collapse collapse show border-0" aria-labelledby="accordion-heading-price" data-bs-parent="#price-filters">
-                    <input class="price-range-slider" type="text" name="price_range" value="" data-slider-min="10" data-slider-max="1000" data-slider-step="5" data-slider-value="[250,450]" data-currency="$">
-                    <div class="price-range__info d-flex align-items-center mt-2">
-                        <div class="me-auto">
-                            <span class="text-secondary">Min Price: </span>
-                            <span class="price-range__min">0VND</span>
-                        </div>
-                        <div>
-                            <span class="text-secondary">Max Price: </span>
-                            <span class="price-range__max">99000000VND</span>
-                        </div>
+
+
+                <div class="price-range">
+                    <input type="range" id="minPrice" min="0" max="99000000" value="0">
+                    <input type="range" id="maxPrice" min="0" max="99000000" value="99000000">
+                    <div class="price-labels">
+                        <span>Min Price: <span id="minPriceLabel">0</span> VND</span>
+                        <span>Max Price: <span id="maxPriceLabel">99000000</span> VND</span>
                     </div>
                 </div>
+
             </div><!-- /.accordion-item -->
         </div><!-- /.accordion -->
     </div><!-- /.shop-sidebar -->
@@ -126,6 +164,33 @@
                 swiperWrapper.innerHTML += imgElement;
             });
         });
+    });
+
+
+
+
+    const minPriceInput = document.getElementById('minPrice');
+    const maxPriceInput = document.getElementById('maxPrice');
+    const minPriceLabel = document.getElementById('minPriceLabel');
+    const maxPriceLabel = document.getElementById('maxPriceLabel');
+
+    // Cập nhật giá trị hiển thị khi thay đổi giá trị thanh trượt
+    minPriceInput.addEventListener('input', function() {
+        minPriceLabel.textContent = minPriceInput.value;
+        // Đảm bảo giá trị tối đa không nhỏ hơn giá trị tối thiểu
+        if (parseInt(minPriceInput.value) > parseInt(maxPriceInput.value)) {
+            maxPriceInput.value = minPriceInput.value;
+            maxPriceLabel.textContent = maxPriceInput.value;
+        }
+    });
+
+    maxPriceInput.addEventListener('input', function() {
+        maxPriceLabel.textContent = maxPriceInput.value;
+        // Đảm bảo giá trị tối thiểu không lớn hơn giá trị tối đa
+        if (parseInt(maxPriceInput.value) < parseInt(minPriceInput.value)) {
+            minPriceInput.value = maxPriceInput.value;
+            minPriceLabel.textContent = minPriceInput.value;
+        }
     });
 </script>
 
