@@ -107,7 +107,7 @@ Route::get('/blogs_Detal', function () {
     return view('viewUser.blogs_Detal');
 });
 
-Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+// Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
 
 Route::post('/cart/apply-voucher', [CartController::class, 'applyVoucher'])->name('cart.applyVoucher');
 
@@ -190,15 +190,15 @@ Route::get('/locgia', function () {
     return view('viewUser.locgia'); // Đường dẫn view tới contact.blade.php
 })->name('locgia');
 
+//
+Route::get('/giamgia', function () {
+    return view('viewAdmin.giamgia');
+});
 Route::get('/vocher_home', function () {
     return view('viewAdmin.vocher_home');
 });
 Route::get('/vocher', function () {
     return view('viewAdmin.vocher');
-});
-
-Route::get('/giamgia', function () {
-    return view('viewAdmin.giamgia');
 });
 // Các route liên quan đến Voucher
 Route::get('/vocher', [VocherController::class, 'index'])->name('vocher.index');

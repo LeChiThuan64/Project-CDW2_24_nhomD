@@ -1,6 +1,62 @@
 @extends('viewUser.navigation')
 @section('title', 'Cart')
 @section('content')
+
+<head>
+<style>
+    .cart-table-footer {
+        margin-top: 15px;
+        padding: 15px;
+        background-color: #f8f9fa;
+        border-radius: 5px;
+        border: 1px solid #ddd;
+    }
+
+    .cart-table-footer h4 {
+        font-size: 18px;
+        margin-bottom: 10px;
+        color: #333;
+        font-weight: bold;
+    }
+
+    .voucher-select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 14px;
+        background-color: #fff;
+        color: #333;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        transition: border-color 0.2s ease-in-out;
+    }
+
+    .voucher-select:focus {
+        border-color: #007bff;
+        outline: none;
+    }
+
+    #update-cart {
+        display: inline-block;
+        margin-top: 15px;
+        padding: 10px 20px;
+        font-size: 16px;
+        color: #fff;
+        background-color: #333;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        text-transform: uppercase;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
+    }
+
+    #update-cart:hover {
+        background-color: #555;
+    }
+</style>
+
+</head>
 <main>
     <div class="mb-4 pb-4"></div>
     <section class="shop-checkout container">
@@ -104,39 +160,46 @@
                 </table>
 
 
-                <div class="cart-table-footer">
-                    @auth
-                    @if(isset($userVouchers) && $userVouchers->isNotEmpty())
-                    <form action="{{ route('cart.applyVoucher') }}" method="POST">
-                        @csrf
-                        <label for="voucher" class="form-label">Chọn Voucher:</label>
-                        <select id="voucher" name="voucher_id" class="form-select">
-                            @foreach($userVouchers as $voucher)
-                            <option value="{{ $voucher->id }}" @if(\Carbon\Carbon::now()->
-                                gt(\Carbon\Carbon::parse($voucher->end_date))) disabled @endif
-                                style="{{ \Carbon\Carbon::now()->gt(\Carbon\Carbon::parse($voucher->end_date)) ? 'color: gray;' : '' }}">
-                                {{ $voucher->name }} - Giảm {{ $voucher->discount }}% -
-                                {{ \Carbon\Carbon::parse($voucher->start_date)->format('d/m/Y') }} -
-                                {{ \Carbon\Carbon::parse($voucher->end_date)->format('d/m/Y') }}
-                                ({{ \Carbon\Carbon::now()->lte(\Carbon\Carbon::parse($voucher->end_date)) ? 'Còn hạn' : 'Hết hạn' }})
-                            </option>
-                            @endforeach
-                        </select>
-                        <button type="submit" class="btn btn-primary mt-3">Áp dụng Voucher</button>
-                    </form>
-                    @else
-                    <p>Bạn chưa có voucher nào!</p>
-                    @endif
-                    @else
-                    <div class="text-center mt-3">
-                        <p>Vui lòng đăng nhập để sử dụng voucher:</p>
-                        <a href="{{ route('auth') }}" class="btn btn-primary">Đăng nhập</a>
-                    </div>
 
-                    @endauth
-                    <div><button id="update-cart" class="btn btn-dark">UPDATE CART</button></div>
+                <div class="cart-table-footer">
+                    @if($vouchers->isNotEmpty())
+                    <h4>Voucher hiện có</h4>
+                    <select name="voucher" class="voucher-select">
+                        @foreach($vouchers as $voucher)
+                        @php
+                        $now = \Carbon\Carbon::now();
+                        $isNotYetStarted = $now->lt(\Carbon\Carbon::parse($voucher->start_date));
+                        $isExpired = $now->gt(\Carbon\Carbon::parse($voucher->end_date));
+                        @endphp
+                        <option value="{{ $voucher->id }}"
+                            @if($isNotYetStarted || $isExpired) disabled @endif>
+                            {{ $voucher->name }} - Giảm {{ $voucher->discount }}%
+                            (Hiệu lực từ {{ $voucher->start_date }} đến {{ $voucher->end_date }})
+                            -
+                            @if($isNotYetStarted)
+                            Chưa bắt đầu
+                            @elseif($isExpired)
+                            Đã hết hạn
+                            @else
+                            Còn hiệu lực
+                            @endif
+                        </option>
+                        @endforeach
+                    </select>
+                    @else
+                    <p>Không có voucher nào khả dụng.</p>
+                    @endif
                 </div>
+
+                <div><button id="update-cart" class="btn btn-dark">UPDATE CART</button></div>
+
+
+
+
             </div>
+
+
+
             <div class="shopping-cart__totals-wrapper">
                 <div class="sticky-content">
                     <div class="shopping-cart__totals">
