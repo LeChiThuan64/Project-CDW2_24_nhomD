@@ -189,6 +189,9 @@ Route::post('/admin/blogs/{blog_id}/update', [BlogController::class, 'update'])-
 Route::get('/locgia', function () {
     return view('viewUser.locgia'); // Đường dẫn view tới contact.blade.php
 })->name('locgia');
+Route::get('/locgia', [ProductsController::class, 'showProducts'])->name('locgia');
+Route::get('/products', [ProductsController::class, 'showProducts'])->name('products.index');
+
 
 //
 Route::get('/giamgia', function () {

@@ -18,6 +18,19 @@ use Illuminate\Support\Facades\DB;
 class ProductsController extends Controller
 {
 
+    public function showProducts()
+    {
+        // Lấy tất cả sản phẩm cùng với hình ảnh và danh mục
+        $products = Product::with('images', 'category')->get();
+    
+        // Truyền biến $products vào view
+        return view('viewUser.locgia', compact('products'));
+    }
+    
+    
+    
+    
+
     private $client;
     public function __construct()
     {
