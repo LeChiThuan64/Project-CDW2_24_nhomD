@@ -16,6 +16,7 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ChatboxController;
 use App\Http\Controllers\CartController;
 use App\Models\Blog;
+use App\Http\Controllers\ProfileController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -26,6 +27,8 @@ use App\Models\Blog;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -181,9 +184,13 @@ Route::post('/admin/blogs/{blog_id}/update', [BlogController::class, 'update'])-
 
 
 
-Route::get('/locgia', function () {
-    return view('viewUser.locgia'); // Đường dẫn view tới contact.blade.php
-})->name('locgia');
+// Route::get('/locgia', function () {
+//     return view('viewUser.locgia'); // Đường dẫn view tới contact.blade.php
+// })->name('locgia');
+Route::get('/locgia', [ProductsController::class, 'showProducts'])->name('locgia');
+Route::get('/locgia/filter-products', [ProductsController::class, 'filterProducts'])->name('locgia.filter');
+
+Route::get('/products', [ProductsController::class, 'showProducts'])->name('products.index');
 
 //
 Route::get('/giamgia', function () {
@@ -237,6 +244,14 @@ Route::delete('/products/destroy/{id}', [ProductsController::class, 'destroy'])-
 Route::get('/products/search', [ProductsController::class, 'searchProducts'])->name('products.search');
 Route::post('/search', [ProductsController::class, 'search'])->name('products.instant');
 
+
+
+
+// Profile
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'show'])->name('profile');
+});
+Route::put('/profile/{id}', [ProfileController::class, 'update'])->name('profile.update');
 
 // Route để lưu dữ liệu chatbox chatbox
 Route::post('/api/save-chatbox-data', [ChatboxController::class, 'saveChatboxData']);
