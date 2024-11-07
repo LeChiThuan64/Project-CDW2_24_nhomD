@@ -52,4 +52,5 @@ class CartItem extends Model
     {
         return $this->getPrice() * $this->quantity;
     }
+    
 }

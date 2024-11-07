@@ -3,7 +3,7 @@
 @section('content')
 
 <head>
-<style>
+    <style>
     .cart-table-footer {
         margin-top: 15px;
         padding: 15px;
@@ -54,7 +54,7 @@
     #update-cart:hover {
         background-color: #555;
     }
-</style>
+    </style>
 
 </head>
 <main>
@@ -86,79 +86,87 @@
         </div>
         <div class="shopping-cart">
             <div class="cart-table__wrapper">
-                <table class="cart-table">
-                    <thead>
-                        <tr>
-                            <th>Product</th>
-                            <th></th>
-                            <th>Price</th>
-                            <th>Quantity</th>
-                            <th>Subtotal</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($cart as $cartItem)
-                        <tr>
-                            <td>
-                                <div class="shopping-cart__product-item">
-                                    <a href="{{ route('product.show', $cartItem['product_id']) }}">
-                                        <img loading="lazy"
-                                            src="{{ asset('assets/img/products/' .$cartItem['images'][0]) }}"
-                                            width="120" height="120" alt="">
+                @if (Auth::check())
+                <form method="POST" action="{{ route('cart.update') }}" id="update-cart-form">
+                    @csrf
+                    @method('PUT')
+                    <table class="cart-table">
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th></th>
+                                <th>Price</th>
+                                <th>Quantity</th>
+                                <th>Subtotal</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            @foreach($cart as $cartItem)
+                            <tr data-cart-item-id="{{ $cartItem['cart_item_id'] }}">
+                                <td>
+                                    <div class="shopping-cart__product-item">
+                                        <a href="{{ route('product.show', $cartItem['product_id']) }}">
+                                            <img loading="lazy"
+                                                src="{{ asset('assets/img/products/' . $cartItem['images'][0]) }}"
+                                                width="120" height="120" alt="">
+                                        </a>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="shopping-cart__product-item__detail">
+                                        <h4><a
+                                                href="{{ route('product.show', $cartItem['product_id']) }}">{{ $cartItem['name'] }}</a>
+                                        </h4>
+                                        <ul class="shopping-cart__product-item__options">
+                                            <li>Color: {{ $cartItem['color'] }}</li>
+                                            <li>Size: {{ $cartItem['size'] }}</li>
+                                        </ul>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="shopping-cart__product-price">{{ $cartItem['price'] }} VND</span>
+                                </td>
+                                <td>
+                                    <div class="qty-control position-relative">
+                                        <input type="number" name="quantity[{{ $cartItem['cart_item_id'] }}]"
+                                            value="{{ $cartItem['quantity'] }}" min="1"
+                                            class="qty-control__number text-center"
+                                            data-id="{{ $cartItem['cart_item_id'] }}">
+
+                                        <div class="qty-control__reduce">-</div>
+                                        <div class="qty-control__increase">+</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span
+                                        class="shopping-cart__subtotal">{{ $cartItem['quantity'] * $cartItem['price'] }}
+                                        VND</span>
+                                </td>
+                                <td>
+                                    <a href="#" class="remove-cart" data-id="{{ $cartItem['cart_item_id'] }}">
+                                        <svg width="10" height="10" viewBox="0 0 10 10" fill="#767676"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path
+                                                d="M0.259435 8.85506L9.11449 0L10 0.885506L1.14494 9.74056L0.259435 8.85506Z" />
+                                            <path
+                                                d="M0.885506 0.0889838L9.74057 8.94404L8.85506 9.82955L0 0.97449L0.885506 0.0889838Z" />
+                                        </svg>
                                     </a>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="shopping-cart__product-item__detail">
-                                    <h4><a
-                                            href="{{ route('product.show', $cartItem['product_id']) }}">{{ $cartItem['name'] }}</a>
-                                    </h4>
-                                    <ul class="shopping-cart__product-item__options">
-                                        @foreach($cartItem['sizesAndColors'] as $sizeColor)
-                                        @if(isset($sizeColor['size']) && isset($sizeColor['color']))
-                                        <li>Color: {{ $sizeColor['color'] }}</li>
-                                        <li>Size: {{ $sizeColor['size'] }}</li>
-                                        @endif
-                                        @endforeach
-                                    </ul>
-                                </div>
-                            </td>
-                            <td>
-                                <span class="shopping-cart__product-price">{{ $cartItem['price'] }} VND</span>
-                            </td>
-                            <td>
-                                <div class="qty-control position-relative">
-                                    <input type="number" name="quantity[{{ $cartItem['cart_item_id'] }}]"
-                                        value="{{ $cartItem['quantity'] }}" min="1"
-                                        class="qty-control__number text-center"
-                                        data-id="{{ $cartItem['cart_item_id'] }}">
+                                </td>
+                            </tr>
+                            @endforeach
+                            
 
-                                    <div class="qty-control__reduce">-</div>
-                                    <div class="qty-control__increase">+</div>
-                                </div><!-- .qty-control -->
-                            </td>
-                            <td>
-                                <span class="shopping-cart__subtotal">{{ $cartItem['quantity'] * $cartItem['price'] }}
-                                    VND</span>
-                            </td>
-                            <td>
-                                <a href="#" class="remove-cart" data-id="{{ $cartItem['cart_item_id'] }}">
-                                    <svg width="10" height="10" viewBox="0 0 10 10" fill="#767676"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <path
-                                            d="M0.259435 8.85506L9.11449 0L10 0.885506L1.14494 9.74056L0.259435 8.85506Z" />
-                                        <path
-                                            d="M0.885506 0.0889838L9.74057 8.94404L8.85506 9.82955L0 0.97449L0.885506 0.0889838Z" />
-                                    </svg>
-                                </a>
-
-                            </td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-
+                        </tbody>
+                    </table>
+                    <div><button type="submit" id="update-cart" class="btn btn-dark">UPDATE CART</button></div>
+                </form>
+                @else
+                <p>Bạn cần đăng nhập để sử dụng giỏ hàng.</p>
+                <a class="btn btn-primary btn-addtocart" href="{{ route('auth') }}">Login</a>
+                @endif
 
 
                 <div class="cart-table-footer">
@@ -171,8 +179,7 @@
                         $isNotYetStarted = $now->lt(\Carbon\Carbon::parse($voucher->start_date));
                         $isExpired = $now->gt(\Carbon\Carbon::parse($voucher->end_date));
                         @endphp
-                        <option value="{{ $voucher->id }}"
-                            @if($isNotYetStarted || $isExpired) disabled @endif>
+                        <option value="{{ $voucher->id }}" @if($isNotYetStarted || $isExpired) disabled @endif>
                             {{ $voucher->name }} - Giảm {{ $voucher->discount }}%
                             (Hiệu lực từ {{ $voucher->start_date }} đến {{ $voucher->end_date }})
                             -
@@ -190,15 +197,7 @@
                     <p>Không có voucher nào khả dụng.</p>
                     @endif
                 </div>
-
-                <div><button id="update-cart" class="btn btn-dark">UPDATE CART</button></div>
-
-
-
-
             </div>
-
-
 
             <div class="shopping-cart__totals-wrapper">
                 <div class="sticky-content">

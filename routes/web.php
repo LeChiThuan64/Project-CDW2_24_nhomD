@@ -262,7 +262,7 @@ Route::prefix('cart')->group(function () {
     Route::get('/', [CartController::class, 'show'])->name('cart.show');
 
     // Thêm sản phẩm vào giỏ hàng
-    Route::post('/add', [CartController::class, 'add'])->name('cart.add');
+    Route::post('/add/{productId}', [CartController::class, 'add'])->name('cart.add');
 
     // Cập nhật giỏ hàng
     Route::put('/update', [CartController::class, 'update'])->name('cart.update');
@@ -272,4 +272,10 @@ Route::prefix('cart')->group(function () {
 
     // Xóa tất cả sản phẩm khỏi giỏ hàng
     Route::delete('/clear', [CartController::class, 'clear'])->name('cart.clear');
+});
+
+Route::get('/check-login', function() {
+    return response()->json([
+        'loggedIn' => auth()->check(),
+    ]);
 });
