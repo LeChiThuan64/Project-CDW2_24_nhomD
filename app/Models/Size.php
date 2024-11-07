@@ -15,4 +15,8 @@ class Size extends Model
                     ->withPivot('color_id', 'quantity',  'price')
                     ->withTimestamps();
     }
+    public function cartItems()
+    {
+        return $this->hasMany(CartItem::class, 'size_id');
+    }
 }

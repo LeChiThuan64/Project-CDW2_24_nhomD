@@ -177,16 +177,12 @@
                 @if (auth()->check())
                 <!-- Nếu đã đăng nhập, hiển thị nút Logout -->
                 <li class="nav-item">
-                    <form action="{{ route('logout') }}" method="POST" class="d-inline">
-                        @csrf
-                        <button type="submit" class="nav-link text-white border-0"
-                            style="background: none; cursor: pointer;">
-                            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                                <i class="material-icons opacity-10">logout</i>
-                            </div>
-                            <span class="nav-link-text ms-1">Logout</span>
-                        </button>
-                    </form>
+                    <a class="nav-link text-white" href="{{ route('logout') }}">
+                        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="material-icons opacity-10">logout</i>
+                        </div>
+                        <span class="nav-link-text ms-1">Logout</span>
+                    </a>
                 </li>
                 @else
                 <!-- Nếu chưa đăng nhập, hiển thị nút Sign In và Sign Up -->

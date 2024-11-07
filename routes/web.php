@@ -44,16 +44,11 @@ Route::get('/auth', function () {
     return view('viewUser.auth');
 })->name('auth');
 
-Route::post('/logout', function () {
-    Auth::logout();
-    return redirect('/');
-})->name('logout');
-
 
 
 Route::get('/login/show', [LoginController::class, 'showLoginForm'])->name('login.show');
 Route::post('/login/signin', [LoginController::class, 'login'])->name('login.signin');
-Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
 Route::post('/register', [RegisterController::class, 'register']);
 
@@ -252,7 +247,7 @@ Route::prefix('cart')->group(function () {
     Route::get('/', [CartController::class, 'show'])->name('cart.show');
 
     // Thêm sản phẩm vào giỏ hàng
-    Route::post('/add', [CartController::class, 'add'])->name('cart.add');
+    Route::post('/add/{productId}', [CartController::class, 'add'])->name('cart.add');
 
     // Cập nhật giỏ hàng
     Route::put('/update', [CartController::class, 'update'])->name('cart.update');
@@ -262,4 +257,10 @@ Route::prefix('cart')->group(function () {
 
     // Xóa tất cả sản phẩm khỏi giỏ hàng
     Route::delete('/clear', [CartController::class, 'clear'])->name('cart.clear');
+});
+
+Route::get('/check-login', function() {
+    return response()->json([
+        'loggedIn' => auth()->check(),
+    ]);
 });
