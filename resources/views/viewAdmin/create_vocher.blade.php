@@ -5,7 +5,7 @@
 @section('content')
 
 <div class="container my-5" style="padding-left: 250px;">
-    <div class="card shadow-lg border-0">
+    <div class="card shadow-lg border-0" style="width: 80%; margin-left: auto;">
         <div class="card-header bg-primary text-white text-center">
             <h4 class="mb-0">Tạo Voucher Mới</h4>
         </div>
@@ -40,7 +40,8 @@
                 <!-- Các trường khác của voucher -->
                 <div class="form-group mb-4">
                     <label for="name" class="form-label">Tên Voucher:</label>
-                    <input type="text" name="name" id="name" class="form-control" placeholder="Nhập tên voucher" required>
+                    <input type="text" name="name" id="name" class="form-control" placeholder="Nhập tên voucher" maxlength="100" oninput="limitNameLength()" required>
+                    <small id="name-error" class="text-danger" style="display: none;">Tên voucher không được vượt quá 100 ký tự.</small>
                 </div>
 
                 <div class="form-group mb-4">
@@ -50,9 +51,10 @@
                     <small id="char-count" class="text-muted">255 ký tự còn lại</small>
                 </div>
 
+                <!-- Giảm giá từ 1 đến 100%, chỉ cho phép nhập số -->
                 <div class="form-group mb-4">
                     <label for="discount" class="form-label">Giảm giá (%):</label>
-                    <input type="number" name="discount" id="discount" class="form-control" placeholder="Nhập tỷ lệ giảm giá" required>
+                    <input type="number" name="discount" id="discount" class="form-control" placeholder="Nhập tỷ lệ giảm giá" min="1" max="100" oninput="validateDiscount()" required>
                     <small id="discount-error" class="text-danger" style="display: none;">Giảm giá phải là số từ 1 đến 100%.</small>
                 </div>
 
@@ -73,7 +75,7 @@
                 </div>
 
                 <div class="buttons">
-         
+
                     <button type="button" class="btn btn-danger" onclick="window.history.back();">Hủy</button>
                     <button type="submit" class="btn btn-primary w-100">Tạo Voucher</button>
                 </div>
@@ -102,14 +104,31 @@
     });
 
     // Kiểm tra giảm giá
-    document.getElementById('discount').addEventListener('input', function() {
-        const discountValue = parseFloat(this.value);
-        if (isNaN(discountValue) || discountValue < 1 || discountValue > 100) {
-            document.getElementById('discount-error').style.display = 'block';
-        } else {
-            document.getElementById('discount-error').style.display = 'none';
-        }
-    });
+   // Giới hạn ký tự cho tên voucher
+function limitNameLength() {
+    const nameField = document.getElementById('name');
+    if (nameField.value.length > 100) {
+        nameField.value = nameField.value.substring(0, 100); // Cắt chuỗi nếu vượt quá giới hạn
+        document.getElementById('name-error').style.display = 'block';
+    } else {
+        document.getElementById('name-error').style.display = 'none';
+    }
+}
+
+// Kiểm tra giá trị giảm giá từ 1 đến 100, chỉ cho phép số
+function validateDiscount() {
+    const discountField = document.getElementById('discount');
+    const discountValue = discountField.value;
+    
+    if (discountValue < 1 || discountValue > 100) {
+        discountField.setCustomValidity("Giảm giá phải nằm trong khoảng từ 1 đến 100.");
+        document.getElementById('discount-error').style.display = 'block';
+    } else {
+        discountField.setCustomValidity("");
+        document.getElementById('discount-error').style.display = 'none';
+    }
+}
+
 
     // Kiểm tra toàn bộ form khi submit
     function checkDescriptionLength() {
