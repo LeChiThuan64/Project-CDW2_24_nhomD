@@ -18,6 +18,13 @@ use Illuminate\Support\Facades\DB;
 class ProductsController extends Controller
 {
 
+    
+    private $client;
+    public function __construct()
+    {
+        $this->client = ClientBuilder::create()->build();
+    }
+
     public function showProducts()
     {
         // Lấy tất cả sản phẩm cùng với hình ảnh và danh mục
@@ -27,29 +34,20 @@ class ProductsController extends Controller
         return view('viewUser.locgia', compact('products'));
     }
 
+
     public function filterProducts(Request $request)
-{
-    $minPrice = $request->input('minPrice');
-    $maxPrice = $request->input('maxPrice');
-
-    $products = Product::whereHas('productSizeColors', function($query) use ($minPrice, $maxPrice) {
-        $query->whereBetween('price', [$minPrice, $maxPrice]);
-    })->with('images', 'productSizeColors.size', 'productSizeColors.color')->get();
-
-    return response()->json($products);
-}
-
-
-
-
-
-
-
-    private $client;
-    public function __construct()
     {
-        $this->client = ClientBuilder::create()->build();
+        $minPrice = $request->input('minPrice');
+        $maxPrice = $request->input('maxPrice');
+
+        $products = Product::whereHas('productSizeColors', function ($query) use ($minPrice, $maxPrice) {
+            $query->whereBetween('price', [$minPrice, $maxPrice]);
+        })->with('images', 'productSizeColors.size', 'productSizeColors.color')->get();
+
+        return response()->json($products);
     }
+
+
     public function showForm()
     {
         // Lấy tất cả danh mục từ bảng categories
@@ -144,7 +142,7 @@ class ProductsController extends Controller
                     'total_quantity' => $product->productSizeColors->sum('quantity'),
                     'sizesAndColors' => $product->productSizeColors, // Dữ liệu cho modal
                     'images' => $product->images->map(function ($image) {
-                        return asset('assets/img/products/' . $image->file_name);
+                        return asset('assets/img/products/' . $image->image_url);
                     })->toArray(),
                 ];
             });
@@ -222,7 +220,7 @@ class ProductsController extends Controller
                         'total_quantity' => $product->productSizeColors->sum('quantity'),
                         'sizesAndColors' => $product->productSizeColors, // Dữ liệu cho modal
                         'images' => $product->images->map(function ($image) {
-                            return asset('assets/img/products/' . $image->file_name);
+                            return asset('assets/img/products/' . $image->image_url);
                         })->toArray(),
                     ];
                 });
@@ -299,7 +297,7 @@ class ProductsController extends Controller
         // Mảng kích thước
         $sizes = [
             1 => 'XS',
-            2 => 'X',
+            2 => 'S',
             3 => 'M',
             4 => 'L',
             5 => 'XL'
@@ -434,5 +432,168 @@ class ProductsController extends Controller
 
             return response()->json(['error' => 'Chỉ amdin có quyền xóa.'], 500);
         }
+    }
+
+
+
+
+
+
+
+
+
+
+    // app/Http/Controllers/ProductController.php
+
+    public function edit($id)
+    {
+        // Lấy thông tin sản phẩm theo `product_id` cùng với các quan hệ liên quan
+        $product = Product::with(['images', 'productSizeColors.size', 'productSizeColors.color', 'category'])
+            ->findOrFail($id);
+
+        $categories = Category::all(); // Lấy tất cả danh mục
+        $colors = ['1' => 'Đen', '2' => 'Đỏ', '3' => 'Xám']; // Danh sách các màu
+        $sizes = ['1' => 'XS', '2' => 'S', '3' => 'M', '4' => 'L', '5' => 'XL']; // Danh sách các size
+
+
+        $productSizeColors = ProductSizeColor::where('product_id', $id)
+            ->get()
+            ->mapWithKeys(function ($item) {
+                $colorKey = strtolower($item->color->name);  // e.g., 'den' for 'Đen'
+                if ($colorKey === 'xám') {
+                    $colorKey = "Xám";
+                }
+                $sizeKey = strtoupper($item->size->name);    // e.g., 'xs' for 'XS'
+                return ["{$colorKey}-{$sizeKey}" => [
+                    'quantity' => $item->quantity,
+                    'price' => $item->price,
+                ]];
+            })
+            ->toArray();
+
+        $imageUrls = $product->images->pluck('image_url')->map(function ($url) {
+            return asset('assets/img/products/' . $url);
+        })->toArray();
+
+
+
+        // dd($images);
+
+
+
+        // Đổ dữ liệu xuống view với các biến đã chuẩn bị
+        return view('viewAdmin.update_products', compact('product', 'categories', 'colors', 'sizes', 'productSizeColors', 'imageUrls'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        // Mảng màu
+        $colors = [
+            1 => 'Đen',
+            2 => 'Đỏ',
+            3 => 'Xám'
+        ];
+
+        // Mảng kích thước
+        $sizes = [
+            1 => 'XS',
+            2 => 'S',
+            3 => 'M',
+            4 => 'L',
+            5 => 'XL'
+        ];
+
+
+        // dd($request->all());
+
+        $request->validate([
+            'name' => 'required|string|max:50',
+            'productContent' => 'nullable|string',
+            'category' => 'required|integer',
+            'images.*' => 'image|mimes:jpeg,png,jpg|max:1024',
+            'quantities' => 'required|array',
+            'prices' => 'required|array',
+            'imageNamesx' => 'nullable|string'
+        ]);
+
+
+
+        // dd($request->all());
+
+
+        // Cập nhật thông tin sản phẩm
+        $product = Product::findOrFail($id);
+        $product->name = $request->name;
+        $product->description = $request->productContent;
+        $product->category_id = $request->category;
+        $product->save();
+
+
+        // Xóa các kết hợp màu và kích thước cũ
+        ProductSizeColor::where('product_id', $id)->delete();
+
+        // Lấy mảng activeColors từ input ẩn
+        $activeColors = explode(',', $request->input('activeColors'));
+        // dd($activeColors);
+
+        // Kiểm tra nếu không có màu nào được chọn
+        if (empty($activeColors)) {
+            return back()->withErrors('Vui lòng chọn ít nhất một màu và một kích thước.');
+        }
+
+        // Duyệt qua các kết hợp màu-kích thước
+        foreach ($activeColors as $combination) {
+            list($colorId, $sizeId) = explode(':', $combination);
+
+            // Kiểm tra nếu colorId và sizeId hợp lệ trong mảng
+            if (!isset($colors[$colorId]) || !isset($sizes[$sizeId])) {
+                continue; // Nếu không hợp lệ thì bỏ qua
+            }
+
+            // Lấy tên màu và kích thước từ các mảng
+            $colorName = $colors[$colorId];
+            $sizeName = $sizes[$sizeId];
+
+
+            // Lấy giá trị của trường quantity và price từ form (theo tên của trường input)
+            $quantityField = $request->input("quantities.{$colorName}-{$sizeName}");
+            $priceField = $request->input("prices.{$colorName}-{$sizeName}");
+
+            // Kiểm tra nếu các trường input có giá trị
+            if ($quantityField !== null && $priceField !== null) {
+                // Lưu thông tin vào bảng ProductSizeColor
+                ProductSizeColor::create([
+                    'product_id' => $id,  // ID sản phẩm
+                    'size_id' => $sizeId,        // Kích thước
+                    'color_id' => $colorId,      // Màu
+                    'quantity' => $quantityField,
+                    'price' => $priceField
+                ]);
+            }
+        }
+
+        // Xử lý hình ảnh nếu có
+        $uploadedFiles = $request->file('images');
+        if ($uploadedFiles && is_array($uploadedFiles)) {
+            foreach ($uploadedFiles as $imageFile) {
+                if ($imageFile) {
+                    $imagePath = public_path('assets/img/products');
+                    if (!file_exists($imagePath)) {
+                        mkdir($imagePath, 0755, true);
+                    }
+
+                    $imageName = $imageFile->getClientOriginalName();
+                    $imageFile->move($imagePath, $imageName);
+
+                    // Lưu thông tin hình ảnh vào cơ sở dữ liệu
+                    $productImage = new ProductImage();
+                    $productImage->product_id = $id;
+                    $productImage->image_url = $imageName;
+                    $productImage->save();
+                }
+            }
+        }
+
+        return redirect()->route('products.edit', $id)->with('success', 'Cập nhật sản phẩm thành công!');
     }
 }

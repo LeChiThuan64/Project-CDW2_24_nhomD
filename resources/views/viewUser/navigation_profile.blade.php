@@ -34,13 +34,10 @@
                     <i class="fas fa-lock"></i>
                     Đổi Mật Khẩu
                 </a>
-                <a href="#">
-                    <i class="fas fa-bell"></i>
-                    Cài Đặt Thông Báo
-                </a>
             </div>
-            <a href="#"><i class="fas fa-box"></i> Đơn Mua</a>
-            <a href="#"><i class="fas fa-bell"></i> Phiếu Giảm Giá </a>
+            @if (auth()->check())
+            <a href="{{ route('logout') }}"><i class="fas fa-box"></i> Đăng Xuất</a>
+            @endif
         </div>
         <div class="col-md-9">
             @yield('contentProfile')

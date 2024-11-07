@@ -3,11 +3,7 @@
         'name' => 'laravel/laravel',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-<<<<<<< HEAD
-        'reference' => '98968ac6f9a216b24effdcf0866d10f5920929b3',
-=======
-        'reference' => '8550f1748080ff0fbee06463b8410d8997a31dbc',
->>>>>>> acc5f989c9b95fd2d8460babaae3c3877788eaf7
+        'reference' => '698be2665cfac3c21ffffc0cb36b22029e3eb5d7',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -404,11 +400,7 @@
         'laravel/laravel' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-<<<<<<< HEAD
-            'reference' => '98968ac6f9a216b24effdcf0866d10f5920929b3',
-=======
-            'reference' => '8550f1748080ff0fbee06463b8410d8997a31dbc',
->>>>>>> acc5f989c9b95fd2d8460babaae3c3877788eaf7
+            'reference' => '698be2665cfac3c21ffffc0cb36b22029e3eb5d7',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -1085,9 +1077,9 @@
             'dev_requirement' => true,
         ),
         'symfony/console' => array(
-            'pretty_version' => 'v6.4.13',
-            'version' => '6.4.13.0',
-            'reference' => 'f793dd5a7d9ae9923e35d0503d08ba734cec1d79',
+            'pretty_version' => 'v6.4.14',
+            'version' => '6.4.14.0',
+            'reference' => '897c2441ed4eec8a8a2c37b943427d24dba3f26b',
             'type' => 'library',
             'install_path' => __DIR__ . '/../symfony/console',
             'aliases' => array(),
@@ -1112,9 +1104,9 @@
             'dev_requirement' => false,
         ),
         'symfony/error-handler' => array(
-            'pretty_version' => 'v6.4.13',
-            'version' => '6.4.13.0',
-            'reference' => 'e3c78742f86a5b65fe2ac4c4b6b776d92fd7ca0c',
+            'pretty_version' => 'v6.4.14',
+            'version' => '6.4.14.0',
+            'reference' => '9e024324511eeb00983ee76b9aedc3e6ecd993d9',
             'type' => 'library',
             'install_path' => __DIR__ . '/../symfony/error-handler',
             'aliases' => array(),
@@ -1154,18 +1146,18 @@
             'dev_requirement' => false,
         ),
         'symfony/http-foundation' => array(
-            'pretty_version' => 'v6.4.13',
-            'version' => '6.4.13.0',
-            'reference' => '4c0341b3e0a7291e752c69d2a1ed9a84b68d604c',
+            'pretty_version' => 'v6.4.14',
+            'version' => '6.4.14.0',
+            'reference' => 'ba020a321a95519303a3f09ec2824d34d601c388',
             'type' => 'library',
             'install_path' => __DIR__ . '/../symfony/http-foundation',
             'aliases' => array(),
             'dev_requirement' => false,
         ),
         'symfony/http-kernel' => array(
-            'pretty_version' => 'v6.4.13',
-            'version' => '6.4.13.0',
-            'reference' => '4474015c363ec0cd3bf47d55657e68630dbae66e',
+            'pretty_version' => 'v6.4.14',
+            'version' => '6.4.14.0',
+            'reference' => '8278a947d0369754a47b758a9e17b72cab970951',
             'type' => 'library',
             'install_path' => __DIR__ . '/../symfony/http-kernel',
             'aliases' => array(),
@@ -1271,9 +1263,9 @@
             'dev_requirement' => false,
         ),
         'symfony/process' => array(
-            'pretty_version' => 'v6.4.13',
-            'version' => '6.4.13.0',
-            'reference' => '1f9f59b46880201629df3bd950fc5ae8c55b960f',
+            'pretty_version' => 'v6.4.14',
+            'version' => '6.4.14.0',
+            'reference' => '25214adbb0996d18112548de20c281be9f27279f',
             'type' => 'library',
             'install_path' => __DIR__ . '/../symfony/process',
             'aliases' => array(),
@@ -1340,9 +1332,9 @@
             'dev_requirement' => false,
         ),
         'symfony/var-dumper' => array(
-            'pretty_version' => 'v6.4.13',
-            'version' => '6.4.13.0',
-            'reference' => '2acb151474ed8cb43624e3f41a0bf7c4c8ce4f41',
+            'pretty_version' => 'v6.4.14',
+            'version' => '6.4.14.0',
+            'reference' => '93c09246038178717a9c14b809ea8151ffcf7091',
             'type' => 'library',
             'install_path' => __DIR__ . '/../symfony/var-dumper',
             'aliases' => array(),

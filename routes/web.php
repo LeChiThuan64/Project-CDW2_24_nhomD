@@ -279,3 +279,10 @@ Route::get('/check-login', function() {
         'loggedIn' => auth()->check(),
     ]);
 });
+
+
+
+
+
+Route::get('/product/edit/{id}', [ProductsController::class, 'edit'])->name('products.edit');
+Route::post('/product/update/{id}', [ProductsController::class, 'update'])->name('products.update');
