@@ -36,8 +36,8 @@
                             <div class="swiper-wrapper">
                                 @foreach ($product['images'] as $image)
                                 <div class="swiper-slide product-single__image-item">
-                                    <img loading="lazy" class="h-auto" src="{{ $image }}" width="104" height="104"
-                                        alt="" onclick="changeMainImage('{{ $image }}')">
+                                    <img loading="lazy" class="h-auto thumbnail" src="{{ $image }}" width="104"
+                                        height="104" alt="" onclick="changeMainImage('{{ $image }}', this)">
                                 </div>
                                 @endforeach
                             </div>
@@ -48,11 +48,11 @@
             </div>
             <div class="col-lg-5">
                 <div class="d-flex justify-content-between mb-4 pb-md-2">
-                    <div class="breadcrumb mb-0 d-none d-md-block flex-grow-1">
+                    <!-- <div class="breadcrumb mb-0 d-none d-md-block flex-grow-1">
                         <a href="#" class="menu-link menu-link_us-s text-uppercase fw-medium">Home</a>
                         <span class="breadcrumb-separator menu-link fw-medium ps-1 pe-1">/</span>
                         <a href="#" class="menu-link menu-link_us-s text-uppercase fw-medium">The Shop</a>
-                    </div><!-- /.breadcrumb -->
+                    </div> -->
                 </div>
                 <h1 class="product-single__name">{{ $product['name'] }}</h1>
                 <div class="product-single__rating">
@@ -67,14 +67,18 @@
                             </svg>
                             @endfor
                     </div>
+                    <span class="reviews-note text-lowercase text-secondary ms-1">{{ $product['reviewCount'] }}
+                        reviews</span>
                 </div>
-                <div class="product-single__price">
+                <div id="product-price" class="product-single__price">
                     <p>{{ $product['price'] }} VND</p>
                 </div>
                 <div class="product-single__short-desc">
                     <p>{{ $product['description'] }}</p>
                 </div>
-                <form name="addtocart-form" method="post">
+                <form name="addtocart-form" method="post"
+                    action="{{ route('cart.add', ['productId' => $product['product_id']]) }}" id="add-to-cart-form">
+                    @csrf
                     <div class="product-single__swatches">
 
                         <div class="product-swatch text-swatches">
@@ -82,7 +86,7 @@
                             <div class="swatch-list">
                                 @foreach($product['sizes'] as $size)
                                 @if ($size)
-                                <input type="radio" name="size" id="swatch-size-{{ $size->id }}"
+                                <input type="radio" name="size_id" id="swatch-size-{{ $size->id }}"
                                     value="{{ $size->id }}">
                                 <label class="swatch js-swatch" for="swatch-size-{{ $size->id }}"
                                     title="{{ $size->name }}">{{ $size->name }}</label>
@@ -95,18 +99,17 @@
                             <div class="swatch-list">
                                 @foreach($product['colors'] as $color)
                                 @if ($color)
-                                <input type="radio" name="color" id="swatch-color-{{ $color->id }}"
+                                <input type="radio" name="color_id" id="swatch-color-{{ $color->id }}"
                                     value="{{ $color->id }}">
                                 <label class="swatch swatch-color js-swatch" for="swatch-color-{{ $color->id }}"
-                                    style="color: {{ $color->color_code }};"
-                                    title="{{ $color->name }}"></label>
+                                    style="color: {{ $color->color_code }};" title="{{ $color->name }}"></label>
                                 @endif
                                 @endforeach
                             </div>
                         </div>
                         <div>
-                            Quantities: 
-                            <span id="product-quantity">0</span>
+                            Quantities:
+                            <span id="product-quantity"></span>
                         </div><br>
                     </div>
                     <div class="product-single__addtocart">
@@ -116,12 +119,11 @@
                             <div class="qty-control__reduce">-</div>
                             <div class="qty-control__increase">+</div>
                         </div><!-- .qty-control -->
-                        <button type="submit" class="btn btn-primary btn-addtocart js-open-aside"
-                            data-aside="cartDrawer">Add to Cart</button>
+                        <button type="submit" id="add-to-cart-btn" class="btn btn-primary btn-addtocart">Add to
+                            Cart</button>
                     </div>
                     <div class="product-single__addtocart checkout">
-                        <button type="submit" class="btn btn-primary btn-addtocart js-open-aside"
-                            data-aside="cartDrawer">Checkout</button><br>
+                        <button type="submit" class="btn btn-primary btn-addtocart">Checkout</button><br>
                     </div>
                 </form>
                 <div id="product-info" data-product-id="{{ $product['product_id'] }}"></div>
@@ -288,7 +290,7 @@
                 <div class="tab-pane fade" id="tab-additional-info" role="tabpanel"
                     aria-labelledby="tab-additional-info-tab">
                     <div class="product-single__addtional-info">
-                        <div class="item">
+                        <!-- <div class="item">
                             <label class="h6">Weight</label>
                             <span>1.25 kg</span>
                         </div>
@@ -307,7 +309,7 @@
                         <div class="item">
                             <label class="h6">Storage</label>
                             <span>Relaxed fit shirt-style dress with a rugged</span>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
                 <div class="tab-pane fade" id="tab-reviews" role="tabpanel" aria-labelledby="tab-reviews-tab">
@@ -315,6 +317,10 @@
                     <div class="product-single__reviews-list">
                         @foreach ($product['reviews'] as $review)
                         <div class="product-single__reviews-item">
+                            <div class="customer-avatar">
+                                <img loading="lazy" src="{{ asset('uploads/' . $review->user->profile_image) }}"
+                                    alt="{{ $review->user->name }}">
+                            </div>
                             <div class="customer-review">
                                 <div class="customer-name">
                                     <h6>{{ $review->user->name }}</h6>

@@ -28,6 +28,8 @@ use App\Http\Controllers\ProfileController;
 |
 */
 
+
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -182,9 +184,13 @@ Route::post('/admin/blogs/{blog_id}/update', [BlogController::class, 'update'])-
 
 
 
-Route::get('/locgia', function () {
-    return view('viewUser.locgia'); // Đường dẫn view tới contact.blade.php
-})->name('locgia');
+// Route::get('/locgia', function () {
+//     return view('viewUser.locgia'); // Đường dẫn view tới contact.blade.php
+// })->name('locgia');
+Route::get('/locgia', [ProductsController::class, 'showProducts'])->name('locgia');
+Route::get('/locgia/filter-products', [ProductsController::class, 'filterProducts'])->name('locgia.filter');
+
+Route::get('/products', [ProductsController::class, 'showProducts'])->name('products.index');
 
 //
 Route::get('/giamgia', function () {
@@ -256,7 +262,7 @@ Route::prefix('cart')->group(function () {
     Route::get('/', [CartController::class, 'show'])->name('cart.show');
 
     // Thêm sản phẩm vào giỏ hàng
-    Route::post('/add', [CartController::class, 'add'])->name('cart.add');
+    Route::post('/add/{productId}', [CartController::class, 'add'])->name('cart.add');
 
     // Cập nhật giỏ hàng
     Route::put('/update', [CartController::class, 'update'])->name('cart.update');
@@ -266,6 +272,12 @@ Route::prefix('cart')->group(function () {
 
     // Xóa tất cả sản phẩm khỏi giỏ hàng
     Route::delete('/clear', [CartController::class, 'clear'])->name('cart.clear');
+});
+
+Route::get('/check-login', function() {
+    return response()->json([
+        'loggedIn' => auth()->check(),
+    ]);
 });
 
 

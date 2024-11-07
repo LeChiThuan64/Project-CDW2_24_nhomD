@@ -34,23 +34,31 @@ class ProductController extends Controller
         return view('viewUser.product-detail', compact('product'));
     }
 
-    public function getQuantity(Request $request)
-    {
-        $productId = $request->input('product_id');
-        $sizeId = $request->input('size_id');
-        $colorId = $request->input('color_id');
+    public function getQuantityAndPrice(Request $request)
+{
+    $productId = $request->input('product_id');
+    $sizeId = $request->input('size_id');
+    $colorId = $request->input('color_id');
 
-        // Kiểm tra và lấy số lượng từ bảng trung gian
-        $quantity = DB::table('product_size_color')
-            ->where('product_id', $productId)
-            ->where('size_id', $sizeId)
-            ->where('color_id', $colorId)
-            ->value('quantity');
+    // Kiểm tra và lấy số lượng và giá từ bảng trung gian
+    $quantityAndPrice = DB::table('product_size_color')
+        ->where('product_id', $productId)
+        ->where('size_id', $sizeId)
+        ->where('color_id', $colorId)
+        ->select('quantity', 'price')
+        ->first();
 
-        // Nếu không có số lượng thì trả về 0
-        return response()->json(['quantity' => $quantity ?? 0]);
+    // Nếu không tìm thấy sản phẩm, trả về giá trị mặc định
+    if (!$quantityAndPrice) {
+        return response()->json(['quantity' => 0, 'price' => 0]);
     }
 
+    // Trả về số lượng và giá đúng định dạng
+    return response()->json([
+        'quantity' => $quantityAndPrice->quantity,
+        'price' => $quantityAndPrice->price
+    ]);
+}
 
     // Thêm đánh giá cho sản phẩm
     public function addReview(Request $request, $productId)
