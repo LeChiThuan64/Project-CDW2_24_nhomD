@@ -16,6 +16,7 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ChatboxController;
 use App\Http\Controllers\CartController;
 use App\Models\Blog;
+use App\Http\Controllers\ProfileController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -26,6 +27,8 @@ use App\Models\Blog;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -44,16 +47,11 @@ Route::get('/auth', function () {
     return view('viewUser.auth');
 })->name('auth');
 
-Route::post('/logout', function () {
-    Auth::logout();
-    return redirect('/');
-})->name('logout');
-
 
 
 Route::get('/login/show', [LoginController::class, 'showLoginForm'])->name('login.show');
 Route::post('/login/signin', [LoginController::class, 'login'])->name('login.signin');
-Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
 Route::post('/register', [RegisterController::class, 'register']);
 
@@ -66,6 +64,10 @@ Route::get('/tables', [UserController::class, 'index'])->name('tables');
 
 //blog
 Route::get('/blogs', [BlogController::class, 'index']);
+
+//khóa người dùng
+Route::post('/users/{id}/toggle-status', [UserController::class, 'toggleStatus']);
+
 
 // Route xóa người dùng
 Route::delete('/user/{id}', [UserController::class, 'destroy'])->name('user.destroy');
@@ -103,7 +105,7 @@ Route::get('/blogs_Detal', function () {
     return view('viewUser.blogs_Detal');
 });
 
-Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+// Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
 
 Route::post('/cart/apply-voucher', [CartController::class, 'applyVoucher'])->name('cart.applyVoucher');
 
@@ -182,19 +184,23 @@ Route::post('/admin/blogs/{blog_id}/update', [BlogController::class, 'update'])-
 
 
 
-Route::get('/locgia', function () {
-    return view('viewUser.locgia'); // Đường dẫn view tới contact.blade.php
-})->name('locgia');
+// Route::get('/locgia', function () {
+//     return view('viewUser.locgia'); // Đường dẫn view tới contact.blade.php
+// })->name('locgia');
+Route::get('/locgia', [ProductsController::class, 'showProducts'])->name('locgia');
+Route::get('/locgia/filter-products', [ProductsController::class, 'filterProducts'])->name('locgia.filter');
 
+Route::get('/products', [ProductsController::class, 'showProducts'])->name('products.index');
+
+//
+Route::get('/giamgia', function () {
+    return view('viewAdmin.giamgia');
+});
 Route::get('/vocher_home', function () {
     return view('viewAdmin.vocher_home');
 });
 Route::get('/vocher', function () {
     return view('viewAdmin.vocher');
-});
-
-Route::get('/giamgia', function () {
-    return view('viewAdmin.giamgia');
 });
 // Các route liên quan đến Voucher
 Route::get('/vocher', [VocherController::class, 'index'])->name('vocher.index');
@@ -239,5 +245,44 @@ Route::get('/products/search', [ProductsController::class, 'searchProducts'])->n
 Route::post('/search', [ProductsController::class, 'search'])->name('products.instant');
 
 
+
+
+// Profile
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'show'])->name('profile');
+});
+Route::put('/profile/{id}', [ProfileController::class, 'update'])->name('profile.update');
+
 // Route để lưu dữ liệu chatbox chatbox
 Route::post('/api/save-chatbox-data', [ChatboxController::class, 'saveChatboxData']);
+
+// Route cho Giỏ hàng
+Route::prefix('cart')->group(function () {
+    // Hiển thị giỏ hàng
+    Route::get('/', [CartController::class, 'show'])->name('cart.show');
+
+    // Thêm sản phẩm vào giỏ hàng
+    Route::post('/add/{productId}', [CartController::class, 'add'])->name('cart.add');
+
+    // Cập nhật giỏ hàng
+    Route::put('/update', [CartController::class, 'update'])->name('cart.update');
+
+    // Xóa sản phẩm khỏi giỏ hàng
+    Route::delete('/remove/{cartItemId}', [CartController::class, 'remove'])->name('cart.remove');
+
+    // Xóa tất cả sản phẩm khỏi giỏ hàng
+    Route::delete('/clear', [CartController::class, 'clear'])->name('cart.clear');
+});
+
+Route::get('/check-login', function() {
+    return response()->json([
+        'loggedIn' => auth()->check(),
+    ]);
+});
+
+
+
+
+
+Route::get('/product/edit/{id}', [ProductsController::class, 'edit'])->name('products.edit');
+Route::post('/product/update/{id}', [ProductsController::class, 'update'])->name('products.update');

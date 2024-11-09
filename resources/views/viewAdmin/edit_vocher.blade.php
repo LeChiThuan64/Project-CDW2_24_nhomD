@@ -23,7 +23,9 @@
                         <input type="radio" name="apply_to" value="specific" onclick="toggleUserSelect(true)" class="form-check-input" {{ !$vocher->is_global ? 'checked' : '' }}>
                         <label class="form-check-label">Người dùng cụ thể</label>
                     </div>
-                    <div id="user-select" style="{{ $vocher->is_global ? 'display: none;' : 'display: block;' }}">
+                    <!-- <div id="user-select" style="{{ $vocher->is_global ? 'display: none;' : 'display: block;' }}"> -->
+                    <div id="user-select" @if($vocher->is_global) style="display: none;" @else style="display: block;" @endif>
+
                         <div class="form-group mb-4">
                             <label for="user_id" class="form-label">Chọn người dùng:</label>
                             <select name="user_id" id="user_id" class="form-select">
@@ -37,10 +39,11 @@
                     </div>
                 </div>
 
-                <!-- Các trường khác của voucher -->
+                <!-- Tên Voucher với giới hạn 100 ký tự -->
                 <div class="form-group mb-4">
                     <label for="name" class="form-label">Tên Voucher:</label>
-                    <input type="text" name="name" id="name" class="form-control" placeholder="Nhập tên voucher" required value="{{ $vocher->name }}">
+                    <input type="text" name="name" id="name" class="form-control" placeholder="Nhập tên voucher" required value="{{ $vocher->name }}" maxlength="100" oninput="limitNameLength()">
+                    <small id="name-error" class="text-danger" style="display: none;">Tên voucher không được vượt quá 100 ký tự.</small>
                 </div>
 
                 <div class="form-group mb-4">
@@ -50,9 +53,10 @@
                     <small id="char-count" class="text-muted">{{ 255 - strlen($vocher->description) }} ký tự còn lại</small>
                 </div>
 
+                <!-- Giảm giá từ 1 đến 100%, chỉ cho phép nhập số -->
                 <div class="form-group mb-4">
                     <label for="discount" class="form-label">Giảm giá (%):</label>
-                    <input type="number" name="discount" id="discount" class="form-control" placeholder="Nhập tỷ lệ giảm giá" required value="{{ $vocher->discount }}">
+                    <input type="number" name="discount" id="discount" class="form-control" placeholder="Nhập tỷ lệ giảm giá" required min="1" max="100" value="{{ $vocher->discount }}" oninput="validateDiscount()">
                     <small id="discount-error" class="text-danger" style="display: none;">Giảm giá phải là số từ 1 đến 100%.</small>
                 </div>
 
@@ -110,13 +114,29 @@
         }
     });
 
-    document.getElementById('discount').addEventListener('input', function() {
-        const discountValue = parseFloat(this.value);
-        if (isNaN(discountValue) || discountValue < 1 || discountValue > 100) {
+    // Giới hạn ký tự cho tên voucher
+    function limitNameLength() {
+        const nameField = document.getElementById('name');
+        if (nameField.value.length > 100) {
+            nameField.value = nameField.value.substring(0, 100); // Cắt chuỗi nếu vượt quá giới hạn
+            document.getElementById('name-error').style.display = 'block';
+        } else {
+            document.getElementById('name-error').style.display = 'none';
+        }
+    }
+
+    // Kiểm tra giá trị giảm giá từ 1 đến 100, chỉ cho phép số
+    function validateDiscount() {
+        const discountField = document.getElementById('discount');
+        const discountValue = parseFloat(discountField.value);
+
+        if (discountValue < 1 || discountValue > 100 || isNaN(discountValue)) {
+            discountField.setCustomValidity("Giảm giá phải nằm trong khoảng từ 1 đến 100.");
             document.getElementById('discount-error').style.display = 'block';
         } else {
+            discountField.setCustomValidity("");
             document.getElementById('discount-error').style.display = 'none';
         }
-    });
+    }
 </script>
 @endsection

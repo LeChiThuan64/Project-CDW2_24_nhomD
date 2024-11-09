@@ -75,7 +75,9 @@
                                 <i class="fas fa-trash-alt"></i> Xóa
                             </button>
                             ||
-                            <button class="btn-icon"><i class="fas fa-edit"></i> Sửa</button>
+                            <a class="btn-icon edit-product" data-id="{{ $product['product_id'] }}">
+                                <i class="fas fa-edit"></i> Sửa
+                            </a>
                         </div>
                     </td>
                 </tr>
@@ -87,23 +89,23 @@
 
     <!-- Phân trang -->
     @if ($products->count() > 0)
-<nav aria-label="Page navigation example">
-    <ul class="paginations justify-content-end">
-        @if ($products->onFirstPage())
+    <nav aria-label="Page navigation example">
+        <ul class="paginations justify-content-end">
+            @if ($products->onFirstPage())
             <li class="page-items disabled">
                 <span class="page-links" aria-label="Previous">
                     <span aria-hidden="true">&laquo;</span>
                 </span>
             </li>
-        @else
+            @else
             <li class="page-items">
                 <a class="page-links" href="{{ $products->previousPageUrl() }}" aria-label="Previous">
                     <span aria-hidden="true">&laquo;</span>
                 </a>
             </li>
-        @endif
+            @endif
 
-        @php
+            @php
             // Xác định số trang hiện tại
             $currentPage = $products->currentPage();
             // Xác định số trang tối đa để hiển thị
@@ -116,36 +118,36 @@
 
             // Điều chỉnh để luôn hiển thị tối thiểu 3 trang nếu có đủ
             if ($end - $start < 2) {
-                if ($start == 1) {
-                    $end = min($start + 2, $totalPages);
+                if ($start==1) {
+                $end=min($start + 2, $totalPages);
                 } else {
-                    $start = max(1, $end - 2);
+                $start=max(1, $end - 2);
                 }
-            }
-        @endphp
+                }
+                @endphp
 
-        @foreach (range($start, $end) as $page)
-            <li class="page-items {{ ($products->currentPage() == $page) ? 'active' : '' }}">
+                @foreach (range($start, $end) as $page)
+                <li class="page-items {{ ($products->currentPage() == $page) ? 'active' : '' }}">
                 <a class="page-links" href="{{ $products->url($page) }}">{{ $page }}</a>
-            </li>
-        @endforeach
+                </li>
+                @endforeach
 
-        @if ($products->hasMorePages())
-            <li class="page-items">
-                <a class="page-links" href="{{ $products->nextPageUrl() }}" aria-label="Next">
-                    <span aria-hidden="true">&raquo;</span>
-                </a>
-            </li>
-        @else
-            <li class="page-items disabled">
-                <span class="page-links" aria-label="Next">
-                    <span aria-hidden="true">&raquo;</span>
-                </span>
-            </li>
-        @endif
-    </ul>
-</nav>
-@endif
+                @if ($products->hasMorePages())
+                <li class="page-items">
+                    <a class="page-links" href="{{ $products->nextPageUrl() }}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+                @else
+                <li class="page-items disabled">
+                    <span class="page-links" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </span>
+                </li>
+                @endif
+        </ul>
+    </nav>
+    @endif
 
 </div>
 
@@ -209,7 +211,6 @@
 </div>
 
 <!-- aler -->
-
 
 
 @endsection

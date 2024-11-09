@@ -2,6 +2,46 @@
 @section('title', 'contact')
 @section('content')
 
+<head>
+    <style>
+        .price-range {
+            position: relative;
+            margin: 20px 0;
+        }
+
+        input[type="range"] {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 5px;
+            background: #ddd;
+            border-radius: 5px;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            background: #333;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            background: #333;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .price-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
 <div class="mb-4 pb-lg-3"></div>
 
 <section class="shop-main container d-flex">
@@ -37,27 +77,7 @@
                             <li class="list-item">
                                 <a href="#" class="menu-link py-1">Sweatshirts</a>
                             </li>
-                            <li class="list-item">
-                                <a href="#" class="menu-link py-1">Swimwear</a>
-                            </li>
-                            <li class="list-item">
-                                <a href="#" class="menu-link py-1">Jackets</a>
-                            </li>
-                            <li class="list-item">
-                                <a href="#" class="menu-link py-1">T-Shirts & Tops</a>
-                            </li>
-                            <li class="list-item">
-                                <a href="#" class="menu-link py-1">Jeans</a>
-                            </li>
-                            <li class="list-item">
-                                <a href="#" class="menu-link py-1">Trousers</a>
-                            </li>
-                            <li class="list-item">
-                                <a href="#" class="menu-link py-1">Men</a>
-                            </li>
-                            <li class="list-item">
-                                <a href="#" class="menu-link py-1">Jumpers & Cardigans</a>
-                            </li>
+
                         </ul>
                     </div>
                 </div>
@@ -85,170 +105,123 @@
                         </svg>
                     </button>
                 </h5>
-                <div id="accordion-filter-price" class="accordion-collapse collapse show border-0" aria-labelledby="accordion-heading-price" data-bs-parent="#price-filters">
-                    <input class="price-range-slider" type="text" name="price_range" value="" data-slider-min="10" data-slider-max="1000" data-slider-step="5" data-slider-value="[250,450]" data-currency="$">
-                    <div class="price-range__info d-flex align-items-center mt-2">
-                        <div class="me-auto">
-                            <span class="text-secondary">Min Price: </span>
-                            <span class="price-range__min">$250</span>
-                        </div>
-                        <div>
-                            <span class="text-secondary">Max Price: </span>
-                            <span class="price-range__max">$450</span>
-                        </div>
+
+
+                <div class="price-range">
+                    <input type="range" id="minPrice" min="0" max="5000000" value="0">
+                    <input type="range" id="maxPrice" min="0" max="5000000" value="5000000">
+                    <div class="price-labels">
+                        <span>Min Price: <span id="minPriceLabel">0</span> VND</span>
+                        <span>Max Price: <span id="maxPriceLabel">5.000.000</span> VND</span>
                     </div>
+                    <button style="
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+"
+                        onmouseover="this.style.backgroundColor='#0056b3'; this.style.transform='scale(1.05)';"
+                        onmouseout="this.style.backgroundColor='#007bff'; this.style.transform='scale(1)';">
+                        Lọc
+                    </button>
+
                 </div>
+
             </div><!-- /.accordion-item -->
         </div><!-- /.accordion -->
     </div><!-- /.shop-sidebar -->
 
-    <div class="shop-list flex-grow-1">
-        
-
-        <div class="products-grid row row-cols-2 row-cols-md-3" id="products-grid">
-           
-
-            <div class="product-card-wrapper">
-                <div class="product-card mb-3 mb-md-4 mb-xxl-5">
-                    <div class="pc__img-wrapper">
-                        <div class="swiper-container background-img js-swiper-slider" data-settings='{"resizeObserver": true}'>
-                            <div class="swiper-wrapper">
-                                <div class="swiper-slide">
-                                    <a href="product1_simple.html"><img loading="lazy" src="../images/products/product_2.jpg" width="330" height="400" alt="Cropped Faux leather Jacket" class="pc__img"></a>
-                                </div><!-- /.pc__img-wrapper -->
-                                <div class="swiper-slide">
-                                    <a href="product1_simple.html"><img loading="lazy" src="../images/products/product_2-1.jpg" width="330" height="400" alt="Cropped Faux leather Jacket" class="pc__img"></a>
-                                </div><!-- /.pc__img-wrapper -->
-                            </div>
-                            <span class="pc__img-prev"><svg width="7" height="11" viewBox="0 0 7 11" xmlns="http://www.w3.org/2000/svg">
-                                    <use href="#icon_prev_sm" />
-                                </svg></span>
-                            <span class="pc__img-next"><svg width="7" height="11" viewBox="0 0 7 11" xmlns="http://www.w3.org/2000/svg">
-                                    <use href="#icon_next_sm" />
-                                </svg></span>
-                        </div>
-                        <button class="pc__atc btn anim_appear-bottom btn position-absolute border-0 text-uppercase fw-medium js-add-cart js-open-aside" data-aside="cartDrawer" title="Add To Cart">Add To Cart</button>
-                    </div>
-
-                    <div class="pc__info position-relative">
-                        <p class="pc__category">Dresses</p>
-                        <h6 class="pc__title"><a href="product1_simple.html">Calvin Shorts</a></h6>
-                        <div class="product-card__price d-flex">
-                            <span class="money price">$62</span>
-                        </div>
-
-                       
-
-                        <button class="pc__btn-wl position-absolute top-0 end-0 bg-transparent border-0 js-add-wishlist" title="Add To Wishlist">
-                            <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <use href="#icon_heart" />
-                            </svg>
-                        </button>
-                    </div>
-
-                    <div class="pc-labels position-absolute top-0 start-0 w-100 d-flex justify-content-between">
-                        <div class="pc-labels__right ms-auto">
-                            <span class="pc-label pc-label_sale d-block text-white">-67%</span>
+    <div class="products-grid row row-cols-2 row-cols-md-3" id="products-grid">
+        @foreach ($products as $product)
+        <div class="product-card-wrapper">
+            <div class="product-card mb-3 mb-md-4 mb-xxl-5">
+                <div class="pc__img-wrapper">
+                    <div class="swiper-container background-img js-swiper-slider" data-settings='{"resizeObserver": true}'>
+                        <div class="swiper-wrapper" id="swiper-wrapper-{{ $product->product_id }}">
+                            <!-- Swiper slides will be added here by JavaScript -->
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="product-card-wrapper">
-                <div class="product-card mb-3 mb-md-4 mb-xxl-5">
-                    <div class="pc__img-wrapper">
-                        <div class="swiper-container background-img js-swiper-slider" data-settings='{"resizeObserver": true}'>
-                            <div class="swiper-wrapper">
-                                <div class="swiper-slide">
-                                    <a href="product1_simple.html"><img loading="lazy" src="../images/products/product_3.jpg" width="330" height="400" alt="Cropped Faux leather Jacket" class="pc__img"></a>
-                                </div><!-- /.pc__img-wrapper -->
-                                <div class="swiper-slide">
-                                    <a href="product1_simple.html"><img loading="lazy" src="../images/products/product_3-1.jpg" width="330" height="400" alt="Cropped Faux leather Jacket" class="pc__img"></a>
-                                </div><!-- /.pc__img-wrapper -->
-                            </div>
-                            <span class="pc__img-prev"><svg width="7" height="11" viewBox="0 0 7 11" xmlns="http://www.w3.org/2000/svg">
-                                    <use href="#icon_prev_sm" />
-                                </svg></span>
-                            <span class="pc__img-next"><svg width="7" height="11" viewBox="0 0 7 11" xmlns="http://www.w3.org/2000/svg">
-                                    <use href="#icon_next_sm" />
-                                </svg></span>
-                        </div>
-                        <button class="pc__atc btn anim_appear-bottom btn position-absolute border-0 text-uppercase fw-medium js-add-cart js-open-aside" data-aside="cartDrawer" title="Add To Cart">Add To Cart</button>
-                    </div>
-
-                    <div class="pc__info position-relative">
-                        <p class="pc__category">Dresses</p>
-                        <h6 class="pc__title"><a href="product1_simple.html">Kirby T-Shirt</a></h6>
-                        <div class="product-card__price d-flex">
-                            <span class="money price">$17</span>
-                        </div>
-
-                        <button class="pc__btn-wl position-absolute top-0 end-0 bg-transparent border-0 js-add-wishlist" title="Add To Wishlist">
-                            <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <use href="#icon_heart" />
-                            </svg>
-                        </button>
+                <div class="pc__info position-relative">
+                    <h6 class="pc__title"><a href="{{ route('product.show', $product->product_id) }}">{{ $product->name }}</a></h6>
+                    <div class="product-card__price d-flex">
+                        @php
+                        $price = $product->productSizeColors->first()->price ?? 0; // Gán giá về 0 nếu không có giá
+                        @endphp
+                        <span class="money price">
+                            @if($price > 0)
+                            {{ number_format($price, 0, ',', '.') }} VND
+                            @else
+                            N/A
+                            @endif
+                        </span>
                     </div>
                 </div>
             </div>
-
-            <div class="product-card-wrapper">
-                <div class="product-card mb-3 mb-md-4 mb-xxl-5">
-                    <div class="pc__img-wrapper">
-                        <div class="swiper-container background-img js-swiper-slider" data-settings='{"resizeObserver": true}'>
-                            <div class="swiper-wrapper">
-                                <div class="swiper-slide">
-                                    <a href="product1_simple.html"><img loading="lazy" src="../images/products/product_4.jpg" width="330" height="400" alt="Cropped Faux leather Jacket" class="pc__img"></a>
-                                </div><!-- /.pc__img-wrapper -->
-                                <div class="swiper-slide">
-                                    <a href="product1_simple.html"><img loading="lazy" src="../images/products/product_4-1.jpg" width="330" height="400" alt="Cropped Faux leather Jacket" class="pc__img"></a>
-                                </div><!-- /.pc__img-wrapper -->
-                            </div>
-                            <span class="pc__img-prev"><svg width="7" height="11" viewBox="0 0 7 11" xmlns="http://www.w3.org/2000/svg">
-                                    <use href="#icon_prev_sm" />
-                                </svg></span>
-                            <span class="pc__img-next"><svg width="7" height="11" viewBox="0 0 7 11" xmlns="http://www.w3.org/2000/svg">
-                                    <use href="#icon_next_sm" />
-                                </svg></span>
-                        </div>
-                        <button class="pc__atc btn anim_appear-bottom btn position-absolute border-0 text-uppercase fw-medium js-add-cart js-open-aside" data-aside="cartDrawer" title="Add To Cart">Add To Cart</button>
-                    </div>
-
-                    <div class="pc__info position-relative">
-                        <p class="pc__category">Dresses</p>
-                        <h6 class="pc__title"><a href="product1_simple.html">Cableknit Shawl</a></h6>
-                        <div class="product-card__price d-flex">
-                            <span class="money price price-old">$129</span>
-                            <span class="money price price-sale">$99</span>
-                        </div>
-
-                        <button class="pc__btn-wl position-absolute top-0 end-0 bg-transparent border-0 js-add-wishlist" title="Add To Wishlist">
-                            <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <use href="#icon_heart" />
-                            </svg>
-                        </button>
-                    </div>
-
-                    <div class="pc-labels position-absolute top-0 start-0 w-100 d-flex justify-content-between">
-                        <div class="pc-labels__left">
-                            <span class="pc-label pc-label_new d-block bg-white">NEW</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-         
-           
-        </div><!-- /.products-grid row -->
-
-        
+        </div>
+        @endforeach
     </div>
-</section><!-- /.shop-main container -->
-</main>
+</section>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const products = @json($products); // Lấy dữ liệu sản phẩm từ Blade
+
+        products.forEach(product => {
+            const swiperWrapper = document.getElementById(`swiper-wrapper-${product.product_id}`);
+
+            product.images.forEach(image => {
+                const imgElement = `
+                    <div class="swiper-slide">
+                        <a href="{{ route('product.show', '') }}/${product.product_id}">
+                            <img loading="lazy" src="{{ asset('assets/img/products') }}/${image.image_url}" width="330" height="400" alt="${product.name}" class="pc__img">
+                        </a>
+                    </div>`;
+                swiperWrapper.innerHTML += imgElement;
+            });
+        });
+    });
+
+
+
+
+    const minPriceInput = document.getElementById('minPrice');
+    const maxPriceInput = document.getElementById('maxPrice');
+    const minPriceLabel = document.getElementById('minPriceLabel');
+    const maxPriceLabel = document.getElementById('maxPriceLabel');
+
+    // Function to format numbers with dots as thousands separators
+    function formatCurrency(value) {
+        return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    }
+
+    // Update the displayed values when the slider values change
+    minPriceInput.addEventListener('input', function() {
+        minPriceLabel.textContent = formatCurrency(minPriceInput.value);
+        if (parseInt(minPriceInput.value) > parseInt(maxPriceInput.value)) {
+            maxPriceInput.value = minPriceInput.value;
+            maxPriceLabel.textContent = formatCurrency(maxPriceInput.value);
+        }
+    });
+
+    maxPriceInput.addEventListener('input', function() {
+        maxPriceLabel.textContent = formatCurrency(maxPriceInput.value);
+        if (parseInt(maxPriceInput.value) < parseInt(minPriceInput.value)) {
+            minPriceInput.value = maxPriceInput.value;
+            minPriceLabel.textContent = formatCurrency(minPriceInput.value);
+        }
+    });
+
+
+</script>
+
 
 <div class="mb-5 pb-xl-5"></div>
-
-
-<!-- Footer Type 1 -->
-
 @endsection

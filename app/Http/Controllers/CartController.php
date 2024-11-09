@@ -5,86 +5,134 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Cart;
 use App\Models\CartItem;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Voucher;
+use App\Models\ProductSizeColor;
+use App\Models\Product;
 
 class CartController extends Controller
 {
 
-    public function index()
-    {
-        $userVouchers = collect(); // Khởi tạo một collection rỗng.
 
-        // Kiểm tra nếu người dùng đã đăng nhập
-        if (auth()->check()) {
-            // Lấy danh sách các voucher cá nhân của người dùng
-            $userVouchers = auth()->user()->vouchers()->where('end_date', '>=', now())->get();
+public function show(Request $request)
+{
 
-            // Lấy danh sách các voucher dùng chung
-            $globalVouchers = Voucher::where('is_global', true)->where('end_date', '>=', now())->get();
+    $user_id = Auth::id();
 
-            // Gộp danh sách voucher dùng chung và riêng
-            $userVouchers = $userVouchers->merge($globalVouchers);
-        }
-
-        // Trả về view với danh sách voucher đã xử lý
-        return view('viewUser.cart', compact('userVouchers'));
+    if (!$user_id) {
+        return redirect()->route('auth')->with('error', 'Bạn cần đăng nhập để xem giỏ hàng.');
     }
 
-    //
-    public function show()
-    {
-        // Lấy giỏ hàng của người dùng hiện tại
-        $cart = Cart::with('items.product')->where('user_id', auth()->id())->first();
+    $cartItems = CartItem::with(['product.images', 'size', 'color'])
+        ->whereHas('cart', function ($query) use ($user_id) {
+            $query->where('user_id', $user_id);
+        })
+        ->get();
 
-        // Kiểm tra xem giỏ hàng có tồn tại không
-        if (!$cart) {
-            return view('viewUser.cart', ['items' => [], 'total' => 0, 'userVouchers' => collect()]);
-        }
+    $cart = $cartItems->map(function ($item) {
+        $product = $item->product;
+        $images = $product->images->pluck('image_url')->toArray();
 
+        return [
+            'cart_item_id' => $item->cart_item_id,
+            'product_id' => $product->product_id,
+            'name' => $product->name,
+            'description' => $product->description,
+            'quantity' => $item->quantity,
+            'images' => $images,
+            'size' => optional($item->size)->name,
+            'color' => optional($item->color)->name,
+            'price' => $item->getPrice(),
+        ];
+    })->toArray();
 
-        // Tính tổng số tiền trong giỏ hàng
-        $total = $cart->items->sum(function ($item) {
-            return $item->product->price * $item->quantity;
-        });
+    // Lấy danh sách voucher
+    $vouchers = Voucher::where('is_global', true)
+        ->orWhere('user_id', $user_id)
+        ->get();
 
-        return view('viewUser.cart', [
-            'items' => $cart->items,
-            'total' => $total,
+    return view('viewUser.cart', [
+        'cart' => $cart,
+        'vouchers' => $vouchers,
+    ]);
+}
 
-        ]);
+// Thêm sản phẩm vào giỏ hàng
+public function add(Request $request, $productId)
+{
+    $user_id = Auth::id();
+
+    if (!$user_id) {
+        return redirect()->route('auth')->with('error', 'Bạn cần đăng nhập để xem giỏ hàng.');
     }
 
 
+    $request->validate([
+        'quantity' => 'required|integer|min:1',
+        'size_id' => 'required|exists:sizes,id',
+        'color_id' => 'required|exists:colors,id',
+    ]);
 
-    // Thêm sản phẩm vào giỏ hàng
-    public function add(Request $request, $productId)
-    {
-        // Xác thực rằng số lượng sản phẩm là một số nguyên dương
-        $request->validate([
-            'quantity' => 'required|integer|min:1',
+
+    $cart = Cart::firstOrCreate(['user_id' => $user_id]);
+
+    $cartItem = CartItem::where('cart_id', $cart->cart_id)
+        ->where('product_id', $productId)
+        ->where('size_id', $request->size_id)
+        ->where('color_id', $request->color_id)
+        ->first();
+
+    if ($cartItem) {
+        $cartItem->quantity += $request->quantity;
+        $cartItem->save();
+    } else {
+        CartItem::create([
+            'cart_id' => $cart->cart_id,
+            'product_id' => $productId,
+            'size_id' => $request->size_id,
+            'color_id' => $request->color_id,
+            'quantity' => $request->quantity,
         ]);
+    }
+    return redirect()->route('cart.show')->with('success', 'Sản phẩm đã được thêm vào giỏ hàng!');
+}
 
-        // Tìm hoặc tạo giỏ hàng cho người dùng
-        $cart = Cart::firstOrCreate(['user_id' => auth()->id()]);
+public function remove($cartItemId)
+{
+    if (!Auth::check()) {
+        return response()->json(['error' => 'Bạn cần đăng nhập để xóa sản phẩm khỏi giỏ hàng.'], 403);
+    }
 
-        // Tìm sản phẩm trong giỏ hàng
-        $cartItem = CartItem::where('cart_id', $cart->cart_id)
-            ->where('product_id', $productId)
-            ->first();
+    $cartItem = CartItem::where('cart_item_id', $cartItemId)->first();
+
+    if ($cartItem) {
+        $cartItem->delete();
+        return response()->json(['success' => true, 'message' => 'Item removed from cart']);
+    }
+
+    return response()->json(['success' => false, 'message' => 'Item not found'], 404);
+}
+
+
+public function update(Request $request)
+{
+    if (!Auth::check()) {
+        return response()->json(['error' => 'Bạn cần đăng nhập để cập nhật giỏ hàng.'], 403);
+    }
+
+    $updatedData = $request->input('updatedData');
+
+    foreach ($updatedData as $data) {
+        $cartItem = CartItem::find($data['cart_item_id']);
 
         if ($cartItem) {
-            // Nếu sản phẩm đã có trong giỏ hàng, cập nhật số lượng
-            $cartItem->quantity += $request->quantity;
+            $cartItem->quantity = $data['quantity'];
             $cartItem->save();
-        } else {
-            // Nếu chưa có, thêm mới
-            CartItem::create([
-                'cart_id' => $cart->cart_id,
-                'product_id' => $productId,
-                'quantity' => $request->quantity,
-            ]);
         }
-
-        return redirect()->back()->with('success', 'Sản phẩm đã được thêm vào giỏ hàng!');
     }
+
+    return response()->json(['message' => 'Cart updated successfully']);
+}
+    
+
 }

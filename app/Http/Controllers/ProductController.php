@@ -4,56 +4,61 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product;
+use App\Models\Color;
+use App\Models\Size;
+use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
     // Hiển thị chi tiết sản phẩm
     public function show($id)
     {
-        // Lấy sản phẩm theo ID cùng với các thông tin liên quan
-        $product = Product::with([
-                'reviews', 
-                'category', 
-                'images', 
-                'productSizeColors.size', 
-                'productSizeColors.color'  
-            ])
-            ->where('product_id', $id)
-            ->first(); // Sử dụng first() để lấy một sản phẩm duy nhất
-    
-        // Kiểm tra nếu sản phẩm không tồn tại
-        if (!$product) {
-            return response()->json(['success' => false, 'message' => 'Không tìm thấy sản phẩm'], 404);
-        }
-    
-        // Tính trung bình rating và số lượng đánh giá
-        $averageRating = $product->reviews->avg('rating') ?? 0; // Sử dụng $product->reviews thay vì optional()
-        $reviewCount = $product->reviews->count(); // Sử dụng $product->reviews
-    
-        // Lấy danh sách hình ảnh của sản phẩm
-        $images = $product->images->pluck('image_url')->toArray(); // Sử dụng `pluck` để lấy mảng các URL ảnh
-    
-        // Lấy thông tin kích thước và màu sắc cùng với thông tin từ bảng trung gian
-        $sizesAndColors = $product->sizesAndColors->map(function ($item) {
-            return [
-                'size' => optional($item->size)->name, // Lấy tên kích thước
-                'color' => optional($item->color)->name, // Lấy tên màu sắc
-                'quantity' => $item->pivot->quantity, // Lấy thông tin từ bảng trung gian
-                'price' => $item->pivot->price, // Lấy giá từ bảng trung gian
-            ];
-        });
-    
-        // Trả về view product-detail và truyền dữ liệu cho view
-        return view('viewUser.product-detail', [
-            'product' => $product,
-            'averageRating' => $averageRating,
-            'reviewCount' => $reviewCount,
-            'images' => $images,
-            'sizesAndColors' => $sizesAndColors,
-        ]);
-    }
-    
+        $productModel = Product::with(['images', 'productSizeColors.size', 'productSizeColors.color', 'reviews', 'category'])
+            ->findOrFail($id);
 
+        $averageRating = $productModel->reviews->avg('rating') ?? 0; // Điểm trung bình rating
+        $reviewCount = $productModel->reviews->count(); // Tổng số đánh giá
+
+        $colors = Color::all(); // Lấy tất cả màu sắc từ bảng colors
+        $sizes = Size::all(); // Lấy tất cả kích thước từ bảng sizes
+
+        // Lấy dữ liệu chi tiết của sản phẩm
+        $product = $productModel->getProductDetailData();
+        $product['averageRating'] = $averageRating;
+        $product['reviewCount'] = $reviewCount;
+        $product['reviews'] = $productModel->reviews;
+        $product['category'] = $productModel->category->category_name ?? 'N/A';
+        $product['sizesAndColor'] = $productModel->productSizeColors;
+        $product['colors'] = $colors;
+        $product['sizes'] = $sizes;
+        return view('viewUser.product-detail', compact('product'));
+    }
+
+    public function getQuantityAndPrice(Request $request)
+{
+    $productId = $request->input('product_id');
+    $sizeId = $request->input('size_id');
+    $colorId = $request->input('color_id');
+
+    // Kiểm tra và lấy số lượng và giá từ bảng trung gian
+    $quantityAndPrice = DB::table('product_size_color')
+        ->where('product_id', $productId)
+        ->where('size_id', $sizeId)
+        ->where('color_id', $colorId)
+        ->select('quantity', 'price')
+        ->first();
+
+    // Nếu không tìm thấy sản phẩm, trả về giá trị mặc định
+    if (!$quantityAndPrice) {
+        return response()->json(['quantity' => 0, 'price' => 0]);
+    }
+
+    // Trả về số lượng và giá đúng định dạng
+    return response()->json([
+        'quantity' => $quantityAndPrice->quantity,
+        'price' => $quantityAndPrice->price
+    ]);
+}
 
     // Thêm đánh giá cho sản phẩm
     public function addReview(Request $request, $productId)
@@ -82,23 +87,23 @@ class ProductController extends Controller
         try {
             $product_id = $request->query('product_id');
             $product_name = $request->query('product_name');
-        
+
             if ($product_id || $product_name) {
                 $query = Product::with(['images', 'productSizeColors']); // Thêm relationship images              
-    
+
                 // Nhóm điều kiện tìm kiếm với hàm nặc danh (closure)
                 $query->where(function ($q) use ($product_id, $product_name) {
                     if ($product_id) {
                         $q->where('product_id', $product_id);
                     }
-    
+
                     if ($product_name) {
                         $q->orWhere('name', 'like', '%' . $product_name . '%');
                     }
                 });
-    
+
                 $product = $query->first();
-        
+
                 if ($product) {
                     // Lấy danh sách hình ảnh của sản phẩm
                     $images = $product->images->pluck('image_url')->toArray(); // Sử dụng `pluck` để lấy mảng các URL ảnh
@@ -112,19 +117,19 @@ class ProductController extends Controller
                         'quantity' => $product->quantity,
                         'images' => $images,
                     ];
-        
+
                     return response()->json([
-                        'success' => true, 
+                        'success' => true,
                         'product' => $productData
                     ]);
                 }
-        
+
                 return response()->json([
                     'success' => false,
                     'message' => 'Product not found'
                 ], 404);
             }
-        
+
             return response()->json([
                 'success' => false,
                 'message' => 'No search criteria provided'

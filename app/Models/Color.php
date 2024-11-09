@@ -15,4 +15,8 @@ class Color extends Model
                     ->withPivot('size_id', 'quantity',  'price')
                     ->withTimestamps();
     }
+    public function cartItems()
+    {
+        return $this->hasMany(CartItem::class, 'color_id');
+    }
 }

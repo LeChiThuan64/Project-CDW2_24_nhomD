@@ -91,9 +91,9 @@
                 </h6>
               </td>
               <td class="actions text-center">
-                <button type="button" class="btn btn-warning btn-sm px-3" style="border-radius: 5px; font-size: 14px;">
+                <!-- <button type="button" class="btn btn-warning btn-sm px-3" style="border-radius: 5px; font-size: 14px;">
                   <i class="fas fa-eye"></i> Xem
-                </button>
+                </button> -->
                 <form action="{{ route('vocher.destroy', $vocher->id) }}" method="POST" style="display: inline;" onsubmit="return confirm('Bạn có chắc chắn muốn xóa vocher này?');">
                   @csrf
                   @method('DELETE')
@@ -102,7 +102,7 @@
                   </button>
                 </form>
 
-                <a href="{{ route('vocher.edit', $vocher->id) }}" class="btn btn-info btn-sm px-3" style="border-radius: 5px; font-size: 14px;">
+                <a href="{{ route('vocher.edit', ['id' => Crypt::encrypt($vocher->id)]) }}" class="btn btn-info btn-sm px-3" style="border-radius: 5px; font-size: 14px;">
                   <i class="fas fa-edit"></i> Sửa
                 </a>
 
