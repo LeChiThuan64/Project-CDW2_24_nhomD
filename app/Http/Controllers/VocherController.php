@@ -6,6 +6,7 @@ use App\Models\Voucher;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Contracts\Encryption\DecryptException;
 
 class VocherController extends Controller
 {
@@ -74,6 +75,8 @@ class VocherController extends Controller
             return redirect()->route('vocher.index')->with('error', 'Không thể truy cập voucher này.');
         }
     }
+
+    
 
     public function update(Request $request, $id)
     {

@@ -7,6 +7,8 @@ use App\Models\Blog;
 use App\Models\Comment;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Contracts\Encryption\DecryptException;
+
 
 class BlogController extends Controller
 {
@@ -114,15 +116,32 @@ class BlogController extends Controller
     //     return view('viewAdmin.sua_blog', compact('blog'));
     // }
 
+    // public function edit($encryptedBlogId)
+    // {
+    //     // Giải mã ID blog
+    //     $blog_id = Crypt::decryptString($encryptedBlogId);
+
+    //     // Lấy blog cần sửa
+    //     $blog = Blog::where('blog_id', $blog_id)->firstOrFail();
+    //     return view('viewAdmin.sua_blog', compact('blog'));
+    // }
+
     public function edit($encryptedBlogId)
-    {
+{
+    try {
         // Giải mã ID blog
         $blog_id = Crypt::decryptString($encryptedBlogId);
 
         // Lấy blog cần sửa
         $blog = Blog::where('blog_id', $blog_id)->firstOrFail();
         return view('viewAdmin.sua_blog', compact('blog'));
+
+    } catch (DecryptException $e) {
+        // Trả về thông báo lỗi nếu mã hóa không hợp lệ
+        return redirect()->route('admin.blog.index')->with('error', 'ID blog không hợp lệ.');
     }
+}
+
 
     public function update(Request $request, $blog_id)
     {

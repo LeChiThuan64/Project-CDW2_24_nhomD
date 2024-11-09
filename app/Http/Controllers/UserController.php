@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Contracts\Encryption\DecryptException;
 
 class UserController extends Controller
 {
@@ -142,13 +143,24 @@ class UserController extends Controller
     // }
 
 
+    // public function edit($encryptedId)
+    // {
+    //     $id = Crypt::decryptString($encryptedId);
+    //     $user = User::findOrFail($id);
+    //     return view('viewAdmin.edit_user', compact('user'));
+    // }
     public function edit($encryptedId)
     {
-        $id = Crypt::decryptString($encryptedId);
-        $user = User::findOrFail($id);
-        return view('viewAdmin.edit_user', compact('user'));
+        try {
+            // Giải mã ID
+            $id = Crypt::decryptString($encryptedId);
+            $user = User::findOrFail($id);
+            return view('viewAdmin.edit_user', compact('user'));
+        } catch (DecryptException $e) {
+            // Thông báo lỗi nếu ID không hợp lệ
+            return redirect()->route('tables')->with('error', 'ID người dùng không hợp lệ.');
+        }
     }
-
 
     public function update(Request $request, $id)
     {
