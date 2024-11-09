@@ -66,11 +66,11 @@
     <div class="blog-single__reviews mw-930" style="font-family: Arial, sans-serif;">
       <h2 class="blog-single__reviews-title" style="padding-top: 10px;">Comments</h2>
 
-      @if ($comments && count($comments) > 0)
+      @if ($comments && $comments->whereNull('parent_id')->count() > 0)
       @php
-      $visibleComments = $comments->sortByDesc('created_at')->take(3);
+      $visibleComments = $comments->whereNull('parent_id')->sortByDesc('created_at')->take(3);
       @endphp
-      <!-- Hiển thị 3 bình luận mới nhất -->
+      <!-- Hiển thị 3 bình luận gốc mới nhất -->
       @foreach ($visibleComments as $comment)
       <div class="blog-single__reviews-item">
         <div class="customer-review">
@@ -83,20 +83,39 @@
             </p>
             @if(strlen($comment->comment) > 50)
             <button class="toggle-button" onclick="toggleContent(this)" style="
-               background-color: #007bff; 
-               color: white; 
-               border: none; 
-               padding: 8px 12px; 
-               font-size: 14px; 
-               border-radius: 4px; 
-               cursor: pointer; 
-               margin-top: 8px; 
-               margin-bottom: 30px;
-               transition: background-color 0.3s ease;">
+                               background-color: #007bff; 
+                               color: white; 
+                               border: none; 
+                               padding: 8px 12px; 
+                               font-size: 14px; 
+                               border-radius: 4px; 
+                               cursor: pointer; 
+                               margin-top: 8px; 
+                               margin-bottom: 30px;
+                               transition: background-color 0.3s ease;">
               Xem thêm
             </button>
             @endif
           </div>
+
+          <!-- Nút Trả lời -->
+          <button onclick="showReplyForm({{ $comment->id }}, '{{ $comment->name }}')" style="background-color: #f0ad4e; color: white; padding: 8px 12px;">
+            Trả lời
+          </button>
+
+
+
+          <!-- Hiển thị phản hồi của bình luận cha -->
+          @foreach ($comment->replies as $reply)
+          <div class="reply" style="margin-left: 20px; margin-top: 10px;">
+            <h6>Tên : {{ $reply->name }}</h6>
+            <div class="review-date">{{ $reply->email }}</div>
+            <div class="review-date">{{ $reply->created_at->format('F d, Y') }}</div>
+            <div class="review-textt">
+              <p>{{ $reply->comment }}</p>
+            </div>
+          </div>
+          @endforeach
         </div>
       </div>
       @endforeach
@@ -122,20 +141,37 @@
               </p>
               @if(strlen($comment->comment) > 50)
               <button class="toggle-button" onclick="toggleContent(this)" style="
-               background-color: #007bff; 
-               color: white; 
-               border: none; 
-               padding: 8px 12px; 
-               font-size: 14px; 
-               border-radius: 4px; 
-               cursor: pointer; 
-               margin-top: 8px; 
-               margin-bottom: 30px;
-               transition: background-color 0.3s ease;">
+                                   background-color: #007bff; 
+                                   color: white; 
+                                   border: none; 
+                                   padding: 8px 12px; 
+                                   font-size: 14px; 
+                                   border-radius: 4px; 
+                                   cursor: pointer; 
+                                   margin-top: 8px; 
+                                   margin-bottom: 30px;
+                                   transition: background-color 0.3s ease;">
                 Xem thêm
               </button>
               @endif
             </div>
+
+            <!-- Nút Trả lời -->
+            <button onclick="showReplyForm({{ $comment->id }}, '{{ $comment->name }}')" style="background-color: #f0ad4e; color: white; padding: 8px 12px;">
+              Trả lời
+            </button>
+
+            <!-- Hiển thị phản hồi của bình luận cha -->
+            @foreach ($comment->replies as $reply)
+            <div class="reply" style="margin-left: 20px; margin-top: 10px;">
+              <h6>Tên : {{ $reply->name }}</h6>
+              <div class="review-date">{{ $reply->email }}</div>
+              <div class="review-date">{{ $reply->created_at->format('F d, Y') }}</div>
+              <div class="review-textt">
+                <p>{{ $reply->comment }}</p>
+              </div>
+            </div>
+            @endforeach
           </div>
         </div>
         @endforeach
@@ -147,12 +183,12 @@
 
 
     <!-- Form gửi bình luận -->
-    <div class="blog-single__review-form">
+    <div id="mainCommentForm" class="blog-single__review-form">
       <form action="{{ route('blog.comment', $blog->blog_id) }}" method="POST">
         @csrf
+        <input type="hidden" name="parent_id" id="parent_id" value=""> <!-- ID của bình luận gốc nếu là trả lời -->
         <div class="mb-4">
           <textarea id="form-input-review" class="form-control form-control_gray" name="comment" placeholder="Your Review" cols="30" rows="8" required></textarea>
-
         </div>
         @guest
 
@@ -219,6 +255,21 @@
   function showAllComments() {
     document.getElementById('allComments').style.display = 'block';
     document.getElementById('showMoreButton').style.display = 'none';
+  }
+
+  function showReplyForm(commentId, userName) {
+    // Đặt parent_id cho bình luận hiện tại
+    document.getElementById('parent_id').value = commentId;
+    // Cập nhật placeholder
+    document.getElementById('form-input-review').placeholder = "Trả lời cho " + userName;
+
+    // Di chuyển form đến vị trí dưới bình luận được trả lời
+    const mainForm = document.getElementById("mainCommentForm");
+    const commentDiv = document.getElementById("replyForm-" + commentId);
+    commentDiv.parentNode.insertBefore(mainForm, commentDiv.nextSibling);
+
+    mainForm.style.display = 'block';
+    document.getElementById('form-input-review').focus();
   }
 </script>
 <div class="mb-5 pb-xl-5"></div>

@@ -66,11 +66,11 @@
     <div class="blog-single__reviews mw-930" style="font-family: Arial, sans-serif;">
       <h2 class="blog-single__reviews-title" style="padding-top: 10px;">Comments</h2>
 
-      <?php if($comments && count($comments) > 0): ?>
+      <?php if($comments && $comments->whereNull('parent_id')->count() > 0): ?>
       <?php
-      $visibleComments = $comments->sortByDesc('created_at')->take(3);
+      $visibleComments = $comments->whereNull('parent_id')->sortByDesc('created_at')->take(3);
       ?>
-      <!-- Hiển thị 3 bình luận mới nhất -->
+      <!-- Hiển thị 3 bình luận gốc mới nhất -->
       <?php $__currentLoopData = $visibleComments; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $comment): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
       <div class="blog-single__reviews-item">
         <div class="customer-review">
@@ -84,20 +84,39 @@
             </p>
             <?php if(strlen($comment->comment) > 50): ?>
             <button class="toggle-button" onclick="toggleContent(this)" style="
-               background-color: #007bff; 
-               color: white; 
-               border: none; 
-               padding: 8px 12px; 
-               font-size: 14px; 
-               border-radius: 4px; 
-               cursor: pointer; 
-               margin-top: 8px; 
-               margin-bottom: 30px;
-               transition: background-color 0.3s ease;">
+                               background-color: #007bff; 
+                               color: white; 
+                               border: none; 
+                               padding: 8px 12px; 
+                               font-size: 14px; 
+                               border-radius: 4px; 
+                               cursor: pointer; 
+                               margin-top: 8px; 
+                               margin-bottom: 30px;
+                               transition: background-color 0.3s ease;">
               Xem thêm
             </button>
             <?php endif; ?>
           </div>
+
+          <!-- Nút Trả lời -->
+          <button onclick="showReplyForm(<?php echo e($comment->id); ?>, '<?php echo e($comment->name); ?>')" style="background-color: #f0ad4e; color: white; padding: 8px 12px;">
+            Trả lời
+          </button>
+
+
+
+          <!-- Hiển thị phản hồi của bình luận cha -->
+          <?php $__currentLoopData = $comment->replies; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $reply): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+          <div class="reply" style="margin-left: 20px; margin-top: 10px;">
+            <h6>Tên : <?php echo e($reply->name); ?></h6>
+            <div class="review-date"><?php echo e($reply->email); ?></div>
+            <div class="review-date"><?php echo e($reply->created_at->format('F d, Y')); ?></div>
+            <div class="review-textt">
+              <p><?php echo e($reply->comment); ?></p>
+            </div>
+          </div>
+          <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
         </div>
       </div>
       <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
@@ -124,20 +143,37 @@
               </p>
               <?php if(strlen($comment->comment) > 50): ?>
               <button class="toggle-button" onclick="toggleContent(this)" style="
-               background-color: #007bff; 
-               color: white; 
-               border: none; 
-               padding: 8px 12px; 
-               font-size: 14px; 
-               border-radius: 4px; 
-               cursor: pointer; 
-               margin-top: 8px; 
-               margin-bottom: 30px;
-               transition: background-color 0.3s ease;">
-              Xem thêm
-            </button>
+                                   background-color: #007bff; 
+                                   color: white; 
+                                   border: none; 
+                                   padding: 8px 12px; 
+                                   font-size: 14px; 
+                                   border-radius: 4px; 
+                                   cursor: pointer; 
+                                   margin-top: 8px; 
+                                   margin-bottom: 30px;
+                                   transition: background-color 0.3s ease;">
+                Xem thêm
+              </button>
               <?php endif; ?>
             </div>
+
+            <!-- Nút Trả lời -->
+            <button onclick="showReplyForm(<?php echo e($comment->id); ?>, '<?php echo e($comment->name); ?>')" style="background-color: #f0ad4e; color: white; padding: 8px 12px;">
+              Trả lời
+            </button>
+
+            <!-- Hiển thị phản hồi của bình luận cha -->
+            <?php $__currentLoopData = $comment->replies; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $reply): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+            <div class="reply" style="margin-left: 20px; margin-top: 10px;">
+              <h6>Tên : <?php echo e($reply->name); ?></h6>
+              <div class="review-date"><?php echo e($reply->email); ?></div>
+              <div class="review-date"><?php echo e($reply->created_at->format('F d, Y')); ?></div>
+              <div class="review-textt">
+                <p><?php echo e($reply->comment); ?></p>
+              </div>
+            </div>
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
           </div>
         </div>
         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
@@ -149,12 +185,12 @@
 
 
     <!-- Form gửi bình luận -->
-    <div class="blog-single__review-form">
+    <div id="mainCommentForm" class="blog-single__review-form">
       <form action="<?php echo e(route('blog.comment', $blog->blog_id)); ?>" method="POST">
         <?php echo csrf_field(); ?>
+        <input type="hidden" name="parent_id" id="parent_id" value=""> <!-- ID của bình luận gốc nếu là trả lời -->
         <div class="mb-4">
           <textarea id="form-input-review" class="form-control form-control_gray" name="comment" placeholder="Your Review" cols="30" rows="8" required></textarea>
-
         </div>
         <?php if(auth()->guard()->guest()): ?>
 
@@ -221,6 +257,21 @@
   function showAllComments() {
     document.getElementById('allComments').style.display = 'block';
     document.getElementById('showMoreButton').style.display = 'none';
+  }
+
+  function showReplyForm(commentId, userName) {
+    // Đặt parent_id cho bình luận hiện tại
+    document.getElementById('parent_id').value = commentId;
+    // Cập nhật placeholder
+    document.getElementById('form-input-review').placeholder = "Trả lời cho " + userName;
+
+    // Di chuyển form đến vị trí dưới bình luận được trả lời
+    const mainForm = document.getElementById("mainCommentForm");
+    const commentDiv = document.getElementById("replyForm-" + commentId);
+    commentDiv.parentNode.insertBefore(mainForm, commentDiv.nextSibling);
+
+    mainForm.style.display = 'block';
+    document.getElementById('form-input-review').focus();
   }
 </script>
 <div class="mb-5 pb-xl-5"></div>
