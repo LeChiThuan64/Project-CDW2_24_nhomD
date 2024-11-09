@@ -170,7 +170,7 @@ class BlogController extends Controller
         return view('viewUser.blogs_Detal', compact('blog', 'comments'));
     }
 
-
+//comemnt của comment
     public function storeComment(Request $request, $blog_id)
     {
         // Validate dữ liệu bình luận
@@ -178,17 +178,20 @@ class BlogController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255',
             'comment' => 'required|string',
+            'parent_id' => 'nullable|exists:comments,id', // Kiểm tra xem parent_id có hợp lệ không
         ]);
-
-        // Lưu bình luận vào cơ sở dữ liệu
+    
+        // Lưu bình luận hoặc phản hồi vào cơ sở dữ liệu
         Comment::create([
             'blog_id' => $blog_id,
             'name' => $request->name,
             'email' => $request->email,
             'comment' => $request->comment,
+            'parent_id' => $request->parent_id, // Gán parent_id nếu có
         ]);
-
+    
         // Chuyển hướng về trang chi tiết blog với bình luận mới
         return redirect()->route('blog.detail', ['blog_id' => $blog_id])->with('success', 'Comment added successfully');
     }
+    
 }
