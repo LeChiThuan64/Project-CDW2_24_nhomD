@@ -66,23 +66,23 @@
     <div class="blog-single__reviews mw-930" style="font-family: Arial, sans-serif;">
       <h2 class="blog-single__reviews-title" style="padding-top: 10px;">Comments</h2>
 
-      <!-- Hiển thị ba bình luận gần nhất -->
       @if ($comments && count($comments) > 0)
-@php
-    $visibleComments = $comments->sortByDesc('created_at')->take(3);
-@endphp
-@foreach ($visibleComments as $comment)
-<div class="blog-single__reviews-item">
-  <div class="customer-review">
-    <h6>Tên : {{ $comment->name }}</h6>
-    <div class="review-date">{{ $comment->email }}</div>
-    <div class="review-date">{{ $comment->created_at->format('F d, Y') }}</div>
-    <div class="review-textt">
-      <p class="comment-content" data-full-content="{{ $comment->comment }}">
-        nội dung: {{ Str::limit($comment->comment, 50) }}
-      </p>
-      @if(strlen($comment->comment) > 50)
-      <button class="toggle-button" onclick="toggleContent(this)" style="
+      @php
+      $visibleComments = $comments->sortByDesc('created_at')->take(3);
+      @endphp
+      <!-- Hiển thị 3 bình luận mới nhất -->
+      @foreach ($visibleComments as $comment)
+      <div class="blog-single__reviews-item">
+        <div class="customer-review">
+          <h6>Tên : {{ $comment->name }}</h6>
+          <div class="review-date">{{ $comment->email }}</div>
+          <div class="review-date">{{ $comment->created_at->format('F d, Y') }}</div>
+          <div class="review-textt">
+            <p class="comment-content" data-full-content="{{ $comment->comment }}">
+              nội dung: {{ Str::limit($comment->comment, 50) }}
+            </p>
+            @if(strlen($comment->comment) > 50)
+            <button class="toggle-button" onclick="toggleContent(this)" style="
                background-color: #007bff; 
                color: white; 
                border: none; 
@@ -93,33 +93,24 @@
                margin-top: 8px; 
                margin-bottom: 30px;
                transition: background-color 0.3s ease;">
-        Xem thêm
-      </button>
-      @endif
-    </div>
-  </div>
-</div>
-@endforeach
+              Xem thêm
+            </button>
+            @endif
+          </div>
+        </div>
+      </div>
+      @endforeach
 
       <!-- Nút "Xem thêm comment" nếu có hơn 3 bình luận -->
       @if ($comments->count() > 3)
-      <button id="showMoreButton" onclick="showAllComments()" style="
-            background-color: #28a745; 
-            color: white; 
-            border: none; 
-            padding: 10px 15px; 
-            font-size: 16px; 
-            border-radius: 5px; 
-            cursor: pointer; 
-            margin-top: 15px; 
-            transition: background-color 0.3s ease;">
-                Xem thêm comment
-              </button>
-              @endif
+      <button id="showMoreButton" onclick="showAllComments()" style="background-color: #28a745; color: white; border: none; padding: 10px 15px; font-size: 16px; border-radius: 5px; cursor: pointer; margin-top: 15px; transition: background-color 0.3s ease;">
+        Xem thêm comment
+      </button>
+      @endif
 
-      <!-- Phần hiển thị toàn bộ comment, mặc định ẩn -->
+      <!-- Phần hiển thị toàn bộ comment còn lại, mặc định ẩn -->
       <div id="allComments" style="display: none;">
-        @foreach ($comments->skip(3) as $comment)
+        @foreach ($comments->sortByDesc('created_at')->skip(3) as $comment)
         <div class="blog-single__reviews-item">
           <div class="customer-review">
             <h6>Tên : {{ $comment->name }}</h6>
@@ -131,16 +122,16 @@
               </p>
               @if(strlen($comment->comment) > 50)
               <button class="toggle-button" onclick="toggleContent(this)" style="
-                   background-color: #007bff; 
-                   color: white; 
-                   border: none; 
-                   padding: 8px 12px; 
-                   font-size: 14px; 
-                   border-radius: 4px; 
-                   cursor: pointer; 
-                   margin-top: 8px; 
-                   margin-bottom: 30px;
-                   transition: background-color 0.3s ease;">
+               background-color: #007bff; 
+               color: white; 
+               border: none; 
+               padding: 8px 12px; 
+               font-size: 14px; 
+               border-radius: 4px; 
+               cursor: pointer; 
+               margin-top: 8px; 
+               margin-bottom: 30px;
+               transition: background-color 0.3s ease;">
                 Xem thêm
               </button>
               @endif
@@ -150,9 +141,10 @@
         @endforeach
       </div>
       @else
-      <p>No comments yet. Be the first to comment!</p>
+      <p>Chưa có bình luận nào. Hãy là người đầu tiên bình luận!</p>
       @endif
     </div>
+
 
     <!-- Form gửi bình luận -->
     <div class="blog-single__review-form">
