@@ -232,6 +232,7 @@ Route::post('/products/{product_id}/review', [ProductController::class, 'addRevi
 
 
 
+
 // Quản lý sản phẩm
 // Thêm sản phẩm
 Route::get('/products/add', [ProductsController::class, 'showForm'])->name('products.add');

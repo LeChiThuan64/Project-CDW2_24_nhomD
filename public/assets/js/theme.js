@@ -1533,31 +1533,31 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
 
-  // Lấy thông tin chi tiết của sản phẩm 1 và cập nhật vào HTML
-  // if (currentProductId) {
-  //   fetchProductDetails(currentProductId).then(product => {
-  //     if (product) {
-  //       // Lấy giá trị từ productSizeColors
-  //       const price = product.productSizeColors ? product.productSizeColors.price : 'N/A';
-  //       const quanlity = product.productSizeColors ? product.productSizeColors.quantily : 'N/A';
-  //       console.log(`Giá sản phẩm: ${price}`); // Log giá sản phẩm
-  //       console.log('Thông tin sản phẩm đã được cập nhật');
-  //       document.getElementById('product1-name').textContent = product.name;
-  //       console.log(`Tên sản phẩm 1: ${product.name}`); // Log tên sản phẩm 1
+  //Lấy thông tin chi tiết của sản phẩm 1 và cập nhật vào HTML
+  if (currentProductId) {
+    fetchProductDetails(currentProductId).then(product => {
+      if (product) {
+        // Lấy giá trị từ productSizeColors
+        const price = product.productSizeColors ? product.productSizeColors.price : 'N/A';
+        const quanlity = product.productSizeColors ? product.productSizeColors.quantily : 'N/A';
+        console.log(`Giá sản phẩm: ${price}`); // Log giá sản phẩm
+        console.log('Thông tin sản phẩm đã được cập nhật');
+        document.getElementById('product1-name').textContent = product.name;
+        console.log(`Tên sản phẩm 1: ${product.name}`); // Log tên sản phẩm 1
 
-  //       const productDetails = `
-  //             <div class="product-details product-1">
-  //                 <div><strong>Name:</strong> ${product.name}</div>
-  //                 <div><strong>Description:</strong> ${product.description}</div>
-  //                 <div><strong>Price:</strong> ${price}</div>
-  //                 <div><strong>Price:</strong> ${quanlity}</div>
-  //             </div>
-  //             `;
-  //       console.log('Product 1 Details:', productDetails); // Log dữ liệu của productDetails
-  //       document.querySelector('.details-card.product-1 span').innerHTML = productDetails;
-  //     }
-  //   });
-  // }
+        const productDetails = `
+            <div class="product-details product-1">
+                <div><strong>Name:</strong> ${product.name}</div>
+                <div><strong>Description:</strong> ${product.description}</div>
+                <div><strong>Price:</strong> ${price}</div>
+                <div><strong>Quantity:</strong> ${quanlity}</div>
+            </div>
+          `;
+        console.log('Product 1 Details:', productDetails); // Log dữ liệu của productDetails
+        document.querySelector('.details-card.product-1 span').innerHTML = productDetails;
+      }
+    });
+  }
 
   // Sự kiện click cho button "Comparison"
   document.querySelector('.comparison-button').addEventListener('click', function (event) {
@@ -1652,12 +1652,12 @@ document.addEventListener('DOMContentLoaded', function () {
             const price = product.productSizeColors ? product.productSizeColors.price : 'N/A';
             const quanlity = product.productSizeColors ? product.productSizeColors.quantily : 'N/A';
             const product2Details = `
-                          <div class="product-details product-2">
-                              <div><strong>Name:</strong> ${product.name}</div>
-                              <div><strong>Description:</strong> ${product.description}</div>
-                              <div><strong>Price:</strong> ${price}</div>
-                              <div><strong>Price:</strong> ${quanlity}</div>
-                          </div>
+                        <div class="product-details product-2">
+                            <div><strong>Name:</strong> ${product.name}</div>\
+                            <div><strong>Description:</strong> ${product.description}</div>\
+                            <div><strong>Price:</strong> ${price}</div>\
+                            <div><strong>Quantity:</strong> ${quanlity}</div>\
+                        </div>
                       `;
             document.querySelector('.details-card.product-2 span').innerHTML = product2Details;
             if (product.images.length > 0) {
@@ -1859,6 +1859,7 @@ document.addEventListener('DOMContentLoaded', function () {
                       price = data.price ?? 0;
                       document.getElementById('product-quantity').textContent = quantity;
                       document.getElementById('product-price').textContent = price + ' VND';
+
                   })
                   .catch(error => {
                       console.error('Error fetching quantity:', error);
