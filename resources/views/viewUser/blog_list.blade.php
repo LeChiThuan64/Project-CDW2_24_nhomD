@@ -3,7 +3,7 @@
 @section('content')
 
 <head>
-<link rel="stylesheet" href="{{ asset('assets/css/blog_list.css') }}">
+  <link rel="stylesheet" href="{{ asset('assets/css/blog_list.css') }}">
 
 </head>
 <main>
@@ -28,7 +28,7 @@
     <h2 class="d-none">The Blog</h2>
 
     <div class="timkiem py-5">
-    @csrf
+      @csrf
 
       <form action="{{ route('blog.index') }}" method="GET" class="search-form">
         <input type="text" name="query" placeholder="Tìm kiếm bài viết theo tên hoặc ID..." class="search-input">
@@ -45,7 +45,10 @@
       @foreach ($blogs as $blog)
       <div class="blog-grid__item">
         <div class="blog-grid__item-image">
-        <img src="{{ asset($blog->image_url) }}" alt="Blog Image" class="blog-image">
+          <a href="{{ route('blog.detail', ['blog_id' => $blog->blog_id]) }}">
+
+            <img src="{{ asset($blog->image_url) }}" alt="Blog Image" class="blog-image">
+          </a>
         </div>
 
 
@@ -55,7 +58,7 @@
             <span class="blog-grid__item-meta__date">{{ $blog->created_at->format('F d, Y') }}</span>
           </div>
           <div class="blog-grid__item-title">
-            <a href="blog_single.html">{{ $blog->title }}</a>
+            <a href="{{ route('blog.detail', ['blog_id' => $blog->blog_id]) }}">{{ $blog->title }}</a>
           </div>
           <div class="blog-grid__item-content">
             <p>{{ Str::limit(strip_tags($blog->content), 100) }}</p>

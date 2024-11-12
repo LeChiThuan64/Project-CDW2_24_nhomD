@@ -9,7 +9,7 @@
     <link rel="icon" type="image/png" href="<?php echo e(asset('assets/img/favicon.png')); ?>">
     <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>">
     <title>
-        Material Dashboard 2 by Creative Tim
+        Admin
     </title>
 
     <link rel="canonical" href="https://www.creative-tim.com/product/material-dashboard" />
@@ -58,21 +58,6 @@
     <script src="<?php echo e(asset('assets/js/kit.fontawesome.js')); ?>" crossorigin="anonymous"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
-    <script defer data-site="demos.creative-tim.com" src="<?php echo e(asset('assets/js/nepcha-analytics.js')); ?>"></script>
-    <style>
-    /*
-    .pagination .page-item.active .page-link {
-        background-color: red; 
-        color: white; 
-        border-color: red; 
-    }
-
-    .pagination .page-item .page-link {
-        color: #007bff; 
-    }
-
-    */
-    </style>
 
 </head>
 
@@ -117,6 +102,14 @@
               <i class="material-icons opacity-10">receipt_long</i>
             </div>
             <span class="nav-link-text ms-1">Products</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white " href="<?php echo e(route('showCategories')); ?>">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="material-icons opacity-10">receipt_long</i>
+            </div>
+            <span class="nav-link-text ms-1">Categories</span>
           </a>
         </li>
         <li class="nav-item">
@@ -218,6 +211,7 @@
     <!-- Thêm jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mark.js/dist/mark.min.js"></script>
+    <script defer data-site="demos.creative-tim.com" src="<?php echo e(asset('assets/js/nepcha-analytics.js')); ?>"></script>
 
 </body>
 
