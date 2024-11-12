@@ -2200,48 +2200,23 @@
             }
           }'>
           <div class="swiper-wrapper blog-grid row-cols-xl-3">
+            @foreach($blogs as $blog)
             <div class="swiper-slide blog-grid__item mb-4">
               <div class="blog-grid__item-image">
-                <img loading="lazy" class="h-auto" src="../images/home/demo10/post1.jpg" width="450" height="300" alt="">
+                <img loading="lazy" class="h-auto" src="{{ asset( $blog->image_url ) }}" width="450" height="300" alt="">
               </div>
               <div class="blog-grid__item-detail">
                 <div class="blog-grid__item-meta">
-                  <span class="blog-grid__item-meta__author">By Admin</span>
-                  <span class="blog-grid__item-meta__date">Aprial 05, 2023</span>
+                  <span class="blog-grid__item-meta__author">BY {{ $blog->user ? $blog->user->name : 'Anonymous' }}
+                  </span>
+                  <span class="blog-grid__item-meta__date">{{ $blog->created_at }}</span>
                 </div>
                 <div class="blog-grid__item-title mb-0">
-                  <a href="blog_single.html">Woman with good shoes is never be ugly place</a>
+                  <a href="blog_single.html">{{ $blog->title }}</a>
                 </div>
               </div>
             </div>
-            <div class="swiper-slide blog-grid__item mb-4">
-              <div class="blog-grid__item-image">
-                <img loading="lazy" class="h-auto" src="../images/home/demo10/post2.jpg" width="450" height="300" alt="">
-              </div>
-              <div class="blog-grid__item-detail">
-                <div class="blog-grid__item-meta">
-                  <span class="blog-grid__item-meta__author">By Admin</span>
-                  <span class="blog-grid__item-meta__date">Aprial 05, 2023</span>
-                </div>
-                <div class="blog-grid__item-title mb-0">
-                  <a href="blog_single.html">What Freud Can Teach Us About Furniture</a>
-                </div>
-              </div>
-            </div>
-            <div class="swiper-slide blog-grid__item mb-4">
-              <div class="blog-grid__item-image">
-                <img loading="lazy" class="h-auto" src="../images/home/demo10/post3.jpg" width="450" height="300" alt="">
-              </div>
-              <div class="blog-grid__item-detail">
-                <div class="blog-grid__item-meta">
-                  <span class="blog-grid__item-meta__author">By Admin</span>
-                  <span class="blog-grid__item-meta__date">Aprial 05, 2023</span>
-                </div>
-                <div class="blog-grid__item-title mb-0">
-                  <a href="blog_single.html">Habitant morbi tristique senectus</a>
-                </div>
-              </div>
-            </div>
+            @endforeach
           </div><!-- /.swiper-wrapper -->
         </div><!-- /.swiper-container js-swiper-slider -->
       </div><!-- /.position-relative -->
@@ -2249,3 +2224,4 @@
 
     <div class="mb-4 pb-4 mb-xl-4 mt-xl-3 pt-xl-3 pb-xl-4"></div>
   </main>
+@endsection

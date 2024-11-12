@@ -73,15 +73,6 @@ public function add(Request $request, $productId)
         'color_id' => 'required|exists:colors,id',
     ]);
 
-    $productSizeColor = ProductSizeColor::where('product_id', $productId)
-        ->where('size_id', $request->size_id)
-        ->where('color_id', $request->color_id)
-        ->first();
-
-        if ($productSizeColor->quantity < $request->quantity) {
-            return response()->json(['error' => 'Số lượng sản phẩm không đủ để thêm vào giỏ hàng.'], 400);
-        }
-
     $cart = Cart::firstOrCreate(['user_id' => $user_id]);
 
     $cartItem = CartItem::where('cart_id', $cart->cart_id)
@@ -102,8 +93,6 @@ public function add(Request $request, $productId)
             'quantity' => $request->quantity,
         ]);
     }
-    $productSizeColor->quantity -= $request->quantity;
-    $productSizeColor->save();
 
     return redirect()->route('cart.show')->with('success', 'Sản phẩm đã được thêm vào giỏ hàng!');
 }
@@ -123,14 +112,6 @@ public function remove($cartItemId)
         $colorId = $cartItem->color_id;
         $quantity = $cartItem->quantity;
 
-        // Cộng lại số lượng sản phẩm trong bảng sản phẩm (hoặc bảng trung gian)
-        $productSizeColor = ProductSizeColor::where('product_id', $productId)
-        ->where('size_id', $sizeId)
-        ->where('color_id', $colorId)
-        ->first();
-
-        $productSizeColor->quantity += $quantity;
-        $productSizeColor->save();
         // Xóa CartItem khỏi giỏ hàng
         $cartItem->delete();
 
@@ -153,30 +134,11 @@ public function update(Request $request)
         $cartItem = CartItem::find($data['cart_item_id']);
 
         if ($cartItem) {
-            $oldQuantity = $cartItem->quantity;
             $newQuantity = $data['quantity'];
 
             // Update the CartItem quantity
             $cartItem->quantity = $newQuantity;
             $cartItem->save();
-
-            // Get the ProductSizeColor record for the current item
-            $productSizeColor = ProductSizeColor::where('product_id', $cartItem->product_id)
-                ->where('size_id', $cartItem->size_id)
-                ->where('color_id', $cartItem->color_id)
-                ->first();
-
-            // Adjust the ProductSizeColor quantity
-            if ($productSizeColor) {
-                if ($newQuantity > $oldQuantity) {
-                    // If quantity is increased, reduce from the ProductSizeColor quantity
-                    $productSizeColor->quantity -= ($newQuantity - $oldQuantity);
-                } elseif ($newQuantity < $oldQuantity) {
-                    // If quantity is decreased, add to the ProductSizeColor quantity
-                    $productSizeColor->quantity += ($oldQuantity - $newQuantity);
-                }
-                $productSizeColor->save();
-            }
         }
     }
 

@@ -208,8 +208,16 @@ $('#confirmDeleteButton').click(function () {
             document.getElementById('categoryDropdown').innerText = this.innerText; // Cập nhật nút dropdown
         });
     });
-
-
-    
-
 });
+
+setTimeout(function() {
+    var successMessage = document.getElementById('success-message');
+    if (successMessage) {
+        successMessage.style.display = 'none';
+    }
+  
+    var failureMessage = document.getElementById('failure-message');
+    if (failureMessage) {
+        failureMessage.style.display = 'none';
+    }
+  }, 3000);
