@@ -21,7 +21,7 @@
     <link rel="stylesheet" href="<?php echo e(asset('assets/css/plugins/jquery.fancybox.css')); ?>" type="text/css">
     <link rel="stylesheet" href="<?php echo e(asset('assets/css/style.css')); ?>" type="text/css">
     <link rel="stylesheet" href="<?php echo e(asset('assets/css/auth.css')); ?>" type="text/css">
-    
+
 
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -275,12 +275,12 @@
                 </a>
             </div><!-- /.logo -->
 
-            <a href="#" class="header-tools__item header-tools__cart js-open-aside" data-aside="cartDrawer">
+            <a href="<?php echo e(route('cart.show')); ?>" class="header-tools__item header-tools__cart">
                 <svg class="d-block" width="20" height="20" viewBox="0 0 20 20" fill="none"
                     xmlns="http://www.w3.org/2000/svg">
                     <use href="#icon_cart" />
                 </svg>
-                <span class="cart-amount d-block position-absolute js-cart-items-count">3</span>
+                <!-- <span class="cart-amount d-block position-absolute js-cart-items-count">3</span> -->
             </a>
         </div><!-- /.container -->
 
@@ -573,7 +573,7 @@
     <header id="header" class="header header_sticky">
         <div class="container">
             <div class="header-desk header-desk_type_1">
-                <div class="logo" <a href="index-2.html">
+                <div class="logo"><a href="">
                     <img src="<?php echo e(asset('assets/img/logos/logoJ97.png')); ?>" alt="J97" class="logo__image d-block"
                         style="width:2em;">
                     </a>
@@ -662,6 +662,7 @@
                 <div class="header-tools d-flex align-items-center">
                     <div class="header-tools__item hover-container">
                         <div class="js-hover__open position-relative">
+
                             <a class="js-search-popup search-field__actor" href="#">
                                 <svg class="d-block" width="20" height="20" viewBox="0 0 20 20" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
@@ -669,6 +670,7 @@
                                 </svg>
                                 <i class="btn-icon btn-close-lg"></i>
                             </a>
+
                         </div>
 
                         <div class="search-popup js-hidden-content">
@@ -710,20 +712,32 @@
                     </div><!-- /.header-tools__item hover-container -->
 
                     <div class="header-tools__item hover-container">
+                        <?php if(auth()->check()): ?>
+                        <a class="" href="<?php echo e(route('profile')); ?>" data-aside="customerForms">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <use href="#icon_user" />
+                            </svg>
+                        </a>
+                        <?php else: ?>
                         <a class="header-tools__item js-open-aside" href="#" data-aside="customerForms">
                             <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
                                 <use href="#icon_user" />
                             </svg>
                         </a>
+                        <?php endif; ?>
+
+
+
                     </div>
 
-                    <a href="#" class="header-tools__item header-tools__cart js-open-aside" data-aside="cartDrawer">
+                    <a href="<?php echo e(route('cart.show')); ?>" class="header-tools__item header-tools__cart">
                         <svg class="d-block" width="20" height="20" viewBox="0 0 20 20" fill="none"
                             xmlns="http://www.w3.org/2000/svg">
                             <use href="#icon_cart" />
                         </svg>
-                        <span class="cart-amount d-block position-absolute js-cart-items-count">3</span>
+                        <!-- <span class="cart-amount d-block position-absolute js-cart-items-count">3</span> -->
                     </a>
 
                     <a class="header-tools__item" href="<?php echo e(route('wishlist.index')); ?>">
@@ -1301,28 +1315,6 @@
         </div><!-- /.customer-forms__wrapper -->
     </div><!-- /.aside aside_right -->
 
-
-    <!-- Cart Drawer -->
-    <div class="aside aside_right overflow-hidden cart-drawer" id="cartDrawer">
-        <div class="aside-header d-flex align-items-center">
-            <h3 class="text-uppercase fs-6 mb-0">CART ( <span class="cart-amount js-cart-items-count">1</span> )
-            </h3>
-            <button class="btn-close-lg js-close-aside btn-close-aside ms-auto"></button>
-        </div><!-- /.aside-header -->
-
-      
-
-        <div class="cart-drawer-actions position-absolute start-0 bottom-0 w-100">
-            <hr class="cart-drawer-divider">
-            <div class="d-flex justify-content-between">
-                <h6 class="fs-base fw-medium">SUBTOTAL:</h6>
-                <span class="cart-subtotal fw-medium">$176.00</span>
-            </div><!-- /.d-flex justify-content-between -->
-            <a href="<?php echo e(route('cart.show')); ?>" class="btn btn-light mt-3 d-block">View Cart</a>
-            <a href="shop_checkout.html" class="btn btn-primary mt-3 d-block">Checkout</a>
-        </div><!-- /.aside-content -->
-    </div><!-- /.aside -->
-
     <!-- Go To Top -->
     <div id="scrollTop" class="visually-hidden end-0"></div>
 
@@ -1346,9 +1338,9 @@
     <!-- Footer Scripts -->
     <script src="<?php echo e(asset('assets/js/theme.js')); ?>"></script>
     <script>
-    const loginUrl = "<?php echo e(route('login.signin')); ?>";
-    const registerUrl = "<?php echo e(route('register')); ?>";
-    const authUrl = "<?php echo e(route('auth')); ?>";
+        const loginUrl = "<?php echo e(route('login.signin')); ?>";
+        const registerUrl = "<?php echo e(route('register')); ?>";
+        const authUrl = "<?php echo e(route('auth')); ?>";
     </script>
 
 </body>

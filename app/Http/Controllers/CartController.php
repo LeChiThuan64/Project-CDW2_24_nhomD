@@ -73,6 +73,7 @@ public function add(Request $request, $productId)
         'color_id' => 'required|exists:colors,id',
     ]);
 
+
     $cart = Cart::firstOrCreate(['user_id' => $user_id]);
 
     $cartItem = CartItem::where('cart_id', $cart->cart_id)
@@ -93,7 +94,6 @@ public function add(Request $request, $productId)
             'quantity' => $request->quantity,
         ]);
     }
-
     return redirect()->route('cart.show')->with('success', 'Sản phẩm đã được thêm vào giỏ hàng!');
 }
 
@@ -106,15 +106,7 @@ public function remove($cartItemId)
     $cartItem = CartItem::where('cart_item_id', $cartItemId)->first();
 
     if ($cartItem) {
-        // Lấy thông tin sản phẩm từ bảng CartItem
-        $productId = $cartItem->product_id;
-        $sizeId = $cartItem->size_id;
-        $colorId = $cartItem->color_id;
-        $quantity = $cartItem->quantity;
-
-        // Xóa CartItem khỏi giỏ hàng
         $cartItem->delete();
-
         return response()->json(['success' => true, 'message' => 'Item removed from cart']);
     }
 
@@ -134,18 +126,13 @@ public function update(Request $request)
         $cartItem = CartItem::find($data['cart_item_id']);
 
         if ($cartItem) {
-            $newQuantity = $data['quantity'];
-
-            // Update the CartItem quantity
-            $cartItem->quantity = $newQuantity;
+            $cartItem->quantity = $data['quantity'];
             $cartItem->save();
         }
     }
 
-    return response()->json(['message' => 'Giỏ hàng đã được cập nhật thành công']);
+    return response()->json(['message' => 'Cart updated successfully']);
 }
-
-
     
 
 }

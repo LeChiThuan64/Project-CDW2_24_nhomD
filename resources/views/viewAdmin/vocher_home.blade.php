@@ -26,10 +26,10 @@
         <i class="fas fa-eye"></i> Xem Vorcher
       </a>
 
-      <!-- Nút đi đến trang giảm giá sản phẩm -->
+      <!-- Nút đi đến trang giảm giá sản phẩm
       <a href="{{ url('/giamgia') }}" class="btn btn-success btn-sm px-3" style="border-radius: 5px; font-size: 14px;">
         <i class="fas fa-eye"></i> SALE Giá Sản Phẩm
-      </a>
+      </a> -->
     </div>
 
 

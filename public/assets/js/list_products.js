@@ -208,6 +208,25 @@ $('#confirmDeleteButton').click(function () {
             document.getElementById('categoryDropdown').innerText = this.innerText; // Cập nhật nút dropdown
         });
     });
+<<<<<<< HEAD
+=======
+
+
+    
+    // Lắng nghe sự kiện click vào nút "Sửa"
+    const editButtons = document.querySelectorAll('.edit-product');
+    
+    editButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            // Lấy ID sản phẩm từ thuộc tính data-id của nút "Sửa"
+            const productId = this.getAttribute('data-id');
+            
+            // Chuyển hướng tới route products.edit với ID sản phẩm
+            window.location.href = `/product/edit/${productId}`;
+        });
+    });
+
+>>>>>>> 7c146616ac601a9497b368be93575628bfb02d8f
 });
 
 setTimeout(function() {

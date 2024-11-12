@@ -1,43 +1,18 @@
 document.addEventListener("DOMContentLoaded", function() {
-    const loginTab = document.getElementById('login-tab');
-    const registerTab = document.getElementById('register-tab');
-    const loginContainer = document.getElementById('login-container');
-    const registerContainer = document.getElementById('register-container');
-
-    // Điều hướng giữa các tab
-    loginTab.addEventListener('click', function() {
-        loginTab.classList.add('active');
-        registerTab.classList.remove('active');
-        registerContainer.classList.remove('active');
-        setTimeout(() => {
-            registerContainer.style.display = "none";
-            loginContainer.style.display = "block";
-            loginContainer.classList.add('active');
-        }, 400);
-    });
-
-    registerTab.addEventListener('click', function() {
-        registerTab.classList.add('active');
-        loginTab.classList.remove('active');
-        loginContainer.classList.remove('active');
-        setTimeout(() => {
-            loginContainer.style.display = "none";
-            registerContainer.style.display = "block";
-            registerContainer.classList.add('active');
-        }, 400);
-    });
-
     // Xử lý submit cho form đăng nhập
     const loginForm = document.getElementById('login-form');
     
     if (loginForm) {
-        loginForm.addEventListener('submit', function(e) {
+        loginForm.addEventListener('submit', function (e) {
             e.preventDefault();
+    
+            // Xóa lỗi cũ
             document.getElementById('login-email-error').innerHTML = '';
             document.getElementById('login-password-error').innerHTML = '';
             document.getElementById('login-error').innerHTML = '';
-
+    
             let formData = new FormData(this);
+    
             fetch(loginUrl, {
                 method: 'POST',
                 headers: {
@@ -48,17 +23,20 @@ document.addEventListener("DOMContentLoaded", function() {
             .then(response => response.json())
             .then(data => {
                 if (data.status === 'error') {
+                    // Xử lý lỗi cụ thể cho từng trường
                     if (data.errors) {
                         for (const [key, messages] of Object.entries(data.errors)) {
-                            const errorSpan = document.getElementById(`${key}-error`);
+                            const errorSpan = document.getElementById(`login-${key}-error`);
                             if (errorSpan) {
-                                errorSpan.innerHTML = messages.join('<br>');
+                                errorSpan.innerHTML = messages.join('<br>'); // Hiển thị lỗi
                             }
                         }
                     } else {
+                        // Hiển thị lỗi tổng quát
                         document.getElementById('login-error').innerHTML = data.message;
                     }
                 } else if (data.status === 'success') {
+                    // Chuyển hướng nếu đăng nhập thành công
                     window.location.href = data.redirect;
                 }
             })
@@ -67,17 +45,28 @@ document.addEventListener("DOMContentLoaded", function() {
             });
         });
     }
+    
+    
+    
+    
 
     // Xử lý submit cho form đăng ký
     const registerForm = document.getElementById('register-form');
     if (registerForm) {
-        registerForm.addEventListener('submit', function(e) {
+        registerForm.addEventListener('submit', function (e) {
             e.preventDefault();
-
-            // Kiểm tra dữ liệu form trước khi gửi
+    
+            // Xóa lỗi cũ
+            document.getElementById('name-error').innerHTML = '';
+            document.getElementById('email-error').innerHTML = '';
+            document.getElementById('password-error').innerHTML = '';
+            document.getElementById('password_confirmation-error').innerHTML = '';
+            document.getElementById('register-error').innerHTML = '';
+    
+            // Lấy dữ liệu từ form
             let formData = new FormData(this);
-            console.log("Form data gửi đi:", Object.fromEntries(formData.entries())); // In dữ liệu form để kiểm tra
-
+    
+            // Gửi yêu cầu đăng ký
             fetch(registerUrl, {
                 method: 'POST',
                 headers: {
@@ -85,25 +74,15 @@ document.addEventListener("DOMContentLoaded", function() {
                 },
                 body: formData
             })
-            .then(response => {
-                console.log("Response status:", response.status); // Kiểm tra status
-                if (!response.ok) {
-                    console.error('Lỗi phản hồi từ server:', response);
-                }
-                return response.json();
-            })
+            .then(response => response.json())
             .then(data => {
-                console.log("Dữ liệu phản hồi từ server:", data); // Kiểm tra dữ liệu phản hồi
-            
                 if (data.status === 'error') {
                     if (data.errors) {
-                        console.log("Lỗi xác thực:", data.errors); // In lỗi xác thực chi tiết
-            
-                        // Hiển thị lỗi xác thực trên giao diện
+                        // Hiển thị lỗi xác thực từng trường
                         for (const [key, messages] of Object.entries(data.errors)) {
                             const errorSpan = document.getElementById(`${key}-error`);
                             if (errorSpan) {
-                                errorSpan.innerHTML = messages.join('<br>');
+                                errorSpan.innerHTML = messages.join('<br>'); // Gộp lỗi bằng <br>
                             }
                         }
                     }
@@ -117,4 +96,5 @@ document.addEventListener("DOMContentLoaded", function() {
             });
         });
     }
+    
 });

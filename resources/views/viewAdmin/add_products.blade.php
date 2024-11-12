@@ -303,5 +303,6 @@
     </form>
 </div>
 
+<script src="{{ asset('assets/js/addProducts.js') }}"></script>
 
 @endsection

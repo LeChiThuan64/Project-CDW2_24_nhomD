@@ -21,7 +21,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/plugin/jquery.fancybox.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('assets/css/auth.css') }}" type="text/css">
-    
+
 
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -662,6 +662,7 @@
                 <div class="header-tools d-flex align-items-center">
                     <div class="header-tools__item hover-container">
                         <div class="js-hover__open position-relative">
+
                             <a class="js-search-popup search-field__actor" href="#">
                                 <svg class="d-block" width="20" height="20" viewBox="0 0 20 20" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
@@ -669,6 +670,7 @@
                                 </svg>
                                 <i class="btn-icon btn-close-lg"></i>
                             </a>
+
                         </div>
 
                         <div class="search-popup js-hidden-content">
@@ -710,12 +712,24 @@
                     </div><!-- /.header-tools__item hover-container -->
 
                     <div class="header-tools__item hover-container">
+                        @if (auth()->check())
+                        <a class="" href="{{ route('profile') }}" data-aside="customerForms">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <use href="#icon_user" />
+                            </svg>
+                        </a>
+                        @else
                         <a class="header-tools__item js-open-aside" href="#" data-aside="customerForms">
                             <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
                                 <use href="#icon_user" />
                             </svg>
                         </a>
+                        @endif
+
+
+
                     </div>
 
                     <a href="{{ route('cart.show') }}" class="header-tools__item header-tools__cart">
@@ -1325,11 +1339,7 @@
 
     <!-- Footer Scripts -->
     <script src="{{ asset('assets/js/theme.js') }}"></script>
-    <script>
-    const loginUrl = "{{ route('login.signin') }}";
-    const registerUrl = "{{ route('register') }}";
-    const authUrl = "{{ route('auth') }}";
-    </script>
+  
 
 </body>
 

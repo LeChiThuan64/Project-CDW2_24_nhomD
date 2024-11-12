@@ -43,19 +43,14 @@ Route::get('/dashboard', function () {
 })->name("dashboard");
 
 
-
+// Hiển thị form đăng nhập/ đăng ký
 Route::get('/auth', function () {
     return view('viewUser.auth');
 })->name('auth');
-
-
-
-Route::get('/login/show', [LoginController::class, 'showLoginForm'])->name('login.show');
-Route::post('/login/signin', [LoginController::class, 'login'])->name('login.signin');
+// Đăng nhập / Đăng ký / Đăng Xuất / Quên Mật Khẩu
+Route::post('/login', [LoginController::class, 'login'])->name('login');
+Route::post('/register', [RegisterController::class, 'register'])->name('register');
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
-Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
-Route::post('/register', [RegisterController::class, 'register']);
-
 Route::get('password/reset', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
 Route::post('password/email', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
     
@@ -286,4 +281,7 @@ Route::get('/admin/categories/update/{id}', [CategoryController::class, 'edit'])
 Route::put('/admin/categories/update/{id}', [CategoryController::class, 'update'])->name('category.update');
 Route::post('/admin/categories/create', [CategoryController::class, 'create'])->name('category.create');
 Route::get('/admin/categories/create', [CategoryController::class, 'showCreateForm'])->name('category.showCreate');
+
+Route::get('/product/edit/{id}', [ProductsController::class, 'edit'])->name('products.edit');
+Route::post('/product/update/{id}', [ProductsController::class, 'update'])->name('products.update');
 
