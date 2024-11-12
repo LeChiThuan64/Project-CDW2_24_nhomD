@@ -4,11 +4,23 @@
 
 @section('content')
 
+
+
+
 <div class="container my-5" style="padding-left: 250px;">
     <div class="card shadow-lg border-0" style="width: 80%; margin-left: auto;">
         <div class="card-header bg-primary text-white text-center">
             <h4 class="mb-0">Tạo Voucher Mới</h4>
         </div>
+        @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+        @endif
         <div class="card-body p-4">
             <form action="{{ route('vocher.store') }}" method="POST" onsubmit="return validateForm()">
                 @csrf
@@ -29,24 +41,34 @@
                 <div id="user-select" style="display: none;">
                     <div class="form-group mb-4">
                         <label for="user_id" class="form-label">Chọn người dùng:</label>
-                        <select name="user_id" id="user_id" class="form-select">
+                        <!-- <select name="user_id" id="user_id" class="form-select">
                             @foreach($users as $user)
                             <option value="{{ $user->id }}">{{ $user->name }}</option>
                             @endforeach
+                        </select> -->
+                        <select name="user_id" id="user_id" class="form-select">
+                            @foreach($users as $user)
+                            @if($user->id > 0)
+                            <option value="{{ $user->id }}">{{ $user->name }}</option>
+                            @endif
+                            @endforeach
                         </select>
+
                     </div>
+
+
                 </div>
 
                 <!-- Các trường khác của voucher -->
                 <div class="form-group mb-4">
                     <label for="name" class="form-label">Tên Voucher:</label>
-                    <input type="text" name="name" id="name" class="form-control" placeholder="Nhập tên voucher" maxlength="100" oninput="limitNameLength()" required>
+                    <input type="text" name="name" id="name" class="form-control" placeholder="Nhập tên voucher" maxlength="100" oninput="limitNameLength()" value="{{ old('name') }}" required>
                     <small id="name-error" class="text-danger" style="display: none;">Tên voucher không được vượt quá 100 ký tự.</small>
                 </div>
 
                 <div class="form-group mb-4">
                     <label for="description" class="form-label">Mô tả Voucher:</label>
-                    <textarea name="description" id="description" class="form-control" placeholder="Nhập mô tả cho voucher" oninput="checkDescriptionLength()"></textarea>
+                    <textarea name="description" id="description" class="form-control" placeholder="Nhập mô tả cho voucher" oninput="checkDescriptionLength()" >{{ old('description') }}</textarea>
                     <small id="description-error" class="text-danger" style="display: none;">Không được vượt quá 255 ký tự.</small>
                     <small id="char-count" class="text-muted">255 ký tự còn lại</small>
                 </div>
@@ -54,7 +76,7 @@
                 <!-- Giảm giá từ 1 đến 100%, chỉ cho phép nhập số -->
                 <div class="form-group mb-4">
                     <label for="discount" class="form-label">Giảm giá (%):</label>
-                    <input type="number" name="discount" id="discount" class="form-control" placeholder="Nhập tỷ lệ giảm giá" min="1" max="100" oninput="validateDiscount()" required>
+                    <input type="number" name="discount" id="discount" class="form-control" placeholder="Nhập tỷ lệ giảm giá" min="1" max="100" oninput="validateDiscount()"value="{{ old('discount') }}" required>
                     <small id="discount-error" class="text-danger" style="display: none;">Giảm giá phải là số từ 1 đến 100%.</small>
                 </div>
 
@@ -64,13 +86,13 @@
                 </div> -->
                 <div class="form-group mb-4">
                     <label for="start_date" class="form-label">Ngày bắt đầu:</label>
-                    <input type="date" name="start_date" id="start_date" class="form-control" min="{{ \Carbon\Carbon::now()->format('Y-m-d') }}" required>
+                    <input type="date" name="start_date" id="start_date" class="form-control" min="{{ \Carbon\Carbon::now()->format('Y-m-d') }}" value="{{ old('start_date') }}" required>
                 </div>
 
 
                 <div class="form-group mb-4">
                     <label for="end_date" class="form-label">Ngày kết thúc:</label>
-                    <input type="date" name="end_date" id="end_date" class="form-control" required>
+                    <input type="date" name="end_date" id="end_date" class="form-control"value="{{ old('end_date') }}" required>
                     <small id="date-error" class="text-danger" style="display: none;">Ngày kết thúc phải sau ngày bắt đầu.</small>
                 </div>
 
@@ -104,30 +126,30 @@
     });
 
     // Kiểm tra giảm giá
-   // Giới hạn ký tự cho tên voucher
-function limitNameLength() {
-    const nameField = document.getElementById('name');
-    if (nameField.value.length > 100) {
-        nameField.value = nameField.value.substring(0, 100); // Cắt chuỗi nếu vượt quá giới hạn
-        document.getElementById('name-error').style.display = 'block';
-    } else {
-        document.getElementById('name-error').style.display = 'none';
+    // Giới hạn ký tự cho tên voucher
+    function limitNameLength() {
+        const nameField = document.getElementById('name');
+        if (nameField.value.length > 100) {
+            nameField.value = nameField.value.substring(0, 100); // Cắt chuỗi nếu vượt quá giới hạn
+            document.getElementById('name-error').style.display = 'block';
+        } else {
+            document.getElementById('name-error').style.display = 'none';
+        }
     }
-}
 
-// Kiểm tra giá trị giảm giá từ 1 đến 100, chỉ cho phép số
-function validateDiscount() {
-    const discountField = document.getElementById('discount');
-    const discountValue = discountField.value;
-    
-    if (discountValue < 1 || discountValue > 100) {
-        discountField.setCustomValidity("Giảm giá phải nằm trong khoảng từ 1 đến 100.");
-        document.getElementById('discount-error').style.display = 'block';
-    } else {
-        discountField.setCustomValidity("");
-        document.getElementById('discount-error').style.display = 'none';
+    // Kiểm tra giá trị giảm giá từ 1 đến 100, chỉ cho phép số
+    function validateDiscount() {
+        const discountField = document.getElementById('discount');
+        const discountValue = discountField.value;
+
+        if (discountValue < 1 || discountValue > 100) {
+            discountField.setCustomValidity("Giảm giá phải nằm trong khoảng từ 1 đến 100.");
+            document.getElementById('discount-error').style.display = 'block';
+        } else {
+            discountField.setCustomValidity("");
+            document.getElementById('discount-error').style.display = 'none';
+        }
     }
-}
 
 
     // Kiểm tra toàn bộ form khi submit
