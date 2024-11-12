@@ -42,19 +42,14 @@ Route::get('/dashboard', function () {
 })->name("dashboard");
 
 
-
+// Hiển thị form đăng nhập/ đăng ký
 Route::get('/auth', function () {
     return view('viewUser.auth');
 })->name('auth');
-
-
-
-Route::get('/login/show', [LoginController::class, 'showLoginForm'])->name('login.show');
-Route::post('/login/signin', [LoginController::class, 'login'])->name('login.signin');
+// Đăng nhập / Đăng ký / Đăng Xuất / Quên Mật Khẩu
+Route::post('/login', [LoginController::class, 'login'])->name('login');
+Route::post('/register', [RegisterController::class, 'register'])->name('register');
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
-Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
-Route::post('/register', [RegisterController::class, 'register']);
-
 Route::get('password/reset', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
 Route::post('password/email', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
     

@@ -1337,11 +1337,7 @@
 
     <!-- Footer Scripts -->
     <script src="{{ asset('assets/js/theme.js') }}"></script>
-    <script>
-        const loginUrl = "{{ route('login.signin') }}";
-        const registerUrl = "{{ route('register') }}";
-        const authUrl = "{{ route('auth') }}";
-    </script>
+  
 
 </body>
 
