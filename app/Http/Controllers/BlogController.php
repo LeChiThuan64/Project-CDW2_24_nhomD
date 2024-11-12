@@ -212,5 +212,14 @@ class BlogController extends Controller
         // Chuyển hướng về trang chi tiết blog với bình luận mới
         return redirect()->route('blog.detail', ['blog_id' => $blog_id])->with('success', 'Comment added successfully');
     }
-    
+
+    public function showIntoHome()
+    {
+        // Lấy blog theo blog_id
+        $blogs = Blog::orderBy('created_at', 'desc')->take(5)->get();
+
+        // Truyền blog và comments tới view
+        return view('viewUser.home', compact('blogs'));
+    }
+
 }

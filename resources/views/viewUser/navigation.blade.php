@@ -17,8 +17,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Allura&amp;display=swap" rel="stylesheet">
 
     <!-- Stylesheets -->
-    <link rel="stylesheet" href="{{ asset('assets/css/plugins/swiper.min.css') }}" type="text/css">
-    <link rel="stylesheet" href="{{ asset('assets/css/plugins/jquery.fancybox.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('assets/css/plugin/swiper.min.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('assets/css/plugin/jquery.fancybox.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('assets/css/auth.css') }}" type="text/css">
 
@@ -1330,6 +1330,8 @@
     <script src="{{ asset('assets/js/plugins/swiper.min.js') }}"></script>
     <script src="{{ asset('assets/js/plugins/countdown.js') }}"></script>
     <script src="{{ asset('assets/js/plugins/jquery.fancybox.js') }}"></script>
+    <script src="{{ asset('assets/js/core/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('assets/js/core/popper.min.js') }}"></script>
     <script src="{{ asset('assets/js/details-disclosure.js') }}" defer="defer"></script>
     <script src="{{ asset('assets/js/share.js') }}" defer="defer"></script>
     <script src="{{ asset('assets/js/auth.js') }}" defer="defer"></script>
