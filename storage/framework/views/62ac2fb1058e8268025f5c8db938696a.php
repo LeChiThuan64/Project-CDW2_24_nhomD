@@ -47,7 +47,7 @@
         <span class="blog-single__item-meta__author">By Admin</span>
         <span class="blog-single__item-meta__date"><?php echo e($blog->created_at->format('F d, Y')); ?></span>
         <div class="contact-icon"><i class="fas fa-comments"></i> <span><?php echo e($blog->comments->count()); ?> Comments</span></div>
-   
+
 
       </div>
     </div>
@@ -107,6 +107,17 @@
             Trả lời
           </button>
 
+          <!-- Nút Xóa bình luận -->
+          <?php if(auth()->guard()->check()): ?>
+          <?php if($comment->user_id === auth()->id()): ?>
+          <form action="<?php echo e(route('comment.delete', $comment->id)); ?>" method="POST" onsubmit="return confirm('Bạn có chắc chắn muốn xóa bình luận này không?')">
+            <?php echo csrf_field(); ?>
+            <?php echo method_field('DELETE'); ?>
+            <button type="submit" class="btn btn-danger">Xóa</button>
+          </form>
+          <?php endif; ?>
+          <?php endif; ?>
+
 
 
           <!-- Hiển thị phản hồi của bình luận cha -->
@@ -115,12 +126,15 @@
             <h6>Tên : <?php echo e($reply->name); ?></h6>
             <div class="review-date"><?php echo e($reply->email); ?></div>
             <div class="review-date"><?php echo e($reply->created_at->format('F d, Y')); ?></div>
-            
+
             <div class="review-textt">
               <p><?php echo e($reply->comment); ?></p>
             </div>
+          
           </div>
+          
           <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+          
         </div>
       </div>
       <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
@@ -169,6 +183,16 @@
             <button onclick="showReplyForm(<?php echo e($comment->id); ?>, '<?php echo e($comment->name); ?>')" style="background-color: #f0ad4e; color: white; padding: 8px 12px;">
               Trả lời
             </button>
+            <!-- Nút Xóa bình luận -->
+            <?php if(auth()->guard()->check()): ?>
+            <?php if($comment->user_id === auth()->id()): ?>
+            <form action="<?php echo e(route('comment.delete', $comment->id)); ?>" method="POST" onsubmit="return confirm('Bạn có chắc chắn muốn xóa bình luận này không?')">
+              <?php echo csrf_field(); ?>
+              <?php echo method_field('DELETE'); ?>
+              <button type="submit" class="btn btn-danger">Xóa</button>
+            </form>
+            <?php endif; ?>
+            <?php endif; ?>
 
             <!-- Hiển thị phản hồi của bình luận cha -->
             <?php $__currentLoopData = $comment->replies; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $reply): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
