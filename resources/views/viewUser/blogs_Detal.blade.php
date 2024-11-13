@@ -48,7 +48,7 @@
         <span class="blog-single__item-meta__author">By Admin</span>
         <span class="blog-single__item-meta__date">{{ $blog->created_at->format('F d, Y') }}</span>
         <div class="contact-icon"><i class="fas fa-comments"></i> <span>{{ $blog->comments->count() }} Comments</span></div>
-   
+
 
       </div>
     </div>
@@ -106,6 +106,17 @@
             Trả lời
           </button>
 
+          <!-- Nút Xóa bình luận -->
+          @auth
+          @if ($comment->user_id === auth()->id())
+          <form action="{{ route('comment.delete', $comment->id) }}" method="POST" onsubmit="return confirm('Bạn có chắc chắn muốn xóa bình luận này không?')">
+            @csrf
+            @method('DELETE')
+            <button type="submit" class="btn btn-danger">Xóa</button>
+          </form>
+          @endif
+          @endauth
+
 
 
           <!-- Hiển thị phản hồi của bình luận cha -->
@@ -114,12 +125,15 @@
             <h6>Tên : {{ $reply->name }}</h6>
             <div class="review-date">{{ $reply->email }}</div>
             <div class="review-date">{{ $reply->created_at->format('F d, Y') }}</div>
-            
+
             <div class="review-textt">
               <p>{{ $reply->comment }}</p>
             </div>
+          
           </div>
+          
           @endforeach
+          
         </div>
       </div>
       @endforeach
@@ -167,6 +181,16 @@
             <button onclick="showReplyForm({{ $comment->id }}, '{{ $comment->name }}')" style="background-color: #f0ad4e; color: white; padding: 8px 12px;">
               Trả lời
             </button>
+            <!-- Nút Xóa bình luận -->
+            @auth
+            @if ($comment->user_id === auth()->id())
+            <form action="{{ route('comment.delete', $comment->id) }}" method="POST" onsubmit="return confirm('Bạn có chắc chắn muốn xóa bình luận này không?')">
+              @csrf
+              @method('DELETE')
+              <button type="submit" class="btn btn-danger">Xóa</button>
+            </form>
+            @endif
+            @endauth
 
             <!-- Hiển thị phản hồi của bình luận cha -->
             @foreach ($comment->replies as $reply)

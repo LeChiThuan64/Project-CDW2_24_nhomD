@@ -141,6 +141,8 @@ Route::get('/blogs/{blog_id}', [BlogController::class, 'show'])->name('blog.deta
 
 Route::post('/blogs/{blog_id}/comment', [BlogController::class, 'storeComment'])->name('blog.comment');
 
+Route::delete('/comments/{comment}', [BlogController::class, 'deleteComment'])->name('comment.delete');
+
 Route::get('/blogs', [BlogController::class, 'index'])->name('blog.index');
 
  

@@ -202,9 +202,10 @@ class BlogController extends Controller
             'parent_id' => 'nullable|exists:comments,id', // Kiểm tra xem parent_id có hợp lệ không
         ]);
 
-        // Lưu bình luận hoặc phản hồi vào cơ sở dữ liệu
+        // Lưu bình luận hoặc phản hồi vào cơ sở dữ liệu và gán user_id
         Comment::create([
             'blog_id' => $blog_id,
+            'user_id' => auth()->id(), // Lưu user_id của người dùng hiện tại
             'name' => $request->name,
             'email' => $request->email,
             'comment' => $request->comment,
@@ -214,6 +215,7 @@ class BlogController extends Controller
         // Chuyển hướng về trang chi tiết blog với bình luận mới
         return redirect()->route('blog.detail', ['blog_id' => $blog_id])->with('success', 'Comment added successfully');
     }
+
 
     public function showIntoHome()
     {
@@ -228,5 +230,17 @@ class BlogController extends Controller
     public function comments()
     {
         return $this->hasMany(Comment::class);
+    }
+    public function deleteComment($comment_id)
+    {
+        $comment = Comment::findOrFail($comment_id);
+
+        // Kiểm tra nếu người dùng hiện tại là tác giả của bình luận
+        if ($comment->user_id !== auth()->id()) {
+            return redirect()->back()->with('error', 'Bạn không có quyền xóa bình luận này');
+        }
+
+        $comment->delete();
+        return redirect()->back()->with('success', 'Bình luận đã được xóa thành công');
     }
 }
