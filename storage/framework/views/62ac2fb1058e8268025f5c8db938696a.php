@@ -46,6 +46,9 @@
       <div class="blog-single__item-meta">
         <span class="blog-single__item-meta__author">By Admin</span>
         <span class="blog-single__item-meta__date"><?php echo e($blog->created_at->format('F d, Y')); ?></span>
+        <div class="contact-icon"><i class="fas fa-comments"></i> <span><?php echo e($blog->comments->count()); ?> Comments</span></div>
+   
+
       </div>
     </div>
 
@@ -112,6 +115,7 @@
             <h6>Tên : <?php echo e($reply->name); ?></h6>
             <div class="review-date"><?php echo e($reply->email); ?></div>
             <div class="review-date"><?php echo e($reply->created_at->format('F d, Y')); ?></div>
+            
             <div class="review-textt">
               <p><?php echo e($reply->comment); ?></p>
             </div>
@@ -123,7 +127,10 @@
 
       <!-- Nút "Xem thêm comment" nếu có hơn 3 bình luận -->
       <?php if($comments->count() > 3): ?>
-      <button id="showMoreButton" onclick="showAllComments()" style="background-color: #28a745; color: white; border: none; padding: 10px 15px; font-size: 16px; border-radius: 5px; cursor: pointer; margin-top: 15px; transition: background-color 0.3s ease;">
+      <button id="showMoreButton" onclick="showAllComments()" style="background-color: #28a745; 
+      color: white; border: none; padding: 10px 15px; font-size: 16px; 
+      border-radius: 5px; cursor: pointer; margin: 15px; transition: 
+      background-color 0.3s ease;">
         Xem thêm comment
       </button>
       <?php endif; ?>

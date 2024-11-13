@@ -3,7 +3,7 @@
 @section('content')
 
 <head>
-  <link rel="stylesheet" href="{{ asset('assets/css/blog_list.css') }}">
+  
 
 </head>
 <main>
@@ -56,6 +56,8 @@
           <div class="blog-grid__item-meta">
             <span class="blog-grid__item-meta__author">By Admin</span>
             <span class="blog-grid__item-meta__date">{{ $blog->created_at->format('F d, Y') }}</span>
+            <div class="contact-icon"><i class="fas fa-comments"></i> <span>{{ $blog->comments->count() }} Comments</span></div>
+            <span><i class="fas fa-eye"></i> {{ $blog->views }} Views</span>
           </div>
           <div class="blog-grid__item-title">
             <a href="{{ route('blog.detail', ['blog_id' => $blog->blog_id]) }}">{{ $blog->title }}</a>
@@ -63,11 +65,6 @@
           <div class="blog-grid__item-content">
             <p>{{ Str::limit(strip_tags($blog->content), 100) }}</p>
             <a href="{{ route('blog.detail', ['blog_id' => $blog->blog_id]) }}" class="btn-simple">Continue Reading</a>
-
-
-
-
-
           </div>
         </div>
       </div>
