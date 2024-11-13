@@ -47,6 +47,7 @@
         <span class="blog-single__item-meta__author">By Admin</span>
         <span class="blog-single__item-meta__date"><?php echo e($blog->created_at->format('F d, Y')); ?></span>
         <div class="contact-icon"><i class="fas fa-comments"></i> <span><?php echo e($blog->comments->count()); ?> Comments</span></div>
+   
 
       </div>
     </div>

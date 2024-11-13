@@ -57,7 +57,7 @@
             <span class="blog-grid__item-meta__author">By Admin</span>
             <span class="blog-grid__item-meta__date">{{ $blog->created_at->format('F d, Y') }}</span>
             <div class="contact-icon"><i class="fas fa-comments"></i> <span>{{ $blog->comments->count() }} Comments</span></div>
-            <span> số lượt xem</span>
+            <span><i class="fas fa-eye"></i> {{ $blog->views }} Views</span>
           </div>
           <div class="blog-grid__item-title">
             <a href="{{ route('blog.detail', ['blog_id' => $blog->blog_id]) }}">{{ $blog->title }}</a>

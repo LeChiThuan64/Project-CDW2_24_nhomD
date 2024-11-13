@@ -127,20 +127,19 @@ class BlogController extends Controller
     // }
 
     public function edit($encryptedBlogId)
-{
-    try {
-        // Giải mã ID blog
-        $blog_id = Crypt::decryptString($encryptedBlogId);
+    {
+        try {
+            // Giải mã ID blog
+            $blog_id = Crypt::decryptString($encryptedBlogId);
 
-        // Lấy blog cần sửa
-        $blog = Blog::where('blog_id', $blog_id)->firstOrFail();
-        return view('viewAdmin.sua_blog', compact('blog'));
-
-    } catch (DecryptException $e) {
-        // Trả về thông báo lỗi nếu mã hóa không hợp lệ
-        return redirect()->route('admin.blog.index')->with('error', 'ID blog không hợp lệ.');
+            // Lấy blog cần sửa
+            $blog = Blog::where('blog_id', $blog_id)->firstOrFail();
+            return view('viewAdmin.sua_blog', compact('blog'));
+        } catch (DecryptException $e) {
+            // Trả về thông báo lỗi nếu mã hóa không hợp lệ
+            return redirect()->route('admin.blog.index')->with('error', 'ID blog không hợp lệ.');
+        }
     }
-}
 
 
     public function update(Request $request, $blog_id)
@@ -185,11 +184,14 @@ class BlogController extends Controller
         // Lấy ngày giờ hiện tại
         $currentDateTime = Carbon::now()->locale('vi')->isoFormat('DD/MM/YYYY, HH:mm');
 
+        // Tăng số lượt xem lên 1
+        $blog->increment('views');
+
         // Truyền blog và comments tới view
         return view('viewUser.blogs_Detal', compact('blog', 'comments'));
     }
 
-//comemnt của comment
+    //comemnt của comment
     public function storeComment(Request $request, $blog_id)
     {
         // Validate dữ liệu bình luận
@@ -199,7 +201,7 @@ class BlogController extends Controller
             'comment' => 'required|string',
             'parent_id' => 'nullable|exists:comments,id', // Kiểm tra xem parent_id có hợp lệ không
         ]);
-    
+
         // Lưu bình luận hoặc phản hồi vào cơ sở dữ liệu
         Comment::create([
             'blog_id' => $blog_id,
@@ -208,7 +210,7 @@ class BlogController extends Controller
             'comment' => $request->comment,
             'parent_id' => $request->parent_id, // Gán parent_id nếu có
         ]);
-    
+
         // Chuyển hướng về trang chi tiết blog với bình luận mới
         return redirect()->route('blog.detail', ['blog_id' => $blog_id])->with('success', 'Comment added successfully');
     }
@@ -227,5 +229,4 @@ class BlogController extends Controller
     {
         return $this->hasMany(Comment::class);
     }
-
 }
