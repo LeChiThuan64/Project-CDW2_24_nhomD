@@ -122,7 +122,10 @@
 
       <!-- Nút "Xem thêm comment" nếu có hơn 3 bình luận -->
       @if ($comments->count() > 3)
-      <button id="showMoreButton" onclick="showAllComments()" style="background-color: #28a745; color: white; border: none; padding: 10px 15px; font-size: 16px; border-radius: 5px; cursor: pointer; margin-top: 15px; transition: background-color 0.3s ease;">
+      <button id="showMoreButton" onclick="showAllComments()" style="background-color: #28a745; 
+      color: white; border: none; padding: 10px 15px; font-size: 16px; 
+      border-radius: 5px; cursor: pointer; margin: 15px; transition: 
+      background-color 0.3s ease;">
         Xem thêm comment
       </button>
       @endif
