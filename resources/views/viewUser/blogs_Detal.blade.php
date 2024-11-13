@@ -47,6 +47,8 @@
       <div class="blog-single__item-meta">
         <span class="blog-single__item-meta__author">By Admin</span>
         <span class="blog-single__item-meta__date">{{ $blog->created_at->format('F d, Y') }}</span>
+        <div class="contact-icon"><i class="fas fa-comments"></i> <span>{{ $blog->comments->count() }} Comments</span></div>
+
       </div>
     </div>
 
@@ -111,6 +113,7 @@
             <h6>Tên : {{ $reply->name }}</h6>
             <div class="review-date">{{ $reply->email }}</div>
             <div class="review-date">{{ $reply->created_at->format('F d, Y') }}</div>
+            
             <div class="review-textt">
               <p>{{ $reply->comment }}</p>
             </div>

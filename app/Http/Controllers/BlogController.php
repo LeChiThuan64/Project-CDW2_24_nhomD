@@ -222,4 +222,10 @@ class BlogController extends Controller
         return view('viewUser.home', compact('blogs'));
     }
 
+    // đếm comment
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+
 }
