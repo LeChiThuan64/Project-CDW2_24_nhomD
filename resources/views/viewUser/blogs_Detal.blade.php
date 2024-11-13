@@ -129,11 +129,11 @@
             <div class="review-textt">
               <p>{{ $reply->comment }}</p>
             </div>
-          
+
           </div>
-          
+
           @endforeach
-          
+
         </div>
       </div>
       @endforeach

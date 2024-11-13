@@ -14,7 +14,7 @@ class Comment extends Model
         return $this->belongsTo(Blog::class, 'blog_id');
     }
 
-    // Quan hệ với người dùng (user) đã bình luận
+    // Quan hệ với người dùng (user) đã bình luận 
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');

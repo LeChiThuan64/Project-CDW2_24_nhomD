@@ -1346,8 +1346,10 @@
 
     <!-- Footer Scripts -->
     <script src="{{ asset('assets/js/theme.js') }}"></script>
-
-
+    <!-- 
+ cua thuan -->
+ <!-- JavaScript để ẩn thông báo sau 3 giây và kiểm tra ký tự -->
+<script src="{{ asset('assets/js/contact.js') }}"></script>
 </body>
 
 </html>

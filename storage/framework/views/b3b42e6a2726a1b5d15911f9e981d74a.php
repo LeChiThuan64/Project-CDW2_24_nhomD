@@ -1346,8 +1346,10 @@
 
     <!-- Footer Scripts -->
     <script src="<?php echo e(asset('assets/js/theme.js')); ?>"></script>
-
-
+    <!-- 
+ cua thuan -->
+ <!-- JavaScript để ẩn thông báo sau 3 giây và kiểm tra ký tự -->
+<script src="<?php echo e(asset('assets/js/contact.js')); ?>"></script>
 </body>
 
 </html><?php /**PATH C:\xampp\htdocs\Project-CDW2_24_nhomD\resources\views/viewUser/navigation.blade.php ENDPATH**/ ?>

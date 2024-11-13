@@ -130,11 +130,11 @@
             <div class="review-textt">
               <p><?php echo e($reply->comment); ?></p>
             </div>
-          
+
           </div>
-          
+
           <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-          
+
         </div>
       </div>
       <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
