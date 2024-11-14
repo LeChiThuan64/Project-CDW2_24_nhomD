@@ -1,6 +1,7 @@
 @extends('viewUser.navigation')
 @section('title', 'Checkout')
 @section('content')
+<meta name="user-id" content="{{ Auth::user()->id }}">
 <main>
     <div class="mb-4 pb-4"></div>
     <section class="shop-checkout container">
