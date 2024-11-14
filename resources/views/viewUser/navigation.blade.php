@@ -6,6 +6,7 @@
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <meta name="author" content="flexkit">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="user-id" content="{{ Auth::id() }}">
 
     <link rel="shortcut icon" href="{{ asset('assets/img/logos/logoJ97.png') }}" type="image/x-icon">
     <link rel="preconnect" href="https://fonts.gstatic.com/">
@@ -574,8 +575,8 @@
         <div class="container">
             <div class="header-desk header-desk_type_1">
                 <div class="logo"><a href="">
-                    <img src="{{ asset('assets/img/logos/logoJ97.png') }}" alt="J97" class="logo__image d-block"
-                        style="width:2em;">
+                        <img src="{{ asset('assets/img/logos/logoJ97.png') }}" alt="J97" class="logo__image d-block"
+                            style="width:2em;">
                     </a>
                 </div><!-- /.logo -->
 
@@ -1338,9 +1339,9 @@
     <!-- Footer Scripts -->
     <script src="{{ asset('assets/js/theme.js') }}"></script>
     <script>
-        const loginUrl = "{{ route('login.signin') }}";
-        const registerUrl = "{{ route('register') }}";
-        const authUrl = "{{ route('auth') }}";
+    const loginUrl = "{{ route('login.signin') }}";
+    const registerUrl = "{{ route('register') }}";
+    const authUrl = "{{ route('auth') }}";
     </script>
 
 </body>

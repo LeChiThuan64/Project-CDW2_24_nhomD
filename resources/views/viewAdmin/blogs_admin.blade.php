@@ -10,6 +10,13 @@
 </div>
 @endif
 
+@if(session('error'))
+<div id="error-message" class="alert alert-danger">
+    {{ session('error') }}
+</div>
+@endif
+
+
 <html>
 
 <head>

@@ -15,6 +15,11 @@ use App\Http\Controllers\VocherController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ChatboxController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\BankAccountController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\OrderItemController;
+use App\Http\Controllers\CheckoutConfirmation;
 use App\Models\Blog;
 use App\Http\Controllers\ProfileController;
 /*
@@ -275,14 +280,27 @@ Route::prefix('cart')->group(function () {
     Route::delete('/clear', [CartController::class, 'clear'])->name('cart.clear');
 });
 
+// Route cho checkout
+Route::get('/checkout', [CheckoutController::class, 'show'])->name('checkout.show');
 Route::get('/check-login', function() {
     return response()->json([
         'loggedIn' => auth()->check(),
     ]);
 });
+// Route lưu thông tin tài khoản ngân hàng
+Route::post('/save-bank-account', [BankAccountController::class, 'store'])->middleware('auth')->name('save-bank-account');
+// Route lưu thông tin đơn hàng
+Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
 
+// Route lấy thông tin sản phẩm trong giỏ hàng
+Route::get('/cart-items/{cartItemId}', [OrderItemController::class, 'show']);
 
-
+// Route hiện thị trang xác nhận checkout
+Route::get('/checkout/confirmation', [CheckoutConfirmation::class, 'show']);
+// Route để lấy thông tin đơn hàng
+Route::get('/checkout/confirmation/{orderId}', [CheckoutConfirmation::class, 'show']);
+// Route xóa tất cả sản phẩm khỏi giỏ hàng
+Route::post('/cart/clear', [CartController::class, 'clear']);
 
 
 Route::get('/product/edit/{id}', [ProductsController::class, 'edit'])->name('products.edit');

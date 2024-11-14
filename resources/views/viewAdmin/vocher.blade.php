@@ -3,6 +3,14 @@
 @section('title', 'vocher')
 
 @section('content')
+
+
+@if(session('error'))
+<div id="error-message" class="alert alert-danger">
+    {{ session('error') }}
+</div>
+@endif
+
 <div class="container">
   @if(session('success'))
   <div class="alert alert-success alert-dismissible fade show" role="alert">
