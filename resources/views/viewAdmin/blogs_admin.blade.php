@@ -96,7 +96,10 @@
       @endforeach
     </div>
 
-
+ <!-- Hiển thị nút phân trang -->
+ <div class="pagination-wrapper">
+      {{ $blogs->links('pagination::bootstrap-4') }} <!-- Laravel pagination links -->
+    </div>
     <!-- Modal -->
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog">

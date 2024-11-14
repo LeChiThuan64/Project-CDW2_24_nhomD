@@ -25,7 +25,7 @@ class BlogController extends Controller
         $blogs = $query->orderBy('created_at', 'desc')->paginate(6);
 
         if ($request->ajax()) {
-            return view('viewUser.blog_list_ajax', compact('blogs'))->render();
+            return view('viewUser.blog_list', compact('blogs'))->render();
         }
 
         return view('viewUser.blog_list', compact('blogs'));
