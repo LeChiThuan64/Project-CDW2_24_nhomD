@@ -6,7 +6,13 @@
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <meta name="author" content="flexkit">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <meta name="user-id" content="{{ Auth::id() }}">
+
+
+    <!-- link của thuận  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="{{ asset('assets/css/contact.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/blog_list.css') }}">
+    <!-- link của thuận  -->
 
     <link rel="shortcut icon" href="{{ asset('assets/img/logos/logoJ97.png') }}" type="image/x-icon">
     <link rel="preconnect" href="https://fonts.gstatic.com/">
@@ -18,8 +24,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Allura&amp;display=swap" rel="stylesheet">
 
     <!-- Stylesheets -->
-    <link rel="stylesheet" href="{{ asset('assets/css/plugins/swiper.min.css') }}" type="text/css">
-    <link rel="stylesheet" href="{{ asset('assets/css/plugins/jquery.fancybox.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('assets/css/plugin/swiper.min.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('assets/css/plugin/jquery.fancybox.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('assets/css/auth.css') }}" type="text/css">
 
@@ -1331,6 +1337,8 @@
     <script src="{{ asset('assets/js/plugins/swiper.min.js') }}"></script>
     <script src="{{ asset('assets/js/plugins/countdown.js') }}"></script>
     <script src="{{ asset('assets/js/plugins/jquery.fancybox.js') }}"></script>
+    <script src="{{ asset('assets/js/core/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('assets/js/core/popper.min.js') }}"></script>
     <script src="{{ asset('assets/js/details-disclosure.js') }}" defer="defer"></script>
     <script src="{{ asset('assets/js/share.js') }}" defer="defer"></script>
     <script src="{{ asset('assets/js/auth.js') }}" defer="defer"></script>
@@ -1338,12 +1346,10 @@
 
     <!-- Footer Scripts -->
     <script src="{{ asset('assets/js/theme.js') }}"></script>
-    <script>
-    const loginUrl = "{{ route('login.signin') }}";
-    const registerUrl = "{{ route('register') }}";
-    const authUrl = "{{ route('auth') }}";
-    </script>
-
+    <!-- 
+ cua thuan -->
+    <!-- JavaScript để ẩn thông báo sau 3 giây và kiểm tra ký tự -->
+    <script src="{{ asset('assets/js/contact.js') }}"></script>
 </body>
 
 </html>

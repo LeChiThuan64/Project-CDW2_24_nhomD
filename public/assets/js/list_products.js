@@ -208,6 +208,8 @@ $('#confirmDeleteButton').click(function () {
             document.getElementById('categoryDropdown').innerText = this.innerText; // Cập nhật nút dropdown
         });
     });
+<<<<<<< HEAD
+=======
 
 
     
@@ -224,4 +226,17 @@ $('#confirmDeleteButton').click(function () {
         });
     });
 
+>>>>>>> 7c146616ac601a9497b368be93575628bfb02d8f
 });
+
+setTimeout(function() {
+    var successMessage = document.getElementById('success-message');
+    if (successMessage) {
+        successMessage.style.display = 'none';
+    }
+  
+    var failureMessage = document.getElementById('failure-message');
+    if (failureMessage) {
+        failureMessage.style.display = 'none';
+    }
+  }, 3000);

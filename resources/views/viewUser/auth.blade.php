@@ -2,51 +2,98 @@
 @section('title', 'Authentication')
 @section('content')
 
-<div class="container layout">
-    <div class="tabs">
-        <div id="login-tab" class="{{ request('showRegister') ? '' : 'active' }}">LOGIN</div>
-        <div id="register-tab" class="{{ request('showRegister') ? 'active' : '' }}">REGISTER</div>
-    </div>
+<main>
+    <div class="mb-4 pb-4"></div>
+    <section class="login-register container">
+        <h2 class="d-none">Login & Register</h2>
+        <ul class="nav nav-tabs mb-5" id="login_register" role="tablist">
+            <li class="nav-item" role="presentation">
+                <a class="nav-link nav-link_underscore active" id="login-tab" data-bs-toggle="tab" href="#tab-item-login" role="tab" aria-controls="tab-item-login" aria-selected="true">Login</a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link nav-link_underscore" id="register-tab" data-bs-toggle="tab" href="#tab-item-register" role="tab" aria-controls="tab-item-register" aria-selected="false">Register</a>
+            </li>
+        </ul>
+        <div class="tab-content pt-2" id="login_register_tab_content">
+            <!-- Login Form -->
+            <div class="tab-pane fade show active" id="tab-item-login" role="tabpanel" aria-labelledby="login-tab">
+                <div class="login-form">
+                    <form id="login-form" name="login-form" novalidate>
+                        @csrf
+                        <div class="form-floating mb-3">
+                            <input name="email" type="email" class="form-control form-control_gray" id="emailInput" placeholder="Email address *" required>
+                            <label for="emailInput">Email address *</label>
+                            <div id="login-email-error" class="text-danger"></div> <!-- Hiển thị lỗi email -->
+                        </div>
 
-    <div id="login-container" class="form-container {{ request('showRegister') ? '' : 'active' }}">
-    <form id="login-form" method="POST" action="{{ route('login.signin') }}">
-            @csrf
-            <div class="form-group">
-                <input type="email" name="email" id="login-email" placeholder="Email address *" required>
-                <span class="text-danger" id="login-email-error"></span> <!-- Thông báo lỗi cho email -->
-            </div>
-            <div class="form-group">
-                <input type="password" name="password" id="login-password" placeholder="Password *" required>
-                <span class="text-danger" id="login-password-error"></span> <!-- Thông báo lỗi cho mật khẩu -->
-            </div>
-            <button type="submit" class="btn">LOG IN</button>
-            <span class="text-danger" id="login-error"></span> <!-- Thông báo lỗi chung (nếu có) -->
-        </form>
-    </div>
+                        <div class="form-floating mb-3">
+                            <input name="password" type="password" class="form-control form-control_gray" id="passwordInput" placeholder="Password *" required>
+                            <label for="passwordInput">Password *</label>
+                            <div id="login-password-error" class="text-danger"></div> <!-- Hiển thị lỗi password -->
+                        </div>
 
-    <div id="register-container" class="form-container {{ request('showRegister') ? 'active' : '' }}">
-        <form id="register-form" method="POST">
-            @csrf
-            <div class="form-group">
-                <input type="text" name="name" id="name" placeholder="Username" required>
-                <span class="text-danger" id="name-error"></span>
+                        <div id="login-error" class="text-danger mb-3"></div> <!-- Hiển thị lỗi tổng quát -->
+
+                        <button class="btn btn-primary w-100 text-uppercase" type="submit">Log In</button>
+                    </form>
+
+
+
+                </div>
             </div>
-            <div class="form-group">
-                <input type="email" name="email" id="email" placeholder="Email address *" required>
-                <span class="text-danger" id="email-error"></span>
+
+            <!-- Register Form -->
+            <div class="tab-pane fade" id="tab-item-register" role="tabpanel" aria-labelledby="register-tab">
+                <div class="register-form">
+                    <form name="register-form" id="register-form" class="needs-validation" novalidate>
+                        @csrf
+                        <div class="form-floating mb-3">
+                            <input name="name" type="text" class="form-control form-control_gray" id="customerNameRegisterInput" placeholder="Username" required>
+                            <label for="customerNameRegisterInput">Username</label>
+                            <span id="name-error" class="text-danger"></span>
+                        </div>
+
+                        <div class="pb-3"></div>
+
+                        <div class="form-floating mb-3">
+                            <input name="email" type="email" class="form-control form-control_gray" id="customerEmailRegisterInput" placeholder="Email address *" required>
+                            <label for="customerEmailRegisterInput">Email address *</label>
+                            <span id="email-error" class="text-danger"></span>
+                        </div>
+
+                        <div class="pb-3"></div>
+
+                        <div class="form-floating mb-3">
+                            <input name="password" type="password" class="form-control form-control_gray" id="customerPasswodRegisterInput" placeholder="Password *" required>
+                            <label for="customerPasswodRegisterInput">Password *</label>
+                            <span id="password-error" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            <input name="password_confirmation" type="password" class="form-control form-control_gray" id="customerConfirmPasswodRegisterInput" placeholder="Confirm Password *" required>
+                            <label for="customerConfirmPasswodRegisterInput">Confirm Password *</label>
+                            <span id="password_confirmation-error" class="text-danger"></span>
+                        </div>
+
+                        <div class="d-flex align-items-center mb-3 pb-2">
+                            <p class="m-0">Your personal data will be used to support your experience throughout this website, to manage access to your account, and for other purposes described in our privacy policy.</p>
+                        </div>
+
+                        <button class="btn btn-primary w-100 text-uppercase" type="submit">Register</button>
+                        <span id="register-error" class="text-danger"></span>
+                    </form>
+
+                </div>
             </div>
-            <div class="form-group">
-                <input type="password" name="password" id="password" placeholder="Password *" required>
-                <span class="text-danger" id="password-error"></span>
-            </div>
-            <div class="form-group">
-                <input type="password" name="password_confirmation" id="password_confirmation" placeholder="Confirm Password *" required>
-                <span class="text-danger" id="password_confirmation-error"></span>
-            </div>
-            <button type="submit" class="btn">REGISTER</button>
-            <span class="text-danger" id="register-error"></span>
-        </form>
-    </div>
-</div>
+        </div>
+    </section>
+</main>
+
+
+<script>
+        const loginUrl = "{{ route('login') }}";
+        const registerUrl = "{{ route('register') }}";
+        const authUrl = "{{ route('auth') }}";
+    </script>
 
 @endsection

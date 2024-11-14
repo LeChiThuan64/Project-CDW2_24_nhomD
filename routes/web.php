@@ -20,6 +20,7 @@ use App\Http\Controllers\BankAccountController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\OrderItemController;
 use App\Http\Controllers\CheckoutConfirmation;
+use App\Http\Controllers\CategoryController;
 use App\Models\Blog;
 use App\Http\Controllers\ProfileController;
 /*
@@ -47,19 +48,14 @@ Route::get('/dashboard', function () {
 })->name("dashboard");
 
 
-
+// Hiển thị form đăng nhập/ đăng ký
 Route::get('/auth', function () {
     return view('viewUser.auth');
 })->name('auth');
-
-
-
-Route::get('/login/show', [LoginController::class, 'showLoginForm'])->name('login.show');
-Route::post('/login/signin', [LoginController::class, 'login'])->name('login.signin');
+// Đăng nhập / Đăng ký / Đăng Xuất / Quên Mật Khẩu
+Route::post('/login', [LoginController::class, 'login'])->name('login');
+Route::post('/register', [RegisterController::class, 'register'])->name('register');
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
-Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
-Route::post('/register', [RegisterController::class, 'register']);
-
 Route::get('password/reset', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
 Route::post('password/email', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
     
@@ -96,9 +92,8 @@ Route::prefix('admin')->group(function () {
 Route::get('/cart', function () {
     return view('viewUser.cart');
 });
-Route::get('/home', function () {
-    return view('viewUser.home');
-});
+Route::get('/home', [BlogController::class, 'showIntoHome'])->name('home.blog');
+
 Route::get('/wishlist', function () {
     return view('viewUser.wishlist');
 });
@@ -150,6 +145,8 @@ Route::put('/user/{id}', [UserController::class, 'update'])->name('user.update')
 Route::get('/blogs/{blog_id}', [BlogController::class, 'show'])->name('blog.detail');
 
 Route::post('/blogs/{blog_id}/comment', [BlogController::class, 'storeComment'])->name('blog.comment');
+
+Route::delete('/comments/{comment}', [BlogController::class, 'deleteComment'])->name('comment.delete');
 
 Route::get('/blogs', [BlogController::class, 'index'])->name('blog.index');
 
@@ -233,8 +230,7 @@ Route::delete('/wishlist/remove/{wishlistId}', [WishlistController::class, 'remo
 Route::get('/search-results', [ProductController::class, 'search'])->name('product.search');
 
 // Review
-Route::post('/products/{product_id}/review', [ProductController::class, 'addReview'])->name('addReview');
-
+Route::post('/product/{productId}/review', [ProductController::class, 'addReview'])->name('addReview');
 
 
 
@@ -301,6 +297,11 @@ Route::get('/checkout/confirmation', [CheckoutConfirmation::class, 'show']);
 Route::get('/checkout/confirmation/{orderId}', [CheckoutConfirmation::class, 'show']);
 // Route xóa tất cả sản phẩm khỏi giỏ hàng
 Route::post('/cart/clear', [CartController::class, 'clear']);
+Route::get('/admin/categories', [CategoryController::class, 'index'])->name('showCategories');
+Route::delete('/admin/categories/delete/{id}', [CategoryController::class, 'destroy'])->name('category.destroy');
+Route::get('/admin/categories/update/{id}', [CategoryController::class, 'edit'])->name('category.edit');
+Route::put('/admin/categories/update/{id}', [CategoryController::class, 'update'])->name('category.update');
+Route::post('/admin/categories/create', [CategoryController::class, 'create'])->name('category.create');
 
 
 Route::get('/product/edit/{id}', [ProductsController::class, 'edit'])->name('products.edit');

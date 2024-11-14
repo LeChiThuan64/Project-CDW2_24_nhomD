@@ -6,12 +6,18 @@ use Illuminate\Database\Eloquent\Model;
 
 class Comment extends Model
 {
-    protected $fillable = ['blog_id', 'name', 'email', 'comment', 'parent_id'];
+    protected $fillable = ['blog_id', 'user_id', 'name', 'email', 'comment', 'parent_id'];
 
-    // Liên kết với blog
+    // Quan hệ với blog
     public function blog()
     {
         return $this->belongsTo(Blog::class, 'blog_id');
+    }
+
+    // Quan hệ với người dùng (user) đã bình luận 
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     // Quan hệ với bình luận cha (nếu có)

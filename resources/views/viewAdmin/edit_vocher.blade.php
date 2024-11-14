@@ -3,11 +3,23 @@
 @section('title', 'Chỉnh Sửa Voucher')
 
 @section('content')
+
+
+
 <div class="container my-5" style="padding-left: 25px;">
     <div class="card shadow-lg border-0">
         <div class="card-header bg-primary text-white text-center">
             <h4 class="mb-0">Chỉnh Sửa Voucher</h4>
         </div>
+        @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+        @endif
         <div class="card-body p-4">
             <form action="{{ route('vocher.update', $vocher->id) }}" method="POST">
                 @csrf
@@ -28,11 +40,18 @@
 
                         <div class="form-group mb-4">
                             <label for="user_id" class="form-label">Chọn người dùng:</label>
-                            <select name="user_id" id="user_id" class="form-select">
+                            <!-- <select name="user_id" id="user_id" class="form-select">
                                 @foreach($users as $user)
                                 <option value="{{ $user->id }}" {{ $vocher->user_id == $user->id ? 'selected' : '' }}>
                                     {{ $user->name }}
                                 </option>
+                                @endforeach
+                            </select> -->
+                            <select name="user_id" id="user_id" class="form-select">
+                                @foreach($users as $user)
+                                @if($user->id > 0)
+                                <option value="{{ $user->id }}">{{ $user->name }}</option>
+                                @endif
                                 @endforeach
                             </select>
                         </div>
