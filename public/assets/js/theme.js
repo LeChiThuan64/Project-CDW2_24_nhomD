@@ -2220,7 +2220,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 .then(data => {
                     console.log('Dữ liệu trả về từ server:', data); // Kiểm tra dữ liệu trả về
     
-                    // Giả sử dữ liệu trả về có cấu trúc như sau: { products: [{ product_id: 1, size_id: 1, color_id: 1, quantity: 2, price: 100 }] }
                     data.products.forEach(product => {
                         orderItems.push({
                             product_id: product.product_id, // Lấy product_id từ dữ liệu trả về
@@ -2286,7 +2285,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                     window.location.href = `/checkout/confirmation/${data.order_id}`;
                                 });
                             } else {
-                                alert('Order placement failed. Please try again.');
+                                alert(data.error);
                             }
                         })
                         .catch((error) => {
