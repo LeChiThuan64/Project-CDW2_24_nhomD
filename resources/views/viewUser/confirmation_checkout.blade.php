@@ -93,7 +93,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th>VAT</th>
+                                <th>VOUCHER</th>
                                 <td>
                                     @if ($order->voucher_discount)
                                     {{ number_format($order->voucher_discount) }} %
