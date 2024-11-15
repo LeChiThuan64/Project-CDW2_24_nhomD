@@ -354,7 +354,7 @@
                                             <use href="#icon_next_sm" />
                                         </svg></a>
                                     <div class="sub-menu__wrapper position-absolute top-0 start-100 w-100 d-none">
-                                        <a href="#"
+                                        <a href="<?php echo e(route('locgia')); ?>"
                                             class="navigation__link js-nav-left d-flex align-items-center border-bottom mb-2"><svg
                                                 class="me-2" width="7" height="11" viewBox="0 0 7 11"
                                                 xmlns="http://www.w3.org/2000/svg">
@@ -605,7 +605,7 @@
                             <div class="mega-menu">
                                 <div class="container d-flex">
                                     <div class="col pe-4">
-                                        <a href="#" class="sub-menu__title">Shop List</a>
+                                        <a href="<?php echo e(route('locgia')); ?>" class="sub-menu__title">Shop List</a>
                                         <ul class="sub-menu__list list-unstyled">
                                             <li class="sub-menu__item"><a href="shop11.html"
                                                     class="menu-link menu-link_us-s">Horizontal Scroll</a></li>
@@ -662,6 +662,9 @@
                         <li class="navigation__item">
                             <a href="<?php echo e(route('contact')); ?>" class="navigation__link">Contact</a>
                         </li>
+                        <!-- <li class="locgia__item">
+                            <a href="<?php echo e(route('locgia')); ?>" class="locgia__link">Lọc Giá</a>
+                        </li> -->
 
                     </ul><!-- /.navigation__list -->
                 </nav><!-- /.navigation -->
@@ -1348,8 +1351,8 @@
     <script src="<?php echo e(asset('assets/js/theme.js')); ?>"></script>
     <!-- 
  cua thuan -->
- <!-- JavaScript để ẩn thông báo sau 3 giây và kiểm tra ký tự -->
-<script src="<?php echo e(asset('assets/js/contact.js')); ?>"></script>
+    <!-- JavaScript để ẩn thông báo sau 3 giây và kiểm tra ký tự -->
+    <script src="<?php echo e(asset('assets/js/contact.js')); ?>"></script>
 </body>
 
 </html><?php /**PATH C:\xampp\htdocs\Project-CDW2_24_nhomD\resources\views/viewUser/navigation.blade.php ENDPATH**/ ?>
