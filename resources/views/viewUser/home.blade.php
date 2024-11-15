@@ -1945,7 +1945,7 @@
                 <p class="pc__category text-uppercase">{{ $product['category'] }}</p>
                 <h6 class="pc__title mb-2"><a href="{{ route('product.show', $product['product_id']) }}">{{ $product['name'] }}</a></h6>
                 <div class="product-card__price d-flex align-items-center">
-                  <span class="money price"><a href="{{ route('product.show', $product['product_id']) }}">{{ $product['price'] }}</a></span>
+                  <span class="money price"><a href="{{ route('product.show', $product['product_id']) }}">{{ number_format($product['price'], 0, ',', '.') }} VND</a></span>
                 </div>
 
                 <div class="anim_appear-bottom position-absolute bottom-0 start-0 d-none d-sm-flex align-items-center bg-body mb-1">
