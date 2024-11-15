@@ -1,8 +1,9 @@
 @extends('viewUser.navigation')
-@section('title', 'contact')
+@section('title', 'LocGia')
 @section('content')
 
 <head>
+
     <style>
         .price-range {
             position: relative;
@@ -39,6 +40,31 @@
             justify-content: space-between;
             margin-top: 10px;
         }
+
+        .products-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            /* Căn giữa các mục khi số lượng ít */
+            gap: 20px;
+            /* Điều chỉnh khoảng cách giữa các sản phẩm */
+        }
+
+        .product-loc-wrapper {
+            width: calc(33.33% - 20px);
+            /* Đảm bảo 3 sản phẩm mỗi hàng */
+            min-width: 250px;
+            /* Đặt chiều rộng tối thiểu để tránh co quá nhỏ */
+            max-width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .pc__img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
     </style>
 </head>
 
@@ -58,15 +84,19 @@
                 <h5 class="accordion-header" id="accordion-heading-11">
                     <button class="accordion-button p-0 border-0 fs-5 text-uppercase" type="button" data-bs-toggle="collapse" data-bs-target="#accordion-filter-1" aria-expanded="true" aria-controls="accordion-filter-1">
                         Product Categories
-                        <svg class="accordion-button__icon type2" viewBox="0 0 10 6" xmlns="http://www.w3.org/2000/svg">
-                            <g aria-hidden="true" stroke="none" fill-rule="evenodd">
-                                <path d="M5.35668 0.159286C5.16235 -0.053094 4.83769 -0.0530941 4.64287 0.159286L0.147611 5.05963C-0.0492049 5.27473 -0.049205 5.62357 0.147611 5.83813C0.344427 6.05323 0.664108 6.05323 0.860924 5.83813L5 1.32706L9.13858 5.83867C9.33589 6.05378 9.65507 6.05378 9.85239 5.83867C10.0492 5.62357 10.0492 5.27473 9.85239 5.06018L5.35668 0.159286Z" />
-                            </g>
-                        </svg>
                     </button>
                 </h5>
-                <div id="accordion-filter-1" class="accordion-collapse collapse show border-0" aria-labelledby="accordion-heading-11" data-bs-parent="#categories-list">
+                <div id="accordion-filter-1" class="accordion-collapse collapse show border-0"
+                    aria-labelledby="accordion-heading-11" data-bs-parent="#categories-list">
+                    @if ($categories->isNotEmpty())
                     <ul class="list list-inline mb-0">
+                        <!-- Nút hiển thị tất cả sản phẩm -->
+                        <li class="list-item">
+                            <a href="{{ route('locgia') }}" class="menu-link py-1 text-primary">
+                                Hiển thị tất cả sản phẩm
+                            </a>
+                        </li>
+                        <!-- Danh sách các danh mục -->
                         @foreach ($categories as $category)
                         <li class="list-item">
                             <a href="{{ route('locgia.category', $category->category_id) }}" class="menu-link py-1">
@@ -75,9 +105,13 @@
                         </li>
                         @endforeach
                     </ul>
-
-
+                    @else
+                    <p class="text-muted py-2">Chưa có danh mục sản phẩm.</p>
+                    @endif
                 </div>
+
+
+
             </div><!-- /.accordion-item -->
         </div><!-- /.accordion-item -->
 
@@ -95,11 +129,6 @@
                 <h5 class="accordion-header mb-2" id="accordion-heading-price">
                     <button class="accordion-button p-0 border-0 fs-5 text-uppercase" type="button" data-bs-toggle="collapse" data-bs-target="#accordion-filter-price" aria-expanded="true" aria-controls="accordion-filter-price">
                         Price
-                        <svg class="accordion-button__icon type2" viewBox="0 0 10 6" xmlns="http://www.w3.org/2000/svg">
-                            <g aria-hidden="true" stroke="none" fill-rule="evenodd">
-                                <path d="M5.35668 0.159286C5.16235 -0.053094 4.83769 -0.0530941 4.64287 0.159286L0.147611 5.05963C-0.0492049 5.27473 -0.049205 5.62357 0.147611 5.83813C0.344427 6.05323 0.664108 6.05323 0.860924 5.83813L5 1.32706L9.13858 5.83867C9.33589 6.05378 9.65507 6.05378 9.85239 5.83867C10.0492 5.62357 10.0492 5.27473 9.85239 5.06018L5.35668 0.159286Z" />
-                            </g>
-                        </svg>
                     </button>
                 </h5>
 
@@ -112,17 +141,16 @@
                         <span>Max Price: <span id="maxPriceLabel">5.000.000</span> VND</span>
                     </div>
                     <button style="
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-"
+                            padding: 10px 20px;
+                            background-color: #007bff;
+                            color: white;
+                            border: none;
+                            border-radius: 5px;
+                            font-size: 16px;
+                            font-weight: bold;
+                            cursor: pointer;
+                            transition: background-color 0.3s ease, transform 0.2s ease;
+                            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);"
                         onmouseover="this.style.backgroundColor='#0056b3'; this.style.transform='scale(1.05)';"
                         onmouseout="this.style.backgroundColor='#007bff'; this.style.transform='scale(1)';">
                         Lọc
@@ -130,25 +158,39 @@
 
                 </div>
 
-            </div><!-- /.accordion-item -->
-        </div><!-- /.accordion -->
+            </div>
+        </div>
+
+        
     </div><!-- /.shop-sidebar -->
 
-    <div class="products-grid row row-cols-2 row-cols-md-3" id="products-grid">
+
+    <div class="products-grid row" id="products-grid">
+
         @foreach ($products as $product)
-        <div class="product-card-wrapper">
-            <div class="product-card mb-3 mb-md-4 mb-xxl-5">
+        <div class="col-sm-6 col-md-4 col-lg-3 product-loc-wrapper">
+            <div class="product-loc mb-3 mb-md-4 mb-xxl-5">
                 <div class="pc__img-wrapper">
                     <div class="swiper-container background-img js-swiper-slider" data-settings='{"resizeObserver": true}'>
                         <div class="swiper-wrapper" id="swiper-wrapper-{{ $product->product_id }}">
-                            <!-- Swiper slides will be added here by JavaScript -->
+                            @foreach ($product->images as $image)
+                            <div class="swiper-slide">
+                                <a href="{{ route('product.show', $product->product_id) }}">
+
+                                    <img loading="lazy" src="{{ asset('assets/img/products/' . $image->image_url) }}" alt="{{ $product->name }}" class="pc__img" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
+                                </a>
+                            </div>
+                            @endforeach
                         </div>
                     </div>
                 </div>
-
                 <div class="pc__info position-relative">
-                    <h6 class="pc__title"><a href="{{ route('product.show', $product->product_id) }}">{{ $product->name }}</a></h6>
-                    <div class="product-card__price d-flex">
+                    <h6 class="pc__title">
+                        <a href="{{ route('product.show', $product->product_id) }}" style="font-size: 1.5rem; font-weight: bold; color: #000; text-align: center;">
+                            {{ $product->name }}
+                        </a>
+                    </h6>
+                    <div class="product-loc__price d-flex">
                         @php
                         $price = $product->productSizeColors->first()->price ?? 0; // Gán giá về 0 nếu không có giá
                         @endphp
@@ -165,6 +207,7 @@
         </div>
         @endforeach
     </div>
+
 </section>
 
 <script>

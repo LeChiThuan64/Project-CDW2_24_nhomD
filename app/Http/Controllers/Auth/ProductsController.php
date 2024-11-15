@@ -36,6 +36,18 @@ class ProductsController extends Controller
         // Truyền biến $categories và $products vào view
         return view('viewUser.locgia', compact('categories', 'products'));
     }
+    public function productsByCategory($id)
+    {
+        // Lấy danh mục hiện tại
+        $categories = Category::all();
+    
+        // Lấy sản phẩm thuộc danh mục
+        $products = Product::where('category_id', $id)->with('images', 'productSizeColors.size', 'productSizeColors.color')->get();
+    
+        // Truyền dữ liệu vào view
+        return view('viewUser.locgia', compact('categories', 'products'));
+    }
+ 
 
 
 
