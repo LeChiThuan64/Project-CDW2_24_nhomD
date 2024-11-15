@@ -7,6 +7,13 @@
     <meta name="author" content="flexkit">
     <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>">
 
+
+    <!-- link của thuận  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="<?php echo e(asset('assets/css/contact.css')); ?>">
+    <link rel="stylesheet" href="<?php echo e(asset('assets/css/blog_list.css')); ?>">
+    <!-- link của thuận  -->
+
     <link rel="shortcut icon" href="<?php echo e(asset('assets/img/logos/logoJ97.png')); ?>" type="image/x-icon">
     <link rel="preconnect" href="https://fonts.gstatic.com/">
 
@@ -17,8 +24,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Allura&amp;display=swap" rel="stylesheet">
 
     <!-- Stylesheets -->
-    <link rel="stylesheet" href="<?php echo e(asset('assets/css/plugins/swiper.min.css')); ?>" type="text/css">
-    <link rel="stylesheet" href="<?php echo e(asset('assets/css/plugins/jquery.fancybox.css')); ?>" type="text/css">
+    <link rel="stylesheet" href="<?php echo e(asset('assets/css/plugin/swiper.min.css')); ?>" type="text/css">
+    <link rel="stylesheet" href="<?php echo e(asset('assets/css/plugin/jquery.fancybox.css')); ?>" type="text/css">
     <link rel="stylesheet" href="<?php echo e(asset('assets/css/style.css')); ?>" type="text/css">
     <link rel="stylesheet" href="<?php echo e(asset('assets/css/auth.css')); ?>" type="text/css">
 
@@ -347,7 +354,7 @@
                                             <use href="#icon_next_sm" />
                                         </svg></a>
                                     <div class="sub-menu__wrapper position-absolute top-0 start-100 w-100 d-none">
-                                        <a href="#"
+                                        <a href="<?php echo e(route('locgia')); ?>"
                                             class="navigation__link js-nav-left d-flex align-items-center border-bottom mb-2"><svg
                                                 class="me-2" width="7" height="11" viewBox="0 0 7 11"
                                                 xmlns="http://www.w3.org/2000/svg">
@@ -574,8 +581,8 @@
         <div class="container">
             <div class="header-desk header-desk_type_1">
                 <div class="logo"><a href="">
-                    <img src="<?php echo e(asset('assets/img/logos/logoJ97.png')); ?>" alt="J97" class="logo__image d-block"
-                        style="width:2em;">
+                        <img src="<?php echo e(asset('assets/img/logos/logoJ97.png')); ?>" alt="J97" class="logo__image d-block"
+                            style="width:2em;">
                     </a>
                 </div><!-- /.logo -->
 
@@ -598,7 +605,7 @@
                             <div class="mega-menu">
                                 <div class="container d-flex">
                                     <div class="col pe-4">
-                                        <a href="#" class="sub-menu__title">Shop List</a>
+                                        <a href="<?php echo e(route('locgia')); ?>" class="sub-menu__title">Shop List</a>
                                         <ul class="sub-menu__list list-unstyled">
                                             <li class="sub-menu__item"><a href="shop11.html"
                                                     class="menu-link menu-link_us-s">Horizontal Scroll</a></li>
@@ -655,6 +662,9 @@
                         <li class="navigation__item">
                             <a href="<?php echo e(route('contact')); ?>" class="navigation__link">Contact</a>
                         </li>
+                        <!-- <li class="locgia__item">
+                            <a href="<?php echo e(route('locgia')); ?>" class="locgia__link">Lọc Giá</a>
+                        </li> -->
 
                     </ul><!-- /.navigation__list -->
                 </nav><!-- /.navigation -->
@@ -1330,6 +1340,8 @@
     <script src="<?php echo e(asset('assets/js/plugins/swiper.min.js')); ?>"></script>
     <script src="<?php echo e(asset('assets/js/plugins/countdown.js')); ?>"></script>
     <script src="<?php echo e(asset('assets/js/plugins/jquery.fancybox.js')); ?>"></script>
+    <script src="<?php echo e(asset('assets/js/core/bootstrap.min.js')); ?>"></script>
+    <script src="<?php echo e(asset('assets/js/core/popper.min.js')); ?>"></script>
     <script src="<?php echo e(asset('assets/js/details-disclosure.js')); ?>" defer="defer"></script>
     <script src="<?php echo e(asset('assets/js/share.js')); ?>" defer="defer"></script>
     <script src="<?php echo e(asset('assets/js/auth.js')); ?>" defer="defer"></script>
@@ -1337,12 +1349,10 @@
 
     <!-- Footer Scripts -->
     <script src="<?php echo e(asset('assets/js/theme.js')); ?>"></script>
-    <script>
-        const loginUrl = "<?php echo e(route('login.signin')); ?>";
-        const registerUrl = "<?php echo e(route('register')); ?>";
-        const authUrl = "<?php echo e(route('auth')); ?>";
-    </script>
-
+    <!-- 
+ cua thuan -->
+    <!-- JavaScript để ẩn thông báo sau 3 giây và kiểm tra ký tự -->
+    <script src="<?php echo e(asset('assets/js/contact.js')); ?>"></script>
 </body>
 
 </html><?php /**PATH C:\xampp\htdocs\Project-CDW2_24_nhomD\resources\views/viewUser/navigation.blade.php ENDPATH**/ ?>

@@ -16,6 +16,11 @@ use App\Http\Controllers\VocherController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ChatboxController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\BankAccountController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\OrderItemController;
+use App\Http\Controllers\CheckoutConfirmation;
 use App\Http\Controllers\CategoryController;
 use App\Models\Blog;
 use App\Http\Controllers\ProfileController;
@@ -144,6 +149,8 @@ Route::get('/blogs/{blog_id}', [BlogController::class, 'show'])->name('blog.deta
 
 Route::post('/blogs/{blog_id}/comment', [BlogController::class, 'storeComment'])->name('blog.comment');
 
+Route::delete('/comments/{comment}', [BlogController::class, 'deleteComment'])->name('comment.delete');
+
 Route::get('/blogs', [BlogController::class, 'index'])->name('blog.index');
 
  
@@ -182,12 +189,16 @@ Route::post('/admin/blogs/{blog_id}/update', [BlogController::class, 'update'])-
 
 
 
-// Route::get('/locgia', function () {
-//     return view('viewUser.locgia'); // Đường dẫn view tới contact.blade.php
-// })->name('locgia');
-Route::get('/locgia', [ProductsController::class, 'showProducts'])->name('locgia');
-Route::get('/locgia/filter-products', [ProductsController::class, 'filterProducts'])->name('locgia.filter');
 
+
+
+// Hiển thị trang sản phẩm (locgia.blade.php)
+Route::get('/locgia', [ProductsController::class, 'showProducts'])->name('locgia');
+// Hiển thị sản phẩm theo danh mục
+Route::get('/locgia/category/{id}', [ProductsController::class, 'productsByCategory'])->name('locgia.category');
+// Lọc sản phẩm theo khoảng giá (AJAX hoặc query string)
+Route::get('/locgia/filter-products', [ProductsController::class, 'filterProducts'])->name('locgia.filter');
+// Route hiển thị danh sách sản phẩm chính
 Route::get('/products', [ProductsController::class, 'showProducts'])->name('products.index');
 
 //
@@ -273,18 +284,33 @@ Route::prefix('cart')->group(function () {
     Route::delete('/clear', [CartController::class, 'clear'])->name('cart.clear');
 });
 
+// Route cho checkout
+Route::get('/checkout', [CheckoutController::class, 'show'])->name('checkout.show');
 Route::get('/check-login', function() {
     return response()->json([
         'loggedIn' => auth()->check(),
     ]);
 });
+// Route lưu thông tin tài khoản ngân hàng
+Route::post('/save-bank-account', [BankAccountController::class, 'store'])->middleware('auth')->name('save-bank-account');
+// Route lưu thông tin đơn hàng
+Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
 
+// Route lấy thông tin sản phẩm trong giỏ hàng
+Route::get('/cart-items/{cartItemId}', [OrderItemController::class, 'show']);
+
+// Route hiện thị trang xác nhận checkout
+Route::get('/checkout/confirmation', [CheckoutConfirmation::class, 'show']);
+// Route để lấy thông tin đơn hàng
+Route::get('/checkout/confirmation/{orderId}', [CheckoutConfirmation::class, 'show']);
+// Route xóa tất cả sản phẩm khỏi giỏ hàng
+Route::post('/cart/clear', [CartController::class, 'clear']);
 Route::get('/admin/categories', [CategoryController::class, 'index'])->name('showCategories');
 Route::delete('/admin/categories/delete/{id}', [CategoryController::class, 'destroy'])->name('category.destroy');
 Route::get('/admin/categories/update/{id}', [CategoryController::class, 'edit'])->name('category.edit');
 Route::put('/admin/categories/update/{id}', [CategoryController::class, 'update'])->name('category.update');
 Route::post('/admin/categories/create', [CategoryController::class, 'create'])->name('category.create');
-Route::get('/admin/categories/create', [CategoryController::class, 'showCreateForm'])->name('category.showCreate');
+
 
 Route::get('/product/edit/{id}', [ProductsController::class, 'edit'])->name('products.edit');
 Route::post('/product/update/{id}', [ProductsController::class, 'update'])->name('products.update');

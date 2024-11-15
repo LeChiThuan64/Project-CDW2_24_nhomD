@@ -47,6 +47,9 @@
       <div class="blog-single__item-meta">
         <span class="blog-single__item-meta__author">By Admin</span>
         <span class="blog-single__item-meta__date">{{ $blog->created_at->format('F d, Y') }}</span>
+        <div class="contact-icon"><i class="fas fa-comments"></i> <span>{{ $blog->comments->count() }} Comments</span></div>
+
+
       </div>
     </div>
 
@@ -103,6 +106,17 @@
             Trả lời
           </button>
 
+          <!-- Nút Xóa bình luận -->
+          @auth
+          @if ($comment->user_id === auth()->id())
+          <form action="{{ route('comment.delete', $comment->id) }}" method="POST" onsubmit="return confirm('Bạn có chắc chắn muốn xóa bình luận này không?')">
+            @csrf
+            @method('DELETE')
+            <button type="submit" class="btn btn-danger">Xóa</button>
+          </form>
+          @endif
+          @endauth
+
 
 
           <!-- Hiển thị phản hồi của bình luận cha -->
@@ -111,18 +125,25 @@
             <h6>Tên : {{ $reply->name }}</h6>
             <div class="review-date">{{ $reply->email }}</div>
             <div class="review-date">{{ $reply->created_at->format('F d, Y') }}</div>
+
             <div class="review-textt">
               <p>{{ $reply->comment }}</p>
             </div>
+
           </div>
+
           @endforeach
+
         </div>
       </div>
       @endforeach
 
       <!-- Nút "Xem thêm comment" nếu có hơn 3 bình luận -->
       @if ($comments->count() > 3)
-      <button id="showMoreButton" onclick="showAllComments()" style="background-color: #28a745; color: white; border: none; padding: 10px 15px; font-size: 16px; border-radius: 5px; cursor: pointer; margin-top: 15px; transition: background-color 0.3s ease;">
+      <button id="showMoreButton" onclick="showAllComments()" style="background-color: #28a745; 
+      color: white; border: none; padding: 10px 15px; font-size: 16px; 
+      border-radius: 5px; cursor: pointer; margin: 15px; transition: 
+      background-color 0.3s ease;">
         Xem thêm comment
       </button>
       @endif
@@ -160,6 +181,16 @@
             <button onclick="showReplyForm({{ $comment->id }}, '{{ $comment->name }}')" style="background-color: #f0ad4e; color: white; padding: 8px 12px;">
               Trả lời
             </button>
+            <!-- Nút Xóa bình luận -->
+            @auth
+            @if ($comment->user_id === auth()->id())
+            <form action="{{ route('comment.delete', $comment->id) }}" method="POST" onsubmit="return confirm('Bạn có chắc chắn muốn xóa bình luận này không?')">
+              @csrf
+              @method('DELETE')
+              <button type="submit" class="btn btn-danger">Xóa</button>
+            </form>
+            @endif
+            @endauth
 
             <!-- Hiển thị phản hồi của bình luận cha -->
             @foreach ($comment->replies as $reply)

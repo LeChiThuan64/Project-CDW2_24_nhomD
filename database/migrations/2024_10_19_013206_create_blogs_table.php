@@ -19,6 +19,7 @@ return new class extends Migration
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->nullable();
             $table->string('image_url', 255)->nullable();
+            $table->unsignedBigInteger('views')->default(0); // Thêm cột views với giá trị mặc định là 0
         });
         
     }
