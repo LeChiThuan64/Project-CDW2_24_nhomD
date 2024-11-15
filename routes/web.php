@@ -186,12 +186,14 @@ Route::post('/admin/blogs/{blog_id}/update', [BlogController::class, 'update'])-
 
 
 
-// Route::get('/locgia', function () {
-//     return view('viewUser.locgia'); // Đường dẫn view tới contact.blade.php
-// })->name('locgia');
-Route::get('/locgia', [ProductsController::class, 'showProducts'])->name('locgia');
-Route::get('/locgia/filter-products', [ProductsController::class, 'filterProducts'])->name('locgia.filter');
 
+// Hiển thị trang sản phẩm (locgia.blade.php)
+Route::get('/locgia', [ProductsController::class, 'showProducts'])->name('locgia');
+// Hiển thị sản phẩm theo danh mục
+Route::get('/locgia/category/{id}', [ProductsController::class, 'productsByCategory'])->name('locgia.category');
+// Lọc sản phẩm theo khoảng giá (AJAX hoặc query string)
+Route::get('/locgia/filter-products', [ProductsController::class, 'filterProducts'])->name('locgia.filter');
+// Route hiển thị danh sách sản phẩm chính
 Route::get('/products', [ProductsController::class, 'showProducts'])->name('products.index');
 
 //

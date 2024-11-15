@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\DB;
 class ProductsController extends Controller
 {
 
-    
+
     private $client;
     public function __construct()
     {
@@ -27,12 +27,17 @@ class ProductsController extends Controller
 
     public function showProducts()
     {
+        // Lấy tất cả danh mục
+        $categories = Category::all();
+
         // Lấy tất cả sản phẩm cùng với hình ảnh và danh mục
         $products = Product::with('images', 'category')->get();
 
-        // Truyền biến $products vào view
-        return view('viewUser.locgia', compact('products'));
+        // Truyền biến $categories và $products vào view
+        return view('viewUser.locgia', compact('categories', 'products'));
     }
+
+
 
 
     public function filterProducts(Request $request)

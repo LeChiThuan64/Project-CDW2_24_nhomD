@@ -66,20 +66,17 @@
                     </button>
                 </h5>
                 <div id="accordion-filter-1" class="accordion-collapse collapse show border-0" aria-labelledby="accordion-heading-11" data-bs-parent="#categories-list">
-                    <div class="accordion-body px-0 pb-0 pt-3">
-                        <ul class="list list-inline mb-0">
-                            <li class="list-item">
-                                <a href="#" class="menu-link py-1">Dresses</a>
-                            </li>
-                            <li class="list-item">
-                                <a href="#" class="menu-link py-1">Shorts</a>
-                            </li>
-                            <li class="list-item">
-                                <a href="#" class="menu-link py-1">Sweatshirts</a>
-                            </li>
+                    <ul class="list list-inline mb-0">
+                        @foreach ($categories as $category)
+                        <li class="list-item">
+                            <a href="{{ route('locgia.category', $category->category_id) }}" class="menu-link py-1">
+                                {{ $category->category_name }}
+                            </a>
+                        </li>
+                        @endforeach
+                    </ul>
 
-                        </ul>
-                    </div>
+
                 </div>
             </div><!-- /.accordion-item -->
         </div><!-- /.accordion-item -->
@@ -218,8 +215,6 @@
             minPriceLabel.textContent = formatCurrency(minPriceInput.value);
         }
     });
-
-
 </script>
 
 
