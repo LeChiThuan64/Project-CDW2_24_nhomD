@@ -359,6 +359,7 @@ class ProductsController extends Controller
         $product->name = $request->productName;
         $product->description = $request->productContent;
         $product->category_id = $request->category;
+        $product->created_at = now();
         $product->save();
 
         // ID của sản phẩm vừa lưu

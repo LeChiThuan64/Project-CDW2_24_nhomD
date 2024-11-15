@@ -121,4 +121,56 @@
         </div>
     </div>
 </div>
+@if ($categories->count() > 0 && $categories->lastPage() > 1)
+<nav aria-label="Page navigation example">
+    <ul class="paginations justify-content-end">
+        @if ($categories->onFirstPage())
+        <li class="page-items disabled">
+            <span class="page-links" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+            </span>
+        </li>
+        @else
+        <li class="page-items">
+            <a class="page-links" href="{{ $categories->previousPageUrl() }}" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+        @endif
+
+        @php
+        // Xác định số trang hiện tại
+        $currentPage = $categories->currentPage();
+        // Xác định số trang tối đa để hiển thị
+        $totalPages = $categories->lastPage();
+        // Xác định khoảng cần hiển thị (ví dụ: 3 trang)
+        $range = 1;
+        // Xác định bắt đầu và kết thúc trang
+        $start = max(1, $currentPage - $range);
+        $end = min($totalPages, $currentPage + $range);
+
+        // Điều chỉnh để luôn hiển thị tối thiểu 3 trang nếu có đủ
+        if ($end - $start < 2) { if ($start==1) { $end=min($start + 2, $totalPages); } else { $start=max(1, $end
+            - 2); } } @endphp @foreach (range($start, $end) as $page) <li
+            class="page-items {{ ($categories->currentPage() == $page) ? 'active' : '' }}">
+            <a class="page-links" href="{{ $categories->url($page) }}">{{ $page }}</a>
+            </li>
+            @endforeach
+
+            @if ($categories->hasMorePages())
+            <li class="page-items">
+                <a class="page-links" href="{{ $categories->nextPageUrl() }}" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+            @else
+            <li class="page-items disabled">
+                <span class="page-links" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </span>
+            </li>
+            @endif
+    </ul>
+</nav>
+@endif
 @endsection

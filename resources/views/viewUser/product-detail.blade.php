@@ -1,6 +1,29 @@
 @extends('viewUser.navigation')
 @section('title', 'Product detail')
 @section('content')
+@if (session('add-review-error'))
+<script>
+alert("{{ session('add-review-error') }}");
+</script>
+@endif
+
+@if (session('add-review-success'))
+<script>
+alert("{{ session('add-review-success') }}");
+</script>
+@endif
+
+@if (session('add-wishlist-success'))
+<script>
+    alert("{{ session('add-wishlist-success') }}");
+</script>
+@endif
+@if (session('delete-wishlist-success'))
+<script>
+    alert("{{ session('delete-wishlist-success') }}");
+</script>
+@endif
+
 <main>
     <div class="mb-md-1 pb-md-3"></div>
     <section class="product-single container">
@@ -324,22 +347,21 @@
                             <div class="customer-review">
                                 <div class="customer-name">
                                     <h6>{{ $review->user->name }}</h6>
-                                    <div class="reviews-group d-flex">
-                                        {{-- Hiển thị sao đánh giá --}}
-                                        @for ($i = 0; $i < $review->rating; $i++)
-                                            <svg class="review-star" viewBox="0 0 9 9"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <use href="#icon_star" />
+                                </div>
+                                <div class="reviews-group d-flex">
+                                    {{-- Hiển thị sao đánh giá --}}
+                                    @for ($i = 0; $i < $review->rating; $i++)
+                                        <svg class="review-star" viewBox="0 0 9 9" xmlns="http://www.w3.org/2000/svg">
+                                            <use href="#icon_star" />
+                                        </svg>
+                                        @endfor
+
+                                        {{-- Hiển thị các ngôi sao trống nếu rating dưới 5 --}}
+                                        @for ($i = $review->rating; $i < 5; $i++) <svg class="review-star"
+                                            viewBox="0 0 9 9" xmlns="http://www.w3.org/2000/svg">
+                                            <use href="#icon_star_empty" />
                                             </svg>
                                             @endfor
-
-                                            {{-- Hiển thị các ngôi sao trống nếu rating dưới 5 --}}
-                                            @for ($i = $review->rating; $i < 5; $i++) <svg class="review-star"
-                                                viewBox="0 0 9 9" xmlns="http://www.w3.org/2000/svg">
-                                                <use href="#icon_star_empty" />
-                                                </svg>
-                                                @endfor
-                                    </div>
                                 </div>
                                 <div class="review-date">
                                     {{ $review->created_at }}
@@ -347,15 +369,31 @@
                                 <div class="review-text">
                                     {{ $review->comment }}
                                 </div>
+                                @if ($review->reply)
+                                <div class="dropdown px-5 pb-5" data-bs-auto-close="false">
+                                    <button class="btn btn-link dropdown-toggle custom-dropdown-toggle" type="button"
+                                        id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Reply from seller
+                                    </button>
+                                    <ul class="dropdown-menu custom-dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <li>
+                                            <div class="reply-text review-text">
+                                                {{ $review->reply }}
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                                @endif
                             </div>
                         </div>
                         @endforeach
-
                     </div>
+                    <!-- <h5>Be the first to review “Message Cotton T-Shirt”</h5> -->
                     <div class="product-single__review-form">
-                        <form name="customer-review-form" method="POST" action="{{ route('addReview', ['productId' => $product['product_id']]) }}">
+                        <form name="customer-review-form" id="review-form" method="POST"
+                            action="{{ route('addReview', ['productId' => $product['product_id']]) }}">
                             @csrf
-                            <!-- <h5>Be the first to review “Message Cotton T-Shirt”</h5> -->
+
                             <!-- <p>Your email address will not be published. Required fields are marked *</p> -->
                             <div class="select-star-rating">
                                 <label>Your rating *</label>
@@ -391,8 +429,11 @@
                             <div class="mb-4">
                                 <textarea name="comment" id="form-input-review" class="form-control form-control_gray"
                                     placeholder="Your Review" cols="30" rows="8"></textarea>
+                                    <div id="error-message-review" style="color: red; display: none;">
+                                        <p>Please select a rating and write a review before submitting.</p>
+                                    </div>
                                 <div class="form-action">
-                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                    <button type="submit" class="btn btn-primary mt-1">Submit</button>
                                 </div>
                             </div>
                         </form>
@@ -406,4 +447,47 @@
 <div class="mb-5 pb-xl-5"></div>
 <!-- Bao gồm component chatbox -->
 <x-chatbox />
+<script>
+document.getElementById('review-form').addEventListener('submit', function(event) {
+    var rating = document.getElementById('form-input-rating').value;
+    var comment = document.getElementById('form-input-review').value.trim();
+
+    // Kiểm tra xem rating có được chọn và comment có được nhập không
+    if (!rating || !comment) {
+        event.preventDefault(); // Ngừng gửi form
+        document.getElementById('error-message-review').style.display = 'block'; // Hiển thị thông báo lỗi
+    }
+});
+</script>
+<!-- <script>
+    $(document).ready(function() {
+        // Xử lý submit form bằng AJAX
+        $('#review-form').submit(function(e) {
+            e.preventDefault();  // Ngừng việc submit form theo cách truyền thống
+
+            var formData = new FormData(this); // Lấy dữ liệu từ form
+
+            $.ajax({
+                url: $(this).attr('action'),  // Lấy URL hành động từ form
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    // Nếu việc gửi thành công, bạn có thể xử lý phản hồi
+                    if (response.success) {
+                        alert('Review đã được gửi!');
+                        // Cập nhật danh sách đánh giá hoặc làm mới giao diện nếu cần
+                        $('#form-input-review').val('');  // Dọn sạch textarea
+                    } else {
+                        alert('Có lỗi xảy ra, vui lòng thử lại!');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    alert('Đã có lỗi xảy ra. Vui lòng thử lại sau!');
+                }
+            });
+        });
+    });
+</script> -->
 @endsection

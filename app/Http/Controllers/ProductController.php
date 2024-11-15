@@ -35,52 +35,57 @@ class ProductController extends Controller
     }
 
     public function getQuantityAndPrice(Request $request)
-{
-    $productId = $request->input('product_id');
-    $sizeId = $request->input('size_id');
-    $colorId = $request->input('color_id');
+    {
+        $productId = $request->input('product_id');
+        $sizeId = $request->input('size_id');
+        $colorId = $request->input('color_id');
 
-    // Kiểm tra và lấy số lượng và giá từ bảng trung gian
-    $quantityAndPrice = DB::table('product_size_color')
-        ->where('product_id', $productId)
-        ->where('size_id', $sizeId)
-        ->where('color_id', $colorId)
-        ->select('quantity', 'price')
-        ->first();
+        // Kiểm tra và lấy số lượng và giá từ bảng trung gian
+        $quantityAndPrice = DB::table('product_size_color')
+            ->where('product_id', $productId)
+            ->where('size_id', $sizeId)
+            ->where('color_id', $colorId)
+            ->select('quantity', 'price')
+            ->first();
 
-    // Nếu không tìm thấy sản phẩm, trả về giá trị mặc định
-    if (!$quantityAndPrice) {
-        return response()->json(['quantity' => 0, 'price' => 0]);
+        // Nếu không tìm thấy sản phẩm, trả về giá trị mặc định
+        if (!$quantityAndPrice) {
+            return response()->json(['quantity' => 0, 'price' => 0]);
+        }
+
+        // Trả về số lượng và giá đúng định dạng
+        return response()->json([
+            'quantity' => $quantityAndPrice->quantity,
+            'price' => $quantityAndPrice->price
+        ]);
     }
-
-    // Trả về số lượng và giá đúng định dạng
-    return response()->json([
-        'quantity' => $quantityAndPrice->quantity,
-        'price' => $quantityAndPrice->price
-    ]);
-}
 
     // Thêm đánh giá cho sản phẩm
     public function addReview(Request $request, $productId)
-    {
-        // Xác thực thông tin đánh giá
-        $request->validate([
-            'rating' => 'required|integer|min:1|max:5',
-            'comment' => 'required|string|max:255',
-        ]);
+{
+    $request->validate([
+        'rating' => 'required|integer|min:1|max:5',
+        'comment' => 'required|string|max:255',
+    ]);
 
-        // Lấy sản phẩm theo ID
-        $product = Product::findOrFail($productId);
+    $product = Product::findOrFail($productId);
 
-        // Thêm đánh giá mới
-        $product->reviews()->create([
-            'user_id' => auth()->id(), // Lấy ID người dùng hiện tại
-            'rating' => $request->input('rating'),
-            'comment' => $request->input('comment'),
-        ]);
+    $existingReview = $product->reviews()->where('user_id', auth()->id())->first();
 
-        return redirect()->back()->with('success', 'Review added successfully!');
+    if ($existingReview) {
+        // Thông báo nếu đã có đánh giá
+        return redirect()->back()->with('add-review-error', 'You have already reviewed this product.');
     }
+
+    $product->reviews()->create([
+        'user_id' => auth()->id(),
+        'rating' => $request->input('rating'),
+        'comment' => $request->input('comment'),
+    ]);
+
+    return redirect()->back()->with('add-review-success', 'Review added successfully!');
+}
+
 
     public function search(Request $request)
     {
@@ -143,4 +148,5 @@ class ProductController extends Controller
             ], 500);
         }
     }
+
 }

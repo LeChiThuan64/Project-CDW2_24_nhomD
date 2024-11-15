@@ -17,6 +17,7 @@ return new class extends Migration
         $table->unsignedBigInteger('product_id')->nullable();
         $table->integer('rating');
         $table->text('comment')->nullable();
+        $table->string('reply')->nullable();
         $table->timestamp('created_at')->useCurrent();
     });
 }

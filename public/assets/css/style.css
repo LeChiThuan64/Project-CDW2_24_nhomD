@@ -22479,6 +22479,11 @@ body.coming-soon-page .header {
     gap: 10px; /* Khoảng cách giữa các phần tử */
     justify-content: flex-start; /* Căn trái */
     text-align: left;
-    gap: 10px;
 }
 
+
+.custom-dropdown-menu {
+    border: none;
+    background-color: #fff;
+    z-index:0;
+}

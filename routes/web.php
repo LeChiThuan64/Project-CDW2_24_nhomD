@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ReviewController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -23,6 +24,8 @@ use App\Http\Controllers\CheckoutConfirmation;
 use App\Http\Controllers\CategoryController;
 use App\Models\Blog;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\HomeController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -92,7 +95,7 @@ Route::prefix('admin')->group(function () {
 Route::get('/cart', function () {
     return view('viewUser.cart');
 });
-Route::get('/home', [BlogController::class, 'showIntoHome'])->name('home.blog');
+Route::get('/home', [HomeController::class, 'show'])->name('home.show');
 
 Route::get('/wishlist', function () {
     return view('viewUser.wishlist');
@@ -235,6 +238,7 @@ Route::get('/search-results', [ProductController::class, 'search'])->name('produ
 
 // Review
 Route::post('/product/{productId}/review', [ProductController::class, 'addReview'])->name('addReview');
+Route::post('/reviews/{review_id}/reply', [ReviewController::class, 'store'])->name('reply.store');
 
 
 
@@ -310,3 +314,7 @@ Route::post('/admin/categories/create', [CategoryController::class, 'create'])->
 
 Route::get('/product/edit/{id}', [ProductsController::class, 'edit'])->name('products.edit');
 Route::post('/product/update/{id}', [ProductsController::class, 'update'])->name('products.update');
+
+Route::get('/admin/reviews', [ReviewController::class, 'show'])->name('review.show');
+Route::delete('/admin/reviews/delete/{id}', [ReviewController::class, 'destroy'])->name('review.destroy');
+

@@ -84,67 +84,91 @@
                 <!-- Menu items -->
                 <!-- Dashboard -->
                 <li class="nav-item">
-                    <a class="nav-link text-white active bg-gradient-primary" href="{{ url('dashboard') }}">
+                    <a class="nav-link text-white {{ request()->is('dashboard') ? 'bg-gradient-primary' : '' }}"
+                        href="{{ url('dashboard') }}">
                         <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                             <i class="material-icons opacity-10">dashboard</i>
                         </div>
                         <span class="nav-link-text ms-1">Dashboard</span>
                     </a>
                 </li>
+
+                <!-- Tables -->
                 <li class="nav-item">
-                    <a class="nav-link text-white " href="{{ url('tables') }}">
+                    <a class="nav-link text-white {{ request()->is('tables') ? 'bg-gradient-primary' : '' }}"
+                        href="{{ url('tables') }}">
                         <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                             <i class="material-icons opacity-10">table_view</i>
                         </div>
                         <span class="nav-link-text ms-1">Tables</span>
                     </a>
                 </li>
+
+                <!-- Products -->
                 <li class="nav-item">
-                    <a class="nav-link text-white " href="{{ route('products.showListProducts') }}">
+                    <a class="nav-link text-white {{ Route::currentRouteName() == 'products.showListProducts' ? 'bg-gradient-primary' : '' }}"
+                        href="{{ route('products.showListProducts') }}">
                         <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                             <i class="material-icons opacity-10">receipt_long</i>
                         </div>
                         <span class="nav-link-text ms-1">Products</span>
                     </a>
                 </li>
+
+                <!-- Categories -->
                 <li class="nav-item">
-                    <a class="nav-link text-white " href="{{ route('showCategories') }}">
+                    <a class="nav-link text-white {{ Route::currentRouteName() == 'showCategories' ? 'bg-gradient-primary' : '' }}"
+                        href="{{ route('showCategories') }}">
                         <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                             <i class="material-icons opacity-10">receipt_long</i>
                         </div>
                         <span class="nav-link-text ms-1">Categories</span>
                     </a>
                 </li>
+
+                <!-- Blogs -->
                 <li class="nav-item">
-                    <a class="nav-link text-white " href="{{ url('blogs_admin') }}">
+                    <a class="nav-link text-white {{ request()->is('blogs_admin') ? 'bg-gradient-primary' : '' }}"
+                        href="{{ url('blogs_admin') }}">
                         <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                             <i class="material-icons opacity-10">receipt_long</i>
                         </div>
                         <span class="nav-link-text ms-1">Blogs</span>
                     </a>
                 </li>
+
+                <!-- Reviews -->
                 <li class="nav-item">
-                    <a class="nav-link text-white " href="{{ url('contact_admin') }}">
+                    <a class="nav-link text-white {{ Route::currentRouteName() == 'review.show' ? 'bg-gradient-primary' : '' }}"
+                        href="{{ route('review.show') }}">
+                        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="material-icons opacity-10">receipt_long</i>
+                        </div>
+                        <span class="nav-link-text ms-1">Reviews</span>
+                    </a>
+                </li>
+
+                <!-- Other menu items here... -->
+
+                <!-- Contact -->
+                <li class="nav-item">
+                    <a class="nav-link text-white {{ request()->is('contact_admin') ? 'bg-gradient-primary' : '' }}"
+                        href="{{ url('contact_admin') }}">
                         <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                             <i class="material-icons opacity-10">view_in_ar</i>
                         </div>
                         <span class="nav-link-text ms-1">Contact</span>
                     </a>
                 </li>
+
+                <!-- Voucher -->
                 <li class="nav-item">
-                    <a class="nav-link text-white " href="{{ url('vocher_home') }}">
+                    <a class="nav-link text-white {{ request()->is('vocher_home') ? 'bg-gradient-primary' : '' }}"
+                        href="{{ url('vocher_home') }}">
                         <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                             <i class="material-icons opacity-10">format_textdirection_r_to_l</i>
                         </div>
-                        <span class="nav-link-text ms-1">Vocher</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-white " href="{{ url('admin/chatbox') }}">
-                        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                            <i class="material-icons opacity-10">chat_bubble</i>
-                        </div>
-                        <span class="nav-link-text ms-1">Checkbox</span>
+                        <span class="nav-link-text ms-1">Voucher</span>
                     </a>
                 </li>
                 <li class="nav-item">
@@ -168,34 +192,35 @@
                     </a>
                 </li>
                 @if (auth()->check())
-                <!-- Nếu đã đăng nhập, hiển thị nút Logout -->
-                <li class="nav-item">
-                    <a class="nav-link text-white" href="{{ route('logout') }}">
-                        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                            <i class="material-icons opacity-10">logout</i>
-                        </div>
-                        <span class="nav-link-text ms-1">Logout</span>
-                    </a>
-                </li>
-                @else
-                <!-- Nếu chưa đăng nhập, hiển thị nút Sign In và Sign Up -->
-                <li class="nav-item">
-                    <a class="nav-link text-white" href="{{ route('auth') }}">
-                        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                            <i class="material-icons opacity-10">login</i>
-                        </div>
-                        <span class="nav-link-text ms-1">Sign In</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-white" href="{{ route('auth') }}">
-                        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                            <i class="material-icons opacity-10">assignment</i>
-                        </div>
-                        <span class="nav-link-text ms-1">Sign Up</span>
-                    </a>
-                </li>
-                @endif
+    <!-- Nếu đã đăng nhập, hiển thị nút Logout -->
+    <li class="nav-item">
+        <a class="nav-link text-white {{ request()->is('logout') ? 'bg-gradient-primary' : '' }}" href="{{ route('logout') }}">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                <i class="material-icons opacity-10">logout</i>
+            </div>
+            <span class="nav-link-text ms-1">Logout</span>
+        </a>
+    </li>
+@else
+    <!-- Nếu chưa đăng nhập, hiển thị nút Sign In và Sign Up -->
+    <li class="nav-item">
+        <a class="nav-link text-white {{ request()->routeIs('auth') ? 'bg-gradient-primary' : '' }}" href="{{ route('auth') }}">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                <i class="material-icons opacity-10">login</i>
+            </div>
+            <span class="nav-link-text ms-1">Sign In</span>
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link text-white {{ request()->routeIs('auth') ? 'bg-gradient-primary' : '' }}" href="{{ route('auth') }}">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                <i class="material-icons opacity-10">assignment</i>
+            </div>
+            <span class="nav-link-text ms-1">Sign Up</span>
+        </a>
+    </li>
+@endif
+
 
 
                 <!-- Other menu items -->
