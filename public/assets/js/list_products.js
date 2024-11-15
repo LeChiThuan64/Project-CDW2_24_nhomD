@@ -208,10 +208,6 @@ $('#confirmDeleteButton').click(function () {
             document.getElementById('categoryDropdown').innerText = this.innerText; // Cập nhật nút dropdown
         });
     });
-<<<<<<< HEAD
-=======
-
-
     
     // Lắng nghe sự kiện click vào nút "Sửa"
     const editButtons = document.querySelectorAll('.edit-product');
@@ -226,7 +222,6 @@ $('#confirmDeleteButton').click(function () {
         });
     });
 
->>>>>>> 7c146616ac601a9497b368be93575628bfb02d8f
 });
 
 setTimeout(function() {
@@ -240,3 +235,9 @@ setTimeout(function() {
         failureMessage.style.display = 'none';
     }
   }, 3000);
+
+  function showReplyForm(reviewId) {
+    var replyForm = document.getElementById('reply-form-' + reviewId);
+    replyForm.style.display = replyForm.style.display === 'none' ? 'block' : 'none';
+}
+

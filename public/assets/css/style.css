@@ -22412,3 +22412,9 @@ body.coming-soon-page .header {
     justify-content: flex-start; /* Căn trái */
     text-align: left;
 }
+
+.custom-dropdown-menu {
+    border: none;
+    background-color: #fff;
+    z-index:0;
+}

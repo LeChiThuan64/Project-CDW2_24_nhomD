@@ -187,11 +187,19 @@
     background-color: #f0f0f0; /* Màu nền khi hover */
 }
 
-
-
-
-
 .highlight {
     background-color: rgba(217, 218, 231,0.2); /* Hoặc màu nào khác bạn muốn */
     font-weight: bold; /* Bolding chữ nếu cần */
 }
+
+/* CSS cho nút */
+.btn-reply {
+    min-width: 100px; /* Đặt độ rộng tối thiểu, đủ cho cả "Reply" và "Replied" */
+    padding: 6px 12px; /* Đệm xung quanh để nút trông cân đối */
+    display: inline-flex; /* Giúp căn giữa nội dung */
+    align-items: center; /* Căn giữa theo chiều dọc */
+    justify-content: center; /* Căn giữa theo chiều ngang */
+    text-align: center; /* Căn giữa văn bản */
+    gap: 5px;
+}
+

@@ -54,7 +54,7 @@ class LoginController extends Controller
             if ($user->role == 1) {
                 return response()->json([
                     'status' => 'success',
-                    'redirect' => route('wishlist.index'),
+                    'redirect' => route('home.show'),
                 ]);
             } elseif ($user->role == 0) {
                 return response()->json([

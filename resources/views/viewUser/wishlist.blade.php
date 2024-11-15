@@ -85,8 +85,10 @@
                         <p>Bạn cần đăng nhập để sử dụng wishlist.</p><p></p><p></p>
                         <a class="btn btn-primary btn-addtocart" href="{{ route('auth') }}">Login</a>
                         @endif
-
+                        
+                        
                     </div><!-- /.products-grid row -->
+                    {{ $wishlistItems->links('vendor.pagination.bootstrap-5') }}
                 </div>
             </div>
         </div>

@@ -1,7 +1,11 @@
 @extends('viewUser.navigation')
 @section('title', 'Authentication')
 @section('content')
-
+@if (session('no-login-wishlist'))
+<script>
+    alert("{{ session('no-login-wishlist') }}");
+</script>
+@endif
 <main>
     <div class="mb-4 pb-4"></div>
     <section class="login-register container">

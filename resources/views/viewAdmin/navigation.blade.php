@@ -67,98 +67,134 @@
             style="display:none;visibility:hidden"></iframe>
     </noscript>
 
-  <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3 bg-gradient-dark" id="sidenav-main">
-    <div class="sidenav-header">
-      <i class="fas fa-times p-3 cursor-pointer text-white opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
-      <a class="navbar-brand m-0" href="dashboard-2.html" target="_blank">
-        <img src="{{ asset('assets/img/logo-ct.png') }}" class="navbar-brand-img h-100" alt="main_logo">
-        <span class="ms-1 font-weight-bold text-white">Material Dashboard 2</span>
-      </a>
-    </div>
-    <hr class="horizontal light mt-0 mb-2">
-    <div class="collapse navbar-collapse w-auto" id="sidenav-collapse-main">
-      <ul class="navbar-nav">
-        <!-- Menu items -->
-        <!-- Dashboard -->
-        <li class="nav-item">
-          <a class="nav-link text-white active bg-gradient-primary" href="{{ url('dashboard') }}">
-            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="material-icons opacity-10">dashboard</i>
-            </div>
-            <span class="nav-link-text ms-1">Dashboard</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-white " href="{{ url('tables') }}">
-            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="material-icons opacity-10">table_view</i>
-            </div>
-            <span class="nav-link-text ms-1">Tables</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-white " href="{{ route('products.showListProducts') }}">
-            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="material-icons opacity-10">receipt_long</i>
-            </div>
-            <span class="nav-link-text ms-1">Products</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-white " href="{{ route('showCategories') }}">
-            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="material-icons opacity-10">receipt_long</i>
-            </div>
-            <span class="nav-link-text ms-1">Categories</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-white " href="{{ url('blogs_admin') }}">
-            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="material-icons opacity-10">receipt_long</i>
-            </div>
-            <span class="nav-link-text ms-1">Blogs</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-white " href="{{ url('contact_admin') }}">
-            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="material-icons opacity-10">view_in_ar</i>
-            </div>
-            <span class="nav-link-text ms-1">Contact</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-white " href="{{ url('vocher_home') }}">
-            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="material-icons opacity-10">format_textdirection_r_to_l</i>
-            </div>
-            <span class="nav-link-text ms-1">Vocher</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-white " href="notifications.html">
-            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="material-icons opacity-10">notifications</i>
-            </div>
-            <span class="nav-link-text ms-1">Notifications</span>
-          </a>
-        </li>
-        <li class="nav-item mt-3">
-          <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Account pages</h6>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-white " href="profile.html">
-            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="material-icons opacity-10">person</i>
-            </div>
-            <span class="nav-link-text ms-1">Profile</span>
-          </a>
-        </li>
-        @if (auth()->check())
+    <aside
+        class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3 bg-gradient-dark"
+        id="sidenav-main">
+        <div class="sidenav-header">
+            <i class="fas fa-times p-3 cursor-pointer text-white opacity-5 position-absolute end-0 top-0 d-none d-xl-none"
+                aria-hidden="true" id="iconSidenav"></i>
+            <a class="navbar-brand m-0" href="dashboard-2.html" target="_blank">
+                <img src="{{ asset('assets/img/logo-ct.png') }}" class="navbar-brand-img h-100" alt="main_logo">
+                <span class="ms-1 font-weight-bold text-white">Material Dashboard 2</span>
+            </a>
+        </div>
+        <hr class="horizontal light mt-0 mb-2">
+        <div class="collapse navbar-collapse w-auto" id="sidenav-collapse-main">
+            <ul class="navbar-nav">
+                <!-- Menu items -->
+                <!-- Dashboard -->
+                <li class="nav-item">
+                    <a class="nav-link text-white {{ request()->is('dashboard') ? 'bg-gradient-primary' : '' }}"
+                        href="{{ url('dashboard') }}">
+                        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="material-icons opacity-10">dashboard</i>
+                        </div>
+                        <span class="nav-link-text ms-1">Dashboard</span>
+                    </a>
+                </li>
+
+                <!-- Tables -->
+                <li class="nav-item">
+                    <a class="nav-link text-white {{ request()->is('tables') ? 'bg-gradient-primary' : '' }}"
+                        href="{{ url('tables') }}">
+                        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="material-icons opacity-10">table_view</i>
+                        </div>
+                        <span class="nav-link-text ms-1">Tables</span>
+                    </a>
+                </li>
+
+                <!-- Products -->
+                <li class="nav-item">
+                    <a class="nav-link text-white {{ Route::currentRouteName() == 'products.showListProducts' ? 'bg-gradient-primary' : '' }}"
+                        href="{{ route('products.showListProducts') }}">
+                        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="material-icons opacity-10">receipt_long</i>
+                        </div>
+                        <span class="nav-link-text ms-1">Products</span>
+                    </a>
+                </li>
+
+                <!-- Categories -->
+                <li class="nav-item">
+                    <a class="nav-link text-white {{ Route::currentRouteName() == 'showCategories' ? 'bg-gradient-primary' : '' }}"
+                        href="{{ route('showCategories') }}">
+                        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="material-icons opacity-10">receipt_long</i>
+                        </div>
+                        <span class="nav-link-text ms-1">Categories</span>
+                    </a>
+                </li>
+
+                <!-- Blogs -->
+                <li class="nav-item">
+                    <a class="nav-link text-white {{ request()->is('blogs_admin') ? 'bg-gradient-primary' : '' }}"
+                        href="{{ url('blogs_admin') }}">
+                        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="material-icons opacity-10">receipt_long</i>
+                        </div>
+                        <span class="nav-link-text ms-1">Blogs</span>
+                    </a>
+                </li>
+
+                <!-- Reviews -->
+                <li class="nav-item">
+                    <a class="nav-link text-white {{ Route::currentRouteName() == 'review.show' ? 'bg-gradient-primary' : '' }}"
+                        href="{{ route('review.show') }}">
+                        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="material-icons opacity-10">receipt_long</i>
+                        </div>
+                        <span class="nav-link-text ms-1">Reviews</span>
+                    </a>
+                </li>
+
+                <!-- Other menu items here... -->
+
+                <!-- Contact -->
+                <li class="nav-item">
+                    <a class="nav-link text-white {{ request()->is('contact_admin') ? 'bg-gradient-primary' : '' }}"
+                        href="{{ url('contact_admin') }}">
+                        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="material-icons opacity-10">view_in_ar</i>
+                        </div>
+                        <span class="nav-link-text ms-1">Contact</span>
+                    </a>
+                </li>
+
+                <!-- Voucher -->
+                <li class="nav-item">
+                    <a class="nav-link text-white {{ request()->is('vocher_home') ? 'bg-gradient-primary' : '' }}"
+                        href="{{ url('vocher_home') }}">
+                        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="material-icons opacity-10">format_textdirection_r_to_l</i>
+                        </div>
+                        <span class="nav-link-text ms-1">Voucher</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white " href="notifications.html">
+                        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="material-icons opacity-10">notifications</i>
+                        </div>
+                        <span class="nav-link-text ms-1">Notifications</span>
+                    </a>
+                </li>
+                <li class="nav-item mt-3">
+                    <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Account pages
+                    </h6>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white " href="profile.html">
+                        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="material-icons opacity-10">person</i>
+                        </div>
+                        <span class="nav-link-text ms-1">Profile</span>
+                    </a>
+                </li>
+                @if (auth()->check())
     <!-- Nếu đã đăng nhập, hiển thị nút Logout -->
     <li class="nav-item">
-        <a class="nav-link text-white" href="{{ route('logout') }}">
+        <a class="nav-link text-white {{ request()->is('logout') ? 'bg-gradient-primary' : '' }}" href="{{ route('logout') }}">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                 <i class="material-icons opacity-10">logout</i>
             </div>
@@ -168,7 +204,7 @@
 @else
     <!-- Nếu chưa đăng nhập, hiển thị nút Sign In và Sign Up -->
     <li class="nav-item">
-        <a class="nav-link text-white" href="{{ route('auth') }}">
+        <a class="nav-link text-white {{ request()->routeIs('auth') ? 'bg-gradient-primary' : '' }}" href="{{ route('auth') }}">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                 <i class="material-icons opacity-10">login</i>
             </div>
@@ -176,7 +212,7 @@
         </a>
     </li>
     <li class="nav-item">
-        <a class="nav-link text-white" href="{{ route('auth') }}">
+        <a class="nav-link text-white {{ request()->routeIs('auth') ? 'bg-gradient-primary' : '' }}" href="{{ route('auth') }}">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                 <i class="material-icons opacity-10">assignment</i>
             </div>
@@ -184,6 +220,7 @@
         </a>
     </li>
 @endif
+
 
 
                 <!-- Other menu items -->
