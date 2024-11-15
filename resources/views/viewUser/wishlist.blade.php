@@ -66,7 +66,8 @@
                                     <!-- Hiển thị danh mục sản phẩm -->
                                     <h6 class="pc__title">{{ $item->product->name }}</h6>
                                     <div class="product-card__price d-flex">
-                                        <span class="money price">{{ $item->price }} VND</span>
+                                        <span class="money price">{{ number_format($item->price, 0, ',', '.') }} VND
+                                        </span>
                                     </div>
 
                                     <button
@@ -82,11 +83,13 @@
                         </div>
                         @endforeach
                         @else
-                        <p>Bạn cần đăng nhập để sử dụng wishlist.</p><p></p><p></p>
+                        <p>You need to login to use wishlist.</p>
+                        <p></p>
+                        <p></p>
                         <a class="btn btn-primary btn-addtocart" href="{{ route('auth') }}">Login</a>
                         @endif
-                        
-                        
+
+
                     </div><!-- /.products-grid row -->
                     {{ $wishlistItems->links('vendor.pagination.bootstrap-5') }}
                 </div>

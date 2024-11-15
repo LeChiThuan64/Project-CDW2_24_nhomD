@@ -1853,8 +1853,8 @@ document.addEventListener('DOMContentLoaded', function () {
                       quantity = data.quantity ?? 0;
                       price = data.price ?? 0;
                       document.getElementById('product-quantity').textContent = quantity;
-                      document.getElementById('product-price').textContent = price + ' VND';
-
+                      let formattedPrice = new Intl.NumberFormat('vi-VN').format(price) + ' VND';
+                      document.getElementById('product-price').textContent = formattedPrice;                      
                   })
                   .catch(error => {
                       console.error('Error fetching quantity:', error);

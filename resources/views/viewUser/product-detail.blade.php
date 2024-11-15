@@ -94,7 +94,7 @@ alert("{{ session('add-review-success') }}");
                         reviews</span>
                 </div>
                 <div id="product-price" class="product-single__price">
-                    <p>{{ $product['price'] }} VND</p>
+                    <p>{{ number_format($product['price'], 0, ',', '.') }} VND</p>
                 </div>
                 <div class="product-single__short-desc">
                     <p>{{ $product['description'] }}</p>

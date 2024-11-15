@@ -125,7 +125,7 @@
                                     </div>
                                 </td>
                                 <td>
-                                    <span class="shopping-cart__product-price">{{ $cartItem['price'] }} VND</span>
+                                    <span class="shopping-cart__product-price">{{ number_format($cartItem['price'], 0, ',', '.') }} VND</span>
                                 </td>
                                 <td>
                                     <div class="qty-control position-relative">
