@@ -140,21 +140,22 @@
                         <span>Min Price: <span id="minPriceLabel">0</span> VND</span>
                         <span>Max Price: <span id="maxPriceLabel">5.000.000</span> VND</span>
                     </div>
-                    <button style="
-                            padding: 10px 20px;
-                            background-color: #007bff;
-                            color: white;
-                            border: none;
-                            border-radius: 5px;
-                            font-size: 16px;
-                            font-weight: bold;
-                            cursor: pointer;
-                            transition: background-color 0.3s ease, transform 0.2s ease;
-                            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);"
-                        onmouseover="this.style.backgroundColor='#0056b3'; this.style.transform='scale(1.05)';"
-                        onmouseout="this.style.backgroundColor='#007bff'; this.style.transform='scale(1)';">
-                        Lọc
-                    </button>
+                    <button id="filter-button" style="
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);"
+    onmouseover="this.style.backgroundColor='#0056b3'; this.style.transform='scale(1.05)';"
+    onmouseout="this.style.backgroundColor='#007bff'; this.style.transform='scale(1)';">
+    Lọc
+</button>
+
 
                 </div>
 
@@ -258,6 +259,66 @@
             minPriceLabel.textContent = formatCurrency(minPriceInput.value);
         }
     });
+
+
+
+
+    // lọc giá 
+    document.addEventListener('DOMContentLoaded', function() {
+    const filterButton = document.querySelector('#filter-button');
+    const minPriceInput = document.getElementById('minPrice');
+    const maxPriceInput = document.getElementById('maxPrice');
+    const productsGrid = document.getElementById('products-grid');
+
+    filterButton.addEventListener('click', function() {
+        const minPrice = minPriceInput.value;
+        const maxPrice = maxPriceInput.value;
+
+        // Gửi yêu cầu AJAX để lọc sản phẩm
+        fetch(`/locgia/filter-products?minPrice=${minPrice}&maxPrice=${maxPrice}`, {
+            method: 'GET',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => response.json())
+        .then(products => {
+            // Xóa các sản phẩm cũ
+            productsGrid.innerHTML = '';
+
+            // Kiểm tra nếu không có sản phẩm nào
+            if (products.length === 0) {
+                productsGrid.innerHTML = '<p class="text-center">Không tìm thấy sản phẩm nào trong khoảng giá này.</p>';
+                return;
+            }
+
+            // Hiển thị sản phẩm mới dựa trên dữ liệu nhận được
+            products.forEach(product => {
+                const productHtml = `
+                    <div class="col-sm-6 col-md-4 col-lg-3 product-loc-wrapper">
+                        <div class="product-loc mb-3 mb-md-4 mb-xxl-5">
+                            <div class="pc__img-wrapper">
+                                <a href="/product/${product.product_id}">
+                                    <img src="${product.images[0]}" class="pc__img" alt="${product.name}">
+                                </a>
+                            </div>
+                            <div class="pc__info position-relative">
+                                <h6 class="pc__title" style="font-size: 1.5rem; font-weight: bold; color: #000;">
+                                    <a href="/product/${product.product_id}">${product.name}</a>
+                                </h6>
+                                <div class="product-loc__price d-flex">
+                                    <span class="money price">${new Intl.NumberFormat('vi-VN').format(product.productSizeColors[0].price)} VND</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`;
+                productsGrid.insertAdjacentHTML('beforeend', productHtml);
+            });
+        })
+        .catch(error => console.error('Error:', error));
+    });
+});
+
 </script>
 
 

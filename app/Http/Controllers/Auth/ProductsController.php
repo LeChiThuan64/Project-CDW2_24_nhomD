@@ -40,14 +40,14 @@ class ProductsController extends Controller
     {
         // Lấy danh mục hiện tại
         $categories = Category::all();
-    
+
         // Lấy sản phẩm thuộc danh mục
         $products = Product::where('category_id', $id)->with('images', 'productSizeColors.size', 'productSizeColors.color')->get();
-    
+
         // Truyền dữ liệu vào view
         return view('viewUser.locgia', compact('categories', 'products'));
     }
- 
+
 
 
 
@@ -61,8 +61,27 @@ class ProductsController extends Controller
             $query->whereBetween('price', [$minPrice, $maxPrice]);
         })->with('images', 'productSizeColors.size', 'productSizeColors.color')->get();
 
-        return response()->json($products);
+        // Định dạng lại dữ liệu để dễ sử dụng trong JavaScript
+        $productsData = $products->map(function ($product) {
+            return [
+                'product_id' => $product->product_id,
+                'name' => $product->name,
+                'images' => $product->images->map(function ($image) {
+                    return asset('assets/img/products/' . $image->image_url);
+                })->toArray(),
+                'productSizeColors' => $product->productSizeColors->map(function ($psc) {
+                    return [
+                        'price' => $psc->price,
+                        'color' => $psc->color->name ?? 'N/A',
+                        'size' => $psc->size->name ?? 'N/A'
+                    ];
+                })->toArray()
+            ];
+        });
+
+        return response()->json($productsData);
     }
+
 
 
     public function showForm()

@@ -188,6 +188,7 @@ Route::post('/admin/blogs/{blog_id}/update', [BlogController::class, 'update'])-
 
 
 
+
 // Hiển thị trang sản phẩm (locgia.blade.php)
 Route::get('/locgia', [ProductsController::class, 'showProducts'])->name('locgia');
 // Hiển thị sản phẩm theo danh mục
