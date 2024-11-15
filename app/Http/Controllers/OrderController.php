@@ -13,6 +13,8 @@ class OrderController extends Controller
 {
     public function store(Request $request)
     {
+        // Tạo ID ngẫu nhiên
+        $orderId = $this->generateUniqueOrderId();
         // Lấy giá trị discount từ bảng vouchers dựa vào voucher_id
         $voucherDiscount = null;
         if ($request->voucher_id) {
@@ -23,6 +25,7 @@ class OrderController extends Controller
         }
 
         $order = Order::create([
+            'id' => $orderId, // Sử dụng ID ngẫu nhiên
             'user_id' => $request->user_id,
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
@@ -53,6 +56,15 @@ class OrderController extends Controller
             if (!$productSizeColor) {
                 return response()->json(['error' => 'Product Size Color not found'], 404);
             }
+            // Kiểm tra số lượng tồn kho
+            if ($productSizeColor->quantity < $item['quantity']) {
+                $productName = $productSizeColor->product->name; // Giả sử bạn có mối quan hệ product trong model ProductSizeColor
+                return response()->json(['error' => "Sản phẩm {$productName} vượt quá số lượng tồn kho. Vui lòng chọn lại!"], 400);
+            }
+
+            // Trừ số lượng trong bảng product_size_color
+            $productSizeColor->quantity -= $item['quantity'];
+            $productSizeColor->save();
 
             // Ghi lại giá trị trước khi chèn vào cơ sở dữ liệu
             Log::info('Order Item Data:', [
@@ -72,10 +84,7 @@ class OrderController extends Controller
                 'quantity' => $item['quantity'],
                 'price' => $productSizeColor->price * $item['quantity'],
             ]);
-
-            // Trừ số lượng trong bảng product_size_color
-            $productSizeColor->quantity -= $item['quantity'];
-            $productSizeColor->save();
+            
         }
 
         // Xóa voucher khỏi hệ thống nếu có sử dụng voucher
@@ -84,5 +93,14 @@ class OrderController extends Controller
         }
 
         return response()->json(['success' => true, 'order_id' => $order->id]);
+    }
+    // Random id khi được tạo ra
+    private function generateUniqueOrderId()
+    {
+        do {
+            $orderId = rand(1000, 9999);
+        } while (Order::where('id', $orderId)->exists());
+
+        return $orderId;
     }
 }
