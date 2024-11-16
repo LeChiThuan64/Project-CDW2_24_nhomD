@@ -37,8 +37,7 @@
   <![endif]-->
 
     <!-- Document Title -->
-    <title>J97</title>
-
+    <title>J Shop</title>
 </head>
 
 <body>
@@ -589,7 +588,7 @@
                 <nav class="navigation">
                     <ul class="navigation__list list-unstyled d-flex">
                         <li class="navigation__item">
-                            <a href="#" class="navigation__link">Home</a>
+                            <a href="<?php echo e(route('home.show')); ?>" class="navigation__link">Home</a>
                             <!-- <div class="box-menu" style="width: 800px;">
                                 <div class="col pe-4">
                                     <ul class="sub-menu__list list-unstyled">
@@ -601,7 +600,7 @@
                             <!-- /.box-menu -->
                         </li>
                         <li class="navigation__item">
-                            <a href="#" class="navigation__link">Shop</a>
+                            <a href="<?php echo e(route('locgia')); ?>" class="navigation__link">Category</a>
                             <div class="mega-menu">
                                 <div class="container d-flex">
                                     <div class="col pe-4">
@@ -644,17 +643,17 @@
 
                         <li class="navigation__item">
                             <a href="<?php echo e(route('blog.index')); ?>" class="navigation__link">Blog</a>
-                            <ul class="default-menu list-unstyled">
+                            <!-- <ul class="default-menu list-unstyled"> -->
                                 <!-- Bạn có thể thêm các menu phụ tại đây nếu cần -->
-                            </ul><!-- /.box-menu -->
+                            <!-- </ul> -->
                         </li>
 
 
 
                         <li class="navigation__item">
                             <a href="#" class="navigation__link">Pages</a>
-                            <ul class="default-menu list-unstyled">
-                            </ul><!-- /.box-menu -->
+                            <!-- <ul class="default-menu list-unstyled">
+                            </ul> -->
                         </li>
                         <li class="navigation__item">
                             <a href="about.html" class="navigation__link">About</a>
@@ -1336,11 +1335,12 @@
     <script src="<?php echo e(asset('assets/js/plugins/jquery.min.js')); ?>"></script>
     <script src="<?php echo e(asset('assets/js/plugins/bootstrap.bundle.min.js')); ?>"></script>
     <script src="<?php echo e(asset('assets/js/plugins/bootstrap-slider.min.js')); ?>"></script>
+    <script src="<?php echo e(asset('assets/js/plugins/bootstrap.min.js')); ?>"></script>
 
     <script src="<?php echo e(asset('assets/js/plugins/swiper.min.js')); ?>"></script>
     <script src="<?php echo e(asset('assets/js/plugins/countdown.js')); ?>"></script>
     <script src="<?php echo e(asset('assets/js/plugins/jquery.fancybox.js')); ?>"></script>
-    <script src="<?php echo e(asset('assets/js/core/bootstrap.min.js')); ?>"></script>
+    <!-- <script src="<?php echo e(asset('assets/js/core/bootstrap.min.js')); ?>"></script> -->
     <script src="<?php echo e(asset('assets/js/core/popper.min.js')); ?>"></script>
     <script src="<?php echo e(asset('assets/js/details-disclosure.js')); ?>" defer="defer"></script>
     <script src="<?php echo e(asset('assets/js/share.js')); ?>" defer="defer"></script>
