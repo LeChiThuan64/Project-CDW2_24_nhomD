@@ -212,6 +212,11 @@ Route::get('/vocher', function () {
     return view('viewAdmin.vocher');
 });
 // Các route liên quan đến Voucher
+Route::middleware(['auth'])->group(function () {
+    Route::delete('/admin/blogs/{blog_id}', [BlogController::class, 'destroy'])->name('admin.blog.destroy');
+});
+
+
 Route::get('/vocher', [VocherController::class, 'index'])->name('vocher.index');
 Route::get('/vocher/create', [VocherController::class, 'create'])->name('vocher.create');
 Route::post('/vocher/store', [VocherController::class, 'store'])->name('vocher.store');

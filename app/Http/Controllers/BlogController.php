@@ -101,13 +101,19 @@ class BlogController extends Controller
 
     public function destroy($blog_id)
     {
+        // Kiểm tra nếu user hiện tại không phải admin
+        if (auth()->user()->role == 1) {
+            return redirect()->route('admin.blog.index')->with('error', 'Chỉ admin mới có quyền xóa blog.');
+        }
+    
         // Tìm blog theo blog_id và xóa nó
         $blog = Blog::where('blog_id', $blog_id)->firstOrFail();
         $blog->delete();
-
+    
         // Chuyển hướng với thông báo thành công
         return redirect()->route('admin.blog.index')->with('success', 'Blog đã được xóa thành công!');
     }
+    
 
     // public function edit($blog_id)
     // {
