@@ -14,7 +14,7 @@ class WishlistSeeder extends Seeder
     public function run(): void
     {
         //
-        DB::table('wishlist')->insert([
+        DB::table('wishlists')->insert([
             [
                 'id' => 1,
                 'user_id' => 2,
@@ -25,42 +25,42 @@ class WishlistSeeder extends Seeder
             [
                 'id' => 7,
                 'user_id' => 2,
-                'product_id' => 15,
+                'product_id' => 1,
                 'created_at' => '2024-11-15 08:20:34',
                 'updated_at' => '2024-11-15 08:20:34',
             ],
             [
                 'id' => 8,
                 'user_id' => 2,
-                'product_id' => 15,
+                'product_id' => 9,
                 'created_at' => '2024-11-15 08:57:07',
                 'updated_at' => '2024-11-15 08:57:07',
             ],
             [
                 'id' => 9,
                 'user_id' => 2,
-                'product_id' => 10,
+                'product_id' => 6,
                 'created_at' => '2024-11-15 08:57:26',
                 'updated_at' => '2024-11-15 08:57:26',
             ],
             [
                 'id' => 10,
                 'user_id' => 2,
-                'product_id' => 10,
+                'product_id' => 3,
                 'created_at' => '2024-11-15 08:57:33',
                 'updated_at' => '2024-11-15 08:57:33',
             ],
             [
                 'id' => 11,
                 'user_id' => 2,
-                'product_id' => 10,
+                'product_id' => 7,
                 'created_at' => '2024-11-15 08:57:42',
                 'updated_at' => '2024-11-15 08:57:42',
             ],
             [
                 'id' => 12,
                 'user_id' => 2,
-                'product_id' => 10,
+                'product_id' => 8,
                 'created_at' => '2024-11-15 08:57:55',
                 'updated_at' => '2024-11-15 08:57:55',
             ],
@@ -74,7 +74,7 @@ class WishlistSeeder extends Seeder
             [
                 'id' => 14,
                 'user_id' => 2,
-                'product_id' => 4,
+                'product_id' => 2,
                 'created_at' => '2024-11-15 14:34:01',
                 'updated_at' => '2024-11-15 14:34:01',
             ],
