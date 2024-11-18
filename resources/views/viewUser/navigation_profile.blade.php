@@ -14,9 +14,9 @@
     <div class="row">
         <div class="col-md-3 sidebar">
             <div class="text-center">
-            <img alt="User profile picture" class="rounded-circle" height="100"
-     src="{{ $user->profile_image ? asset($user->profile_image) : 'https://storage.googleapis.com/a1aa/image/JvrL8IccnN7JEFHYrd8lG4Pkxxr1MJyu5roHmDKfPBx2sy1JA.jpg' }}"
-     width="100" />
+                <img alt="User profile picture" class="rounded-circle" height="100"
+                    src="{{ $user->profile_image ? asset($user->profile_image) : 'https://storage.googleapis.com/a1aa/image/JvrL8IccnN7JEFHYrd8lG4Pkxxr1MJyu5roHmDKfPBx2sy1JA.jpg' }}"
+                    width="100" />
 
                 <p>jzpu2v0e9k</p>
                 <a href="#">Sửa Hồ Sơ</a>
@@ -47,7 +47,7 @@
 
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyDkIu0+UGx0vRrltyqO0xN/5TqBk9iA3dO6M"
-    crossorigin="anonymous"></script>
+    integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyDkIu0+UGx0vRrltyqO0xN/5TqBk9iA3dO6M" crossorigin="anonymous">
+</script>
 <script src="{{ asset('assets/js/profile.js') }}" defer="defer"></script>
 @endsection
