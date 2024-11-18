@@ -171,6 +171,16 @@
                         <span class="nav-link-text ms-1">Voucher</span>
                     </a>
                 </li>
+                <!-- Chetbox -->
+                <li class="nav-item">
+                    <a class="nav-link text-white {{ request()->is('admin.chatbox') ? 'bg-gradient-primary' : '' }}"
+                        href={{ route('admin.chatbox') }}>
+                        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="material-icons opacity-10">chat_bubble</i>
+                        </div>
+                        <span class="nav-link-text ms-1">Chatbox</span>
+                    </a>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link text-white " href="notifications.html">
                         <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
@@ -192,34 +202,37 @@
                     </a>
                 </li>
                 @if (auth()->check())
-    <!-- Nếu đã đăng nhập, hiển thị nút Logout -->
-    <li class="nav-item">
-        <a class="nav-link text-white {{ request()->is('logout') ? 'bg-gradient-primary' : '' }}" href="{{ route('logout') }}">
-            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                <i class="material-icons opacity-10">logout</i>
-            </div>
-            <span class="nav-link-text ms-1">Logout</span>
-        </a>
-    </li>
-@else
-    <!-- Nếu chưa đăng nhập, hiển thị nút Sign In và Sign Up -->
-    <li class="nav-item">
-        <a class="nav-link text-white {{ request()->routeIs('auth') ? 'bg-gradient-primary' : '' }}" href="{{ route('auth') }}">
-            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                <i class="material-icons opacity-10">login</i>
-            </div>
-            <span class="nav-link-text ms-1">Sign In</span>
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link text-white {{ request()->routeIs('auth') ? 'bg-gradient-primary' : '' }}" href="{{ route('auth') }}">
-            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                <i class="material-icons opacity-10">assignment</i>
-            </div>
-            <span class="nav-link-text ms-1">Sign Up</span>
-        </a>
-    </li>
-@endif
+                    <!-- Nếu đã đăng nhập, hiển thị nút Logout -->
+                    <li class="nav-item">
+                        <a class="nav-link text-white {{ request()->is('logout') ? 'bg-gradient-primary' : '' }}"
+                            href="{{ route('logout') }}">
+                            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                                <i class="material-icons opacity-10">logout</i>
+                            </div>
+                            <span class="nav-link-text ms-1">Logout</span>
+                        </a>
+                    </li>
+                @else
+                    <!-- Nếu chưa đăng nhập, hiển thị nút Sign In và Sign Up -->
+                    <li class="nav-item">
+                        <a class="nav-link text-white {{ request()->routeIs('auth') ? 'bg-gradient-primary' : '' }}"
+                            href="{{ route('auth') }}">
+                            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                                <i class="material-icons opacity-10">login</i>
+                            </div>
+                            <span class="nav-link-text ms-1">Sign In</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white {{ request()->routeIs('auth') ? 'bg-gradient-primary' : '' }}"
+                            href="{{ route('auth') }}">
+                            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                                <i class="material-icons opacity-10">assignment</i>
+                            </div>
+                            <span class="nav-link-text ms-1">Sign Up</span>
+                        </a>
+                    </li>
+                @endif
 
 
 
@@ -244,6 +257,7 @@
     <script src="{{ asset('assets/js/addProducts.js') }}"></script>
     <script src="{{ asset('assets/js/list_products.js') }}"></script>
     <script src="{{ asset('assets/js/chatbox-admin.js') }}"></script>
+    <script src="{{ asset('assets/js/orders_admin.js') }}"></script>
 
     <!-- Thêm jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

@@ -19,7 +19,7 @@ class DatabaseSeeder extends Seeder
     //     //     'email' => 'test@example.com',
     //     // ]);
 
-        
+
     // }
 
     public function run()
@@ -40,5 +40,8 @@ class DatabaseSeeder extends Seeder
         $this->call(VoucherSeeder::class);
         $this->call(ShippingPriceSeeder::class);
         $this->call(ReviewSeeder::class);
+        $this->call(OrdersTableSeeder::class);
+        $this->call(OrderItemsTableSeeder::class, );
+
     }
 }
