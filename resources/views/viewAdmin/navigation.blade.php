@@ -181,6 +181,16 @@
                         <span class="nav-link-text ms-1">Chatbox</span>
                     </a>
                 </li>
+                <!-- Orders manager-->
+                <li class="nav-item">
+                    <a class="nav-link text-white {{ request()->is('admin.orders.index') ? 'bg-gradient-primary' : '' }}"
+                        href={{ route('admin.orders.index') }}>
+                        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="material-icons opacity-10">list_alt</i>
+                        </div>
+                        <span class="nav-link-text ms-1">Oders manager</span>
+                    </a>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link text-white " href="notifications.html">
                         <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
