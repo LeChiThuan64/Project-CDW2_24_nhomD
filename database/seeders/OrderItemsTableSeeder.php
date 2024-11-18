@@ -14,7 +14,7 @@ class OrderItemsTableSeeder extends Seeder
     {
         DB::table('order_items')->insert([
             [
-                'order_id' => 1,
+                'order_id' => 1234,
                 'product_id' => 4,
                 'size_id' => 2,
                 'color_id' => 1,
@@ -24,7 +24,7 @@ class OrderItemsTableSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'order_id' => 1,
+                'order_id' => 1234,
                 'product_id' => 3,
                 'size_id' => 2,
                 'color_id' => 3,
@@ -34,7 +34,7 @@ class OrderItemsTableSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'order_id' => 2,
+                'order_id' => 5678,
                 'product_id' => 4,
                 'size_id' => 3,
                 'color_id' => 1,
@@ -44,7 +44,7 @@ class OrderItemsTableSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'order_id' => 2,
+                'order_id' => 5678,
                 'product_id' => 3,
                 'size_id' => 2,
                 'color_id' => 3,
@@ -54,7 +54,7 @@ class OrderItemsTableSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'order_id' => 3,
+                'order_id' => 9012,
                 'product_id' => 4,
                 'size_id' => 3,
                 'color_id' => 1,
@@ -64,7 +64,7 @@ class OrderItemsTableSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'order_id' => 4,
+                'order_id' => 7892,
                 'product_id' => 3,
                 'size_id' => 2,
                 'color_id' => 3,

@@ -25,7 +25,7 @@
                                 <th>Tên Khách Hàng</th>
                                 <th>Số Điện Thoại</th>
                                 <th>Email</th>
-                                <th>Phương thức thanh toán</th>
+                                <th>Địa chỉ</th>
                                 <th>Tổng đơng hàng</th>
                                 <th>Ngày đặt hàng</th>
                                 <th>Trạng thái đơn hàng</th>
@@ -40,8 +40,8 @@
                                     <td>{{ $order->first_name }} {{ $order->last_name }}</td>
                                     <td>{{ $order->phone }}</td>
                                     <td>{{ $order->email }}</td>
+                                    <td>{{ $order->street_address }}</td>
                                     <td>{{ number_format($order->total) }} VND
-                                    <td>{{ $order->payment_method }}</td>
                                     <td>{{ $order->created_at->format('d/m/Y') }}</td>
                                     <td>{{ $order->status }}</td>
                                     <td>

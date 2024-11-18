@@ -137,7 +137,7 @@ class ProductSizeColorSeeder extends Seeder
             ],
             [
                 'id' => 17,
-                'product_id' => 15,
+                'product_id' => 9,
                 'size_id' => 2,
                 'color_id' => 1,
                 'quantity' => 123,
