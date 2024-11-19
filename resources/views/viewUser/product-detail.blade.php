@@ -15,12 +15,12 @@ alert("{{ session('add-review-success') }}");
 
 @if (session('add-wishlist-success'))
 <script>
-    alert("{{ session('add-wishlist-success') }}");
+alert("{{ session('add-wishlist-success') }}");
 </script>
 @endif
 @if (session('delete-wishlist-success'))
 <script>
-    alert("{{ session('delete-wishlist-success') }}");
+alert("{{ session('delete-wishlist-success') }}");
 </script>
 @endif
 
@@ -369,28 +369,32 @@ alert("{{ session('add-review-success') }}");
                                 <div class="review-text">
                                     {{ $review->comment }}
                                 </div>
+
+                                <div class="review-images">
+                                    @foreach ($review->images as $image)
+                                    <a href="{{ asset('assets/img/reviews/' .$image->image_url) }}"
+                                        data-lightbox="review-{{ $review->id }}" data-title="Review Image">
+                                        <img class="review-image-item"
+                                            src="{{ asset('assets/img/reviews/' .$image->image_url) }}"
+                                            alt="Review Image">
+                                    </a>
+                                    @endforeach
+                                </div>
+
                                 @if ($review->reply)
-                                <div class="dropdown px-5 pb-5" data-bs-auto-close="false">
-                                    <button class="btn btn-link dropdown-toggle custom-dropdown-toggle" type="button"
-                                        id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                                        Reply from seller
-                                    </button>
-                                    <ul class="dropdown-menu custom-dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <li>
-                                            <div class="reply-text review-text">
-                                                {{ $review->reply }}
-                                            </div>
-                                        </li>
-                                    </ul>
+                                <div class="seller-reply px-5 pt-3">
+                                    <h6 class="reply-title">Reply from Seller:</h6>
+                                    <div class="reply-text review-text">
+                                        {{ $review->reply }}
+                                    </div>
                                 </div>
                                 @endif
                             </div>
                         </div>
                         @endforeach
                     </div>
-                    <!-- <h5>Be the first to review “Message Cotton T-Shirt”</h5> -->
                     <div class="product-single__review-form">
-                        <form name="customer-review-form" id="review-form" method="POST"
+                        <form name="customer-review-form" id="review-form" method="POST" enctype="multipart/form-data"
                             action="{{ route('addReview', ['productId' => $product['product_id']]) }}">
                             @csrf
 
@@ -427,11 +431,20 @@ alert("{{ session('add-review-success') }}");
                                 <input type="hidden" name="rating" id="form-input-rating" value="">
                             </div>
                             <div class="mb-4">
+                                <label for="images">Add images (Max 4 images)</label>
+                                <input type="file" name="images[]" class="form-control" id="imagesInput"
+                                    accept="image/*" multiple>
+                                <div id="error-message-images" style="color: red; display: none;">
+                                    <p>You can only upload up to 4 images.</p>
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
                                 <textarea name="comment" id="form-input-review" class="form-control form-control_gray"
                                     placeholder="Your Review" cols="30" rows="8"></textarea>
-                                    <div id="error-message-review" style="color: red; display: none;">
-                                        <p>Please select a rating and write a review before submitting.</p>
-                                    </div>
+                                <div id="error-message-review" style="color: red; display: none;">
+                                    <p>Please select a rating and write a review before submitting.</p>
+                                </div>
                                 <div class="form-action">
                                     <button type="submit" class="btn btn-primary mt-1">Submit</button>
                                 </div>
@@ -447,18 +460,6 @@ alert("{{ session('add-review-success') }}");
 <div class="mb-5 pb-xl-5"></div>
 <!-- Bao gồm component chatbox -->
 <x-chatbox />
-<script>
-document.getElementById('review-form').addEventListener('submit', function(event) {
-    var rating = document.getElementById('form-input-rating').value;
-    var comment = document.getElementById('form-input-review').value.trim();
-
-    // Kiểm tra xem rating có được chọn và comment có được nhập không
-    if (!rating || !comment) {
-        event.preventDefault(); // Ngừng gửi form
-        document.getElementById('error-message-review').style.display = 'block'; // Hiển thị thông báo lỗi
-    }
-});
-</script>
 <!-- <script>
     $(document).ready(function() {
         // Xử lý submit form bằng AJAX

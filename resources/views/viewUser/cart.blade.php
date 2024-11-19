@@ -125,7 +125,9 @@
                                     </div>
                                 </td>
                                 <td>
-                                    <span class="shopping-cart__product-price">{{ number_format($cartItem['price'], 0, ',', '.') }} VND</span>
+                                    <span
+                                        class="shopping-cart__product-price">{{ number_format($cartItem['price'], 0, ',', '.') }}
+                                        VND</span>
                                 </td>
                                 <td>
                                     <div class="qty-control position-relative">
@@ -140,7 +142,7 @@
                                 </td>
                                 <td>
                                     <span
-                                        class="shopping-cart__subtotal">{{ $cartItem['quantity'] * $cartItem['price'] }}
+                                        class="shopping-cart__subtotal">{{ number_format($cartItem['price']*$cartItem['quantity'], 0, ',', '.') }}
                                         VND</span>
                                 </td>
                                 <td>

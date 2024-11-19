@@ -18,7 +18,7 @@ return new class extends Migration
         $table->integer('rating');
         $table->text('comment')->nullable();
         $table->string('reply')->nullable();
-        $table->timestamp('created_at')->useCurrent();
+        $table->timestamp();
     });
 }
 

@@ -203,3 +203,10 @@
     gap: 5px;
 }
 
+.cross {
+    border: 1px solid #000;
+    /* Đặt màu và độ dày cho đường kẻ */
+    width: 100%;
+    /* Chiều rộng của đường kẻ */
+}
+

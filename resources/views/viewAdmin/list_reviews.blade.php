@@ -1,22 +1,75 @@
 @extends('viewAdmin.navigation')
 @section('title', 'Manage Reviews')
 @section('content')
+<style>
+    #modalImages {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 20px;
+}
 
+.image-preview-item {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f8f8f8;
+}
+
+.image-preview-item img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover;
+}
+
+.image-preview-item + .image-preview-item {
+    margin-left: 10px;
+}
+
+.image-preview-remove {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.image-preview-remove:hover {
+    background: rgba(0, 0, 0, 0.8);
+}
+
+    </style>
 <div class="row">
     <div class="col-12">
         <div class="card my-4">
             <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                 <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
-                    <h6 class="text-white text-capitalize ps-3">List Reviews</h6>
+                    <h5 class="text-white text-capitalize ps-3">List Reviews</h5>
                 </div>
             </div>
             <div class="row p-3">
                 <!-- Thanh tìm kiếm -->
                 <div class="col-md-5">
-                    <form action="" method="GET">
+                    <form action="{{ route('review.show') }}" method="GET">
                         <div class="input-group">
                             <input type="text" name="search" class="form-control" style="height: 42px;"
-                                placeholder="Find categories..." aria-label="search-category" value="">
+                                placeholder="Search categories by user name, product name, rating"
+                                aria-label="search-category" value="">
                             <div class="input-group-prepend">
                                 <button class="btn btn-outline-secondary" type="submit">
                                     <i class="fas fa-search"></i>
@@ -76,8 +129,6 @@
                             </th>
                             <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Review
                             </th>
-                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Created at
-                            </th>
                             <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                 Action</th>
 
@@ -120,21 +171,20 @@
                                     </div>
                                 </div>
                             </td>
-                            <td>
-                                <div class="d-flex px-2 py-1">
-                                    <div class="d-flex flex-column justify-content-center">
-                                        <h6 class="mb-0 text-sm">{{ $review->created_at }}</h6>
-                                    </div>
-                                </div>
-                            </td>
                             <td class="actions">
-                                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#viewReviewModal" data-content="{{ $review->comment }}"
-                                    data-user="{{ $review->user->name }}" data-product="{{ $review->product->name }}"
-                                    data-rating="{{ $review->rating }}" data-date="{{ $review->created_at }}"
-                                    data-reply="{{ $review->reply }}">
-                                    <i class="fas fa-eye"></i>
-                                </button>
+                            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+        data-bs-target="#viewReviewModal"
+        data-content="{{ $review->comment }}"
+        data-user="{{ $review->user->name }}"
+        data-product="{{ $review->product->name }}"
+        data-rating="{{ $review->rating }}"
+        data-date="{{ $review->created_at }}"
+        data-reply="{{ $review->reply }}"
+        data-images="{{ json_encode($review->images->map(function($image) { return asset('assets/img/reviews/' . $image->image_url); } )) }}">
+    <i class="fas fa-eye"></i>
+</button>
+
+
                                 <form action="{{ route('review.destroy', ['id' => $review->id]) }}" method="POST"
                                     style="display: inline;">
                                     @csrf
@@ -146,7 +196,7 @@
                                     </button>
                                 </form>
 
-                                <button type="button" 
+                                <button type="button"
                                     class="btn btn-{{ $review->reply ? 'dark' : 'info' }} btn-sm px-3 btn-reply"
                                     data-bs-toggle="modal" data-bs-target="#replyModal"
                                     data-review-id="{{ $review->id }}" data-reply="{{ $review->reply ?? '' }}">
@@ -194,16 +244,20 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <p><strong>User:</strong> <span id="modalUser"></span></p>
-                <p><strong>Product:</strong> <span id="modalProduct"></span></p>
-                <p><strong>Rating:</strong> <span id="modalRating"></span></p>
-                <p><strong>Comment:</strong> <span id="modalComment"></span></p>
-                <p><strong>Date:</strong> <span id="modalDate"></span></p>
-                <p><strong>Reply review:</strong> <span id="modalReply"></span></p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            </div>
+    <p><strong>User:</strong> <span id="modalUser"></span></p>
+    <p><strong>Product:</strong> <span id="modalProduct"></span></p>
+    <p><strong>Rating:</strong> <span id="modalRating"></span></p>
+    <p><strong>Comment:</strong> <span id="modalComment"></span></p>
+    <p><strong>Date:</strong> <span id="modalDate"></span></p>
+    <p><strong>Image: </strong><div id="modalImages" class="image-preview-container mt-3"></div></p>
+     <!-- Thêm hình ảnh -->
+    <hr class="cross">
+    <p><strong>Reply review:</strong> <span id="modalReply"></span></p>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+</div>
+
         </div>
     </div>
 </div>
@@ -236,8 +290,8 @@
         $end = min($totalPages, $currentPage + $range);
 
         // Điều chỉnh để luôn hiển thị tối thiểu 3 trang nếu có đủ
-        if ($end - $start < 2) { if ($start==1) { $end=min($start + 2, $totalPages); } else { $start=max(1, $end
-            - 2); } } @endphp @foreach (range($start, $end) as $page) <li
+        if ($end - $start < 2) { if ($start==1) { $end=min($start + 2, $totalPages); } else { $start=max(1, $end - 2); }
+            } @endphp @foreach (range($start, $end) as $page) <li
             class="page-items {{ ($reviews->currentPage() == $page) ? 'active' : '' }}">
             <a class="page-links" href="{{ $reviews->url($page) }}">{{ $page }}</a>
             </li>
@@ -279,9 +333,9 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     var viewReviewModal = document.getElementById('viewReviewModal');
-    viewReviewModal.addEventListener('show.bs.modal', function(event) {
+    viewReviewModal.addEventListener('show.bs.modal', function (event) {
         var button = event.relatedTarget;
         var user = button.getAttribute('data-user');
         var product = button.getAttribute('data-product');
@@ -289,15 +343,41 @@ document.addEventListener('DOMContentLoaded', function() {
         var comment = button.getAttribute('data-content');
         var date = button.getAttribute('data-date');
         var reply = button.getAttribute('data-reply');
+        var images = JSON.parse(button.getAttribute('data-images'));
 
         document.getElementById('modalUser').textContent = user;
         document.getElementById('modalProduct').textContent = product;
         document.getElementById('modalRating').textContent = rating;
         document.getElementById('modalComment').textContent = comment;
         document.getElementById('modalDate').textContent = date;
-        document.getElementById('modalReply').textContent = reply || 'no reply yet';
+        document.getElementById('modalReply').textContent = reply || 'No reply yet';
+
+        // Lấy phần tử chứa hình ảnh trong modal
+        var modalImagesContainer = document.getElementById('modalImages');
+        modalImagesContainer.innerHTML = ''; // Xóa các hình ảnh cũ
+
+        // Kiểm tra nếu không có hình ảnh
+        if (images.length === 0) {
+            var noImageMessage = document.createElement('span');
+            noImageMessage.textContent = 'No image';
+            noImageMessage.style.color = '#999'; // Màu chữ nhạt
+            noImageMessage.style.fontStyle = 'italic'; 
+            modalImagesContainer.appendChild(noImageMessage);
+        } else {
+            // Nếu có hình ảnh, hiển thị các hình ảnh
+            images.forEach(function (image) {
+                var imageElement = document.createElement('div');
+                imageElement.classList.add('image-preview-item');
+                imageElement.innerHTML = `
+                    <img src="${image}" alt="Review Image">
+                `;
+                modalImagesContainer.appendChild(imageElement);
+            });
+        }
     });
 });
+
+
 </script>
 
 @endsection
