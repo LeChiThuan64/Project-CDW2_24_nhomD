@@ -645,7 +645,7 @@
                         <li class="navigation__item">
                             <a href="{{ route('blog.index') }}" class="navigation__link">Blog</a>
                             <!-- <ul class="default-menu list-unstyled"> -->
-                                <!-- Bạn có thể thêm các menu phụ tại đây nếu cần -->
+                            <!-- Bạn có thể thêm các menu phụ tại đây nếu cần -->
                             <!-- </ul> -->
                         </li>
 
@@ -1347,6 +1347,8 @@
     <script src="{{ asset('assets/js/details-disclosure.js') }}" defer="defer"></script>
     <script src="{{ asset('assets/js/share.js') }}" defer="defer"></script>
     <script src="{{ asset('assets/js/auth.js') }}" defer="defer"></script>
+    <script src="{{ asset('assets/js/orders_manager.js') }}"></script>
+    <script src="{{ asset('assets/js/order_details.js') }}"></script>
 
 
     <!-- Footer Scripts -->

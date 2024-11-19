@@ -25,7 +25,9 @@ use App\Http\Controllers\CategoryController;
 use App\Models\Blog;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\HomeController;
-
+use App\Http\Controllers\OrderManagerController;
+use App\Http\Controllers\OrdersDetailsController;
+use App\Http\Controllers\OrdersAdminController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -61,7 +63,7 @@ Route::post('/register', [RegisterController::class, 'register'])->name('registe
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::get('password/reset', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
 Route::post('password/email', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
-    
+
 
 // Route trang hiển thị danh sách người dùng (tables.blade.php)
 Route::get('/tables', [UserController::class, 'index'])->name('tables');
@@ -153,7 +155,7 @@ Route::delete('/comments/{comment}', [BlogController::class, 'deleteComment'])->
 
 Route::get('/blogs', [BlogController::class, 'index'])->name('blog.index');
 
- 
+
 Route::get('/admin/blogs/create', function () {
     return view('viewAdmin.add_blog');
 })->name('admin.blog.create');
@@ -285,7 +287,7 @@ Route::prefix('cart')->group(function () {
 
 // Route cho checkout
 Route::get('/checkout', [CheckoutController::class, 'show'])->name('checkout.show');
-Route::get('/check-login', function() {
+Route::get('/check-login', function () {
     return response()->json([
         'loggedIn' => auth()->check(),
     ]);
@@ -311,10 +313,26 @@ Route::put('/admin/categories/update/{id}', [CategoryController::class, 'update'
 Route::post('/admin/categories/create', [CategoryController::class, 'create'])->name('category.create');
 Route::get('/admin/categories/create', [CategoryController::class, 'showCreateForm'])->name('category.showCreate');
 
+// Router để hiển thị trang quản lý đơn hàng
+Route::get('/order-manager', [OrderManagerController::class, 'show'])->name('order.manager.show');
+Route::get('/orders/{id}/detail', [OrdersDetailsController::class, 'show'])->name('orders.detail');
+Route::post('/orders/{id}/update', [OrdersDetailsController::class, 'update'])->name('order.update');
+
+//Router update trạng thái đơn hàng
+Route::post('/orders/{id}/received', [OrderManagerController::class, 'markAsReceived'])->name('orders.received');
+
+//Router hiện thị trang quản lý đơn hàng admin
+Route::get('/admin/orders', [OrdersAdminController::class, 'index'])->name('admin.orders.index');
+Route::post('/admin/orders/{id}/confirm', [OrdersAdminController::class, 'confirmOrder'])->name('admin.orders.confirm');
+Route::post('/admin/orders/{id}/report-error', [OrdersAdminController::class, 'reportError'])->name('admin.orders.reportError');
+Route::delete('/orders/{id}/delete', [OrdersAdminController::class, 'deleteOrder'])->name('orders.delete');
+Route::get('/orders/{id}/error-details', [OrderManagerController::class, 'getErrorDetails'])->name('orders.errorDetails');
+Route::post('/orders/{id}/resend', [OrdersDetailsController::class, 'resendOrder'])->name('orders.resend');
+Route::post('/orders/{id}/cancel', [OrderManagerController::class, 'cancelOrder'])->name('orders.cancel');
+
 
 Route::get('/product/edit/{id}', [ProductsController::class, 'edit'])->name('products.edit');
 Route::post('/product/update/{id}', [ProductsController::class, 'update'])->name('products.update');
 
 Route::get('/admin/reviews', [ReviewController::class, 'show'])->name('review.show');
 Route::delete('/admin/reviews/delete/{id}', [ReviewController::class, 'destroy'])->name('review.destroy');
-

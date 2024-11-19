@@ -21026,11 +21026,15 @@ a.add-to-wishlist.active .flaticon.flaticon-heart {
     text-decoration: underline;
 }
 .my-account .orders-table tbody td:last-child {
-    width: 12.5rem;
+    width: 20rem;
 }
 .my-account .orders-table tbody td .btn {
     height: 3.125rem;
     font-size: 0.875rem;
+}
+.my-account .orders-table tbody .btn {
+    margin-top: 5px;
+    width: 100%;
 }
 .my-account__address .notice {
     margin-bottom: 3.75rem;
@@ -21039,6 +21043,134 @@ a.add-to-wishlist.active .flaticon.flaticon-heart {
     display: flex;
     gap: 5.625rem;
 }
+.cancel-order-form {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-40%, -40%);
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 500px;
+    z-index: 1000;
+}
+
+.cancel-order-form h4 {
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.cancel-order-form div {
+    margin-bottom: 10px;
+}
+
+.cancel-order-form input[type="radio"] {
+    margin-right: 5px;
+}
+
+.cancel-order-form .btn {
+    width: 100%;
+    margin-top: 10px;
+}
+
+/* Giao diện trang chi tiết đơn hàng */
+.order-details-container {
+    border: 1px solid #ddd;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+.product-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.product-image img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border: 1px solid #ddd;
+}
+
+.product-details {
+    flex: 1;
+    margin-left: 20px;
+}
+
+.product-details h3 {
+    margin: 0 0 10px;
+}
+
+.product-details p {
+    margin: 5px 0;
+}
+
+.product-details span {
+    font-weight: bold;
+}
+
+.product-price {
+    text-align: center;
+}
+
+.customer-info {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.customer-info td {
+    padding: 10px;
+    border: 1px solid #ddd;
+}
+
+.customer-info td:first-child {
+    width: 30%;
+    font-weight: bold;
+}
+
+.order-actions {
+    display: flex;
+    justify-content: space-between;
+}
+
+.order-actions .btn {
+    padding: 10px 20px;
+}
+.customer-info {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+.customer-info td {
+    padding: 10px;
+    vertical-align: middle;
+}
+
+.customer-info input {
+    width: 100%;
+    padding: 5px;
+    box-sizing: border-box;
+}
+.received-order-form {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 400px;
+    z-index: 1000;
+}
+.received-order-box {
+    text-align: center;
+}
+
 @media (max-width: 767.98px) {
     .my-account__address-list {
         flex-direction: column;
@@ -22479,7 +22611,58 @@ body.coming-soon-page .header {
     gap: 10px; /* Khoảng cách giữa các phần tử */
     justify-content: flex-start; /* Căn trái */
     text-align: left;
-    gap: 10px;
+}
+
+.custom-dropdown-menu {
+    border: none;
+    background-color: #fff;
+    z-index: 0;
+}
+#errorDetailTable {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+#errorDetailTable {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    border-radius: 3px; /* Thêm border-radius */
+}
+
+#errorDetailTable table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#errorDetailTable th,
+#errorDetailTable td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+#errorDetailTable th {
+    background-color: #0046be;
+}
+
+#errorDetailTable .btn {
+    margin-top: 10px;
+    display: block; /* Thêm display block */
+    margin-left: auto; /* Căn giữa nút */
+    margin-right: auto; /* Căn giữa nút */
 }
 
 /*review */
@@ -22499,5 +22682,3 @@ body.coming-soon-page .header {
     cursor: pointer; /* Hiệu ứng con trỏ */
     border: 1px solid #ddd; /* Đường viền nhạt */
 }
-
-/*Preview */
