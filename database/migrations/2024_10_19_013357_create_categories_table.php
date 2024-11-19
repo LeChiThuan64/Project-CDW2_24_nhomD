@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id('category_id');
             $table->string('category_name', 100);
             $table->text('description')->nullable();
+            $table->string('image', 255)->nullable(); // Cột ảnh đại diện, cho phép null
+            $table->timestamps();
         });
     }
     

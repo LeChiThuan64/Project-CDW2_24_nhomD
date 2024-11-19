@@ -13,10 +13,10 @@
             <div class="row p-3">
                 <!-- Thanh tìm kiếm -->
                 <div class="col-md-5">
-                    <form action="" method="GET">
+                    <form action="{{ route('showCategories') }}" method="GET">
                         <div class="input-group">
                             <input type="text" name="search" class="form-control" style="height: 42px;"
-                                placeholder="Find categories..." aria-label="search-category" value="">
+                                placeholder="Find categories..." aria-label="search-category" value="{{ request('search') }}">
                             <div class="input-group-prepend">
                                 <button class="btn btn-outline-secondary" type="submit">
                                     <i class="fas fa-search"></i>
@@ -54,6 +54,11 @@
         @if (session('create-success'))
         <div class="alert alert-success" id="success-message">
             {{ session('create-success') }}
+        </div>
+        @endif
+        @if (session('update-error'))
+        <div class="alert alert-danger" id="failure-message">
+            {{ session('update-error') }}
         </div>
         @endif
         <div class="card-body px-0 pb-2">
@@ -103,7 +108,7 @@
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-danger btn-sm px-3"
                                         style="border-radius: 10px; font-size: 12px;"
-                                        onclick="return confirm('Bạn có chắc chắn muốn xóa người dùng này?')">
+                                        onclick="return confirm('Are you want to delete this category?')">
                                         <i class="fas fa-trash"></i> Delete
                                     </button>
                                 </form>
@@ -173,4 +178,18 @@
     </ul>
 </nav>
 @endif
+<!-- <script>
+    $(document).on('keyup', 'input[name="search"]', function () {
+    let search = $(this).val();
+    $.ajax({
+        url: "{{ route('showCategories') }}",
+        type: 'GET',
+        data: { search: search },
+        success: function (response) {
+            $('#categories-table').html(response);
+        }
+    });
+});
+
+</script> -->
 @endsection

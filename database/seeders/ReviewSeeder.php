@@ -18,7 +18,7 @@ class ReviewSeeder extends Seeder
             [
                 'id' => 5,
                 'user_id' => 1,
-                'product_id' => 15,
+                'product_id' => 5,
                 'rating' => 5,
                 'comment' => 'good product',
                 'reply' => 'thank you <3',
@@ -27,7 +27,7 @@ class ReviewSeeder extends Seeder
             [
                 'id' => 6,
                 'user_id' => 2,
-                'product_id' => 15,
+                'product_id' => 5,
                 'rating' => 5,
                 'comment' => 'fast shipping',
                 'reply' => 'hehe',

@@ -26,6 +26,7 @@
     <!-- Stylesheets -->
     <link rel="stylesheet" href="{{ asset('assets/css/plugin/swiper.min.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('assets/css/plugin/jquery.fancybox.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('assets/css/plugin/lightbox.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('assets/css/auth.css') }}" type="text/css">
 
@@ -1333,6 +1334,7 @@
 
     <!-- External JavaScripts -->
     <script src="{{ asset('assets/js/plugins/jquery.min.js') }}"></script>
+    <script src="{{ asset('assets/js/plugins/lightbox.js') }}"></script>
     <script src="{{ asset('assets/js/plugins/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('assets/js/plugins/bootstrap-slider.min.js') }}"></script>
     <script src="{{ asset('assets/js/plugins/bootstrap.min.js') }}"></script>
