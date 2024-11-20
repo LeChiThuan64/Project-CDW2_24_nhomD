@@ -21083,35 +21083,13 @@ a.add-to-wishlist.active .flaticon.flaticon-heart {
 
 .product-info {
     display: flex;
-    flex-direction: column;
+    justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
 }
-
-.product-info h3 {
-    margin-bottom: 10px;
-}
-
-.search-container {
-    width: 100%;
-    margin-bottom: 10px;
-}
-
-#product-search {
-    width: 100%;
-    padding: 10px;
-    box-sizing: border-box;
-}
-
-.search-results {
-    width: 100%;
-}
-
-.product-image img {
-    width: 100px;
-    height: 100px;
-    object-fit: cover;
-    border: 1px solid #ddd;
+.product-info .product-image {
+    width: 200px;
+    height: 200px;
 }
 .product-details {
     flex: 1;
