@@ -26,8 +26,10 @@
     <!-- Stylesheets -->
     <link rel="stylesheet" href="<?php echo e(asset('assets/css/plugin/swiper.min.css')); ?>" type="text/css">
     <link rel="stylesheet" href="<?php echo e(asset('assets/css/plugin/jquery.fancybox.css')); ?>" type="text/css">
+    <link rel="stylesheet" href="<?php echo e(asset('assets/css/plugin/lightbox.css')); ?>" type="text/css">
     <link rel="stylesheet" href="<?php echo e(asset('assets/css/style.css')); ?>" type="text/css">
     <link rel="stylesheet" href="<?php echo e(asset('assets/css/auth.css')); ?>" type="text/css">
+
 
 
 
@@ -644,7 +646,7 @@
                         <li class="navigation__item">
                             <a href="<?php echo e(route('blog.index')); ?>" class="navigation__link">Blog</a>
                             <!-- <ul class="default-menu list-unstyled"> -->
-                                <!-- Bạn có thể thêm các menu phụ tại đây nếu cần -->
+                            <!-- Bạn có thể thêm các menu phụ tại đây nếu cần -->
                             <!-- </ul> -->
                         </li>
 
@@ -722,19 +724,19 @@
 
                     <div class="header-tools__item hover-container">
                         <?php if(auth()->check()): ?>
-                        <a class="" href="<?php echo e(route('profile')); ?>" data-aside="customerForms">
-                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <use href="#icon_user" />
-                            </svg>
-                        </a>
+                            <a class="" href="<?php echo e(route('profile')); ?>" data-aside="customerForms">
+                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <use href="#icon_user" />
+                                </svg>
+                            </a>
                         <?php else: ?>
-                        <a class="header-tools__item js-open-aside" href="#" data-aside="customerForms">
-                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <use href="#icon_user" />
-                            </svg>
-                        </a>
+                            <a class="header-tools__item js-open-aside" href="#" data-aside="customerForms">
+                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <use href="#icon_user" />
+                                </svg>
+                            </a>
                         <?php endif; ?>
 
 
@@ -1333,6 +1335,7 @@
 
     <!-- External JavaScripts -->
     <script src="<?php echo e(asset('assets/js/plugins/jquery.min.js')); ?>"></script>
+    <script src="<?php echo e(asset('assets/js/plugins/lightbox.js')); ?>"></script>
     <script src="<?php echo e(asset('assets/js/plugins/bootstrap.bundle.min.js')); ?>"></script>
     <script src="<?php echo e(asset('assets/js/plugins/bootstrap-slider.min.js')); ?>"></script>
     <script src="<?php echo e(asset('assets/js/plugins/bootstrap.min.js')); ?>"></script>
@@ -1345,6 +1348,8 @@
     <script src="<?php echo e(asset('assets/js/details-disclosure.js')); ?>" defer="defer"></script>
     <script src="<?php echo e(asset('assets/js/share.js')); ?>" defer="defer"></script>
     <script src="<?php echo e(asset('assets/js/auth.js')); ?>" defer="defer"></script>
+    <script src="<?php echo e(asset('assets/js/orders_manager.js')); ?>"></script>
+    <script src="<?php echo e(asset('assets/js/order_details.js')); ?>"></script>
 
 
     <!-- Footer Scripts -->

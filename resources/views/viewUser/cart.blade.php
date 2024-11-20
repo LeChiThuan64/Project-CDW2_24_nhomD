@@ -3,58 +3,7 @@
 @section('content')
 
 <head>
-    <style>
-    .cart-table-footer {
-        margin-top: 15px;
-        padding: 15px;
-        background-color: #f8f9fa;
-        border-radius: 5px;
-        border: 1px solid #ddd;
-    }
-
-    .cart-table-footer h4 {
-        font-size: 18px;
-        margin-bottom: 10px;
-        color: #333;
-        font-weight: bold;
-    }
-
-    .voucher-select {
-        width: 100%;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        font-size: 14px;
-        background-color: #fff;
-        color: #333;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        transition: border-color 0.2s ease-in-out;
-    }
-
-    .voucher-select:focus {
-        border-color: #007bff;
-        outline: none;
-    }
-
-    #update-cart {
-        display: inline-block;
-        margin-top: 15px;
-        padding: 10px 20px;
-        font-size: 16px;
-        color: #fff;
-        background-color: #333;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        text-transform: uppercase;
-        font-weight: bold;
-        transition: background-color 0.3s ease;
-    }
-
-    #update-cart:hover {
-        background-color: #555;
-    }
-    </style>
+<link rel="stylesheet" href="{{ asset('assets/css/cart.css') }}">
 
 </head>
 <main>

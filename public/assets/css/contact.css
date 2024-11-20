@@ -89,3 +89,60 @@
 .contact-info-item .contact-details .contact-title {
     font-weight: bold;
 }
+
+
+/* cho thời tiếc */
+.weather-widget {
+    width: 200px;
+    /* background: url('https://placehold.co/200x300') no-repeat center center; */
+    background-color: black;
+    background-size: cover;
+    border-radius: 10px;
+    color: white;
+    padding: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+.weather-widget h2 {
+    margin: 0;
+    font-size: 18px;
+}
+
+.weather-widget .current-temp {
+    font-size: 36px;
+    margin: 10px 0;
+}
+
+.weather-widget .temp-range {
+    font-size: 14px;
+}
+
+.weather-widget .weather-icon {
+    font-size: 48px;
+    margin: 10px 0;
+}
+
+.weather-widget .weather-desc {
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 5px;
+    padding: 5px;
+    margin: 10px 0;
+}
+
+.weather-widget .forecast {
+    display: flex;
+    justify-content: space-between;
+}
+
+.weather-widget .forecast .day {
+    text-align: center;
+}
+
+.weather-widget .forecast .day .icon {
+    font-size: 24px;
+}
+
+.weather-widget .forecast .day .temp {
+    font-size: 12px;
+}

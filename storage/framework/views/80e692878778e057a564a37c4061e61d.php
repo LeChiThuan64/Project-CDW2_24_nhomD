@@ -49,6 +49,8 @@
     <link href="<?php echo e(asset('assets/css/addProducts.css')); ?>" rel="stylesheet" />
     <link href="<?php echo e(asset('assets/css/list_products.css')); ?>" rel="stylesheet" />
     <link rel="stylesheet" href="<?php echo e(asset('assets/css/chatbox_admin.css')); ?>">
+    <link rel="stylesheet" href="<?php echo e(asset('assets/css/customer_list.css')); ?>">
+
 
     <!-- Toastr CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
@@ -98,9 +100,10 @@
                     <a class="nav-link text-white <?php echo e(request()->is('tables') ? 'bg-gradient-primary' : ''); ?>"
                         href="<?php echo e(url('tables')); ?>">
                         <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                            <i class="material-icons opacity-10">table_view</i>
+                            <!-- <i class="material-icons opacity-10">table_view</i> -->
+                            <i class="material-icons fa fa-user me-sm-1"></i>
                         </div>
-                        <span class="nav-link-text ms-1">Tables</span>
+                        <span class="nav-link-text ms-1">Users</span>
                     </a>
                 </li>
 
@@ -171,6 +174,26 @@
                         <span class="nav-link-text ms-1">Voucher</span>
                     </a>
                 </li>
+                <!-- Chetbox -->
+                <li class="nav-item">
+                    <a class="nav-link text-white <?php echo e(request()->is('admin.chatbox') ? 'bg-gradient-primary' : ''); ?>"
+                        href=<?php echo e(route('admin.chatbox')); ?>>
+                        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="material-icons opacity-10">chat_bubble</i>
+                        </div>
+                        <span class="nav-link-text ms-1">Chatbox</span>
+                    </a>
+                </li>
+                <!-- Orders manager-->
+                <li class="nav-item">
+                    <a class="nav-link text-white <?php echo e(request()->is('admin.orders.index') ? 'bg-gradient-primary' : ''); ?>"
+                        href=<?php echo e(route('admin.orders.index')); ?>>
+                        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="material-icons opacity-10">list_alt</i>
+                        </div>
+                        <span class="nav-link-text ms-1">Oders manager</span>
+                    </a>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link text-white " href="notifications.html">
                         <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
@@ -192,34 +215,37 @@
                     </a>
                 </li>
                 <?php if(auth()->check()): ?>
-    <!-- Nếu đã đăng nhập, hiển thị nút Logout -->
-    <li class="nav-item">
-        <a class="nav-link text-white <?php echo e(request()->is('logout') ? 'bg-gradient-primary' : ''); ?>" href="<?php echo e(route('logout')); ?>">
-            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                <i class="material-icons opacity-10">logout</i>
-            </div>
-            <span class="nav-link-text ms-1">Logout</span>
-        </a>
-    </li>
-<?php else: ?>
-    <!-- Nếu chưa đăng nhập, hiển thị nút Sign In và Sign Up -->
-    <li class="nav-item">
-        <a class="nav-link text-white <?php echo e(request()->routeIs('auth') ? 'bg-gradient-primary' : ''); ?>" href="<?php echo e(route('auth')); ?>">
-            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                <i class="material-icons opacity-10">login</i>
-            </div>
-            <span class="nav-link-text ms-1">Sign In</span>
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link text-white <?php echo e(request()->routeIs('auth') ? 'bg-gradient-primary' : ''); ?>" href="<?php echo e(route('auth')); ?>">
-            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                <i class="material-icons opacity-10">assignment</i>
-            </div>
-            <span class="nav-link-text ms-1">Sign Up</span>
-        </a>
-    </li>
-<?php endif; ?>
+                    <!-- Nếu đã đăng nhập, hiển thị nút Logout -->
+                    <li class="nav-item">
+                        <a class="nav-link text-white <?php echo e(request()->is('logout') ? 'bg-gradient-primary' : ''); ?>"
+                            href="<?php echo e(route('logout')); ?>">
+                            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                                <i class="material-icons opacity-10">logout</i>
+                            </div>
+                            <span class="nav-link-text ms-1">Logout</span>
+                        </a>
+                    </li>
+                <?php else: ?>
+                    <!-- Nếu chưa đăng nhập, hiển thị nút Sign In và Sign Up -->
+                    <li class="nav-item">
+                        <a class="nav-link text-white <?php echo e(request()->routeIs('auth') ? 'bg-gradient-primary' : ''); ?>"
+                            href="<?php echo e(route('auth')); ?>">
+                            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                                <i class="material-icons opacity-10">login</i>
+                            </div>
+                            <span class="nav-link-text ms-1">Sign In</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white <?php echo e(request()->routeIs('auth') ? 'bg-gradient-primary' : ''); ?>"
+                            href="<?php echo e(route('auth')); ?>">
+                            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                                <i class="material-icons opacity-10">assignment</i>
+                            </div>
+                            <span class="nav-link-text ms-1">Sign Up</span>
+                        </a>
+                    </li>
+                <?php endif; ?>
 
 
 
@@ -244,6 +270,8 @@
     <script src="<?php echo e(asset('assets/js/addProducts.js')); ?>"></script>
     <script src="<?php echo e(asset('assets/js/list_products.js')); ?>"></script>
     <script src="<?php echo e(asset('assets/js/chatbox-admin.js')); ?>"></script>
+    <script src="<?php echo e(asset('assets/js/orders_admin.js')); ?>"></script>
+    <script src="<?php echo e(asset('assets/js/customer_list.js')); ?>"></script>
 
     <!-- Thêm jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

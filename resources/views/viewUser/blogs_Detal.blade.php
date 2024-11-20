@@ -3,39 +3,7 @@
 @section('content')
 
 <HEad>
-  <STYle>
-    .blog-image {
-      max-width: 50%;
-      /* Đặt kích thước tối đa của hình ảnh (thay đổi tùy ý) */
-      height: auto;
-      /* Giữ tỷ lệ của hình ảnh */
-      margin: 0 auto;
-      /* Căn giữa hình ảnh */
-      display: block;
-      /* Đảm bảo hình ảnh là phần tử khối */
-    }
-
-    .mw-930 p {
-      font-size: 18px;
-      line-height: 1.6;
-    }
-
-    .review-textt {
-      font-size: 18px;
-      line-height: 1.6;
-    }
-
-    .blog-content img {
-      max-width: 100%;
-      /* Đảm bảo ảnh không vượt quá chiều rộng của container */
-      height: auto;
-      /* Giữ tỉ lệ ảnh để không bị biến dạng */
-      display: block;
-      /* Giúp ảnh căn chỉnh đẹp hơn */
-      margin: 0 auto;
-      /* Căn giữa ảnh trong content */
-    }
-  </STYle>
+<link rel="stylesheet" href="{{ asset('assets/css/blogs_Detal.css') }}">
 </HEad>
 <main>
 
@@ -303,5 +271,6 @@
     document.getElementById('form-input-review').focus();
   }
 </script>
+
 <div class="mb-5 pb-xl-5"></div>
 @endsection
