@@ -45,8 +45,8 @@
           <td>{{ $user->name }}</td>
           <td>{{ $user->orders_count }}</td>
           <td>{{ number_format($user->orders_sum_total, 0, ',', '.') }} VND</td>
-          <td>product1</td>
-          <td class="align-middle text-center">
+          <td>{{ $user->top_product ? $user->top_product->name : 'N/A' }}</td>
+          <td class=" align-middle text-center">
           <a href="#" class="btn btn-info btn-sm px-3 view-orders" style="border-radius: 5px; font-size: 14px;"
             data-id="{{ $user->id }}" data-name="{{ $user->name }}" data-toggle="tooltip"
             data-original-title="View all orders">
@@ -71,16 +71,8 @@
                 <th>Trạng thái</th>
               </tr>
             </thead>
-            <tbody>
-              <tr>
-                <td>1234</td>
-                <td>25</td>
-                <td>250.000 VND</td>
-                <td>01234567890</td>
-                <td>thu duc</td>
-                <td>payment</td>
-                <td>pendding</td>
-              </tr>
+            <tbody id="ordersList">
+
             </tbody>
           </table>
           <button type="button" id="closeOrderDetailsManager" class="btn btn-secondary mt-3">Xác nhận</button>

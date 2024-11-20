@@ -320,6 +320,7 @@ Route::get('/order-manager', [OrderManagerController::class, 'show'])->name('ord
 Route::get('/orders/{id}/detail', [OrdersDetailsController::class, 'show'])->name('orders.detail');
 Route::post('/orders/{id}/update', [OrdersDetailsController::class, 'update'])->name('order.update');
 
+
 //Router update trạng thái đơn hàng
 Route::post('/orders/{id}/received', [OrderManagerController::class, 'markAsReceived'])->name('orders.received');
 
@@ -331,6 +332,8 @@ Route::delete('/orders/{id}/delete', [OrdersAdminController::class, 'deleteOrder
 Route::get('/orders/{id}/error-details', [OrderManagerController::class, 'getErrorDetails'])->name('orders.errorDetails');
 Route::post('/orders/{id}/resend', [OrdersDetailsController::class, 'resendOrder'])->name('orders.resend');
 Route::post('/orders/{id}/cancel', [OrderManagerController::class, 'cancelOrder'])->name('orders.cancel');
+Route::get('/api/users/{id}/orders', [CustomerListController::class, 'getUserOrders']);
+
 
 //Route cho trang danh sách khách hàng admin
 Route::get('/customer-list', [CustomerListController::class, 'index'])->name('customer.list');
