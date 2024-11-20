@@ -226,6 +226,8 @@ Route::delete('/vocher/{id}', [VocherController::class, 'destroy'])->name('voche
 
 Route::get('/product/{id}', [ProductController::class, 'show'])->name('product.show');
 //Route tìm kiếm product
+Route::get('/search-product', [ProductController::class, 'searchComparsion']);
+
 // Route để hiển thị wishlist
 Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist.index');
 
@@ -234,9 +236,10 @@ Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist.in
 Route::post('/wishlist/add/{productId}', [WishlistController::class, 'add'])->name('wishlist.add');
 
 Route::delete('/wishlist/remove/{wishlistId}', [WishlistController::class, 'remove'])->name('wishlist.remove');
-
-// Tìm kiếm
+// Tim kiem
 Route::get('/search-results', [ProductController::class, 'search'])->name('product.search');
+
+
 
 // Review
 Route::post('/product/{productId}/review', [ProductController::class, 'addReview'])->name('addReview');
@@ -255,6 +258,7 @@ Route::get('/products/showList', [ProductsController::class, 'showListProducts']
 Route::delete('/products/destroy/{id}', [ProductsController::class, 'destroy'])->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
 Route::get('/products/search', [ProductsController::class, 'searchProducts'])->name('products.search');
 Route::post('/search', [ProductsController::class, 'search'])->name('products.instant');
+
 
 
 

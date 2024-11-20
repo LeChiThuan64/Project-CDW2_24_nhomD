@@ -95,60 +95,60 @@ class ProductController extends Controller
             'rating' => 'required|integer|min:1|max:5',
             'comment' => 'required|string|max:255',
         ]);
-    
+
         // Tìm sản phẩm
         $product = Product::findOrFail($productId);
-    
+
         // Kiểm tra nếu user đã đánh giá sản phẩm này
         $existingReview = $product->reviews()->where('user_id', auth()->id())->first();
         if ($existingReview) {
             return redirect()->back()->with('add-review-error', 'You have already reviewed this product.');
         }
-    
+
         // Lưu review vào cơ sở dữ liệu
         $review = $product->reviews()->create([
             'user_id' => auth()->id(),
             'rating' => $request->input('rating'),
             'comment' => $request->input('comment'),
         ]);
-    
+
         // Kiểm tra số lượng ảnh tải lên
         $uploadedFiles = $request->file('images');
         // if ($uploadedFiles && count($uploadedFiles) > 4) {
         //     return redirect()->back()->with('add-review-error', 'You can only upload up to 4 images.');
         // }
-    
+
         // Xử lý hình ảnh nếu có
         if ($uploadedFiles) {
             foreach ($uploadedFiles as $imageFile) {
                 if ($imageFile) {
                     // Tạo tên file ảnh duy nhất
                     $imageName = $imageFile->getClientOriginalName();
-    
+
                     // Đường dẫn lưu ảnh
                     $imagePath = 'assets/img/reviews/';
                     $fullImagePath = public_path($imagePath);
                     if (!file_exists($fullImagePath)) {
                         mkdir($fullImagePath, 0755, true);
                     }
-    
+
                     // Lưu file ảnh vào thư mục
                     $imageFile->move($fullImagePath, $imageName);
-    
+
                     // Lưu thông tin ảnh vào bảng review_images
                     ReviewImage::create([
                         'review_id' => $review->id,
-                        'image_url' => $imageName, 
+                        'image_url' => $imageName,
                         'created_at' => now(),
                     ]);
                 }
             }
         }
-    
+
         // Trả về với thông báo thành công
         return redirect()->back()->with('add-review-success', 'Review added successfully!');
     }
-    
+
 
 
 
@@ -196,6 +196,67 @@ class ProductController extends Controller
         } catch (\Exception $e) {
             // Xử lý lỗi và thông báo
             return redirect()->back()->with('error', 'Error occurred while searching for product: ' . $e->getMessage());
+        }
+    }
+    public function searchComparsion(Request $request)
+    {
+        try {
+            $product_id = $request->query('product_id');
+            $product_name = $request->query('product_name');
+
+            if ($product_id || $product_name) {
+                $query = Product::with(['images', 'productSizeColors']); // Thêm relationship images              
+
+                // Nhóm điều kiện tìm kiếm với hàm nặc danh (closure)
+                $query->where(function ($q) use ($product_id, $product_name) {
+                    if ($product_id) {
+                        $q->where('product_id', $product_id);
+                    }
+
+                    if ($product_name) {
+                        $q->orWhere('name', 'like', '%' . $product_name . '%');
+                    }
+                });
+
+                $product = $query->first();
+
+                if ($product) {
+                    // Lấy danh sách hình ảnh của sản phẩm
+                    $images = $product->images->pluck('image_url')->toArray(); // Sử dụng `pluck` để lấy mảng các URL ảnh
+
+                    // Transform dữ liệu trước khi trả về
+                    $productData = [
+                        'product_id' => $product->product_id,
+                        'name' => $product->name,
+                        'description' => $product->description,
+                        'price' => $product->price,
+                        'quantity' => $product->quantity,
+                        'images' => $images,
+                    ];
+
+                    return response()->json([
+                        'success' => true,
+                        'product' => $productData
+                    ]);
+                }
+
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Product not found'
+                ], 404);
+            }
+
+            return response()->json([
+                'success' => false,
+                'message' => 'No search criteria provided'
+            ], 400);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error occurred while searching for product',
+                'error' => $e->getMessage()
+            ], 500);
         }
     }
 
