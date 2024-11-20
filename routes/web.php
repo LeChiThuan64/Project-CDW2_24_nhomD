@@ -226,7 +226,6 @@ Route::delete('/vocher/{id}', [VocherController::class, 'destroy'])->name('voche
 
 Route::get('/product/{id}', [ProductController::class, 'show'])->name('product.show');
 //Route tìm kiếm product
-Route::get('/search-product', [ProductController::class, 'search']);
 // Route để hiển thị wishlist
 Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist.index');
 
@@ -313,7 +312,7 @@ Route::delete('/admin/categories/delete/{id}', [CategoryController::class, 'dest
 Route::get('/admin/categories/update/{id}', [CategoryController::class, 'edit'])->name('category.edit');
 Route::put('/admin/categories/update/{id}', [CategoryController::class, 'update'])->name('category.update');
 Route::post('/admin/categories/create', [CategoryController::class, 'create'])->name('category.create');
-Route::post('/admin/categories/create', [CategoryController::class, 'showCreateForm'])->name('category.showCreate');
+Route::get('/admin/categories/create', [CategoryController::class, 'showCreateForm'])->name('category.showCreate');
 
 // Router để hiển thị trang quản lý đơn hàng
 Route::get('/order-manager', [OrderManagerController::class, 'show'])->name('order.manager.show');

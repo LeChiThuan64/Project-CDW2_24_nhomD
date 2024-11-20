@@ -22682,3 +22682,21 @@ body.coming-soon-page .header {
     margin-left: auto; /* Căn giữa nút */
     margin-right: auto; /* Căn giữa nút */
 }
+
+/*review */
+.review-images {
+    display: flex;
+    gap: 10px; /* Khoảng cách giữa các hình ảnh */
+    margin-top: 10px; /* Khoảng cách từ phần text đến hình ảnh */
+    overflow-x: auto; /* Cuộn ngang nếu hình ảnh quá nhiều */
+    padding: 5px 0;
+}
+
+.review-image-item {
+    width: 70px; /* Đặt kích thước cố định cho hình ảnh */
+    height: 70px;
+    object-fit: cover; /* Đảm bảo hình ảnh không bị méo */
+    border-radius: 5px; /* Bo góc hình ảnh */
+    cursor: pointer; /* Hiệu ứng con trỏ */
+    border: 1px solid #ddd; /* Đường viền nhạt */
+}

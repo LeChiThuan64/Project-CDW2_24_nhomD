@@ -78,103 +78,78 @@
     <div class="container mw-1620 bg-white">
       <div class="mb-3 mb-xl-5 pt-1 pb-2"></div>
 
-      <section class="brands-carousel container">
-        <h2 class="d-none">Brands</h2>
-        <div class="position-relative">
-          <div class="swiper-container js-swiper-slider"
-            data-settings='{
-              "autoplay": {
-                "delay": 5000
+      <section class="blog-carousel container">
+      <div class="d-flex align-items-center justify-content-between flex-wrap mb-3 pb-xl-2 mb-xl-4">
+        <!-- <h2 class="section-title fw-normal text-center">Categories</h2> -->
+        <!-- <a class="btn-link btn-link_md default-underline text-uppercase fw-medium" href="{{ route('locgia') }}">See all categories</a> -->
+      </div>
+
+      <div class="position-relative">
+        <div class="swiper-container js-swiper-slider"
+          data-settings='{
+            "autoplay": {
+              "delay": 5000
+            },
+            "slidesPerView": 3,
+            "slidesPerGroup": 3,
+            "effect": "none",
+            "loop": true,
+            "breakpoints": {
+              "320": {
+                "slidesPerView": 1,
+                "slidesPerGroup": 1,
+                "spaceBetween": 14
               },
-              "slidesPerView": 7,
-              "slidesPerGroup": 7,
-              "effect": "none",
-              "loop": true,
-              "breakpoints": {
-                "320": {
-                  "slidesPerView": 2,
-                  "slidesPerGroup": 2,
-                  "spaceBetween": 14
-                },
-                "768": {
-                  "slidesPerView": 4,
-                  "slidesPerGroup": 4,
-                  "spaceBetween": 24
-                },
-                "992": {
-                  "slidesPerView": 7,
-                  "slidesPerGroup": 1,
-                  "spaceBetween": 30,
-                  "pagination": false
-                }
+              "768": {
+                "slidesPerView": 2,
+                "slidesPerGroup": 2,
+                "spaceBetween": 24
+              },
+              "992": {
+                "slidesPerView": 3,
+                "slidesPerGroup": 1,
+                "spaceBetween": 30
               }
-            }'>
-            <div class="swiper-wrapper">
-              <div class="swiper-slide">
-                <img loading="lazy" src="../images/brands/brand1.png" width="120" height="20" alt="">
+            }
+          }'>
+          <div class="swiper-wrapper blog-grid row-cols-xl-3">
+            @foreach($categories as $category)
+            <div class="swiper-slide blog-grid__item mb-4">
+              <div class="grid-banner__item position-relative mb-3">
+              <img loading="lazy" class="w-100 h-auto" src="{{ asset('assets/img/categories/' . $category->image) }}" width="450" height="450" alt="">
+              <div class="content_abs bottom-0 text-center mx-3 mx-xl-4 mb-3 mb-xl-4 pb-2 px-2">
+                <a href="{{ route('locgia.category', $category->category_id) }}" class="btn btn-outline-primary border-0 fs-base fw-normal btn-45 border-circle d-inline-flex align-items-center py-1">
+                  <span>{{ $category->category_name }}</span>
+                </a>
+              </div>                
               </div>
-              <div class="swiper-slide">
-                <img loading="lazy" src="../images/brands/brand2.png" width="87" height="20" alt="">
-              </div>
-              <div class="swiper-slide">
-                <img loading="lazy" src="../images/brands/brand3.png" width="132" height="22" alt="">
-              </div>
-              <div class="swiper-slide">
-                <img loading="lazy" src="../images/brands/brand4.png" width="72" height="21" alt="">
-              </div>
-              <div class="swiper-slide">
-                <img loading="lazy" src="../images/brands/brand5.png" width="123" height="31" alt="">
-              </div>
-              <div class="swiper-slide">
-                <img loading="lazy" src="../images/brands/brand6.png" width="137" height="22" alt="">
-              </div>
-              <div class="swiper-slide">
-                <img loading="lazy" src="../images/brands/brand7.png" width="94" height="21" alt="">
-              </div>
-            </div><!-- /.swiper-wrapper -->
-          </div><!-- /.swiper-container js-swiper-slider -->
-        </div><!-- /.position-relative -->
-  
-      </section><!-- /.products-carousel container -->
+            </div>
+            @endforeach
+          </div><!-- /.swiper-wrapper -->
+        </div><!-- /.swiper-container js-swiper-slider -->
+      </div><!-- /.position-relative -->
+    </section>
 
-      <div class="mb-3 mb-xl-5 pt-1 pb-2"></div>
-
-      <section class="grid-banner container mb-3">
+      <!-- <section class="grid-banner container mb-3">
         <h2 class="d-none">Banner</h2>
         <div class="row">
+          @foreach ($categories as $category)
           <div class="col-lg-4">
             <div class="grid-banner__item position-relative mb-3">
-              <img loading="lazy" class="w-100 h-auto" src="../images/home/demo10/grid_banner_1.jpg" width="450" height="450" alt="">
+              <img loading="lazy" class="w-100 h-auto" src="{{ asset('assets/img/categories/' . $category->image) }}" width="450" height="450" alt="">
               <div class="content_abs bottom-0 text-center mx-3 mx-xl-4 mb-3 mb-xl-4 pb-2 px-2">
-                <a href="shop1.html" class="btn btn-outline-primary border-0 fs-base fw-normal btn-45 border-circle d-inline-flex align-items-center py-1">
-                  <span>Shop Women</span>
+                <a href="{{ route('locgia.category', $category->category_id) }}" class="btn btn-outline-primary border-0 fs-base fw-normal btn-45 border-circle d-inline-flex align-items-center py-1">
+                  <span>{{ $category->category_name }}</span>
                 </a>
-              </div><!-- /.content_abs .content_center -->
+              </div>
             </div>
-          </div><!-- /.col-lg-4 -->
-          <div class="col-lg-4">
-            <div class="grid-banner__item position-relative mb-3">
-              <img loading="lazy" class="w-100 h-auto" src="../images/home/demo10/grid_banner_2.jpg" width="450" height="450" alt="">
-              <div class="content_abs bottom-0 text-center mx-3 mx-xl-4 mb-3 mb-xl-4 pb-2 px-2">
-                <a href="shop1.html" class="btn btn-outline-primary border-0 fs-base fw-normal btn-45 border-circle d-inline-flex align-items-center py-1">
-                  <span>Shop Men</span>
-                </a>
-              </div><!-- /.content_abs .content_center -->
-            </div>
-          </div><!-- /.col-lg-4 -->
-          <div class="col-lg-4">
-            <div class="grid-banner__item position-relative mb-3">
-              <img loading="lazy" class="w-100 h-auto" src="../images/home/demo10/grid_banner_3.jpg" width="450" height="450" alt="">
-              <div class="content_abs bottom-0 text-center mx-3 mx-xl-4 mb-3 mb-xl-4 pb-2 px-2">
-                <a href="shop1.html" class="btn btn-outline-primary border-0 fs-base fw-normal btn-45 border-circle d-inline-flex align-items-center py-1">
-                  <span>Shop Kids</span>
-                </a>
-              </div><!-- /.content_abs .content_center -->
-            </div>
-          </div><!-- /.col-lg-4 -->
-        </div><!-- /.row -->
-      </section>
+          </div>
+          @endforeach
+      </section> -->
+      
 
+      <div class="mb-4 pb-4 mb-xl-4 mt-xl-3 pt-xl-3 pb-xl-4"></div>
+      
       <div class="mb-4 pb-4 mb-xl-4 mt-xl-3 pt-xl-3 pb-xl-4"></div>
   
       <section class="products-carousel container">
@@ -1751,148 +1726,22 @@
     </section>
 
     <div class="mb-4 pb-4 mb-xl-4 mt-xl-3 pt-xl-3 pb-xl-4"></div>
-
-    <section class="grid-banner container mb-3">
+<!-- <section class="grid-banner container mb-3">
       <div class="row">
+        @foreach ($categories as $category)
         <div class="col-lg-4">
           <div class="grid-banner__item position-relative mb-3">
-            <img loading="lazy" class="w-100 h-auto" src="../images/home/demo10/grid_banner_4.jpg" width="450" height="600" alt="">
+            <img loading="lazy" class="w-100 h-auto" src="{{ asset('assets/img/categories/' . $category->image) }}" width="450" height="600" alt="a">
             <div class="content_abs bottom-0 left-0 right-0 mx-3 mx-md-4 mx-xl-5 py-2 bg-white mb--1">
-              <h3 class="my-2 pt-1 text-center">Leggins</h3>
-            </div><!-- /.content_abs .content_center -->
-          </div>
-        </div><!-- /.col-lg-4 -->
-        <div class="col-lg-4">
-          <div class="grid-banner__item position-relative mb-3">
-            <img loading="lazy" class="w-100 h-auto" src="../images/home/demo10/grid_banner_5.jpg" width="450" height="600" alt="">
-            <div class="content_abs bottom-0 left-0 right-0 mx-3 mx-md-4 mx-xl-5 py-2 bg-white mb--1">
-              <h3 class="my-2 pt-1 text-center">Jackets & Coats</h3>
-            </div><!-- /.content_abs .content_center -->
-          </div>
-        </div><!-- /.col-lg-4 -->
-        <div class="col-lg-4">
-          <div class="grid-banner__item position-relative mb-3">
-            <img loading="lazy" class="w-100 h-auto" src="../images/home/demo10/grid_banner_6.jpg" width="450" height="600" alt="">
-            <div class="content_abs bottom-0 left-0 right-0 mx-3 mx-md-4 mx-xl-5 py-2 bg-white mb--1">
-              <h3 class="my-2 pt-1 text-center">Fitness & Yoga</h3>
-            </div><!-- /.content_abs .content_center -->
-          </div>
-        </div><!-- /.col-lg-4 -->
-      </div><!-- /.row -->
-    </section>
-
-    <div class="mb-4 pb-4 mb-xl-4 mt-xl-3 pt-xl-3 pb-xl-4"></div>
-
-    <!--<section class="lookbook-container container">
-      <h2 class="section-title fw-normal mb-3 pb-2 mb-xl-4">Featured Products</h2>
-
-      <div class="row">
-        <div class="col-lg-7">
-          <div class="lookbook-products position-relative">
-            <img loading="lazy" class="h-auto" src="../images/home/demo10/lookbook-bg.jpg" width="770" height="750" alt="">
-            <button class="popover-point type3 position-absolute" style="left: 28%; top: 17%;" data-bs-toggle="popover" data-bs-trigger="focus" data-bs-content='
-              <div class="popover-product">
-                <a href="product1_simple.html">
-                  <img loading="lazy" class="mb-3" src="../images/home/demo10/product-5-1.jpg" alt="">
-                </a>
-                <p class="fw-medium mb-0"><a href="product1_simple.html">Cableknit Shawl</a></p>
-                <p class="mb-0">$129</p>
-              </div>
-            '><span></span></button>
-            <button class="popover-point type3 position-absolute" style="left: 28%; top: 44%;" data-bs-toggle="popover" data-bs-trigger="focus" data-bs-content='
-              <div class="popover-product">
-                <a href="product1_simple.html">
-                  <img loading="lazy" class="mb-3" src="../images/home/demo10/product-5-1.jpg" alt="">
-                </a>
-                <p class="fw-medium mb-0"><a href="product1_simple.html">Cableknit Shawl</a></p>
-                <p class="mb-0">$129</p>
-              </div>
-            '><span></span></button>
-            <button class="popover-point type3 position-absolute" style="left: 44%; top: 71%;" data-bs-toggle="popover" data-bs-trigger="focus" data-bs-content='
-              <div class="popover-product">
-                <a href="product1_simple.html">
-                  <img loading="lazy" class="mb-3" src="../images/home/demo10/product-5-1.jpg" alt="">
-                </a>
-                <p class="fw-medium mb-0"><a href="product1_simple.html">Cableknit Shawl</a></p>
-                <p class="mb-0">$129</p>
-              </div>
-            '><span></span></button>
-          </div>
-        </div>
-        <div class="col-lg-5 py-4 py-xl-5 d-flex align-items-center">
-          <div class="w-100">
-            <div class="row">
-              <div class="col-lg-2"></div>
-              <div class="col-lg-7">
-                <div class="position-relative">
-                  <div class="swiper-container js-swiper-slider"
-                    data-settings='{
-                      "slidesPerView": 1,
-                      "slidesPerGroup": 1,
-                      "effect": "none",
-                      "loop": true,
-                      "pagination": {
-                        "el": ".lookbook-container .slideshow-pagination",
-                        "type": "bullets",
-                        "clickable": true
-                      }
-                    }'>
-                    <div class="swiper-wrapper">
-                      <div class="swiper-slide product-card">
-                        <div class="pc__img-wrapper">
-                          <a href="product1_simple.html">
-                            <img loading="lazy" src="../images/home/demo10/product-5-1.jpg" width="320" height="388" alt="Cropped Faux leather Jacket" class="pc__img">
-                          </a>
-                          <button class="pc__atc btn anim_appear-bottom btn position-absolute border-0 text-uppercase fw-medium js-add-cart js-open-aside" data-aside="cartDrawer" title="Add To Cart">Add To Cart</button>
-                        </div>
-          
-                        <div class="pc__info position-relative">
-                          <p class="pc__category text-uppercase">Hummel</p>
-                          <h6 class="pc__title mb-2"><a href="product1_simple.html">Cableknit Shawl</a></h6>
-                          <div class="product-card__price d-flex">
-                            <span class="money price price-old">$129</span>
-                            <span class="money price price-sale">$99</span>
-                          </div>
-
-                          <button class="pc__btn-wl position-absolute top-0 end-0 bg-transparent border-0 js-add-wishlist" title="Add To Wishlist">
-                            <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><use href="#icon_heart" /></svg>
-                          </button>
-                        </div>
-                      </div>
-                      <div class="swiper-slide product-card">
-                        <div class="pc__img-wrapper">
-                          <a href="product1_simple.html">
-                            <img loading="lazy" src="../images/home/demo10/product-5-1.jpg" width="320" height="388" alt="Cropped Faux leather Jacket" class="pc__img">
-                          </a>
-                          <button class="pc__atc btn anim_appear-bottom btn position-absolute border-0 text-uppercase fw-medium js-add-cart js-open-aside" data-aside="cartDrawer" title="Add To Cart">Add To Cart</button>
-                        </div>
-          
-                        <div class="pc__info position-relative">
-                          <p class="pc__category text-uppercase">Hummel</p>
-                          <h6 class="pc__title mb-2"><a href="product1_simple.html">Cableknit Shawl</a></h6>
-                          <div class="product-card__price d-flex">
-                            <span class="money price price-old">$129</span>
-                            <span class="money price price-sale">$99</span>
-                          </div>
-
-                          <button class="pc__btn-wl position-absolute top-0 end-0 bg-transparent border-0 js-add-wishlist" title="Add To Wishlist">
-                            <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><use href="#icon_heart" /></svg>
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="slideshow-pagination position-right-center position-right-2"></div>
-                </div>
-              </div>
+              <h3 class="my-2 pt-1 text-center">{{ $category->category_name }}</h3>
             </div>
           </div>
-        </div>
+        </div> 
+        @endforeach
       </div>
-    </section>-->
+    </section> -->
 
-    <div class="mb-4 pb-4 mb-xl-4 mt-xl-3 pt-xl-3 pb-xl-4"></div>
+    <!-- <div class="mb-4 pb-4 mb-xl-4 mt-xl-3 pt-xl-3 pb-xl-4"></div> -->
 
     <section class="products-carousel container">
       <div class="d-flex align-items-center justify-content-between flex-wrap mb-3 pb-xl-2 mb-xl-4">

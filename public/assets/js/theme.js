@@ -1922,15 +1922,14 @@ $(document).ready(function() {
               updatedData: updatedData  // Gửi dữ liệu đã thu thập
           },
           success: function(response) {
-              alert('Giỏ hàng đã được cập nhật!');
+              alert('Update cart successfully!');
               var newTotal = 0;
               
-
               // Cập nhật lại số lượng sản phẩm trong giỏ hàng và tính tổng số tiền
               $('.cart-table tbody tr').each(function() {
                   var cartItemId = $(this).data('cart-item-id');
                   var updatedQuantity = $('input[name="quantity[' + cartItemId + ']"]').val();
-                  var price = parseFloat($(this).find('.shopping-cart__product-price').text().replace(' VND', ''));
+                  var price = parseFloat($(this).find('.shopping-cart__product-price').text().replace(' VND', '').replace(/\./g, ''));
                   var subtotal = updatedQuantity * price;
                   $(this).find('.shopping-cart__subtotal').text(subtotal + ' VND');
                   newTotal += subtotal;
@@ -2507,7 +2506,7 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 });
 
-
+/*Preview */
 
 
 
