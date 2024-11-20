@@ -93,32 +93,5 @@
             </div>
         </div>
     </section>
-    <!-- Form Hủy Đơn Hàng -->
-    <div id="cancelOrderFormContainer" class="cancel-order-form" style="display: none;">
-        <div class="cancel-order-box">
-            <h4>Lý do hủy đơn hàng</h4>
-            <form id="cancelOrderForm">
-                <input type="hidden" id="orderId" name="orderId" value="">
-                <div>
-                    <input type="radio" id="reason1" name="cancelReason" value="Thay đổi ý định mua" required>
-                    <label for="reason1">Thay đổi ý định mua</label>
-                </div>
-                <div>
-                    <input type="radio" id="reason2" name="cancelReason" value="Mua nhầm sản phẩm" required>
-                    <label for="reason2">Mua nhầm sản phẩm</label>
-                </div>
-                <div>
-                    <input type="radio" id="reason3" name="cancelReason" value="Khác" required>
-                    <label for="reason3">Khác</label>
-                </div>
-                <div id="otherReasonContainer" style="display: none;">
-                    <textarea id="otherReason" name="otherReason" rows="4" class="form-control mt-2"
-                        placeholder="Nhập lý do khác"></textarea>
-                </div>
-                <button type="button" id="confirmCancel" class="btn btn-danger mt-3">Xác nhận hủy</button>
-                <button type=" button" id="closeForm" class="btn btn-secondary mt-3">Đóng</button>
-            </form>
-        </div>
-    </div>
 </main>
 @endsection

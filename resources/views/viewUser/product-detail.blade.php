@@ -2,26 +2,26 @@
 @section('title', 'Product detail')
 @section('content')
 @if (session('add-review-error'))
-<script>
-alert("{{ session('add-review-error') }}");
-</script>
+    <script>
+        alert("{{ session('add-review-error') }}");
+    </script>
 @endif
 
 @if (session('add-review-success'))
-<script>
-alert("{{ session('add-review-success') }}");
-</script>
+    <script>
+        alert("{{ session('add-review-success') }}");
+    </script>
 @endif
 
 @if (session('add-wishlist-success'))
-<script>
-    alert("{{ session('add-wishlist-success') }}");
-</script>
+    <script>
+        alert("{{ session('add-wishlist-success') }}");
+    </script>
 @endif
 @if (session('delete-wishlist-success'))
-<script>
-    alert("{{ session('delete-wishlist-success') }}");
-</script>
+    <script>
+        alert("{{ session('delete-wishlist-success') }}");
+    </script>
 @endif
 
 <main>
@@ -34,13 +34,13 @@ alert("{{ session('add-review-success') }}");
                         <div class="swiper-container">
                             <div class="swiper-wrapper">
                                 @if (!empty($product['images']) && isset($product['images'][0]))
-                                <div class="swiper-slide product-single__image-item">
-                                    <img id="mainImage" loading="lazy" class="h-auto"
-                                        src="{{ asset($product['images'][0]) }}" width="674" height="674"
-                                        alt="Product Image">
-                                </div>
+                                    <div class="swiper-slide product-single__image-item">
+                                        <img id="mainImage" loading="lazy" class="h-auto"
+                                            src="{{ asset($product['images'][0]) }}" width="674" height="674"
+                                            alt="Product Image">
+                                    </div>
                                 @else
-                                <p>No images available</p>
+                                    <p>No images available</p>
                                 @endif
                             </div>
 
@@ -58,10 +58,10 @@ alert("{{ session('add-review-success') }}");
                         <div class="swiper-container">
                             <div class="swiper-wrapper">
                                 @foreach ($product['images'] as $image)
-                                <div class="swiper-slide product-single__image-item">
-                                    <img loading="lazy" class="h-auto thumbnail" src="{{ $image }}" width="104"
-                                        height="104" alt="" onclick="changeMainImage('{{ $image }}', this)">
-                                </div>
+                                    <div class="swiper-slide product-single__image-item">
+                                        <img loading="lazy" class="h-auto thumbnail" src="{{ $image }}" width="104"
+                                            height="104" alt="" onclick="changeMainImage('{{ $image }}', this)">
+                                    </div>
                                 @endforeach
                             </div>
                         </div>
@@ -81,14 +81,17 @@ alert("{{ session('add-review-success') }}");
                 <div class="product-single__rating">
                     <div class="reviews-group d-flex">
                         @for ($i = 0; $i < 5; $i++) <svg class="review-star" viewBox="0 0 9 9"
-                            xmlns="http://www.w3.org/2000/svg">
-                            @if ($i
-                            < $product['averageRating']) <use href="#icon_star" /> <!-- Sao đầy -->
-                            @else
-                            <use href="#icon_star_empty" /> <!-- Sao trống -->
-                            @endif
-                            </svg>
-                            @endfor
+                                                    xmlns="http://www.w3.org/2000/svg">
+                                                    @if (
+                                                            $i
+                                                            < $product['averageRating']
+                                                        )
+                                                                                <use href="#icon_star" /> <!-- Sao đầy -->
+                                                    @else
+                                                        <use href="#icon_star_empty" /> <!-- Sao trống -->
+                                                    @endif
+                                                </svg>
+                        @endfor
                     </div>
                     <span class="reviews-note text-lowercase text-secondary ms-1">{{ $product['reviewCount'] }}
                         reviews</span>
@@ -108,12 +111,12 @@ alert("{{ session('add-review-success') }}");
                             <label>Sizes</label>
                             <div class="swatch-list">
                                 @foreach($product['sizes'] as $size)
-                                @if ($size)
-                                <input type="radio" name="size_id" id="swatch-size-{{ $size->id }}"
-                                    value="{{ $size->id }}">
-                                <label class="swatch js-swatch" for="swatch-size-{{ $size->id }}"
-                                    title="{{ $size->name }}">{{ $size->name }}</label>
-                                @endif
+                                    @if ($size)
+                                        <input type="radio" name="size_id" id="swatch-size-{{ $size->id }}"
+                                            value="{{ $size->id }}">
+                                        <label class="swatch js-swatch" for="swatch-size-{{ $size->id }}"
+                                            title="{{ $size->name }}">{{ $size->name }}</label>
+                                    @endif
                                 @endforeach
                             </div>
                         </div>
@@ -121,12 +124,12 @@ alert("{{ session('add-review-success') }}");
                             <label>Color</label>
                             <div class="swatch-list">
                                 @foreach($product['colors'] as $color)
-                                @if ($color)
-                                <input type="radio" name="color_id" id="swatch-color-{{ $color->id }}"
-                                    value="{{ $color->id }}">
-                                <label class="swatch swatch-color js-swatch" for="swatch-color-{{ $color->id }}"
-                                    style="color: {{ $color->color_code }};" title="{{ $color->name }}"></label>
-                                @endif
+                                    @if ($color)
+                                        <input type="radio" name="color_id" id="swatch-color-{{ $color->id }}"
+                                            value="{{ $color->id }}">
+                                        <label class="swatch swatch-color js-swatch" for="swatch-color-{{ $color->id }}"
+                                            style="color: {{ $color->color_code }};" title="{{ $color->name }}"></label>
+                                    @endif
                                 @endforeach
                             </div>
                         </div>
@@ -339,53 +342,53 @@ alert("{{ session('add-review-success') }}");
                     <h2 class="product-single__reviews-title">Reviews</h2>
                     <div class="product-single__reviews-list">
                         @foreach ($product['reviews'] as $review)
-                        <div class="product-single__reviews-item">
-                            <div class="customer-avatar">
-                                <img loading="lazy" src="{{ asset($review->user->profile_image) }}"
-                                    alt="{{ $review->user->name }}">
-                            </div>
-                            <div class="customer-review">
-                                <div class="customer-name">
-                                    <h6>{{ $review->user->name }}</h6>
+                            <div class="product-single__reviews-item">
+                                <div class="customer-avatar">
+                                    <img loading="lazy" src="{{ asset($review->user->profile_image) }}"
+                                        alt="{{ $review->user->name }}">
                                 </div>
-                                <div class="reviews-group d-flex">
-                                    {{-- Hiển thị sao đánh giá --}}
-                                    @for ($i = 0; $i < $review->rating; $i++)
-                                        <svg class="review-star" viewBox="0 0 9 9" xmlns="http://www.w3.org/2000/svg">
-                                            <use href="#icon_star" />
-                                        </svg>
+                                <div class="customer-review">
+                                    <div class="customer-name">
+                                        <h6>{{ $review->user->name }}</h6>
+                                    </div>
+                                    <div class="reviews-group d-flex">
+                                        {{-- Hiển thị sao đánh giá --}}
+                                        @for ($i = 0; $i < $review->rating; $i++)
+                                            <svg class="review-star" viewBox="0 0 9 9" xmlns="http://www.w3.org/2000/svg">
+                                                <use href="#icon_star" />
+                                            </svg>
                                         @endfor
 
                                         {{-- Hiển thị các ngôi sao trống nếu rating dưới 5 --}}
-                                        @for ($i = $review->rating; $i < 5; $i++) <svg class="review-star"
-                                            viewBox="0 0 9 9" xmlns="http://www.w3.org/2000/svg">
-                                            <use href="#icon_star_empty" />
+                                        @for ($i = $review->rating; $i < 5; $i++) <svg class="review-star" viewBox="0 0 9 9"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <use href="#icon_star_empty" />
                                             </svg>
-                                            @endfor
+                                        @endfor
+                                    </div>
+                                    <div class="review-date">
+                                        {{ $review->created_at }}
+                                    </div>
+                                    <div class="review-text">
+                                        {{ $review->comment }}
+                                    </div>
+                                    @if ($review->reply)
+                                        <div class="dropdown px-5 pb-5" data-bs-auto-close="false">
+                                            <button class="btn btn-link dropdown-toggle custom-dropdown-toggle" type="button"
+                                                id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                                Reply from seller
+                                            </button>
+                                            <ul class="dropdown-menu custom-dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                <li>
+                                                    <div class="reply-text review-text">
+                                                        {{ $review->reply }}
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    @endif
                                 </div>
-                                <div class="review-date">
-                                    {{ $review->created_at }}
-                                </div>
-                                <div class="review-text">
-                                    {{ $review->comment }}
-                                </div>
-                                @if ($review->reply)
-                                <div class="dropdown px-5 pb-5" data-bs-auto-close="false">
-                                    <button class="btn btn-link dropdown-toggle custom-dropdown-toggle" type="button"
-                                        id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                                        Reply from seller
-                                    </button>
-                                    <ul class="dropdown-menu custom-dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <li>
-                                            <div class="reply-text review-text">
-                                                {{ $review->reply }}
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </div>
-                                @endif
                             </div>
-                        </div>
                         @endforeach
                     </div>
                     <!-- <h5>Be the first to review “Message Cotton T-Shirt”</h5> -->
@@ -429,9 +432,9 @@ alert("{{ session('add-review-success') }}");
                             <div class="mb-4">
                                 <textarea name="comment" id="form-input-review" class="form-control form-control_gray"
                                     placeholder="Your Review" cols="30" rows="8"></textarea>
-                                    <div id="error-message-review" style="color: red; display: none;">
-                                        <p>Please select a rating and write a review before submitting.</p>
-                                    </div>
+                                <div id="error-message-review" style="color: red; display: none;">
+                                    <p>Please select a rating and write a review before submitting.</p>
+                                </div>
                                 <div class="form-action">
                                     <button type="submit" class="btn btn-primary mt-1">Submit</button>
                                 </div>
@@ -448,16 +451,16 @@ alert("{{ session('add-review-success') }}");
 <!-- Bao gồm component chatbox -->
 <x-chatbox />
 <script>
-document.getElementById('review-form').addEventListener('submit', function(event) {
-    var rating = document.getElementById('form-input-rating').value;
-    var comment = document.getElementById('form-input-review').value.trim();
+    document.getElementById('review-form').addEventListener('submit', function (event) {
+        var rating = document.getElementById('form-input-rating').value;
+        var comment = document.getElementById('form-input-review').value.trim();
 
-    // Kiểm tra xem rating có được chọn và comment có được nhập không
-    if (!rating || !comment) {
-        event.preventDefault(); // Ngừng gửi form
-        document.getElementById('error-message-review').style.display = 'block'; // Hiển thị thông báo lỗi
-    }
-});
+        // Kiểm tra xem rating có được chọn và comment có được nhập không
+        if (!rating || !comment) {
+            event.preventDefault(); // Ngừng gửi form
+            document.getElementById('error-message-review').style.display = 'block'; // Hiển thị thông báo lỗi
+        }
+    });
 </script>
 <!-- <script>
     $(document).ready(function() {

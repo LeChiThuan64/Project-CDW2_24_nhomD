@@ -28,6 +28,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OrderManagerController;
 use App\Http\Controllers\OrdersDetailsController;
 use App\Http\Controllers\OrdersAdminController;
+use App\Http\Controllers\CustomerListController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -331,6 +332,8 @@ Route::get('/orders/{id}/error-details', [OrderManagerController::class, 'getErr
 Route::post('/orders/{id}/resend', [OrdersDetailsController::class, 'resendOrder'])->name('orders.resend');
 Route::post('/orders/{id}/cancel', [OrderManagerController::class, 'cancelOrder'])->name('orders.cancel');
 
+//Route cho trang danh sách khách hàng admin
+Route::get('/customer-list', [CustomerListController::class, 'index'])->name('customer.list');
 
 Route::get('/product/edit/{id}', [ProductsController::class, 'edit'])->name('products.edit');
 Route::post('/product/update/{id}', [ProductsController::class, 'update'])->name('products.update');
