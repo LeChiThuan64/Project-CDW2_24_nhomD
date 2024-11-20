@@ -17,6 +17,7 @@ class CreateProductsTable extends Migration
             $table->id('product_id');
             $table->string('name', 50);
             $table->text('description')->nullable();
+<<<<<<< HEAD:database/migrations/2023_10_05_000001_create_products_table.php
             $table->decimal('price', 10, 2);
             $table->integer('quantity')->default(0);
             $table->integer('category_id')->nullable();
@@ -30,8 +31,19 @@ class CreateProductsTable extends Migration
      *
      * @return void
      */
+=======
+            $table->unsignedBigInteger('category_id')->nullable();
+            $table->timestamps();
+        });        
+    }
+
+>>>>>>> main:database/migrations/2024_10_19_013508_create_products_table.php
     public function down()
     {
         Schema::dropIfExists('products');
     }
+<<<<<<< HEAD:database/migrations/2023_10_05_000001_create_products_table.php
 }
+=======
+};
+>>>>>>> main:database/migrations/2024_10_19_013508_create_products_table.php

@@ -1,0 +1,68 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    width: calc(100%); /* Tăng chiều rộng thêm 200px */
+    margin: 0; /* Loại bỏ margin để phần tử không bị thụt vào giữa */
+    padding: 0; /* Loại bỏ padding để phần tử không bị thụt vào giữa */
+    box-sizing: border-box; /* Đảm bảo padding không làm tăng kích thước của phần tử */
+}
+
+.chatbox-admin {
+    width: calc(100%);
+    margin: 0; /* Loại bỏ margin để phần tử không bị thụt vào giữa */
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box; /* Đảm bảo padding không làm tăng kích thước của phần tử */
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+table,
+th,
+td {
+    border: 1px solid #ddd;
+}
+
+th,
+td {
+    padding: 10px;
+    text-align: left;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+.status-select {
+    width: 100%;
+    padding: 5px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+button {
+    padding: 5px 10px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
