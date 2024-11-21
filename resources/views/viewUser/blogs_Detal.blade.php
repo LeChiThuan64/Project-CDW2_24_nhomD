@@ -114,7 +114,7 @@
 
           <!-- Hiển thị phản hồi của bình luận cha -->
           @foreach ($comment->replies as $reply)
-<div class="reply" style="margin-left: 20px; margin-top: 10px;">
+<div class="reply" style="margin-left: 80px; margin-top: 20px;">
     <h6>Trả lời cho bình luận của: {{ $comment->name }}</h6> <!-- Hiển thị tên cha -->
     <h6>Tên: {{ $reply->name }}</h6>
     <div class="review-date">{{ $reply->email }}</div>
@@ -211,7 +211,7 @@
 
             <!-- Hiển thị phản hồi của bình luận cha -->
             @foreach ($comment->replies as $reply)
-<div class="reply" style="margin-left: 20px; margin-top: 10px;">
+<div class="reply" style="margin-left: 80px; margin-top: 20px;">
     <h6>Trả lời cho bình luận của: {{ $comment->name }}</h6> <!-- Hiển thị tên cha -->
     <h6>Tên: {{ $reply->name }}</h6>
     <div class="review-date">{{ $reply->email }}</div>
