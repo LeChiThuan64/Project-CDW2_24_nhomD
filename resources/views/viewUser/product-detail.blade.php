@@ -50,7 +50,6 @@
 @endif
 
 @if (session('add-wishlist-success'))
-<<<<<<< HEAD
     <script>
         alert("{{ session('add-wishlist-success') }}");
     </script>
@@ -59,16 +58,6 @@
     <script>
         alert("{{ session('delete-wishlist-success') }}");
     </script>
-=======
-<script>
-alert("{{ session('add-wishlist-success') }}");
-</script>
-@endif
-@if (session('delete-wishlist-success'))
-<script>
-alert("{{ session('delete-wishlist-success') }}");
-</script>
->>>>>>> 03aed61a122434bce4a616eefb926e6789ac7a84
 @endif
 
 <main>
@@ -421,37 +410,14 @@ alert("{{ session('delete-wishlist-success') }}");
                                                 <use href="#icon_star_empty" />
                                             </svg>
                                         @endfor
-                                    </div>
-                                    <div class="review-date">
-                                        {{ $review->created_at }}
-                                    </div>
-                                    <div class="review-text">
-                                        {{ $review->comment }}
-                                    </div>
-                                    @if ($review->reply)
-                                        <div class="dropdown px-5 pb-5" data-bs-auto-close="false">
-                                            <button class="btn btn-link dropdown-toggle custom-dropdown-toggle" type="button"
-                                                id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                                                Reply from seller
-                                            </button>
-                                            <ul class="dropdown-menu custom-dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                <li>
-                                                    <div class="reply-text review-text">
-                                                        {{ $review->reply }}
-                                                    </div>
-                                                </li>
-                                            </ul>
                                         </div>
-                                    @endif
-                                </div>
-<<<<<<< HEAD
-=======
                                 <div class="review-date">
                                     {{ $review->created_at }}
                                 </div>
                                 <div class="review-text">
                                     {{ $review->comment }}
                                 </div>
+
                                 <div class="review-images">
                                     @foreach ($review->images as $image)
                                     <a href="{{ asset('assets/img/reviews/' .$image->image_url) }}"
@@ -462,16 +428,17 @@ alert("{{ session('delete-wishlist-success') }}");
                                     </a>
                                     @endforeach
                                 </div>
+
                                 @if ($review->reply)
-                                <div class="seller-reply px-5 pt-5 pb-4">
+                                <div class="seller-reply px-5 pt-3">
                                     <h6 class="reply-title">Reply from Seller:</h6>
                                     <div class="reply-text review-text">
                                         {{ $review->reply }}
                                     </div>
                                 </div>
                                 @endif
->>>>>>> 03aed61a122434bce4a616eefb926e6789ac7a84
                             </div>
+                        </div>
                         @endforeach
                     </div>
 
