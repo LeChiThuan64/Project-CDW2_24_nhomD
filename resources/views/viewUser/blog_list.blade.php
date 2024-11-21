@@ -13,14 +13,7 @@
     </div>
     <div class="container">
       <h2 class="page-title">The Blog</h2>
-      <div class="blog__filter">
-        <a href="#" class="menu-link menu-link_us-s">ALL</a>
-        <a href="#" class="menu-link menu-link_us-s">COMPANY</a>
-        <a href="#" class="menu-link menu-link_us-s menu-link_active">FASHION</a>
-        <a href="#" class="menu-link menu-link_us-s">STYLE</a>
-        <a href="#" class="menu-link menu-link_us-s">TRENDS</a>
-        <a href="#" class="menu-link menu-link_us-s">BEAUTY</a>
-      </div>
+     
     </div>
   </section>
 
