@@ -18,8 +18,8 @@ class BlogController extends Controller
         $queryText = $request->input('query');
 
         if ($queryText) {
-            $query->where('title', 'like', '%' . $queryText . '%')
-                ->orWhere('blog_id', $queryText); // Sử dụng 'blog_id' thay vì 'id'
+            $query->whereRaw("MATCH(title) AGAINST(? IN NATURAL LANGUAGE MODE)", [$queryText])
+                  ->orWhere('blog_id', $queryText);
         }
 
         $blogs = $query->orderBy('created_at', 'desc')->paginate(6);
@@ -38,8 +38,8 @@ class BlogController extends Controller
         $queryText = $request->input('query');
 
         if ($queryText) {
-            $query->where('title', 'like', '%' . $queryText . '%')
-                ->orWhere('blog_id', $queryText);
+            $query->whereRaw("MATCH(title) AGAINST(? IN NATURAL LANGUAGE MODE)", [$queryText])
+                  ->orWhere('blog_id', $queryText);
         }
 
         $blogs = $query->orderBy('created_at', 'desc')->paginate(6);
