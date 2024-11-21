@@ -7,8 +7,9 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Crypt;
-use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Contracts\Encryption\DecryptException;
 
 class UserController extends Controller
 {
@@ -49,9 +50,6 @@ class UserController extends Controller
         }
         return response()->json(['error' => 'User not found'], 404);
     }
-
-
-
 
     //khóa user
     public function toggleStatus($id, Request $request)

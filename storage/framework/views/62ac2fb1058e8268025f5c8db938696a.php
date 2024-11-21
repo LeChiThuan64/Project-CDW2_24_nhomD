@@ -2,39 +2,7 @@
 <?php $__env->startSection('content'); ?>
 
 <HEad>
-  <STYle>
-    .blog-image {
-      max-width: 50%;
-      /* Đặt kích thước tối đa của hình ảnh (thay đổi tùy ý) */
-      height: auto;
-      /* Giữ tỷ lệ của hình ảnh */
-      margin: 0 auto;
-      /* Căn giữa hình ảnh */
-      display: block;
-      /* Đảm bảo hình ảnh là phần tử khối */
-    }
-
-    .mw-930 p {
-      font-size: 18px;
-      line-height: 1.6;
-    }
-
-    .review-textt {
-      font-size: 18px;
-      line-height: 1.6;
-    }
-
-    .blog-content img {
-      max-width: 100%;
-      /* Đảm bảo ảnh không vượt quá chiều rộng của container */
-      height: auto;
-      /* Giữ tỉ lệ ảnh để không bị biến dạng */
-      display: block;
-      /* Giúp ảnh căn chỉnh đẹp hơn */
-      margin: 0 auto;
-      /* Căn giữa ảnh trong content */
-    }
-  </STYle>
+<link rel="stylesheet" href="<?php echo e(asset('assets/css/blogs_Detal.css')); ?>">
 </HEad>
 <main>
 
@@ -107,33 +75,58 @@
             Trả lời
           </button>
 
-          <!-- Nút Xóa bình luận -->
-          <?php if(auth()->guard()->check()): ?>
-          <?php if($comment->user_id === auth()->id()): ?>
-          <form action="<?php echo e(route('comment.delete', $comment->id)); ?>" method="POST" onsubmit="return confirm('Bạn có chắc chắn muốn xóa bình luận này không?')">
+         <!-- Nút Xóa bình luận -->
+<?php if(auth()->guard()->check()): ?>
+<?php if($comment->user_id === auth()->id()): ?>
+<div style="position: relative; display: inline-block;">
+    <!-- Dấu ba chấm đứng -->
+    <span onclick="toggleDeleteMenu(this)" style="
+          cursor: pointer; 
+          font-size: 20px; 
+          font-weight: bold;
+          color: gray;">
+        &#8226;&#8226;&#8226;
+    </span>
+    
+    <!-- Form xóa, mặc định ẩn -->
+    <div class="delete-menu" style="
+          display: none;
+          position: absolute;
+          top: 100%;
+          right: 0;
+          background-color: white;
+          border: 1px solid #ccc;
+          border-radius: 5px;
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+          padding: 5px;
+          z-index: 10;">
+        <form action="<?php echo e(route('comment.delete', $comment->id)); ?>" method="POST" onsubmit="return confirm('Bạn có chắc chắn muốn xóa bình luận này không?')">
             <?php echo csrf_field(); ?>
             <?php echo method_field('DELETE'); ?>
-            <button type="submit" class="btn btn-danger">Xóa</button>
-          </form>
-          <?php endif; ?>
-          <?php endif; ?>
+            <button type="submit" class="btn btn-danger" style="width: 100%; font-size: 14px;">Xóa</button>
+        </form>
+    </div>
+</div>
+<?php endif; ?>
+<?php endif; ?>
+
 
 
 
           <!-- Hiển thị phản hồi của bình luận cha -->
           <?php $__currentLoopData = $comment->replies; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $reply): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-          <div class="reply" style="margin-left: 20px; margin-top: 10px;">
-            <h6>Tên : <?php echo e($reply->name); ?></h6>
-            <div class="review-date"><?php echo e($reply->email); ?></div>
-            <div class="review-date"><?php echo e($reply->created_at->format('F d, Y')); ?></div>
+<div class="reply" style="margin-left: 80px; margin-top: 20px;">
+    <h6>Trả lời cho bình luận của: <?php echo e($comment->name); ?></h6> <!-- Hiển thị tên cha -->
+    <h6>Tên: <?php echo e($reply->name); ?></h6>
+    <div class="review-date"><?php echo e($reply->email); ?></div>
+    <div class="review-date"><?php echo e($reply->created_at->format('F d, Y')); ?></div>
 
-            <div class="review-textt">
-              <p><?php echo e($reply->comment); ?></p>
-            </div>
+    <div class="review-textt">
+        <p><?php echo e($reply->comment); ?></p>
+    </div>
+</div>
+<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
-          </div>
-
-          <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
         </div>
       </div>
@@ -185,26 +178,52 @@
             </button>
             <!-- Nút Xóa bình luận -->
             <?php if(auth()->guard()->check()): ?>
-            <?php if($comment->user_id === auth()->id()): ?>
-            <form action="<?php echo e(route('comment.delete', $comment->id)); ?>" method="POST" onsubmit="return confirm('Bạn có chắc chắn muốn xóa bình luận này không?')">
-              <?php echo csrf_field(); ?>
-              <?php echo method_field('DELETE'); ?>
-              <button type="submit" class="btn btn-danger">Xóa</button>
-            </form>
-            <?php endif; ?>
-            <?php endif; ?>
+<?php if($comment->user_id === auth()->id()): ?>
+<div style="position: relative; display: inline-block;">
+    <!-- Dấu ba chấm đứng -->
+    <span onclick="toggleDeleteMenu(this)" style="
+          cursor: pointer; 
+          font-size: 20px; 
+          font-weight: bold;
+          color: gray;">
+        &#8226;&#8226;&#8226;
+    </span>
+    
+    <!-- Form xóa, mặc định ẩn -->
+    <div class="delete-menu" style="
+          display: none;
+          position: absolute;
+          top: 100%;
+          right: 0;
+          background-color: white;
+          border: 1px solid #ccc;
+          border-radius: 5px;
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+          padding: 5px;
+          z-index: 10;">
+        <form action="<?php echo e(route('comment.delete', $comment->id)); ?>" method="POST" onsubmit="return confirm('Bạn có chắc chắn muốn xóa bình luận này không?')">
+            <?php echo csrf_field(); ?>
+            <?php echo method_field('DELETE'); ?>
+            <button type="submit" class="btn btn-danger" style="width: 100%; font-size: 14px;">Xóa</button>
+        </form>
+    </div>
+</div>
+<?php endif; ?>
+<?php endif; ?>
 
             <!-- Hiển thị phản hồi của bình luận cha -->
             <?php $__currentLoopData = $comment->replies; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $reply): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-            <div class="reply" style="margin-left: 20px; margin-top: 10px;">
-              <h6>Tên : <?php echo e($reply->name); ?></h6>
-              <div class="review-date"><?php echo e($reply->email); ?></div>
-              <div class="review-date"><?php echo e($reply->created_at->format('F d, Y')); ?></div>
-              <div class="review-textt">
-                <p><?php echo e($reply->comment); ?></p>
-              </div>
-            </div>
-            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+<div class="reply" style="margin-left: 80px; margin-top: 20px;">
+    <h6>Trả lời cho bình luận của: <?php echo e($comment->name); ?></h6> <!-- Hiển thị tên cha -->
+    <h6>Tên: <?php echo e($reply->name); ?></h6>
+    <div class="review-date"><?php echo e($reply->email); ?></div>
+    <div class="review-date"><?php echo e($reply->created_at->format('F d, Y')); ?></div>
+
+    <div class="review-textt">
+        <p><?php echo e($reply->comment); ?></p>
+    </div>
+</div>
+<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
           </div>
         </div>
         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
@@ -304,7 +323,21 @@
     mainForm.style.display = 'block';
     document.getElementById('form-input-review').focus();
   }
+
+  function toggleDeleteMenu(element) {
+    // Lấy menu xóa liền kề dấu ba chấm
+    const menu = element.nextElementSibling;
+
+    // Hiển thị hoặc ẩn menu
+    if (menu.style.display === "none" || menu.style.display === "") {
+        menu.style.display = "block";
+    } else {
+        menu.style.display = "none";
+    }
+}
+
 </script>
+
 <div class="mb-5 pb-xl-5"></div>
 <?php $__env->stopSection(); ?>
 <?php echo $__env->make('viewUser.navigation', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\Project-CDW2_24_nhomD\resources\views/viewUser/blogs_Detal.blade.php ENDPATH**/ ?>

@@ -4,68 +4,7 @@
 
 <head>
 
-    <style>
-        .price-range {
-            position: relative;
-            margin: 20px 0;
-        }
-
-        input[type="range"] {
-            -webkit-appearance: none;
-            width: 100%;
-            height: 5px;
-            background: #ddd;
-            border-radius: 5px;
-        }
-
-        input[type="range"]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            width: 20px;
-            height: 20px;
-            background: #333;
-            border-radius: 50%;
-            cursor: pointer;
-        }
-
-        input[type="range"]::-moz-range-thumb {
-            width: 20px;
-            height: 20px;
-            background: #333;
-            border-radius: 50%;
-            cursor: pointer;
-        }
-
-        .price-labels {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 10px;
-        }
-
-        .products-grid {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            /* Căn giữa các mục khi số lượng ít */
-            gap: 20px;
-            /* Điều chỉnh khoảng cách giữa các sản phẩm */
-        }
-
-        .product-loc-wrapper {
-            width: calc(33.33% - 20px);
-            /* Đảm bảo 3 sản phẩm mỗi hàng */
-            min-width: 250px;
-            /* Đặt chiều rộng tối thiểu để tránh co quá nhỏ */
-            max-width: 100%;
-            margin-bottom: 20px;
-        }
-
-        .pc__img {
-            width: 100%;
-            height: 250px;
-            object-fit: cover;
-            border-radius: 10px;
-        }
-    </style>
+<link rel="stylesheet" href="{{ asset('assets/css/locgia.css') }}">
 </head>
 
 <div class="mb-4 pb-lg-3"></div>
@@ -151,10 +90,10 @@
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s ease;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);"
-    onmouseover="this.style.backgroundColor='#0056b3'; this.style.transform='scale(1.05)';"
-    onmouseout="this.style.backgroundColor='#007bff'; this.style.transform='scale(1)';">
-    Lọc
-</button>
+                        onmouseover="this.style.backgroundColor='#0056b3'; this.style.transform='scale(1.05)';"
+                        onmouseout="this.style.backgroundColor='#007bff'; this.style.transform='scale(1)';">
+                        Lọc
+                    </button>
 
 
                 </div>
@@ -162,7 +101,7 @@
             </div>
         </div>
 
-        
+
     </div><!-- /.shop-sidebar -->
 
 
@@ -265,36 +204,36 @@
 
     // lọc giá 
     document.addEventListener('DOMContentLoaded', function() {
-    const filterButton = document.querySelector('#filter-button');
-    const minPriceInput = document.getElementById('minPrice');
-    const maxPriceInput = document.getElementById('maxPrice');
-    const productsGrid = document.getElementById('products-grid');
+        const filterButton = document.querySelector('#filter-button');
+        const minPriceInput = document.getElementById('minPrice');
+        const maxPriceInput = document.getElementById('maxPrice');
+        const productsGrid = document.getElementById('products-grid');
 
-    filterButton.addEventListener('click', function() {
-        const minPrice = minPriceInput.value;
-        const maxPrice = maxPriceInput.value;
+        filterButton.addEventListener('click', function() {
+            const minPrice = minPriceInput.value;
+            const maxPrice = maxPriceInput.value;
 
-        // Gửi yêu cầu AJAX để lọc sản phẩm
-        fetch(`/locgia/filter-products?minPrice=${minPrice}&maxPrice=${maxPrice}`, {
-            method: 'GET',
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest'
-            }
-        })
-        .then(response => response.json())
-        .then(products => {
-            // Xóa các sản phẩm cũ
-            productsGrid.innerHTML = '';
+            // Gửi yêu cầu AJAX để lọc sản phẩm
+            fetch(`/locgia/filter-products?minPrice=${minPrice}&maxPrice=${maxPrice}`, {
+                    method: 'GET',
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                .then(response => response.json())
+                .then(products => {
+                    // Xóa các sản phẩm cũ
+                    productsGrid.innerHTML = '';
 
-            // Kiểm tra nếu không có sản phẩm nào
-            if (products.length === 0) {
-                productsGrid.innerHTML = '<p class="text-center">Không tìm thấy sản phẩm nào trong khoảng giá này.</p>';
-                return;
-            }
+                    // Kiểm tra nếu không có sản phẩm nào
+                    if (products.length === 0) {
+                        productsGrid.innerHTML = '<p class="text-center">Không tìm thấy sản phẩm nào trong khoảng giá này.</p>';
+                        return;
+                    }
 
-            // Hiển thị sản phẩm mới dựa trên dữ liệu nhận được
-            products.forEach(product => {
-                const productHtml = `
+                    // Hiển thị sản phẩm mới dựa trên dữ liệu nhận được
+                    products.forEach(product => {
+                        const productHtml = `
                     <div class="col-sm-6 col-md-4 col-lg-3 product-loc-wrapper">
                         <div class="product-loc mb-3 mb-md-4 mb-xxl-5">
                             <div class="pc__img-wrapper">
@@ -312,13 +251,12 @@
                             </div>
                         </div>
                     </div>`;
-                productsGrid.insertAdjacentHTML('beforeend', productHtml);
-            });
-        })
-        .catch(error => console.error('Error:', error));
+                        productsGrid.insertAdjacentHTML('beforeend', productHtml);
+                    });
+                })
+                .catch(error => console.error('Error:', error));
+        });
     });
-});
-
 </script>
 
 

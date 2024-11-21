@@ -1544,7 +1544,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 <div><strong>Description:</strong> ${product.description}</div>
                 <div><strong>Price:</strong> ${price}</div>
                 <div><strong>Quantity:</strong> ${quanlity}</div>
-            </div>
+            </div>          
           `;
         console.log('Product 1 Details:', productDetails); // Log dữ liệu của productDetails
         document.querySelector('.details-card.product-1 span').innerHTML = productDetails;

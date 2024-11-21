@@ -213,6 +213,67 @@ class ProductController extends Controller
             return redirect()->back()->with('error', 'Error occurred while searching for product: ' . $e->getMessage());
         }
     }
+    public function searchComparsion(Request $request)
+    {
+        try {
+            $product_id = $request->query('product_id');
+            $product_name = $request->query('product_name');
+
+            if ($product_id || $product_name) {
+                $query = Product::with(['images', 'productSizeColors']); // Thêm relationship images              
+
+                // Nhóm điều kiện tìm kiếm với hàm nặc danh (closure)
+                $query->where(function ($q) use ($product_id, $product_name) {
+                    if ($product_id) {
+                        $q->where('product_id', $product_id);
+                    }
+
+                    if ($product_name) {
+                        $q->orWhere('name', 'like', '%' . $product_name . '%');
+                    }
+                });
+
+                $product = $query->first();
+
+                if ($product) {
+                    // Lấy danh sách hình ảnh của sản phẩm
+                    $images = $product->images->pluck('image_url')->toArray(); // Sử dụng `pluck` để lấy mảng các URL ảnh
+
+                    // Transform dữ liệu trước khi trả về
+                    $productData = [
+                        'product_id' => $product->product_id,
+                        'name' => $product->name,
+                        'description' => $product->description,
+                        'price' => $product->price,
+                        'quantity' => $product->quantity,
+                        'images' => $images,
+                    ];
+
+                    return response()->json([
+                        'success' => true,
+                        'product' => $productData
+                    ]);
+                }
+
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Product not found'
+                ], 404);
+            }
+
+            return response()->json([
+                'success' => false,
+                'message' => 'No search criteria provided'
+            ], 400);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error occurred while searching for product',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
 
 
 }

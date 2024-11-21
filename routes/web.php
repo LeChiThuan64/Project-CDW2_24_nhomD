@@ -28,6 +28,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OrderManagerController;
 use App\Http\Controllers\OrdersDetailsController;
 use App\Http\Controllers\OrdersAdminController;
+use App\Http\Controllers\CustomerListController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -225,6 +226,8 @@ Route::delete('/vocher/{id}', [VocherController::class, 'destroy'])->name('voche
 
 Route::get('/product/{id}', [ProductController::class, 'show'])->name('product.show');
 //Route tìm kiếm product
+Route::get('/search-product', [ProductController::class, 'searchComparsion']);
+
 // Route để hiển thị wishlist
 Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist.index');
 
@@ -233,9 +236,10 @@ Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist.in
 Route::post('/wishlist/add/{productId}', [WishlistController::class, 'add'])->name('wishlist.add');
 
 Route::delete('/wishlist/remove/{wishlistId}', [WishlistController::class, 'remove'])->name('wishlist.remove');
-
-// Tìm kiếm
+// Tim kiem
 Route::get('/search-results', [ProductController::class, 'search'])->name('product.search');
+
+
 
 // Review
 Route::post('/product/{productId}/review', [ProductController::class, 'addReview'])->name('addReview');
@@ -254,6 +258,7 @@ Route::get('/products/showList', [ProductsController::class, 'showListProducts']
 Route::delete('/products/destroy/{id}', [ProductsController::class, 'destroy'])->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
 Route::get('/products/search', [ProductsController::class, 'searchProducts'])->name('products.search');
 Route::post('/search', [ProductsController::class, 'search'])->name('products.instant');
+
 
 
 
@@ -317,6 +322,7 @@ Route::get('/order-manager', [OrderManagerController::class, 'show'])->name('ord
 Route::get('/orders/{id}/detail', [OrdersDetailsController::class, 'show'])->name('orders.detail');
 Route::post('/orders/{id}/update', [OrdersDetailsController::class, 'update'])->name('order.update');
 
+
 //Router update trạng thái đơn hàng
 Route::post('/orders/{id}/received', [OrderManagerController::class, 'markAsReceived'])->name('orders.received');
 
@@ -328,7 +334,11 @@ Route::delete('/orders/{id}/delete', [OrdersAdminController::class, 'deleteOrder
 Route::get('/orders/{id}/error-details', [OrderManagerController::class, 'getErrorDetails'])->name('orders.errorDetails');
 Route::post('/orders/{id}/resend', [OrdersDetailsController::class, 'resendOrder'])->name('orders.resend');
 Route::post('/orders/{id}/cancel', [OrderManagerController::class, 'cancelOrder'])->name('orders.cancel');
+Route::get('/api/users/{id}/orders', [CustomerListController::class, 'getUserOrders']);
 
+
+//Route cho trang danh sách khách hàng admin
+Route::get('/customer-list', [CustomerListController::class, 'index'])->name('customer.list');
 
 Route::get('/product/edit/{id}', [ProductsController::class, 'edit'])->name('products.edit');
 Route::post('/product/update/{id}', [ProductsController::class, 'update'])->name('products.update');

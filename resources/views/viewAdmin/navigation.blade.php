@@ -49,6 +49,8 @@
     <link href="{{ asset('assets/css/addProducts.css') }}" rel="stylesheet" />
     <link href="{{ asset('assets/css/list_products.css') }}" rel="stylesheet" />
     <link rel="stylesheet" href="{{ asset('assets/css/chatbox_admin.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/customer_list.css') }}">
+
 
     <!-- Toastr CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
@@ -269,6 +271,7 @@
     <script src="{{ asset('assets/js/list_products.js') }}"></script>
     <script src="{{ asset('assets/js/chatbox-admin.js') }}"></script>
     <script src="{{ asset('assets/js/orders_admin.js') }}"></script>
+    <script src="{{ asset('assets/js/customer_list.js') }}"></script>
 
     <!-- Thêm jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

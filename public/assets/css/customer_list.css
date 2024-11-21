@@ -1,0 +1,55 @@
+.dropdown-menu {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 0.25rem;
+}
+
+.dropdown-item {
+    color: #212529;
+    padding: 0.5rem 1.5rem;
+    font-size: 1rem;
+}
+
+.dropdown-item:hover {
+    background-color: #e9ecef;
+    color: #212529;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    border-color: #6c757d;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+    border-color: #545b62;
+}
+.orders-table {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    padding: 20px;
+    border-radius: 10px;
+}
+#order-details-manager {
+    position: fixed; /* Đặt cố định */
+    top: 50%; /* Giữa màn hình */
+    left: 50%; /* Giữa màn hình */
+    transform: translate(-50%, -50%); /* Căn chỉnh */
+    z-index: 1050; /* Lớp trên cùng */
+    background-color: #fff; /* Màu nền */
+    border: 1px solid #ccc; /* Viền */
+    padding: 20px; /* Khoảng cách bên trong */
+    border-radius: 10px; /* Bo góc */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Đổ bóng */
+    width: auto; /* Chiều rộng tự động */
+    max-width: 90%; /* Chiều rộng tối đa để tránh tràn màn hình */
+    max-height: 90%; /* Chiều cao tối đa */
+    overflow-y: auto; /* Cuộn dọc nếu nội dung vượt quá */
+}

@@ -1,6 +1,7 @@
 @extends('viewUser.navigation')
 @section('title', 'Order Details')
 @section('content')
+<link rel="stylesheet" href="{{ asset('assets/css/orders_detail.css') }}" type="text/css">
 <main>
     <div class="mb-4 pb-4"></div>
     <section class="my-account container">

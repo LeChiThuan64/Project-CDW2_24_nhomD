@@ -32,6 +32,7 @@
 
 
 
+
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!--[if lt IE 9]>
     <script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
@@ -723,19 +724,19 @@
 
                     <div class="header-tools__item hover-container">
                         @if (auth()->check())
-                        <a class="" href="{{ route('profile') }}" data-aside="customerForms">
-                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <use href="#icon_user" />
-                            </svg>
-                        </a>
+                            <a class="" href="{{ route('profile') }}" data-aside="customerForms">
+                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <use href="#icon_user" />
+                                </svg>
+                            </a>
                         @else
-                        <a class="header-tools__item js-open-aside" href="#" data-aside="customerForms">
-                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <use href="#icon_user" />
-                            </svg>
-                        </a>
+                            <a class="header-tools__item js-open-aside" href="#" data-aside="customerForms">
+                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <use href="#icon_user" />
+                                </svg>
+                            </a>
                         @endif
 
 

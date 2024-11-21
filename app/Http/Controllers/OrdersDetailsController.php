@@ -37,7 +37,6 @@ class OrdersDetailsController extends Controller
 
             // Thay đổi trạng thái đơn hàng sang "pending"
             $order->status = 'pending';
-            $order->save();
 
             return response()->json([
                 'success' => true,

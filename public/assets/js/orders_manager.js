@@ -76,6 +76,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Thêm sự kiện nhấn nút cho các nút "Chi tiết lỗi"
     document.querySelectorAll('.btn-error-detail').forEach(button => {
         button.addEventListener('click', function() {
+            console.log('Click');
             const orderId = this.getAttribute('data-order-id');
             // Fetch error details using orderId
             fetch(`/orders/${orderId}/error-details`, {
@@ -105,7 +106,6 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     });
-
     document.getElementById('closeErrorDetailTable').addEventListener('click', function() {
         // Hide the table
         document.getElementById('errorDetailTable').style.display = 'none';

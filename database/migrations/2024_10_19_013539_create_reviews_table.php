@@ -21,6 +21,7 @@ return new class extends Migration
         $table->timestamp('created_at')->useCurrent();
         $table->timestamp('updated_at')->useCurrent();
     });
+       
 }
 
 public function down()
