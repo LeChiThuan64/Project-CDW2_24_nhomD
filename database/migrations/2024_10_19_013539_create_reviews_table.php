@@ -18,8 +18,8 @@ return new class extends Migration
         $table->integer('rating');
         $table->text('comment')->nullable();
         $table->string('reply')->nullable();
-        $table->timestamp();
-    });
+        $table->timestamp('created_at')->useCurrent();
+        $table->timestamp('updated_at')->nullable();    });
 }
 
 public function down()
