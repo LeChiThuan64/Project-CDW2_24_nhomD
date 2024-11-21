@@ -114,18 +114,18 @@
 
           <!-- Hiển thị phản hồi của bình luận cha -->
           @foreach ($comment->replies as $reply)
-          <div class="reply" style="margin-left: 20px; margin-top: 10px;">
-            <h6>Tên : {{ $reply->name }}</h6>
-            <div class="review-date">{{ $reply->email }}</div>
-            <div class="review-date">{{ $reply->created_at->format('F d, Y') }}</div>
+<div class="reply" style="margin-left: 20px; margin-top: 10px;">
+    <h6>Trả lời cho bình luận của: {{ $comment->name }}</h6> <!-- Hiển thị tên cha -->
+    <h6>Tên: {{ $reply->name }}</h6>
+    <div class="review-date">{{ $reply->email }}</div>
+    <div class="review-date">{{ $reply->created_at->format('F d, Y') }}</div>
 
-            <div class="review-textt">
-              <p>{{ $reply->comment }}</p>
-            </div>
+    <div class="review-textt">
+        <p>{{ $reply->comment }}</p>
+    </div>
+</div>
+@endforeach
 
-          </div>
-
-          @endforeach
 
         </div>
       </div>
@@ -176,26 +176,52 @@
             </button>
             <!-- Nút Xóa bình luận -->
             @auth
-            @if ($comment->user_id === auth()->id())
-            <form action="{{ route('comment.delete', $comment->id) }}" method="POST" onsubmit="return confirm('Bạn có chắc chắn muốn xóa bình luận này không?')">
-              @csrf
-              @method('DELETE')
-              <button type="submit" class="btn btn-danger">Xóa</button>
-            </form>
-            @endif
-            @endauth
+@if ($comment->user_id === auth()->id())
+<div style="position: relative; display: inline-block;">
+    <!-- Dấu ba chấm đứng -->
+    <span onclick="toggleDeleteMenu(this)" style="
+          cursor: pointer; 
+          font-size: 20px; 
+          font-weight: bold;
+          color: gray;">
+        &#8226;&#8226;&#8226;
+    </span>
+    
+    <!-- Form xóa, mặc định ẩn -->
+    <div class="delete-menu" style="
+          display: none;
+          position: absolute;
+          top: 100%;
+          right: 0;
+          background-color: white;
+          border: 1px solid #ccc;
+          border-radius: 5px;
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+          padding: 5px;
+          z-index: 10;">
+        <form action="{{ route('comment.delete', $comment->id) }}" method="POST" onsubmit="return confirm('Bạn có chắc chắn muốn xóa bình luận này không?')">
+            @csrf
+            @method('DELETE')
+            <button type="submit" class="btn btn-danger" style="width: 100%; font-size: 14px;">Xóa</button>
+        </form>
+    </div>
+</div>
+@endif
+@endauth
 
             <!-- Hiển thị phản hồi của bình luận cha -->
             @foreach ($comment->replies as $reply)
-            <div class="reply" style="margin-left: 20px; margin-top: 10px;">
-              <h6>Tên : {{ $reply->name }}</h6>
-              <div class="review-date">{{ $reply->email }}</div>
-              <div class="review-date">{{ $reply->created_at->format('F d, Y') }}</div>
-              <div class="review-textt">
-                <p>{{ $reply->comment }}</p>
-              </div>
-            </div>
-            @endforeach
+<div class="reply" style="margin-left: 20px; margin-top: 10px;">
+    <h6>Trả lời cho bình luận của: {{ $comment->name }}</h6> <!-- Hiển thị tên cha -->
+    <h6>Tên: {{ $reply->name }}</h6>
+    <div class="review-date">{{ $reply->email }}</div>
+    <div class="review-date">{{ $reply->created_at->format('F d, Y') }}</div>
+
+    <div class="review-textt">
+        <p>{{ $reply->comment }}</p>
+    </div>
+</div>
+@endforeach
           </div>
         </div>
         @endforeach

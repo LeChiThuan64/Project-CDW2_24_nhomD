@@ -115,18 +115,18 @@
 
           <!-- Hiển thị phản hồi của bình luận cha -->
           <?php $__currentLoopData = $comment->replies; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $reply): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-          <div class="reply" style="margin-left: 20px; margin-top: 10px;">
-            <h6>Tên : <?php echo e($reply->name); ?></h6>
-            <div class="review-date"><?php echo e($reply->email); ?></div>
-            <div class="review-date"><?php echo e($reply->created_at->format('F d, Y')); ?></div>
+<div class="reply" style="margin-left: 20px; margin-top: 10px;">
+    <h6>Trả lời cho bình luận của: <?php echo e($comment->name); ?></h6> <!-- Hiển thị tên cha -->
+    <h6>Tên: <?php echo e($reply->name); ?></h6>
+    <div class="review-date"><?php echo e($reply->email); ?></div>
+    <div class="review-date"><?php echo e($reply->created_at->format('F d, Y')); ?></div>
 
-            <div class="review-textt">
-              <p><?php echo e($reply->comment); ?></p>
-            </div>
+    <div class="review-textt">
+        <p><?php echo e($reply->comment); ?></p>
+    </div>
+</div>
+<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
-          </div>
-
-          <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
         </div>
       </div>
@@ -178,26 +178,52 @@
             </button>
             <!-- Nút Xóa bình luận -->
             <?php if(auth()->guard()->check()): ?>
-            <?php if($comment->user_id === auth()->id()): ?>
-            <form action="<?php echo e(route('comment.delete', $comment->id)); ?>" method="POST" onsubmit="return confirm('Bạn có chắc chắn muốn xóa bình luận này không?')">
-              <?php echo csrf_field(); ?>
-              <?php echo method_field('DELETE'); ?>
-              <button type="submit" class="btn btn-danger">Xóa</button>
-            </form>
-            <?php endif; ?>
-            <?php endif; ?>
+<?php if($comment->user_id === auth()->id()): ?>
+<div style="position: relative; display: inline-block;">
+    <!-- Dấu ba chấm đứng -->
+    <span onclick="toggleDeleteMenu(this)" style="
+          cursor: pointer; 
+          font-size: 20px; 
+          font-weight: bold;
+          color: gray;">
+        &#8226;&#8226;&#8226;
+    </span>
+    
+    <!-- Form xóa, mặc định ẩn -->
+    <div class="delete-menu" style="
+          display: none;
+          position: absolute;
+          top: 100%;
+          right: 0;
+          background-color: white;
+          border: 1px solid #ccc;
+          border-radius: 5px;
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+          padding: 5px;
+          z-index: 10;">
+        <form action="<?php echo e(route('comment.delete', $comment->id)); ?>" method="POST" onsubmit="return confirm('Bạn có chắc chắn muốn xóa bình luận này không?')">
+            <?php echo csrf_field(); ?>
+            <?php echo method_field('DELETE'); ?>
+            <button type="submit" class="btn btn-danger" style="width: 100%; font-size: 14px;">Xóa</button>
+        </form>
+    </div>
+</div>
+<?php endif; ?>
+<?php endif; ?>
 
             <!-- Hiển thị phản hồi của bình luận cha -->
             <?php $__currentLoopData = $comment->replies; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $reply): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-            <div class="reply" style="margin-left: 20px; margin-top: 10px;">
-              <h6>Tên : <?php echo e($reply->name); ?></h6>
-              <div class="review-date"><?php echo e($reply->email); ?></div>
-              <div class="review-date"><?php echo e($reply->created_at->format('F d, Y')); ?></div>
-              <div class="review-textt">
-                <p><?php echo e($reply->comment); ?></p>
-              </div>
-            </div>
-            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+<div class="reply" style="margin-left: 20px; margin-top: 10px;">
+    <h6>Trả lời cho bình luận của: <?php echo e($comment->name); ?></h6> <!-- Hiển thị tên cha -->
+    <h6>Tên: <?php echo e($reply->name); ?></h6>
+    <div class="review-date"><?php echo e($reply->email); ?></div>
+    <div class="review-date"><?php echo e($reply->created_at->format('F d, Y')); ?></div>
+
+    <div class="review-textt">
+        <p><?php echo e($reply->comment); ?></p>
+    </div>
+</div>
+<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
           </div>
         </div>
         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
