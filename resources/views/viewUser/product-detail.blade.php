@@ -1,6 +1,42 @@
 @extends('viewUser.navigation')
 @section('title', 'Product detail')
 @section('content')
+
+<style>
+.review-options {
+    position: relative;
+    display: inline-block;
+}
+
+.options-icon {
+    cursor: pointer;
+    font-size: 1.2rem;
+}
+
+.review-menu {
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: white;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    z-index: 10;
+}
+
+.review-menu button {
+    display: block;
+    width: 100%;
+    border: none;
+    background: none;
+    padding: 10px;
+    text-align: left;
+    cursor: pointer;
+}
+
+.review-menu button:hover {
+    background-color: #f5f5f5;
+}
+</style>
 @if (session('add-review-error'))
     <script>
         alert("{{ session('add-review-error') }}");
@@ -14,7 +50,6 @@
 @endif
 
 @if (session('add-wishlist-success'))
-<<<<<<< HEAD
     <script>
         alert("{{ session('add-wishlist-success') }}");
     </script>
@@ -23,16 +58,6 @@
     <script>
         alert("{{ session('delete-wishlist-success') }}");
     </script>
-=======
-<script>
-alert("{{ session('add-wishlist-success') }}");
-</script>
-@endif
-@if (session('delete-wishlist-success'))
-<script>
-alert("{{ session('delete-wishlist-success') }}");
-</script>
->>>>>>> 03aed61a122434bce4a616eefb926e6789ac7a84
 @endif
 
 <main>
@@ -90,7 +115,7 @@ alert("{{ session('delete-wishlist-success') }}");
                 </div>
                 <h1 class="product-single__name">{{ $product['name'] }}</h1>
                 <div class="product-single__rating">
-                    <div class="reviews-group d-flex">
+                    <div class="reviews-group ">{{ number_format($product['averageRating'], 1) }}
                         @for ($i = 0; $i < 5; $i++) <svg class="review-star" viewBox="0 0 9 9"
                                                     xmlns="http://www.w3.org/2000/svg">
                                                     @if (
@@ -104,10 +129,11 @@ alert("{{ session('delete-wishlist-success') }}");
                                                 </svg>
                         @endfor
                     </div>
-                    <span class="reviews-note text-lowercase text-secondary ms-1">{{ $product['reviewCount'] }}
-                        reviews</span>
+                    <span
+                        class="reviews-note text-lowercase text-secondary ms-1">{{ $product['reviewCount'] > 1 ? $product['reviewCount'] . ' reviews': $product['reviewCount'] . ' review' }}</span>
                 </div>
-                <div id="product-price" class="product-single__price">
+                <span class="reviews-note ms-1">Sold: {{ $product['total_sold'] }}</span><br>
+                <div id="product-price" class="pt-4 product-single__price">
                     <p>{{ number_format($product['price'], 0, ',', '.') }} VND</p>
                 </div>
                 <div class="product-single__short-desc">
@@ -146,7 +172,7 @@ alert("{{ session('delete-wishlist-success') }}");
                         </div>
                         <div>
                             Quantities:
-                            <span id="product-quantity"></span>
+                            <span id="product-quantity">{{ $product['total_quantity'] }}</span>
                         </div><br>
                     </div>
                     <div class="product-single__addtocart">
@@ -165,17 +191,14 @@ alert("{{ session('delete-wishlist-success') }}");
                 </form>
                 <div id="product-info" data-product-id="{{ $product['product_id'] }}"></div>
                 <div class="product-single__addtolinks add-to-wishlist">
-                    <form action="{{ route('wishlist.add', $product['product_id']) }}" method="POST"
-                        class="add-to-wishlist-form">
-                        @csrf
-                        <button type="submit" class="menu-link menu-link_us-s add-to-wishlist">
-                            <svg width="16" height="16" viewBox="0 0 20 20" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <use href="#icon_heart" />
-                            </svg>
-                            <span>Add to Wishlist</span>
-                        </button>
-                    </form>
+                    <a href="#" class="menu-link menu-link_us-s add-to-wishlist"
+                        data-product-id="{{ $product['product_id'] }}">
+                        <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <use href="#icon_heart" />
+                        </svg>
+                        <span>Add to Wishlist</span>
+                    </a>
+
                     <share-button class="share-button">
                         <button
                             class="menu-link menu-link_us-s to-share border-0 bg-transparent d-flex align-items-center">
@@ -353,21 +376,32 @@ alert("{{ session('delete-wishlist-success') }}");
                     <h2 class="product-single__reviews-title">Reviews</h2>
                     <div class="product-single__reviews-list">
                         @foreach ($product['reviews'] as $review)
-                            <div class="product-single__reviews-item">
-                                <div class="customer-avatar">
-                                    <img loading="lazy" src="{{ asset($review->user->profile_image) }}"
-                                        alt="{{ $review->user->name }}">
-                                </div>
-                                <div class="customer-review">
-                                    <div class="customer-name">
-                                        <h6>{{ $review->user->name }}</h6>
+                        <div class="product-single__reviews-item" id="review-{{ $review->id }}">
+                            <div class="customer-avatar">
+                                <img loading="lazy" src="{{ asset($review->user->profile_image) }}"
+                                    alt="{{ $review->user->name }}">
+                            </div>
+                            <div class="customer-review">
+                                <div class="customer-name d-flex justify-content-between">
+                                    <h6>{{ $review->user->name }}</h6>
+                                    <div class="review-options">
+                                        <span class="options-icon" onclick="toggleMenu('menu-{{ $review->id }}')">
+                                            &#8942;
+                                            <!-- Icon ba dấu chấm dọc -->
+                                        </span>
+                                        <div class="review-menu" id="menu-{{ $review->id }}">
+                                            <button
+                                                onclick="deleteReview({{ $review->id }}, '{{ route('review.user.destroy', ['id' => $review->id]) }}')"
+                                                class="btn-delete">Xóa</button>
+                                        </div>
                                     </div>
-                                    <div class="reviews-group d-flex">
-                                        {{-- Hiển thị sao đánh giá --}}
-                                        @for ($i = 0; $i < $review->rating; $i++)
-                                            <svg class="review-star" viewBox="0 0 9 9" xmlns="http://www.w3.org/2000/svg">
-                                                <use href="#icon_star" />
-                                            </svg>
+                                </div>
+                                <div class="reviews-group d-flex">
+                                    {{-- Hiển thị sao đánh giá --}}
+                                    @for ($i = 0; $i < $review->rating; $i++)
+                                        <svg class="review-star" viewBox="0 0 9 9" xmlns="http://www.w3.org/2000/svg">
+                                            <use href="#icon_star" />
+                                        </svg>
                                         @endfor
 
                                         {{-- Hiển thị các ngôi sao trống nếu rating dưới 5 --}}
@@ -376,31 +410,7 @@ alert("{{ session('delete-wishlist-success') }}");
                                                 <use href="#icon_star_empty" />
                                             </svg>
                                         @endfor
-                                    </div>
-                                    <div class="review-date">
-                                        {{ $review->created_at }}
-                                    </div>
-                                    <div class="review-text">
-                                        {{ $review->comment }}
-                                    </div>
-                                    @if ($review->reply)
-                                        <div class="dropdown px-5 pb-5" data-bs-auto-close="false">
-                                            <button class="btn btn-link dropdown-toggle custom-dropdown-toggle" type="button"
-                                                id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                                                Reply from seller
-                                            </button>
-                                            <ul class="dropdown-menu custom-dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                <li>
-                                                    <div class="reply-text review-text">
-                                                        {{ $review->reply }}
-                                                    </div>
-                                                </li>
-                                            </ul>
                                         </div>
-                                    @endif
-                                </div>
-<<<<<<< HEAD
-=======
                                 <div class="review-date">
                                     {{ $review->created_at }}
                                 </div>
@@ -427,10 +437,11 @@ alert("{{ session('delete-wishlist-success') }}");
                                     </div>
                                 </div>
                                 @endif
->>>>>>> 03aed61a122434bce4a616eefb926e6789ac7a84
                             </div>
+                        </div>
                         @endforeach
                     </div>
+
                     <div class="product-single__review-form">
                         <form name="customer-review-form" id="review-form" method="POST" enctype="multipart/form-data"
                             action="{{ route('addReview', ['productId' => $product['product_id']]) }}">
@@ -475,44 +486,290 @@ alert("{{ session('delete-wishlist-success') }}");
                                 <div id="error-message-images" style="color: red; display: none;">
                                     <p>You can only upload up to 4 images.</p>
                                 </div>
-                            </div>
+                                <div id="imagePreview" style="margin: 10px 0;">
 
-                            <div class="mb-4">
-                                <textarea name="comment" id="form-input-review" class="form-control form-control_gray"
-                                    placeholder="Your Review" cols="30" rows="8"></textarea>
-                                <div id="error-message-review" style="color: red; display: none;">
-                                    <p>Please select a rating and write a review before submitting.</p>
                                 </div>
-                                <div class="form-action">
-                                    <button type="submit" class="btn btn-primary mt-1">Submit</button>
+
+                                <div class="mb-4">
+                                    <textarea name="comment" id="form-input-review"
+                                        class="form-control form-control_gray" placeholder="Your Review" cols="30"
+                                        rows="8"></textarea>
+                                    <div id="error-message-review" style="color: red; display: none;">
+                                        <p>Please select a rating and write a review before submitting.</p>
+                                    </div>
+                                    <div class="form-action">
+                                        <button type="submit" class="btn btn-primary mt-1">Submit</button>
+                                    </div>
                                 </div>
-                            </div>
                         </form>
                     </div>
                 </div>
             </div>
         </div>
     </section>
+    <section class="products-carousel container">
+            <!-- <div class="d-flex align-items-center justify-content-between flex-wrap mb-3 pb-xl-2 mb-xl-4"> -->
+                <h2 class="h3 text-uppercase mb-4 pb-xl-2 mb-xl-4">Other <strong>Products</strong></h2>
+                <!-- <a class="btn-link btn-link_md default-underline text-uppercase fw-medium"
+                    href="{{ route('locgia') }}">See All Products</a> -->
+            <!-- </div> -->
+            <div id="product_sneakers" class="position-relative">
+                <div class="swiper-container js-swiper-slider" data-settings='{
+            "autoplay": {
+              "delay": 3000
+            },
+            "slidesPerView": 4,
+            "slidesPerGroup": 1,
+            "effect": "none",
+            "loop": false,
+            "navigation": {
+              "nextEl": "#product_sneakers .products-carousel__next",
+              "prevEl": "#product_sneakers .products-carousel__prev"
+            },
+            "breakpoints": {
+              "320": {
+                "slidesPerView": 2,
+                "slidesPerGroup": 2,
+                "spaceBetween": 14
+              },
+              "768": {
+                "slidesPerView": 3,
+                "slidesPerGroup": 3,
+                "spaceBetween": 24
+              },
+              "992": {
+                "slidesPerView": 4,
+                "slidesPerGroup": 1,
+                "spaceBetween": 30,
+                "pagination": false
+              }
+            }
+          }'>
+                    <div class="swiper-wrapper">
+                        @foreach ($productsRandom as $product)
+                        <div class="swiper-slide product-card product-card_style3">
+                            <div class="pc__img-wrapper border-radius-0">
+                                <a href="{{ route('product.show', $product['product_id']) }}">
+                                    <img loading="lazy" src="{{ asset($product['images'][0]) }}" width="330"
+                                        height="400" alt="{{ $product['name'] }}" class="pc__img">
+                                </a>
+                            </div>
+
+                            <div class="pc__info position-relative">
+                                <p class="pc__category text-uppercase">{{ $product['category_name'] }}</p>
+                                <h6 class="pc__title mb-2"><a
+                                        href="{{ route('product.show', $product['product_id']) }}">{{ $product['name'] }}</a>
+                                </h6>
+                                <div class="product-card__price d-flex align-items-center">
+                                    <span class="money price"><a
+                                            href="{{ route('product.show', $product['product_id']) }}">{{ number_format($product['price'], 0, ',', '.') }}
+                                            VND</a></span>
+                                </div>
+                                <div class="product-card__price d-flex align-items-center">
+                                    <span class="reviews-note">Sold: {{ $product['total_sold'] }}</span>
+                                    @if ( $product['reviewCount'] > 0)
+                                    <span class="money price ms-5">
+                                        @for ($i = 0; $i < 5; $i++) @if ($i < $product['averageRating'])<svg
+                                            class="review-star" viewBox="0 0 9 9" xmlns="http://www.w3.org/2000/svg">
+                                            <use href="#icon_star" />
+                                            @else
+                                            {{ '' }}
+                                            @endif
+                                            </svg>
+                                            @endfor
+                                            ({{ $product['reviewCount']}})
+                                    </span>
+                                    @endif
+                                </div>
+
+
+                                <button
+                                    class="pc__btn-wl position-absolute top-0 end-0 bg-transparent border-0 js-add-wishlist"
+                                    title="Add To Wishlist">
+                                    <svg width="16" height="16" viewBox="0 0 20 20" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <use href="#icon_heart" />
+                                    </svg>
+                                </button>
+                                <!-- <form action="{{ route('wishlist.add', $product['product_id']) }}" method="POST"
+                                    class="add-to-wishlist-form">
+                                    @csrf
+                                    <button type="submit" class="menu-link menu-link_us-s add-to-wishlist">
+                                        <svg width="16" height="16" viewBox="0 0 20 20" fill="none"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <use href="#icon_heart" />
+                                        </svg>
+                                    </button>
+                                </form> -->
+                            </div>
+                        </div>
+                        @endforeach
+                    </div><!-- /.swiper-wrapper -->
+                </div><!-- /.swiper-container js-swiper-slider -->
+
+                <div
+                    class="products-carousel__prev navigation-sm position-absolute top-50 d-flex align-items-center justify-content-center">
+                    <svg width="25" height="25" viewBox="0 0 25 25" xmlns="http://www.w3.org/2000/svg">
+                        <use href="#icon_prev_md" />
+                    </svg>
+                </div><!-- /.products-carousel__prev -->
+                <div
+                    class="products-carousel__next navigation-sm position-absolute top-50 d-flex align-items-center justify-content-center">
+                    <svg width="25" height="25" viewBox="0 0 25 25" xmlns="http://www.w3.org/2000/svg">
+                        <use href="#icon_next_md" />
+                    </svg>
+                </div><!-- /.products-carousel__next -->
+            </div><!-- /.position-relative -->
+        </section>
 </main>
 
 <div class="mb-5 pb-xl-5"></div>
 <!-- Bao gồm component chatbox -->
 <x-chatbox />
-<<<<<<< HEAD
 <script>
-    document.getElementById('review-form').addEventListener('submit', function (event) {
-        var rating = document.getElementById('form-input-rating').value;
-        var comment = document.getElementById('form-input-review').value.trim();
+function toggleMenu(menuId) {
+    const menu = document.getElementById(menuId);
+    if (menu.style.display === "block") {
+        menu.style.display = "none";
+    } else {
+        menu.style.display = "block";
+    }
+}
+document.addEventListener('click', function(event) {
+    const allMenus = document.querySelectorAll('.review-menu');
 
-        // Kiểm tra xem rating có được chọn và comment có được nhập không
-        if (!rating || !comment) {
-            event.preventDefault(); // Ngừng gửi form
-            document.getElementById('error-message-review').style.display = 'block'; // Hiển thị thông báo lỗi
+    // Kiểm tra nếu click vào vùng ngoài các menu hoặc các nút trigger
+    allMenus.forEach(menu => {
+        if (!menu.contains(event.target) && !event.target.classList.contains('options-icon')) {
+            menu.style.display = "none"; // Ẩn menu
         }
     });
+});
+
+function deleteReview(reviewId, deleteUrl) {
+    if (confirm("Bạn có chắc chắn muốn xóa đánh giá này không?")) {
+        fetch(deleteUrl, {
+                method: "DELETE",
+                headers: {
+                    "X-Requested-With": "XMLHttpRequest", // Thêm header này để Laravel nhận diện yêu cầu là AJAX
+
+                    "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content"),
+                },
+            })
+            .then(response => response.json()) // Chuyển đổi phản hồi thành JSON
+            .then(data => {
+                console.log(data);
+
+                if (data.success) {
+                    alert(data.message || "Đánh giá đã được xóa thành công!");
+                    const reviewElement = document.getElementById(`review-${reviewId}`);
+                    if (reviewElement) {
+                        reviewElement.remove(); // Chỉ xóa nếu phần tử tồn tại
+                    }
+                } else {
+                    alert(data.message || "Không thể xóa đánh giá.");
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                alert("Có lỗi xảy ra. Vui lòng thử lại sau.");
+            });
+    }
+}
+
+document.getElementById('imagesInput').addEventListener('change', function(event) {
+    const files = event.target.files;
+    const previewContainer = document.getElementById('imagePreview');
+    previewContainer.innerHTML = ''; // Clear previous previews
+
+    if (files.length > 4) {
+        document.getElementById('error-message-images').style.display = 'block';
+    } else {
+        document.getElementById('error-message-images').style.display = 'none';
+
+        Array.from(files).forEach(file => {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const imgWrapper = document.createElement('div');
+                imgWrapper.style.position = 'relative';
+                imgWrapper.style.display = 'inline-block';
+                imgWrapper.style.marginRight = '10px';
+                imgWrapper.style.marginBottom = '10px';
+
+                const imgElement = document.createElement('img');
+                imgElement.src = e.target.result;
+                imgElement.style.maxHeight = '60px'; // Adjust size as needed
+                imgElement.style.borderRadius = '5px'; // Optional: for rounded corners
+
+                // Create and style the delete button (X)
+                const deleteBtn = document.createElement('span');
+                deleteBtn.innerText = '✖';
+                deleteBtn.style.position = 'absolute';
+                deleteBtn.style.top = '0.2em';
+                deleteBtn.style.right = '0.2em';
+                deleteBtn.style.color = 'white';
+                deleteBtn.style.border = 'none';
+                deleteBtn.style.textAlign = 'center';
+                deleteBtn.style.lineHeight = '15px';
+                deleteBtn.style.fontSize = '10px';
+                deleteBtn.style.cursor = 'pointer';
+                deleteBtn.style.width = '15px';
+                deleteBtn.style.height = '15px';
+                deleteBtn.style.background = 'black';
+                deleteBtn.style.borderRadius = '30%';
+
+                // Add event listener for deleting the image
+                deleteBtn.addEventListener('click', function() {
+                    imgWrapper.remove(); // Remove the image and the delete button
+                });
+
+                // Append the image and button to the wrapper
+                imgWrapper.appendChild(imgElement);
+                imgWrapper.appendChild(deleteBtn);
+
+                // Append the wrapper to the preview container
+                previewContainer.appendChild(imgWrapper);
+            };
+            reader.readAsDataURL(file);
+        });
+    }
+});
+
+document.querySelectorAll('.add-to-wishlist').forEach(button => {
+    button.addEventListener('click', function(event) {
+        event.preventDefault(); // Ngăn việc chuyển hướng trang
+        const productId = this.getAttribute('data-product-id');
+
+        // Kiểm tra nếu productId hợp lệ
+        if (!productId) {
+            console.error('Invalid Product ID');
+            return;
+        }
+
+        fetch(`/wishlist/add/${productId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
+                        'content')
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert(data.message); // Hiển thị thông báo thành công
+                } else {
+                    alert(data.message); // Hiển thị thông báo lỗi
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }, {
+        once: true
+    }); // Thêm tùy chọn để đảm bảo chỉ gọi một lần
+});
 </script>
-=======
->>>>>>> 03aed61a122434bce4a616eefb926e6789ac7a84
 <!-- <script>
     $(document).ready(function() {
         // Xử lý submit form bằng AJAX

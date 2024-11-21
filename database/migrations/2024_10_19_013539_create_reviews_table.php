@@ -19,7 +19,9 @@ return new class extends Migration
         $table->text('comment')->nullable();
         $table->string('reply')->nullable();
         $table->timestamp('created_at')->useCurrent();
-        $table->timestamp('updated_at')->nullable();    });
+        $table->timestamp('updated_at')->useCurrent();
+    });
+       
 }
 
 public function down()

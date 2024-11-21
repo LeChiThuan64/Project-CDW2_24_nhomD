@@ -15,6 +15,21 @@ class ProductController extends Controller
     // Hiển thị chi tiết sản phẩm
     public function show($id)
     {
+        $productsRandomModel = Product::with(['images', 'productSizeColors.size', 'productSizeColors.color', 'reviews'])
+            ->inRandomOrder() // Sắp xếp ngẫu nhiên
+            ->take(8) // Lấy 8 sản phẩm ngẫu nhiên
+            ->get();
+
+        // Chuyển đổi dữ liệu sản phẩm thành mảng và thêm các thông tin cần thiết
+        $productsRandom = $productsRandomModel->map(function ($product) {
+            $data = $product->getProductDetailData();
+            $data['averageRating'] = $product->reviews->avg('rating') ?? 0;
+            $data['reviewCount'] = $product->reviews->count();
+            return $data;
+        });
+
+
+
         $productModel = Product::with(['images', 'productSizeColors.size', 'productSizeColors.color', 'reviews', 'category'])
             ->findOrFail($id);
 
@@ -33,7 +48,7 @@ class ProductController extends Controller
         $product['sizesAndColor'] = $productModel->productSizeColors;
         $product['colors'] = $colors;
         $product['sizes'] = $sizes;
-        return view('viewUser.product-detail', compact('product'));
+        return view('viewUser.product-detail', compact('product', 'productsRandom'));
     }
 
     public function getQuantityAndPrice(Request $request)

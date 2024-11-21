@@ -8,6 +8,7 @@ use App\Models\Wishlist;
 use App\Models\Product; // Model Product
 use DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class WishlistController extends Controller
 {
@@ -53,15 +54,37 @@ public function add($productId)
 
     // Kiểm tra xem người dùng đã đăng nhập hay chưa
     if (!$user) {
-        return redirect()->route('auth')->with('no-login-wishlist', 'You need to login to add product to wishlist');
+        return response()->json([
+            'success' => false,
+            'message' => 'You need to login to add product to wishlist'
+        ], 401); // 401 Unauthorized
     }
 
-    $product = Product::findOrFail($productId);
+    $product = Product::find($productId);
+    Log::info('Product ID: ' . $productId);
+
+    if (!$product) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Product not found'
+        ], 404); // 404 Not Found
+    }
+
+    // Kiểm tra xem sản phẩm đã có trong wishlist chưa
+    if ($user->wishlists()->where('product_id', $productId)->exists()) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Product is already in your wishlist'
+        ], 400); // 400 Bad Request
+    }
 
     // Thêm sản phẩm vào wishlist
     $user->wishlists()->create(['product_id' => $productId]);
 
-    return redirect()->back()->with('add-wishlist-success', 'Add to wishlist successfully!');
+    return response()->json([
+        'success' => true,
+        'message' => 'Add to wishlist successfully!'
+    ], 200); // 200 OK
 }
 
 public function remove($wishlistId)

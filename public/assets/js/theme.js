@@ -1894,17 +1894,24 @@ $(document).ready(function() {
 });
 
 // Cập nhật giỏ hàng
-$(document).ready(function() {
-  $('#update-cart').click(function(e) {
+$(document).ready(function () {
+  $('#update-cart').click(function (e) {
       e.preventDefault(); // Ngừng hành động mặc định của button (submit)
 
-      // Tạo mảng chứa dữ liệu cần gửi
       var updatedData = [];
+      var isValid = true;
 
       // Lặp qua mỗi dòng sản phẩm trong giỏ hàng
-      $('.cart-table tbody tr').each(function() {
-          var cartItemId = $(this).data('cart-item-id');  // Lấy cart_item_id từ data attribute
-          var quantity = $(this).find('input[name="quantity[' + cartItemId + ']"]').val();  // Lấy quantity
+      $('.cart-table tbody tr').each(function () {
+          var cartItemId = $(this).data('cart-item-id'); // Lấy cart_item_id từ data attribute
+          var quantity = $(this).find('input[name="quantity[' + cartItemId + ']"]').val(); // Lấy quantity
+
+          // Kiểm tra quantity (phải là số nguyên dương lớn hơn 0)
+          if (!quantity || isNaN(quantity) || quantity <= 0) {
+              alert('Số lượng phải là số nguyên dương và lớn hơn 0.');
+              isValid = false;
+              return false; // Thoát khỏi vòng lặp each
+          }
 
           // Thêm dữ liệu của sản phẩm vào mảng
           updatedData.push({
@@ -1913,20 +1920,25 @@ $(document).ready(function() {
           });
       });
 
+      // Nếu dữ liệu không hợp lệ, dừng việc gửi request
+      if (!isValid) {
+          return;
+      }
+
       // Gửi AJAX request để cập nhật giỏ hàng
       $.ajax({
-          url: '/cart/update',  // URL endpoint cập nhật giỏ hàng
+          url: '/cart/update', // URL endpoint cập nhật giỏ hàng
           type: 'PUT',
           data: {
-              _token: $('meta[name="csrf-token"]').attr('content'),  // Thêm CSRF token để bảo mật
-              updatedData: updatedData  // Gửi dữ liệu đã thu thập
+              _token: $('meta[name="csrf-token"]').attr('content'), // Thêm CSRF token để bảo mật
+              updatedData: updatedData // Gửi dữ liệu đã thu thập
           },
-          success: function(response) {
-              alert('Update cart successfully!');
+          success: function (response) {
+              alert('Cập nhật giỏ hàng thành công!');
               var newTotal = 0;
-              
+
               // Cập nhật lại số lượng sản phẩm trong giỏ hàng và tính tổng số tiền
-              $('.cart-table tbody tr').each(function() {
+              $('.cart-table tbody tr').each(function () {
                   var cartItemId = $(this).data('cart-item-id');
                   var updatedQuantity = $('input[name="quantity[' + cartItemId + ']"]').val();
                   var price = parseFloat($(this).find('.shopping-cart__product-price').text().replace(' VND', '').replace(/\./g, ''));
@@ -1937,16 +1949,16 @@ $(document).ready(function() {
 
               // Cập nhật tổng số tiền
               $('#subtotal').text(newTotal + ' VND');
-              // Cập nhật giỏ hàng, hoặc bạn có thể hiển thị thông báo thành công ở đây
-              calculateTotal();
+              calculateTotal(); // Hàm tính tổng số tiền
           },
-          error: function(xhr, status, error) {
+          error: function (xhr, status, error) {
               // Nếu có lỗi
-              alert('Có lỗi xảy ra khi cập nhật giỏ hàng');
+              alert('Có lỗi xảy ra khi cập nhật giỏ hàng.');
           }
       });
   });
 });
+
 
 // Hàm tính toán lại tổng tiền
 function calculateTotal() {

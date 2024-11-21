@@ -76,6 +76,8 @@ class Product extends Model
             $price = $sizeColor->price;
         }
 
+        $totalSold = OrderItem::where('product_id', $this->product_id)->sum('quantity');
+
         return [
             'product_id' => $this->product_id,
             'name' => $this->name,
@@ -87,6 +89,7 @@ class Product extends Model
             'sizesAndColors' => $this->productSizeColors,
             'images' => $images,
             'price' => $price,
+            'total_sold' => $totalSold,
         ];
     }
 
