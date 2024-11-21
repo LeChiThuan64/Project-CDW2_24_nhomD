@@ -305,7 +305,6 @@ Route::get('/checkout/confirmation', [CheckoutConfirmation::class, 'show']);
 // Route để lấy thông tin đơn hàng
 Route::get('/checkout/confirmation/{orderId}', [CheckoutConfirmation::class, 'show']);
 // Route xóa tất cả sản phẩm khỏi giỏ hàng
-Route::post('/cart/clear', [CartController::class, 'clear']);
 Route::get('/admin/categories', [CategoryController::class, 'index'])->name('showCategories');
 Route::delete('/admin/categories/delete/{id}', [CategoryController::class, 'destroy'])->name('category.destroy');
 Route::get('/admin/categories/update/{id}', [CategoryController::class, 'edit'])->name('category.edit');
@@ -336,3 +335,8 @@ Route::post('/product/update/{id}', [ProductsController::class, 'update'])->name
 
 Route::get('/admin/reviews', [ReviewController::class, 'show'])->name('review.show');
 Route::delete('/admin/reviews/delete/{id}', [ReviewController::class, 'destroy'])->name('review.destroy');
+Route::delete('/review/delete/{id}', [ReviewController::class, 'destroyByUser'])->name('review.user.destroy');
+
+Route::get('/about-us', function () {
+    return view('viewUser.about_us');
+})->name('about-us.show');

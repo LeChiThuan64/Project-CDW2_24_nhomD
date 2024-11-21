@@ -144,7 +144,6 @@
                             <td>
                                 <div class="d-flex px-2 py-1">
                                     <div class="d-flex flex-column justify-content-center">
-
                                         <h6 class="mb-0 text-sm">{{ $review->user->name }}</h6>
                                     </div>
                                 </div>
@@ -247,7 +246,7 @@
     <p><strong>User:</strong> <span id="modalUser"></span></p>
     <p><strong>Product:</strong> <span id="modalProduct"></span></p>
     <p><strong>Rating:</strong> <span id="modalRating"></span></p>
-    <p><strong>Comment:</strong> <span id="modalComment"></span></p>
+    <p><strong>Review:</strong> <span id="modalComment"></span></p>
     <p><strong>Date:</strong> <span id="modalDate"></span></p>
     <p><strong>Image: </strong><div id="modalImages" class="image-preview-container mt-3"></div></p>
      <!-- Thêm hình ảnh -->

@@ -210,3 +210,10 @@
     /* Chiều rộng của đường kẻ */
 }
 
+.category-image {
+    max-width: 100%;  /* Hình ảnh không rộng hơn ô chứa */
+    max-height: 100px; /* Kích thước cao tối đa của hình ảnh */
+    object-fit: contain;  /* Giữ tỷ lệ hình ảnh khi thay đổi kích thước */
+}
+
+

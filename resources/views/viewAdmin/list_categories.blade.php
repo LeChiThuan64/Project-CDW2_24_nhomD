@@ -16,7 +16,8 @@
                     <form action="{{ route('showCategories') }}" method="GET">
                         <div class="input-group">
                             <input type="text" name="search" class="form-control" style="height: 42px;"
-                                placeholder="Find categories..." aria-label="search-category" value="{{ request('search') }}">
+                                placeholder="Find categories..." aria-label="search-category"
+                                value="{{ request('search') }}">
                             <div class="input-group-prepend">
                                 <button class="btn btn-outline-secondary" type="submit">
                                     <i class="fas fa-search"></i>
@@ -72,6 +73,8 @@
                                 name</th>
                             <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Description
                             </th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Image
+                            </th>
                             <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                 Action</th>
 
@@ -88,7 +91,6 @@
                             <td>
                                 <div class="d-flex px-2 py-1">
                                     <div class="d-flex flex-column justify-content-center">
-
                                         <h6 class="mb-0 text-sm">{{ $category->category_name }}</h6>
                                     </div>
                                 </div>
@@ -97,6 +99,14 @@
                                 <div class="d-flex px-2 py-1">
                                     <div class="d-flex flex-column justify-content-center">
                                         <h6 class="mb-0 text-sm">{{ $category->description }}</h6>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="align-middle text-center">
+                                    <div class="d-flex flex-column justify-content-center">
+                                        <img src="{{ asset('assets/img/categories/' . $category->image) }}" alt=""
+                                            class="category-image">
                                     </div>
                                 </div>
                             </td>
@@ -155,8 +165,8 @@
         $end = min($totalPages, $currentPage + $range);
 
         // Điều chỉnh để luôn hiển thị tối thiểu 3 trang nếu có đủ
-        if ($end - $start < 2) { if ($start==1) { $end=min($start + 2, $totalPages); } else { $start=max(1, $end
-            - 2); } } @endphp @foreach (range($start, $end) as $page) <li
+        if ($end - $start < 2) { if ($start==1) { $end=min($start + 2, $totalPages); } else { $start=max(1, $end - 2); }
+            } @endphp @foreach (range($start, $end) as $page) <li
             class="page-items {{ ($categories->currentPage() == $page) ? 'active' : '' }}">
             <a class="page-links" href="{{ $categories->url($page) }}">{{ $page }}</a>
             </li>

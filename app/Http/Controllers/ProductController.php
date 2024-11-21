@@ -15,6 +15,21 @@ class ProductController extends Controller
     // Hiển thị chi tiết sản phẩm
     public function show($id)
     {
+        $productsRandomModel = Product::with(['images', 'productSizeColors.size', 'productSizeColors.color', 'reviews'])
+            ->inRandomOrder() // Sắp xếp ngẫu nhiên
+            ->take(8) // Lấy 8 sản phẩm ngẫu nhiên
+            ->get();
+
+        // Chuyển đổi dữ liệu sản phẩm thành mảng và thêm các thông tin cần thiết
+        $productsRandom = $productsRandomModel->map(function ($product) {
+            $data = $product->getProductDetailData();
+            $data['averageRating'] = $product->reviews->avg('rating') ?? 0;
+            $data['reviewCount'] = $product->reviews->count();
+            return $data;
+        });
+
+
+
         $productModel = Product::with(['images', 'productSizeColors.size', 'productSizeColors.color', 'reviews', 'category'])
             ->findOrFail($id);
 
@@ -33,7 +48,7 @@ class ProductController extends Controller
         $product['sizesAndColor'] = $productModel->productSizeColors;
         $product['colors'] = $colors;
         $product['sizes'] = $sizes;
-        return view('viewUser.product-detail', compact('product'));
+        return view('viewUser.product-detail', compact('product', 'productsRandom'));
     }
 
     public function getQuantityAndPrice(Request $request)
@@ -95,60 +110,60 @@ class ProductController extends Controller
             'rating' => 'required|integer|min:1|max:5',
             'comment' => 'required|string|max:255',
         ]);
-    
+
         // Tìm sản phẩm
         $product = Product::findOrFail($productId);
-    
+
         // Kiểm tra nếu user đã đánh giá sản phẩm này
         $existingReview = $product->reviews()->where('user_id', auth()->id())->first();
         if ($existingReview) {
             return redirect()->back()->with('add-review-error', 'You have already reviewed this product.');
         }
-    
+
         // Lưu review vào cơ sở dữ liệu
         $review = $product->reviews()->create([
             'user_id' => auth()->id(),
             'rating' => $request->input('rating'),
             'comment' => $request->input('comment'),
         ]);
-    
+
         // Kiểm tra số lượng ảnh tải lên
         $uploadedFiles = $request->file('images');
         // if ($uploadedFiles && count($uploadedFiles) > 4) {
         //     return redirect()->back()->with('add-review-error', 'You can only upload up to 4 images.');
         // }
-    
+
         // Xử lý hình ảnh nếu có
         if ($uploadedFiles) {
             foreach ($uploadedFiles as $imageFile) {
                 if ($imageFile) {
                     // Tạo tên file ảnh duy nhất
                     $imageName = $imageFile->getClientOriginalName();
-    
+
                     // Đường dẫn lưu ảnh
                     $imagePath = 'assets/img/reviews/';
                     $fullImagePath = public_path($imagePath);
                     if (!file_exists($fullImagePath)) {
                         mkdir($fullImagePath, 0755, true);
                     }
-    
+
                     // Lưu file ảnh vào thư mục
                     $imageFile->move($fullImagePath, $imageName);
-    
+
                     // Lưu thông tin ảnh vào bảng review_images
                     ReviewImage::create([
                         'review_id' => $review->id,
-                        'image_url' => $imageName, 
+                        'image_url' => $imageName,
                         'created_at' => now(),
                     ]);
                 }
             }
         }
-    
+
         // Trả về với thông báo thành công
         return redirect()->back()->with('add-review-success', 'Review added successfully!');
     }
-    
+
 
 
 
