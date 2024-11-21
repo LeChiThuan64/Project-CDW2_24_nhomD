@@ -17,6 +17,8 @@ use App\Http\Controllers\ChatboxController;
 use App\Http\Controllers\CartController;
 use App\Models\Blog;
 use App\Http\Controllers\ProfileController;
+
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -30,16 +32,17 @@ use App\Http\Controllers\ProfileController;
 
 
 
-Route::get('/', function () {
-    return view('welcome');
+
+
+// Áp dụng middleware kiểm soát truy cập
+Route::middleware(['access.control'])->group(function () {
+    // Route dashboard
+    Route::get('/dashboard', function () {
+        return view('viewAdmin.dashboard');
+    })->name("dashboard");
+    
+
 });
-
-
-
-// Route dashboard
-Route::get('/dashboard', function () {
-    return view('viewAdmin.dashboard');
-})->name("dashboard");
 
 
 // Hiển thị form đăng nhập/ đăng ký
@@ -52,6 +55,9 @@ Route::post('/register', [RegisterController::class, 'register'])->name('registe
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::get('password/reset', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
 Route::post('password/email', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
+Route::post('password/reset', [ForgotPasswordController::class, 'reset'])->name('password.update');
+Route::get('password/reset/{token}', [ForgotPasswordController::class, 'showResetForm'])->name('password.reset');
+
     
 
 // Route trang hiển thị danh sách người dùng (tables.blade.php)
@@ -281,3 +287,5 @@ Route::get('/check-login', function() {
 
 Route::get('/product/edit/{id}', [ProductsController::class, 'edit'])->name('products.edit');
 Route::post('/product/update/{id}', [ProductsController::class, 'update'])->name('products.update');
+
+

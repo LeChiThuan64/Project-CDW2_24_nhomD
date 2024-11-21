@@ -2,6 +2,17 @@
 @section('title', 'Authentication')
 @section('content')
 
+@if (session('status'))
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        let statusMessage = "{{ session('status') }}";
+        let type = 'info'; // Bạn có thể thay đổi type nếu cần (error, warning, info)
+        createToast(type, 'fa-solid fa-circle-check', 'Success', statusMessage);
+    });
+</script>
+@endif
+
+
 <main>
     <div class="mb-4 pb-4"></div>
     <section class="login-register container">
@@ -35,6 +46,10 @@
                         <div id="login-error" class="text-danger mb-3"></div> <!-- Hiển thị lỗi tổng quát -->
 
                         <button class="btn btn-primary w-100 text-uppercase" type="submit">Log In</button>
+                        <div class="customer-option mt-4 text-center">
+                            <span class="text-secondary">Go to</span>
+                            <a href="{{ route('password.request') }}" class="btn-text js-show-register">Reset Password</a>
+                        </div>
                     </form>
 
 
@@ -90,10 +105,6 @@
 </main>
 
 
-<script>
-        const loginUrl = "{{ route('login') }}";
-        const registerUrl = "{{ route('register') }}";
-        const authUrl = "{{ route('auth') }}";
-    </script>
+
 
 @endsection
