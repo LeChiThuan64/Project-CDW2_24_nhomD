@@ -41,7 +41,7 @@ function submitReturnForm(button) {
         product_id: productId,
         orders_id: ordersId
     };
-    fetch(`/returns-orders/${returnsOrderId}/store`, {
+    fetch(`/order-return-results/${returnsOrderId}/store`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

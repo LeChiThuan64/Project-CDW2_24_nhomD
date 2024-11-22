@@ -751,7 +751,7 @@
                         <!-- <span class="cart-amount d-block position-absolute js-cart-items-count">3</span> -->
                     </a>
 
-                    <a class="header-tools__item" href="{{ route('wishlist.index') }}">
+                    <a class="header-tools__item" href="{{ route('order.manager.show') }}">
                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <use href="#icon_heart" />
                         </svg>
