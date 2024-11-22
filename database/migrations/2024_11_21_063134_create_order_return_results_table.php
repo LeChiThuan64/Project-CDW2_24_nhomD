@@ -18,9 +18,9 @@ class CreateOrderReturnResultsTable extends Migration
             $table->text('reason')->nullable();
             $table->timestamps();
 
-            $table->foreign('returns_order_id')->references('id')->on('returns_orders')->onDelete('cascade');
+            $table->foreign('returns_order_id')->references('id')->on('returns_order')->onDelete('cascade');
             $table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade'); // Thêm khóa ngoại cho order_id
-            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade'); // Thêm khóa ngoại cho product_id
+            $table->foreign('product_id')->references('product_id')->on('products')->onDelete('cascade'); // Thêm khóa ngoại cho product_id
         });
     }
 

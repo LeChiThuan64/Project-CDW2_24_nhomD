@@ -312,6 +312,8 @@ Route::get('/cart-items/{cartItemId}', [OrderItemController::class, 'show']);
 
 // Route hiện thị trang xác nhận checkout
 Route::get('/checkout/confirmation', [CheckoutConfirmation::class, 'show']);
+// Route xóa tất cả sản phẩm khỏi giỏ hàng
+Route::post('/cart/clear', [CartController::class, 'clear']);
 // Route để lấy thông tin đơn hàng
 Route::get('/checkout/confirmation/{orderId}', [CheckoutConfirmation::class, 'show']);
 // Route xóa tất cả sản phẩm khỏi giỏ hàng
@@ -346,7 +348,8 @@ Route::get('/api/users/{id}/orders', [CustomerListController::class, 'getUserOrd
 //Route quản lý đơn hàng đổi trả
 Route::get('/admin/returns-orders', [ReturnsOrderAdminController::class, 'index'])->name('returns.orders.index');
 Route::get('/returns-orders/{id}', [ReturnsOrderDetailAdminController::class, 'show'])->name('returns.orders.show');
-Route::post('/returns-orders/{id}/store', [ReturnsOrderDetailAdminController::class, 'store'])->name('returns.orders.store');
+// Route lưu thông tin chi tiết hoàn trả
+Route::post('/order-return-results/{id}/store', [OrderReturnResultsController::class, 'store']);
 // Route lấy bảng thông báo đổi trả
 Route::get('/api/order_return_results/{id}', [OrderReturnResultsController::class, 'getResults']);
 // Route cập nhật trạng thái đơn hoàn trả
