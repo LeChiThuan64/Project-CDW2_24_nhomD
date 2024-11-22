@@ -50,6 +50,8 @@
     <link href="<?php echo e(asset('assets/css/list_products.css')); ?>" rel="stylesheet" />
     <link rel="stylesheet" href="<?php echo e(asset('assets/css/chatbox_admin.css')); ?>">
     <link rel="stylesheet" href="<?php echo e(asset('assets/css/customer_list.css')); ?>">
+    <link rel="stylesheet" href="<?php echo e(asset('assets/css/dashboard.css')); ?>">
+    <link rel="stylesheet" href="<?php echo e(asset('assets/css/returns_order_detail_admin.css')); ?>">
 
 
     <!-- Toastr CSS -->
@@ -272,6 +274,8 @@
     <script src="<?php echo e(asset('assets/js/chatbox-admin.js')); ?>"></script>
     <script src="<?php echo e(asset('assets/js/orders_admin.js')); ?>"></script>
     <script src="<?php echo e(asset('assets/js/customer_list.js')); ?>"></script>
+    <script src="<?php echo e(asset('assets/js/returns_order_admin.js')); ?>"></script>
+    <script src="<?php echo e(asset('assets/js/returns_order_detail_admin.js')); ?>"></script>
 
     <!-- Thêm jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

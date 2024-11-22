@@ -7,6 +7,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ProductsController;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\UserController;
@@ -54,9 +55,7 @@ Route::get('/', function () {
 
 
 // Route dashboard
-Route::get('/dashboard', function () {
-    return view('viewAdmin.dashboard');
-})->name("dashboard");
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
 
 // Hiển thị form đăng nhập/ đăng ký
