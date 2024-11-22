@@ -22,6 +22,36 @@
             submitBtn.disabled = false; // Bật lại nút submit
         }
     });
+    document.addEventListener('DOMContentLoaded', function () {
+        const nameInput = document.getElementById('contact_us_name');
+        const submitBtn = document.getElementById('submitBtn');
+    
+        // Hàm kiểm tra hợp lệ
+        function validateName() {
+            const value = nameInput.value.trim();
+    
+            // Kiểm tra: bỏ trống hoặc vượt quá 255 ký tự
+            if (value.length === 0 || value.length > 255) {
+                nameInput.classList.add('is-invalid'); // Đổi màu đỏ
+                submitBtn.disabled = true; // Vô hiệu hóa nút submit
+            } else {
+                nameInput.classList.remove('is-invalid'); // Xóa màu đỏ
+                submitBtn.disabled = false; // Bật nút submit
+            }
+        }
+    
+        // Kiểm tra khi người dùng nhập
+        nameInput.addEventListener('input', validateName);
+    
+        // Ngăn gửi form nếu input không hợp lệ
+        const form = document.querySelector('form');
+        form.addEventListener('submit', function (e) {
+            if (submitBtn.disabled) {
+                e.preventDefault(); // Ngăn gửi form nếu không hợp lệ
+            }
+        });
+    });
+    
 
 
 

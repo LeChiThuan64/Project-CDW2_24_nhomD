@@ -50,6 +50,8 @@
     <link href="<?php echo e(asset('assets/css/list_products.css')); ?>" rel="stylesheet" />
     <link rel="stylesheet" href="<?php echo e(asset('assets/css/chatbox_admin.css')); ?>">
     <link rel="stylesheet" href="<?php echo e(asset('assets/css/customer_list.css')); ?>">
+    <link rel="stylesheet" href="<?php echo e(asset('assets/css/dashboard.css')); ?>">
+    <link rel="stylesheet" href="<?php echo e(asset('assets/css/returns_order_detail_admin.css')); ?>">
 
 
     <!-- Toastr CSS -->
@@ -194,14 +196,14 @@
                         <span class="nav-link-text ms-1">Oders manager</span>
                     </a>
                 </li>
-                <li class="nav-item">
+                <!-- <li class="nav-item">
                     <a class="nav-link text-white " href="notifications.html">
                         <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                             <i class="material-icons opacity-10">notifications</i>
                         </div>
                         <span class="nav-link-text ms-1">Notifications</span>
                     </a>
-                </li>
+                </li> -->
                 <li class="nav-item mt-3">
                     <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Account pages
                     </h6>
@@ -272,6 +274,8 @@
     <script src="<?php echo e(asset('assets/js/chatbox-admin.js')); ?>"></script>
     <script src="<?php echo e(asset('assets/js/orders_admin.js')); ?>"></script>
     <script src="<?php echo e(asset('assets/js/customer_list.js')); ?>"></script>
+    <script src="<?php echo e(asset('assets/js/returns_order_admin.js')); ?>"></script>
+    <script src="<?php echo e(asset('assets/js/returns_order_detail_admin.js')); ?>"></script>
 
     <!-- Thêm jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

@@ -168,6 +168,20 @@ class UserSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
+            [
+                'id' => 12,
+                'name' => 'chieu',
+                'email' => 'chieu@gmail.com',
+                'password' => Hash::make('1234'),
+                'phone' => '0900000012',
+                'role' => 1,
+                'gender' => 'female',
+                'dob' => '2003-10-09',
+                'is_active' => 1,
+                'profile_image' => 'uploads/team-4.jpg',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
         ]);
     }
 }

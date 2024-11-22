@@ -1,0 +1,40 @@
+#fixed-table {
+    display: none;
+    position: fixed;
+    top: 50%; /* Di chuyển bảng đến giữa theo chiều dọc */
+    left: 50%; /* Di chuyển bảng đến giữa theo chiều ngang */
+    width: 40%; /* Giảm chiều rộng xuống 40% */
+    height: 40%; /* Giảm chiều cao xuống 40% */
+    background: white;
+    border: 1px solid #ccc;
+    padding: 10px; /* Giảm khoảng cách bên trong bảng */
+    overflow: auto;
+    z-index: 1000; /* Đảm bảo bảng luôn hiển thị trên cùng */
+    transform: translate(-50%, -50%); /* Căn giữa bảng theo cả hai chiều */
+}
+
+#buttons-container {
+    position: absolute;
+    bottom: 10px; /* Đặt cách đáy 10px */
+    left: 50%;
+    transform: translateX(-50%); /* Căn giữa container của các nút */
+    display: flex;
+    gap: 20px; /* Khoảng cách giữa các nút là 20px */
+}
+
+#close-table,
+#send-btn {
+    padding: 10px 20px; /* Thêm padding để làm cho nút lớn hơn */
+    font-size: 16px; /* Tăng kích thước chữ */
+    background-color: #6c757d; /* Màu nền xám */
+    color: white; /* Màu chữ trắng */
+    border: none;
+    border-radius: 5px; /* Bo góc cho nút */
+    cursor: pointer;
+    z-index: 1001; /* Đảm bảo nút nằm trên cùng */
+}
+
+#close-table:hover,
+#send-btn:hover {
+    background-color: #5a6268; /* Màu nền thay đổi khi hover */
+}

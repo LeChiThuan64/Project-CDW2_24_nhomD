@@ -146,3 +146,15 @@
 .weather-widget .forecast .day .temp {
     font-size: 12px;
 }
+
+/* Khi input không hợp lệ */
+.form-control.is-invalid {
+    border-color: red;
+    background-color: #ffe6e6; /* Màu nền nhạt */
+}
+
+/* Nút submit bị vô hiệu hóa */
+.btn[disabled] {
+    background-color: #cccccc; /* Màu xám */
+    cursor: not-allowed; /* Con trỏ chuột dạng "không được phép" */
+}

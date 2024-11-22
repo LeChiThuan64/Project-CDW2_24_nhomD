@@ -1,0 +1,43 @@
+.policy-content {
+    background: #f8f9fa;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 14px;
+    color: #333;
+}
+
+.policy-content h2,
+.policy-content h3 {
+    color: #007bff;
+    margin-top: 20px;
+}
+
+.policy-content ul,
+.policy-content ol {
+    padding-left: 20px;
+}
+.return-form {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.return-form h2 {
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+.form-group label {
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+.form-control-file {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+.btn-returns_order,
+.btn-back {
+    margin-top: 10px;
+}

@@ -27,7 +27,7 @@
                 <div class="form-left">
                     <label for="title">Tên Blog</label>
                     <input type="text" id="title" name="title" placeholder="Nhập tên blog..." class="form-control" required>
-
+                    <small id="title-error" class="text-danger" style="display: none;">Nhập quá 100 ký tự rồi.</small>
                     <label for="content">Nội dung</label>
                     <div id="toolbar">
                         <!-- Toolbar của Quill -->
@@ -137,6 +137,17 @@
 
             this.submit();
         }
+        document.getElementById('title').addEventListener('input', function() {
+    const titleInput = document.getElementById('title');
+    const errorMessage = document.getElementById('title-error');
+
+    if (titleInput.value.length > 100) {
+        errorMessage.style.display = 'block'; // Hiển thị thông báo lỗi
+    } else {
+        errorMessage.style.display = 'none'; // Ẩn thông báo lỗi nếu hợp lệ
+    }
+});
+
     </script>
 
 

@@ -37,19 +37,33 @@
         <form id="userForm" action="{{ route('user.store') }}" method="POST" enctype="multipart/form-data" novalidate>
             @csrf <!-- Bảo vệ CSRF token -->
 
-            <div class="mb-3">
+            <!-- <div class="mb-3">
                 <label for="username" class="form-label">Tên đăng nhập</label>
-                <input type="text" class="form-control" id="username" name="name" required>
+                <input type="text" class="form-control " id="username" name="name" required>
                 <div class="invalid-feedback">Tên đăng nhập không được để trống.</div>
-            </div>
-
+            </div> -->
             <div class="mb-3">
+    <label for="username" class="form-label">Tên đăng nhập</label>
+    <input type="text" class="form-control @error('name') is-invalid @enderror" id="username" name="name" value="{{ old('name') }}" required>
+    @error('name')
+    <div class="invalid-feedback">{{ $message }}</div>
+    @enderror
+</div>
+
+            <!-- <div class="mb-3">
                 <label for="email" class="form-label">Email</label>
                 <input type="email" class="form-control" id="email" name="email" required>
                 <div class="invalid-feedback">Email không hợp lệ. Ví dụ: example@domain.com.</div>
-            </div>
-
+            </div> -->
             <div class="mb-3">
+    <label for="email" class="form-label">Email</label>
+    <input type="email" class="form-control @error('email') is-invalid @enderror" id="email" name="email" value="{{ old('email') }}" required>
+    @error('email')
+    <div class="invalid-feedback">{{ $message }}</div>
+    @enderror
+</div>
+
+            <!-- <div class="mb-3">
                 <label for="password" class="form-label">Mật khẩu</label>
                 <input type="password" class="form-control" id="password" name="password" required>
                 <div class="invalid-feedback" id="password-error">
@@ -58,23 +72,44 @@
                 <div class="valid-feedback">
                     Mật khẩu hợp lệ.
                 </div>
-            </div>
-
+            </div> -->
             <div class="mb-3">
+    <label for="password" class="form-label">Mật khẩu</label>
+    <input type="password" class="form-control @error('password') is-invalid @enderror" id="password" name="password" required>
+    @error('password')
+    <div class="invalid-feedback">{{ $message }}</div>
+    @enderror
+</div>
+            <!-- <div class="mb-3">
                 <label for="phone" class="form-label">Số điện thoại</label>
                 <input type="text" class="form-control" id="phone" name="phone">
-                <div class="invalid-feedback">Số điện thoại phải có 10 chữ số.</div>
-            </div>
+                <div class="invalid-feedback">Số điện thoại phải có 10 chữ số không được có khoảng trăng trước sau và chử ký tự bất kỳ.</div>
+            </div> -->
+            <div class="mb-3">
+    <label for="phone" class="form-label">Số điện thoại</label>
+    <input type="text" class="form-control @error('phone') is-invalid @enderror" id="phone" name="phone" value="{{ old('phone') }}">
+    <div class="invalid-feedback">Số điện thoại phải có 10 chữ số không được có khoảng trăng trước sau và chử ký tự bất kỳ.</div>
 
-            <div class="form-group">
+</div>
+            <!-- <div class="form-group">
                 <label class="form-label">Giới tính</label>
                 <div>
                     <label><input name="gender" type="radio" value="male"> Nam</label>
                     <label><input name="gender" type="radio" value="female"> Nữ</label>
                     <label><input name="gender" type="radio" value="other"> Khác</label>
                 </div>
-            </div>
-
+            </div> -->
+            <div class="form-group">
+    <label class="form-label">Giới tính</label>
+    <div>
+        <label><input name="gender" type="radio" value="male" {{ old('gender') == 'male' ? 'checked' : '' }}> Nam</label>
+        <label><input name="gender" type="radio" value="female" {{ old('gender') == 'female' ? 'checked' : '' }}> Nữ</label>
+        <label><input name="gender" type="radio" value="other" {{ old('gender') == 'other' ? 'checked' : '' }}> Khác</label>
+    </div>
+    @error('gender')
+    <div class="text-danger">{{ $message }}</div>
+    @enderror
+</div>
             <div class="mb-3">
                 <label for="dob" class="form-label">Ngày sinh</label>
                 <input id="dob" name="dob" type="date" class="form-control">
