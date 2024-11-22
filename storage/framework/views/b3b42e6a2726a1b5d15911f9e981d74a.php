@@ -581,8 +581,8 @@
     <header id="header" class="header header_sticky">
         <div class="container">
             <div class="header-desk header-desk_type_1">
-                <div class="logo"><a href="">
-                        <img src="<?php echo e(asset('assets/img/logos/logoJ97.png')); ?>" alt="J97" class="logo__image d-block"
+                <div class="logo"><a href="<?php echo e(route('home.show')); ?>">
+                        <img src="<?php echo e(asset('assets/img/logos/logoJ97.png')); ?>" alt="J Shop" class="logo__image d-block"
                             style="width:2em;">
                     </a>
                 </div><!-- /.logo -->
@@ -652,13 +652,13 @@
 
 
 
-                        <li class="navigation__item">
+                        <!-- <li class="navigation__item">
                             <a href="#" class="navigation__link">Pages</a>
-                            <!-- <ul class="default-menu list-unstyled">
-                            </ul> -->
-                        </li>
+                            <ul class="default-menu list-unstyled">
+                            </ul>
+                        </li> -->
                         <li class="navigation__item">
-                            <a href="about.html" class="navigation__link">About</a>
+                            <a href="<?php echo e(route('about-us.show')); ?>" class="navigation__link">About</a>
                         </li>
                         <li class="navigation__item">
                             <a href="<?php echo e(route('contact')); ?>" class="navigation__link">Contact</a>
@@ -770,7 +770,7 @@
             <div class="row row-cols-lg-5 row-cols-2">
                 <div class="footer-column footer-store-info col-12 mb-4 mb-lg-0">
                     <div class="logo">
-                        <a href="index-2.html">
+                        <a href="<?php echo e(route('home.show')); ?>">
                             <img src="../images/logo.png" alt="GroupD" class="logo__image d-block">
                         </a>
                     </div><!-- /.logo -->

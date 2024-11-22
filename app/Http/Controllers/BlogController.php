@@ -17,10 +17,18 @@ class BlogController extends Controller
         $query = Blog::query();
         $queryText = $request->input('query');
 
+        // if ($queryText) {
+        //     $query->whereRaw("MATCH(title) AGAINST(? IN NATURAL LANGUAGE MODE)", [$queryText])
+        //           ->orWhere('blog_id', $queryText);
+        // }
         if ($queryText) {
-            $query->whereRaw("MATCH(title) AGAINST(? IN NATURAL LANGUAGE MODE)", [$queryText])
-                  ->orWhere('blog_id', $queryText);
+            $query->where(function ($query) use ($queryText) {
+                $query->whereRaw("MATCH(title) AGAINST(? IN NATURAL LANGUAGE MODE)", [$queryText])
+                      ->orWhere('title', 'like', "%{$queryText}%")
+                      ->orWhere('blog_id', $queryText);
+            });
         }
+        
 
         $blogs = $query->orderBy('created_at', 'desc')->paginate(6);
 
