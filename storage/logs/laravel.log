@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 [2024-11-21 16:43:13] local.ERROR: SQLSTATE[HY000]: General error: 1191 Can't find FULLTEXT index matching the column list (Connection: mysql, SQL: select count(*) as aggregate from `blogs` where MATCH(title) AGAINST(tung IN NATURAL LANGUAGE MODE) or `blog_id` = tung) {"userId":10,"exception":"[object] (Illuminate\\Database\\QueryException(code: HY000): SQLSTATE[HY000]: General error: 1191 Can't find FULLTEXT index matching the column list (Connection: mysql, SQL: select count(*) as aggregate from `blogs` where MATCH(title) AGAINST(tung IN NATURAL LANGUAGE MODE) or `blog_id` = tung) at C:\\xampp\\htdocs\\Project-CDW2_24_nhomD\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php:829)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\Project-CDW2_24_nhomD\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(783): Illuminate\\Database\\Connection->runQueryCallback('select count(*)...', Array, Object(Closure))
@@ -450,3 +451,5 @@
 #48 C:\\xampp\\htdocs\\Project-CDW2_24_nhomD\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\resources\\server.php(16): require_once('C:\\\\xampp\\\\htdocs...')
 #49 {main}
 "} 
+=======
+>>>>>>> returns_orders
