@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Order;
 use App\Models\OrderFail;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 class OrderManagerController extends Controller
 {
@@ -15,7 +16,11 @@ class OrderManagerController extends Controller
         // Lấy danh sách đơn hàng từ cơ sở dữ liệu của người dùng hiện tại
         $orders = Order::where('user_id', Auth::id())
             ->orderBy('created_at', 'desc')
-            ->get();
+            ->get()
+            ->map(function ($order) {
+                $order->daysDifference = Carbon::now()->diffInDays(Carbon::parse($order->created_at));
+                return $order;
+            });
 
         // Truyền dữ liệu vào view
         return view('viewUser.orders_manager', compact('orders'));

@@ -166,3 +166,11 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.return-order').forEach(function (button) {
+        button.addEventListener('click', function () {
+            const orderId = this.getAttribute('data-id');
+            window.location.href = `/returns-order/${orderId}`;
+        });
+    });
+});

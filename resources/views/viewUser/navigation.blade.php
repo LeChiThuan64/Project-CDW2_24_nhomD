@@ -1350,7 +1350,8 @@
     <script src="{{ asset('assets/js/auth.js') }}" defer="defer"></script>
     <script src="{{ asset('assets/js/orders_manager.js') }}"></script>
     <script src="{{ asset('assets/js/order_details.js') }}"></script>
-
+    <script src="{{ asset('assets/js/returns_order.js') }}"></script>
+    <script src="{{ asset('assets/js/returns_order_manager.js') }}"></script>
 
     <!-- Footer Scripts -->
     <script src="{{ asset('assets/js/theme.js') }}"></script>
