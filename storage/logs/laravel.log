@@ -1099,3 +1099,21 @@
 #61 D:\\HK5\\Chuyen-De-Web-1\\Project-CDW2_24_nhomD\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\resources\\server.php(16): require_once('D:\\\\HK5\\\\Chuyen-D...')
 #62 {main}
 "} 
+[2024-11-20 08:12:37] local.INFO: Order Item Data: {"order_id":1238,"product_id":1,"size_id":1,"color_id":2,"quantity":5,"price":5000} 
+[2024-11-20 08:13:14] local.INFO: attachTopProductToUsers method called  
+[2024-11-20 08:13:14] local.INFO: SQL Query for user ID: 1 {"query":"select `products`.`product_id`, `products`.`name`, SUM(order_items.quantity) as total_quantity from `orders` inner join `order_items` on `orders`.`id` = `order_items`.`order_id` inner join `products` on `order_items`.`product_id` = `products`.`product_id` where `orders`.`user_id` = ? and `orders`.`user_id` is not null group by `products`.`product_id`, `products`.`name` order by `total_quantity` desc"} 
+[2024-11-20 08:13:14] local.INFO: Top product for user ID: 1 {"top_product":null} 
+[2024-11-20 08:13:14] local.INFO: No top product found for user ID: 1  
+[2024-11-20 08:13:14] local.INFO: SQL Query for user ID: 2 {"query":"select `products`.`product_id`, `products`.`name`, SUM(order_items.quantity) as total_quantity from `orders` inner join `order_items` on `orders`.`id` = `order_items`.`order_id` inner join `products` on `order_items`.`product_id` = `products`.`product_id` where `orders`.`user_id` = ? and `orders`.`user_id` is not null group by `products`.`product_id`, `products`.`name` order by `total_quantity` desc"} 
+[2024-11-20 08:13:14] local.INFO: Top product for user ID: 2 {"top_product":null} 
+[2024-11-20 08:13:14] local.INFO: No top product found for user ID: 2  
+[2024-11-20 08:13:14] local.INFO: SQL Query for user ID: 3 {"query":"select `products`.`product_id`, `products`.`name`, SUM(order_items.quantity) as total_quantity from `orders` inner join `order_items` on `orders`.`id` = `order_items`.`order_id` inner join `products` on `order_items`.`product_id` = `products`.`product_id` where `orders`.`user_id` = ? and `orders`.`user_id` is not null group by `products`.`product_id`, `products`.`name` order by `total_quantity` desc"} 
+[2024-11-20 08:13:14] local.INFO: Top product for user ID: 3 {"top_product":null} 
+[2024-11-20 08:13:14] local.INFO: No top product found for user ID: 3  
+[2024-11-20 08:13:14] local.INFO: SQL Query for user ID: 6 {"query":"select `products`.`product_id`, `products`.`name`, SUM(order_items.quantity) as total_quantity from `orders` inner join `order_items` on `orders`.`id` = `order_items`.`order_id` inner join `products` on `order_items`.`product_id` = `products`.`product_id` where `orders`.`user_id` = ? and `orders`.`user_id` is not null group by `products`.`product_id`, `products`.`name` order by `total_quantity` desc"} 
+[2024-11-20 08:13:14] local.INFO: Top product for user ID: 6 {"top_product":null} 
+[2024-11-20 08:13:14] local.INFO: No top product found for user ID: 6  
+[2024-11-20 08:13:14] local.INFO: SQL Query for user ID: 7 {"query":"select `products`.`product_id`, `products`.`name`, SUM(order_items.quantity) as total_quantity from `orders` inner join `order_items` on `orders`.`id` = `order_items`.`order_id` inner join `products` on `order_items`.`product_id` = `products`.`product_id` where `orders`.`user_id` = ? and `orders`.`user_id` is not null group by `products`.`product_id`, `products`.`name` order by `total_quantity` desc"} 
+[2024-11-20 08:13:14] local.INFO: Top product for user ID: 7 {"top_product":{"App\\Models\\Order":{"product_id":1,"name":"Men's Classic White T-Shirt","total_quantity":"60"}}} 
+[2024-11-20 08:13:14] local.INFO: SQL Query for user ID: 9 {"query":"select `products`.`product_id`, `products`.`name`, SUM(order_items.quantity) as total_quantity from `orders` inner join `order_items` on `orders`.`id` = `order_items`.`order_id` inner join `products` on `order_items`.`product_id` = `products`.`product_id` where `orders`.`user_id` = ? and `orders`.`user_id` is not null group by `products`.`product_id`, `products`.`name` order by `total_quantity` desc"} 
+[2024-11-20 08:13:14] local.INFO: Top product for user ID: 9 {"top_product":{"App\\Models\\Order":{"product_id":1,"name":"Men's Classic White T-Shirt","total_quantity":"25"}}} 
