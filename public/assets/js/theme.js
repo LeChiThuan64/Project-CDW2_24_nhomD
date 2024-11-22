@@ -1882,12 +1882,12 @@ $(document).ready(function() {
           data: formData, // Dữ liệu cần gửi
           success: function(response) {
               // Nếu thêm vào giỏ hàng thành công
-              alert('Sản phẩm đã được thêm vào giỏ hàng!');
+              alert('Add to cart successfully!');
           },
           error: function(xhr, status, error) {
             console.log(xhr.responseText); // In ra chi tiết lỗi trả về từ server
               // Nếu có lỗi xảy ra
-              alert('Có lỗi xảy ra khi thêm sản phẩm vào giỏ hàng');
+              alert('An error occurred while adding the product to the cart!');
           }
       });
   });
@@ -1908,7 +1908,7 @@ $(document).ready(function () {
 
           // Kiểm tra quantity (phải là số nguyên dương lớn hơn 0)
           if (!quantity || isNaN(quantity) || quantity <= 0) {
-              alert('Số lượng phải là số nguyên dương và lớn hơn 0.');
+              alert('The quantity must be a positive integer and greater than 0!');
               isValid = false;
               return false; // Thoát khỏi vòng lặp each
           }
@@ -1934,7 +1934,7 @@ $(document).ready(function () {
               updatedData: updatedData // Gửi dữ liệu đã thu thập
           },
           success: function (response) {
-              alert('Cập nhật giỏ hàng thành công!');
+              alert('Update cart successfully!');
               var newTotal = 0;
 
               // Cập nhật lại số lượng sản phẩm trong giỏ hàng và tính tổng số tiền
@@ -1953,7 +1953,7 @@ $(document).ready(function () {
           },
           error: function (xhr, status, error) {
               // Nếu có lỗi
-              alert('Có lỗi xảy ra khi cập nhật giỏ hàng.');
+              alert('An error occurred while updating the cart!');
           }
       });
   });
@@ -2050,7 +2050,7 @@ document.addEventListener('DOMContentLoaded', function() {
           window.location.href = checkoutUrl; // Sử dụng URL đã được truyền từ Blade
       } else {
           // Nếu không có sản phẩm nào, hiển thị thông báo
-          alert("Vui lòng thêm sản phẩm vào giỏ hàng");
+          alert("Please add product to cart!");
       }
     });
   } else {
@@ -2518,7 +2518,30 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 });
 
-/*Preview */
 
+$(document).on('click', '.btn-remove-from-wishlist', function(e) {
+  e.preventDefault(); // Ngừng hành động mặc định của form (submit)
+
+  var form = $(this).closest('form'); // Lấy form chứa button
+  var formData = form.serialize(); // Lấy dữ liệu từ form (CSRF token và method DELETE)
+
+  $.ajax({
+      url: form.attr('action'), // Lấy URL từ thuộc tính action của form
+      type: 'POST', // Dùng POST để gửi yêu cầu, phương thức DELETE sẽ được xác định qua @method('DELETE')
+      data: formData, // Dữ liệu gửi đi
+      success: function(response) {
+          if(response.success) {
+              alert(response.message); // Hiển thị thông báo thành công từ server
+              location.reload(); // Tải lại trang để cập nhật danh sách wishlist
+          } else {
+              alert(response.error || 'An error occurred while deleting the product from the wishlist.');
+          }
+      },
+      error: function(xhr, status, error) {
+          console.log(xhr.responseText); // In chi tiết lỗi trả về từ server
+          alert('An error occurred while deleting the product from the wishlist.');
+      }
+  });
+});
 
 

@@ -118,7 +118,7 @@
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-danger btn-sm px-3"
                                         style="border-radius: 10px; font-size: 12px;"
-                                        onclick="return confirm('Are you want to delete this category?')">
+                                        onclick="return confirm('Do you want to delete this category?')">
                                         <i class="fas fa-trash"></i> Delete
                                     </button>
                                 </form>

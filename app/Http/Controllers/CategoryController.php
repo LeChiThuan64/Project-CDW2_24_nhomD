@@ -37,7 +37,7 @@ class CategoryController extends Controller
 
         } else {
             // Nếu không có tìm kiếm, hiển thị danh sách danh mục mặc định
-            $categories = Category::paginate(5);
+            $categories = Category::orderBy('created_at', 'desc')->paginate(5);
         }
 
         // Kiểm tra nếu là yêu cầu AJAX
@@ -54,42 +54,64 @@ class CategoryController extends Controller
      * Show the form for creating a new resource.
      */
     public function create(Request $request)
-{
-    // Validate dữ liệu đầu vào
-    $request->validate([
-        'name' => 'required|string|max:255',
-        'description' => 'nullable|string|max:500',
-        'image' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048', // Chỉ cho phép file ảnh và kích thước tối đa 2MB
-    ]);
+    {
+        // Chuẩn hóa dữ liệu đầu vào
+        // $request->merge([
+        //     'name' => ucwords(strtolower(trim($request->name))), // Loại bỏ khoảng trắng, viết hoa chữ cái đầu
+        //     'description' => ucwords(strtolower(trim($request->description))), // Loại bỏ khoảng trắng, viết hoa chữ cái đầu
+        // ]);
 
-    // Tạo category mới
-    $category = new Category;
-    $category->category_name = $request->name;
-    $category->description = $request->description;
-    $category->created_at = now();
+        // Validate dữ liệu đầu vào
+        $request->validate([
+            'name' => [
+                'required',
+                'string',
+                'min:2',
+                'max:50',
+                'unique:categories,category_name',
+                'regex:/^[a-zA-Z0-9\s]+$/', // Chỉ cho phép chữ cái, số, và khoảng trắng
+                'not_regex:/\s{2,}/'  
+            ],
+            'description' => [
+                'nullable',
+                'string',
+                'max:500',
+                'regex:/^[\p{L}\p{N}\s]+$/u', // Chỉ cho phép chữ cái, số, và khoảng trắng
+                'not_regex:/\s{2,}/'          // Không cho phép khoảng trắng liên tiếp
+            ],
 
-    // Xử lý hình ảnh nếu có
-    if ($request->hasFile('image')) {
-        $imageFile = $request->file('image');
+            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048', // Chỉ cho phép file ảnh và kích thước tối đa 2MB
+        ]);
 
-        // Đảm bảo tên file không trùng bằng cách thêm timestamp
-        $imageName = $imageFile->getClientOriginalName();
+        // Tạo category mới
+        $category = new Category;
+        $category->category_name = $request->name;
+        $category->description = $request->description;
+        $category->created_at = now();
 
-        // Lưu ảnh vào thư mục public/assets/img/categories
-        $imagePath = 'assets/img/categories/';
-        $imageFile->move(public_path($imagePath), $imageName);
+        // Xử lý hình ảnh nếu có
+        if ($request->hasFile('image')) {
+            $imageFile = $request->file('image');
 
-        // Lưu đường dẫn ảnh vào database
-        $category->image = $imagePath . $imageName;
+            // Đảm bảo tên file không trùng bằng cách thêm timestamp
+            $imageName = $imageFile->getClientOriginalName();
+
+            // Lưu ảnh vào thư mục public/assets/img/categories
+            $imagePath = 'assets/img/categories/';
+            $imageFile->move(public_path($imagePath), $imageName);
+
+            // Lưu đường dẫn ảnh vào database
+            $category->image = $imagePath . $imageName;
+        }
+
+        // Lưu thông tin category vào cơ sở dữ liệu
+        $category->save();
+
+        // Thông báo thành công và chuyển hướng
+        $request->session()->flash('create-success', 'Create category successfully!');
+        return redirect()->route('showCategories');
     }
 
-    // Lưu thông tin category vào cơ sở dữ liệu
-    $category->save();
-
-    // Thông báo thành công và chuyển hướng
-    $request->session()->flash('create-success', 'Create category successfully!');
-    return redirect()->route('showCategories');
-}
 
 
 
@@ -121,7 +143,7 @@ class CategoryController extends Controller
 
         // Kiểm tra xem danh mục có tồn tại không
         if (!$category) {
-            $request->session()->flash('delete-error', 'Category not found!');
+            $request->session()->flash('delete-failure', 'Category not found!');
             return redirect()->route('showCategories');
         }
 
@@ -156,6 +178,33 @@ class CategoryController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        // Chuẩn hóa dữ liệu đầu vào
+        // $request->merge([
+        //     'name' => ucwords(strtolower(trim($request->name))), // Loại bỏ khoảng trắng, viết hoa chữ cái đầu
+        //     'description' => ucwords(strtolower(trim($request->description))), // Loại bỏ khoảng trắng, viết hoa chữ cái đầu
+        // ]);
+
+        // Validate dữ liệu đầu vào
+        $request->validate([
+            'name' => [
+                'required',
+                'string',
+                'min:2',
+                'max:50',
+                'unique:categories,category_name',
+                'regex:/^[a-zA-Z0-9\s]+$/', // Chỉ cho phép chữ cái, số, và khoảng trắng
+                'not_regex:/\s{2,}/'  
+            ],
+            'description' => [
+                'nullable',
+                'string',
+                'max:500',
+                'regex:/^[\p{L}\p{N}\s]+$/u', // Chỉ cho phép chữ cái, số, và khoảng trắng
+                'not_regex:/\s{2,}/'          // Không cho phép khoảng trắng liên tiếp
+            ],
+
+            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048', // Chỉ cho phép file ảnh và kích thước tối đa 2MB
+        ]);
         // Tìm category cần cập nhật
         $category = Category::find($id);
         if (!$category) {
