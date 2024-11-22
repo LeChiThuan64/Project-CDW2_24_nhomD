@@ -269,7 +269,7 @@
                         <div class="col-md-6">
                             <label for="category" class="form-label">Danh mục</label>
                             <select name="category" class="form-select" id="category" required>
-                                <option selected>Chọn danh mục</option>
+                                <!-- <option selected>Chọn danh mục</option> -->
                                 @foreach($categories as $category)
                                 <option value="{{ $category->category_id }}">{{ $category->category_name }}</option>
                                 @endforeach

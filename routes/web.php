@@ -7,6 +7,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ProductsController;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\UserController;
@@ -29,6 +30,11 @@ use App\Http\Controllers\OrderManagerController;
 use App\Http\Controllers\OrdersDetailsController;
 use App\Http\Controllers\OrdersAdminController;
 use App\Http\Controllers\CustomerListController;
+use App\Http\Controllers\ReturnsOrderController;
+use App\Http\Controllers\ReturnsOrderManagerController;
+use App\Http\Controllers\ReturnsOrderAdminController;
+use App\Http\Controllers\ReturnsOrderDetailAdminController;
+use App\Http\Controllers\OrderReturnResultsController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -44,14 +50,12 @@ use App\Http\Controllers\CustomerListController;
 
 
 
+
+// Route dashboard
+
 // Áp dụng middleware kiểm soát truy cập
 Route::middleware(['access.control'])->group(function () {
-    // Route dashboard
-    Route::get('/dashboard', function () {
-        return view('viewAdmin.dashboard');
-    })->name("dashboard");
-    
-
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 });
 
 Route::get('/', function () {
@@ -68,6 +72,8 @@ Route::post('/register', [RegisterController::class, 'register'])->name('registe
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::get('password/reset', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
 Route::post('password/email', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
+Route::post('password/reset', [ForgotPasswordController::class, 'reset'])->name('password.update');
+Route::get('password/reset/{token}', [ForgotPasswordController::class, 'showResetForm'])->name('password.reset');
 
 
 // Route trang hiển thị danh sách người dùng (tables.blade.php)
@@ -261,6 +267,7 @@ Route::get('/products/showList', [ProductsController::class, 'showListProducts']
 // routes/web.php
 Route::delete('/products/destroy/{id}', [ProductsController::class, 'destroy'])->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
 Route::get('/products/search', [ProductsController::class, 'searchProducts'])->name('products.search');
+Route::get('/products/{id}', [ProductController::class, 'getProduct']);
 Route::post('/search', [ProductsController::class, 'search'])->name('products.instant');
 
 
@@ -311,6 +318,8 @@ Route::get('/cart-items/{cartItemId}', [OrderItemController::class, 'show']);
 
 // Route hiện thị trang xác nhận checkout
 Route::get('/checkout/confirmation', [CheckoutConfirmation::class, 'show']);
+// Route xóa tất cả sản phẩm khỏi giỏ hàng
+Route::post('/cart/clear', [CartController::class, 'clear']);
 // Route để lấy thông tin đơn hàng
 Route::get('/checkout/confirmation/{orderId}', [CheckoutConfirmation::class, 'show']);
 // Route xóa tất cả sản phẩm khỏi giỏ hàng
@@ -325,8 +334,11 @@ Route::get('/admin/categories/create', [CategoryController::class, 'showCreateFo
 Route::get('/order-manager', [OrderManagerController::class, 'show'])->name('order.manager.show');
 Route::get('/orders/{id}/detail', [OrdersDetailsController::class, 'show'])->name('orders.detail');
 Route::post('/orders/{id}/update', [OrdersDetailsController::class, 'update'])->name('order.update');
-
-
+// Router để hiện thị trang đổi form trả hàng 
+Route::get('/returns-order/{id}', [ReturnsOrderController::class, 'showReturnOrderForm'])->name('order.returns');
+Route::post('/returns_order', [ReturnsOrderController::class, 'store'])->name('returns_order.store');
+//Router hiện thị trang quản lý đơn hàng đổi trả
+Route::get('/returns_order_manager', [ReturnsOrderManagerController::class, 'index'])->name('returns_order_manager.index');
 //Router update trạng thái đơn hàng
 Route::post('/orders/{id}/received', [OrderManagerController::class, 'markAsReceived'])->name('orders.received');
 
@@ -339,8 +351,17 @@ Route::get('/orders/{id}/error-details', [OrderManagerController::class, 'getErr
 Route::post('/orders/{id}/resend', [OrdersDetailsController::class, 'resendOrder'])->name('orders.resend');
 Route::post('/orders/{id}/cancel', [OrderManagerController::class, 'cancelOrder'])->name('orders.cancel');
 Route::get('/api/users/{id}/orders', [CustomerListController::class, 'getUserOrders']);
-
-
+//Route quản lý đơn hàng đổi trả
+Route::get('/admin/returns-orders', [ReturnsOrderAdminController::class, 'index'])->name('returns.orders.index');
+Route::get('/returns-orders/{id}', [ReturnsOrderDetailAdminController::class, 'show'])->name('returns.orders.show');
+// Route lưu thông tin chi tiết hoàn trả
+Route::post('/order-return-results/{id}/store', [OrderReturnResultsController::class, 'store']);
+// Route lấy bảng thông báo đổi trả
+Route::get('/api/order_return_results/{id}', [OrderReturnResultsController::class, 'getResults']);
+// Route cập nhật trạng thái đơn hoàn trả
+Route::post('/returns-orders/{id}/update-status', [ReturnsOrderManagerController::class, 'updateStatus']);
+// Route xác nhận đổi trả
+Route::post('/orders/{id}/product-received', [ReturnsOrderAdminController::class, 'productReceived']);
 //Route cho trang danh sách khách hàng admin
 Route::get('/customer-list', [CustomerListController::class, 'index'])->name('customer.list');
 

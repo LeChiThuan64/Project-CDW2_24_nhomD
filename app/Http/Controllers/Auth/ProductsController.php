@@ -35,6 +35,7 @@ class ProductsController extends Controller
         // Truyền biến $categories và $products vào view
         return view('viewUser.locgia', compact('categories', 'products'));
     }
+    
     public function productsByCategory($id)
     {
         // Lấy danh mục hiện tại
@@ -282,7 +283,7 @@ class ProductsController extends Controller
         $products = Product::with(['images', 'productSizeColors.size', 'productSizeColors.color'])
             ->where('name', 'LIKE', "%{$keyword}%") // Tìm kiếm theo cột 'name'
             ->orderBy('updated_at', 'desc')
-            ->paginate(10); // Giới hạn số lượng kết quả trả về
+            ->paginate(6); // Giới hạn số lượng kết quả trả về
 
         // Lấy danh sách product_id từ các sản phẩm tìm thấy
         $productIds = $products->pluck('product_id')->toArray();
@@ -344,7 +345,7 @@ class ProductsController extends Controller
 
         // Xác thực dữ liệu
         $request->validate([
-            'productName' => 'required|string|max:50',
+            'productName' => 'required|string|max:255',
             'productContent' => 'nullable|string',
             'category' => 'required|integer',
             'images.*' => 'image|mimes:jpeg,png,jpg|max:1024',
@@ -359,6 +360,7 @@ class ProductsController extends Controller
         $product->description = $request->productContent;
         $product->category_id = $request->category;
         $product->created_at = now();
+        $product->updated_at = now();
         $product->save();
 
         // ID của sản phẩm vừa lưu
@@ -374,6 +376,10 @@ class ProductsController extends Controller
 
         // Duyệt qua các kết hợp màu-kích thước
         foreach ($activeColors as $combination) {
+
+            if (empty($combination) || strpos($combination, ':') === false) {
+                continue; // Bỏ qua nếu không hợp lệ
+            }
             // Tách chuỗi màu-kích thước thành colorId và sizeId
             list($colorId, $sizeId) = explode(':', $combination);
 

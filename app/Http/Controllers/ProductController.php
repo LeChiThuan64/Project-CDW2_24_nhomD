@@ -50,6 +50,12 @@ class ProductController extends Controller
         $product['sizes'] = $sizes;
         return view('viewUser.product-detail', compact('product', 'productsRandom'));
     }
+    // Thêm phương thức mới để trả về JSON
+    public function getProduct($id)
+    {
+        $product = Product::findOrFail($id);
+        return response()->json($product);
+    }
 
     public function getQuantityAndPrice(Request $request)
     {

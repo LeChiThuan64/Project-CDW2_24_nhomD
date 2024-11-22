@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Models\User;
+use Illuminate\Support\Facades\Validator;
 
 class ForgotPasswordController extends Controller
 {
@@ -20,17 +21,44 @@ class ForgotPasswordController extends Controller
 
     public function sendResetLinkEmail(Request $request)
     {
-        $request->validate(['email' => 'required|email']);
-
-        // Gửi email reset link
-        $response = Password::broker()->sendResetLink(
-            $request->only('email')
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'email' => 'required|email',
+            ],
+            [
+                'email.required' => 'Vui lòng nhập địa chỉ email.',
+                'email.email' => 'Địa chỉ email không hợp lệ.',
+            ]
         );
-
+    
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 'error',
+                'errors' => $validator->errors(),
+            ], 422);
+        }
+    
+        $user = User::where('email', $request->email)->first();
+        if (!$user) {
+            return response()->json([
+                'status' => 'error',
+                'errors' => ['email' => ['Tài khoản không tồn tại, vui lòng nhập lại.']],
+            ], 404);
+        }
+    
+        $response = Password::broker()->sendResetLink($request->only('email'));
+    
         return $response == Password::RESET_LINK_SENT
-            ? back()->with('status', __($response))
-            : back()->withErrors(['email' => __($response)]);
+            ? response()->json(['status' => 'success', 'message' => __('Đã gửi email đặt lại mật khẩu. Vui lòng kiểm tra hộp thư!')])
+            : response()->json(['status' => 'error', 'errors' => ['email' => [__('Không thể gửi email đặt lại mật khẩu. Vui lòng chờ và thử lại.')]]], 500);
     }
+    
+    
+
+    
+
+    
 
     public function showLinkRequestForm()
     {

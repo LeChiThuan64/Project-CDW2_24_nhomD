@@ -10,6 +10,8 @@
                 <ul class="account-nav">
                     <li><a href="account_dashboard.html" class="menu-link menu-link_us-s">Dashboard</a></li>
                     <li><a href="account_orders.html" class="menu-link menu-link_us-s menu-link_active">Orders</a></li>
+                    <li><a href="{{ route('returns_order_manager.index') }}" class="menu-link menu-link_us-s">Return
+                            Orders</a></li>
                     <li><a href="account_edit_address.html" class="menu-link menu-link_us-s">Addresses</a></li>
                     <li><a href="account_edit.html" class="menu-link menu-link_us-s">Account Details</a></li>
                     <li><a href="{{ route('wishlist.index') }}" class="menu-link menu-link_us-s">Wishlist</a></li>
@@ -40,17 +42,20 @@
                                         @if ($order->status !== 'cancelled')
                                             <a href="{{ route('orders.detail', $order->id) }}"
                                                 class="btn btn-primary btn-view">XEM ĐƠN HÀNG</a>
-                                            @if ($order->status === 'on delivery')
-                                                <button class="btn btn-success btn-received" data-order-id="{{ $order->id }}">Đã
-                                                    nhận hàng</button>
-                                            @elseif ($order->status === 'delivered')
-                                                <button class="btn btn-info">Đổi trả hàng</button>
-                                            @elseif ($order->status === 'order fails')
-                                                <button class="btn btn-warning btn-error-detail"
-                                                    data-order-id="{{ $order->id }}">Chi tiết lỗi</button>
-                                            @else
-                                                <button class="btn btn-danger btn-cancel" data-order-id="{{ $order->id }}">HỦY ĐƠN
-                                                    HÀNG</button>
+                                            @if ($order->daysDifference <= 7)
+                                                @if ($order->status === 'on delivery')
+                                                    <button class="btn btn-success btn-received" data-order-id="{{ $order->id }}">Đã
+                                                        nhận hàng</button>
+                                                @elseif ($order->status === 'delivered')
+                                                    <button class="btn btn-info return-order" data-id="{{ $order->id }}">Đổi trả
+                                                        hàng</button>
+                                                @elseif ($order->status === 'order fails')
+                                                    <button class="btn btn-warning btn-error-detail"
+                                                        data-order-id="{{ $order->id }}">Chi tiết lỗi</button>
+                                                @else
+                                                    <button class="btn btn-danger btn-cancel" data-order-id="{{ $order->id }}">HỦY ĐƠN
+                                                        HÀNG</button>
+                                                @endif
                                             @endif
                                         @endif
                                     </td>

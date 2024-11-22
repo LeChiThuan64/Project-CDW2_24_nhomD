@@ -57,5 +57,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Order::class);
     }
+    public function bankAccounts()
+    {
+        return $this->hasMany(BankAccount::class);
+    }
 
 }

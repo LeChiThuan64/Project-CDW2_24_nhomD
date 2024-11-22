@@ -7,11 +7,6 @@
     <meta name="author" content="flexkit">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <meta property="og:title" content="Tiêu đề bài viết" />
-    <meta property="og:description" content="Mô tả nội dung bài viết mà bạn muốn chia sẻ." />
-    <meta property="og:image" content="https://example.com/path-to-image.jpg" />
-    <meta property="og:url" content="https://example.com/my-article" />
-    <meta property="og:type" content="website" />
 
     <!-- link của thuận  -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
@@ -758,7 +753,7 @@
                         <!-- <span class="cart-amount d-block position-absolute js-cart-items-count">3</span> -->
                     </a>
 
-                    <a class="header-tools__item" href="{{ route('wishlist.index') }}">
+                    <a class="header-tools__item" href="{{ route('order.manager.show') }}">
                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <use href="#icon_heart" />
                         </svg>
@@ -1384,6 +1379,8 @@
     <script src="{{ asset('assets/js/auth.js') }}" defer="defer"></script>
     <script src="{{ asset('assets/js/orders_manager.js') }}"></script>
     <script src="{{ asset('assets/js/order_details.js') }}"></script>
+    <script src="{{ asset('assets/js/returns_order.js') }}"></script>
+    <script src="{{ asset('assets/js/returns_order_manager.js') }}"></script>
     <script src="{{ asset('assets/js/noti.js') }}"></script>
 
 

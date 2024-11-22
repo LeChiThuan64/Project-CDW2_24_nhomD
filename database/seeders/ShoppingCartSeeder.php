@@ -33,7 +33,7 @@ class ShoppingCartSeeder extends Seeder
             ],
             [
                 'cart_id' => 4,
-                'user_id' => 4,
+                'user_id' => 12,
                 'created_at' => '2024-11-04 19:58:15',
             ],
         ]);

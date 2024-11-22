@@ -110,7 +110,7 @@ imageInput.addEventListener('change', function (event) {
                 alert('Hình ảnh này đã được chọn: ' + file.name);
             }
         } else {
-            alert('File quá lớn: ' + file.name);
+            alert('Vui lòng chọn ảnh JPEG, PNG kích thước tối đa 1MB).');
         }
     }
 
@@ -287,11 +287,13 @@ sizeButtons.forEach(sizeButton => {
                 
             } else {
                 // Remove the size from the active list
-                if (activeColors[colorId]) {
+               
                     const inputGroup = document.getElementById(`input-${key}`);
                     inputGroup.style.display = 'none';
-                    activeColors[colorId] = activeColors[colorId].filter(id => id !== sizeId);
-                }
+                    activeColors[colorId] = Array.from(document.querySelectorAll(`.size-button[data-color-id="${colorId}"]`))
+                    .filter(sizeButton => sizeButton.classList.contains('active'))
+                    .map(sizeButton => sizeButton.getAttribute('data-size-id'));
+                
             }
 
             // Update the hidden input with active color-size combinations
