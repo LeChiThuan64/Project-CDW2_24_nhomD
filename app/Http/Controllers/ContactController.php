@@ -8,11 +8,27 @@ use App\Models\ContactMessage; // Nếu bạn tạo model cho contact_messages
 
 class ContactController extends Controller
 {
-    public function index()
+    // public function index()
+    // {
+    //     $messages = ContactMessage::all(); // Lấy tất cả tin nhắn từ bảng contact_messages
+    //     return view('viewAdmin.contact_admin', compact('messages')); // Truyền biến $messages vào view
+    // }
+    public function index(Request $request)
     {
-        $messages = ContactMessage::all(); // Lấy tất cả tin nhắn từ bảng contact_messages
-        return view('viewAdmin.contact_admin', compact('messages')); // Truyền biến $messages vào view
+        // Lấy từ khóa tìm kiếm từ request
+        $search = $request->input('search');
+
+        // Nếu có từ khóa tìm kiếm, áp dụng bộ lọc, ngược lại lấy toàn bộ dữ liệu
+        $messages = ContactMessage::when($search, function ($query) use ($search) {
+            $query->where('name', 'like', "%{$search}%")
+                ->orWhere('email', 'like', "%{$search}%")
+                ->orWhere('message', 'like', "%{$search}%");
+        })->get(); // Lấy toàn bộ dữ liệu, không phân trang
+
+        // Trả về view với dữ liệu $messages
+        return view('viewAdmin.contact_admin', compact('messages'));
     }
+
 
 
     public function store(Request $request)
@@ -41,7 +57,7 @@ class ContactController extends Controller
     // {
     //     $this->middleware('auth')->except('store');
     // }
-    
+
     public function destroy($id)
     {
         // Tìm và xóa tin nhắn theo id

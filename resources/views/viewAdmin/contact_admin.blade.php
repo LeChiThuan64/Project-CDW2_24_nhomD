@@ -36,7 +36,7 @@
       <div class="row p-3">
         <!-- Thanh tìm kiếm -->
         <div class="col-md-5">
-          <form action="#" method="GET">
+          <!-- <form action="#" method="GET">
             <div class="input-group">
               <div class="input-group-prepend">
                 <button class="btn btn-outline-secondary" type="submit">
@@ -45,7 +45,18 @@
               </div>
               <input type="text" name="search" class="form-control"style="height: 42px;" placeholder="Tìm kiếm khách hàng..." aria-label="Tìm kiếm khách hàng" value="#">
             </div>
-          </form>
+          </form> -->
+          <form action="{{ route('contact.index') }}" method="GET">
+    <div class="input-group">
+        <div class="input-group-prepend">
+            <button class="btn btn-outline-secondary" type="submit">
+                <i class="fas fa-search"></i>
+            </button>
+        </div>
+        <input type="text" name="search" class="form-control" style="height: 42px;" placeholder="Tìm kiếm khách hàng..." value="{{ request('search') }}">
+    </div>
+</form>
+
         </div>
 
         <div class="col-md-2 text-right">
