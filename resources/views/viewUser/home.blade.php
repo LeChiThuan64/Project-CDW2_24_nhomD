@@ -2,6 +2,11 @@
 @section('title', 'Home')
 @section('content')
 <main>
+@if (session('error'))
+<script>
+alert("{{ session('error') }}");
+</script>
+@endif
     <section class="swiper-container js-swiper-slider slideshow slideshow-navigation-white-sm" data-settings='{
         "autoplay": {
           "delay": 3000
@@ -213,12 +218,20 @@
                                     </span>
                                     @endif
                                 </div>
+                                <button
+                                class="pc__btn-wl position-absolute top-0 end-0 bg-transparent border-0 js-add-wishlist {{ auth()->user() && auth()->user()->wishlists->contains('product_id', $product['product_id']) ? 'active' : '' }}"
+                                data-product-id="{{ $product['product_id'] }}">
+                                <svg width="16" height="16" viewBox="0 0 20 20" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <use href="#icon_heart" />
+                                </svg>
+                            </button>
                             </div>
                         </div>
                         @endforeach
                     </div>
                 </div>
-                <div
+                <!-- <div
                     class="products-carousel__prev navigation-sm position-absolute top-50 d-flex align-items-center justify-content-center">
                     <svg width="25" height="25" viewBox="0 0 25 25" xmlns="http://www.w3.org/2000/svg">
                         <use href="#icon_prev_md" />
@@ -229,7 +242,7 @@
                     <svg width="25" height="25" viewBox="0 0 25 25" xmlns="http://www.w3.org/2000/svg">
                         <use href="#icon_next_md" />
                     </svg>
-                </div>
+                </div> -->
             </div>
         </section>
 
@@ -349,13 +362,13 @@
                                         </div> -->
 
                                         <button
-                                            class="pc__btn-wl position-absolute top-0 end-0 bg-transparent border-0 js-add-wishlist"
-                                            title="Add To Wishlist">
-                                            <svg width="16" height="16" viewBox="0 0 20 20" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <use href="#icon_heart" />
-                                            </svg>
-                                        </button>
+                                class="pc__btn-wl position-absolute top-0 end-0 bg-transparent border-0 js-add-wishlist {{ auth()->user() && auth()->user()->wishlists->contains('product_id', $product['product_id']) ? 'active' : '' }}"
+                                data-product-id="{{ $product['product_id'] }}">
+                                <svg width="16" height="16" viewBox="0 0 20 20" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <use href="#icon_heart" />
+                                </svg>
+                            </button>
                                     </div>
                                 </div>
                                 @endforeach
@@ -522,13 +535,13 @@
 
 
                                 <button
-                                    class="pc__btn-wl position-absolute top-0 end-0 bg-transparent border-0 js-add-wishlist"
-                                    title="Add To Wishlist">
-                                    <svg width="16" height="16" viewBox="0 0 20 20" fill="none"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <use href="#icon_heart" />
-                                    </svg>
-                                </button>
+                                class="pc__btn-wl position-absolute top-0 end-0 bg-transparent border-0 js-add-wishlist {{ auth()->user() && auth()->user()->wishlists->contains('product_id', $product['product_id']) ? 'active' : '' }}"
+                                data-product-id="{{ $product['product_id'] }}">
+                                <svg width="16" height="16" viewBox="0 0 20 20" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <use href="#icon_heart" />
+                                </svg>
+                            </button>
                                 <!-- <form action="{{ route('wishlist.add', $product['product_id']) }}" method="POST"
                                     class="add-to-wishlist-form">
                                     @csrf

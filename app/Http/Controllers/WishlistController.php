@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Wishlist;
-use App\Models\Product; // Model Product
+use App\Models\OrderItem;
+use App\Models\Product;
 use DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -22,21 +23,26 @@ class WishlistController extends Controller
         if ($user) {
             // Lấy tất cả wishlist items của người dùng đã đăng nhập
             $wishlistItems = Wishlist::where('user_id', $user->id)
+                ->whereHas('product')
                 ->orderBy('created_at', 'desc')
                 ->paginate(6);
     
             // Sử dụng map để thêm thông tin sản phẩm, hình ảnh, và giá vào wishlist
             $wishlistItems->getCollection()->transform(function ($wishlistItem) {
-                $wishlistItem->product = Product::with(['images', 'productSizeColors'])->find($wishlistItem->product_id);
+                $wishlistItem->product = Product::with(['images', 'productSizeColors', 'reviews'])->find($wishlistItem->product_id);
     
-                if ($wishlistItem->product && $wishlistItem->product->productSizeColors->isNotEmpty()) {
-                    $price = $wishlistItem->product->productSizeColors->first()->price;
-                    $wishlistItem->price = $price;
-                } else {
-                    $wishlistItem->price = null;
+                foreach ($wishlistItem->product->productSizeColors as $sizeColor) {   // Cộng tổng số lượng
+                    $wishlistItem->price = $sizeColor->price;                     // Lấy giá (giả sử giá là giống nhau cho tất cả sizeColor)
                 }
+
+
+                
                 $wishlistItem->image = optional($wishlistItem->product->images->first())->image_url ?? null;
     
+                $wishlistItem->reviewCount = $wishlistItem->product->reviews->count();
+                $wishlistItem->averageRating = $wishlistItem->product->reviews->avg('rating') ?? 0;
+                $wishlistItem->totalSold = OrderItem::where('product_id', $wishlistItem->product_id)->sum('quantity') ?? 0;
+
                 return $wishlistItem;
             });
         } else {
@@ -91,20 +97,59 @@ public function remove($wishlistId)
 {
     $user = Auth::user();
 
-    if (!$user) {
-        return response()->json(['error' => 'Bạn cần đăng nhập để xóa sản phẩm khỏi wishlist.'], 403);
-    }
+    // if (!$user) {
+    //     return redirect()->back()->with('error', 'You need to login to remove product from wishlist.');
+    // }
 
     $wishlistItem = $user->wishlists()->where('id', $wishlistId)->first();
 
     if (!$wishlistItem) {
-        return redirect()->back()->with('error', 'Sản phẩm không có trong wishlist.');
+        return redirect()->back()->with('error', 'This product is not in wishlist!');
     }
 
     // Xóa sản phẩm khỏi wishlist
     $wishlistItem->delete();
 
-    return redirect()->back()->with('delete-wishlist-success', 'Delete from wishlist successfully!');
+    return redirect()->back()->with('success', 'Removed from wishlist successfully!');
+}
+
+public function toggle(Request $request, $productId)
+{
+    $user = Auth::user();
+
+    if (!$user) {
+        return response()->json([
+            'success' => false,
+            'message' => 'You need to login to manage wishlist'
+        ], 401);
+    }
+
+    $product = Product::find($productId);
+
+    if (!$product) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Product not found'
+        ], 404);
+    }
+
+    $wishlistItem = $user->wishlists()->where('product_id', $productId)->first();
+
+    if ($wishlistItem) {
+        // Nếu đã có, xóa khỏi wishlist
+        $wishlistItem->delete();
+        return response()->json([
+            'success' => true,
+            'message' => 'Removed from wishlist successfully!'
+        ], 200);
+    } else {
+        // Nếu chưa có, thêm vào wishlist
+        $user->wishlists()->create(['product_id' => $productId]);
+        return response()->json([
+            'success' => true,
+            'message' => 'Added to wishlist successfully!'
+        ], 200);
+    }
 }
 
 }

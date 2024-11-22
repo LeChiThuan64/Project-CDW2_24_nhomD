@@ -350,3 +350,6 @@ Route::delete('/review/delete/{id}', [ReviewController::class, 'destroyByUser'])
 Route::get('/about-us', function () {
     return view('viewUser.about_us');
 })->name('about-us.show');
+
+Route::post('/wishlist/toggle/{productId}', [WishlistController::class, 'toggle']);
+Route::delete('/wishlist/remove/{id}', [WishlistController::class, 'remove'])->name('wishlist.remove');
