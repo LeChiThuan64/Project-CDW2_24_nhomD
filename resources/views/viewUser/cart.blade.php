@@ -3,58 +3,7 @@
 @section('content')
 
 <head>
-    <style>
-    .cart-table-footer {
-        margin-top: 15px;
-        padding: 15px;
-        background-color: #f8f9fa;
-        border-radius: 5px;
-        border: 1px solid #ddd;
-    }
-
-    .cart-table-footer h4 {
-        font-size: 18px;
-        margin-bottom: 10px;
-        color: #333;
-        font-weight: bold;
-    }
-
-    .voucher-select {
-        width: 100%;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        font-size: 14px;
-        background-color: #fff;
-        color: #333;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        transition: border-color 0.2s ease-in-out;
-    }
-
-    .voucher-select:focus {
-        border-color: #007bff;
-        outline: none;
-    }
-
-    #update-cart {
-        display: inline-block;
-        margin-top: 15px;
-        padding: 10px 20px;
-        font-size: 16px;
-        color: #fff;
-        background-color: #333;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        text-transform: uppercase;
-        font-weight: bold;
-        transition: background-color 0.3s ease;
-    }
-
-    #update-cart:hover {
-        background-color: #555;
-    }
-    </style>
+<link rel="stylesheet" href="{{ asset('assets/css/cart.css') }}">
 
 </head>
 <main>
@@ -62,21 +11,21 @@
     <section class="shop-checkout container">
         <h2 class="page-title">Cart</h2>
         <div class="checkout-steps">
-            <a href="shop_cart.html" class="checkout-steps__item active">
+            <a href="{{ route('cart.show') }}" class="checkout-steps__item active">
                 <span class="checkout-steps__item-number">01</span>
                 <span class="checkout-steps__item-title">
                     <span>Shopping Bag</span>
                     <em>Manage Your Items List</em>
                 </span>
             </a>
-            <a href="shop_checkout.html" class="checkout-steps__item">
+            <a href="#" class="checkout-steps__item">
                 <span class="checkout-steps__item-number">02</span>
                 <span class="checkout-steps__item-title">
                     <span>Shipping and Checkout</span>
                     <em>Checkout Your Items List</em>
                 </span>
             </a>
-            <a href="shop_order_complete.html" class="checkout-steps__item">
+            <a href="#" class="checkout-steps__item">
                 <span class="checkout-steps__item-number">03</span>
                 <span class="checkout-steps__item-title">
                     <span>Confirmation</span>
@@ -102,9 +51,8 @@
                             </tr>
                         </thead>
                         <tbody>
-
                             @foreach($cart as $cartItem)
-                            <tr data-cart-item-id="{{ $cartItem['cart_item_id'] }}">
+                            <tr class="cart-item" data-cart-item-id="{{ $cartItem['cart_item_id'] }}">
                                 <td>
                                     <div class="shopping-cart__product-item">
                                         <a href="{{ route('product.show', $cartItem['product_id']) }}">
@@ -126,7 +74,9 @@
                                     </div>
                                 </td>
                                 <td>
-                                    <span class="shopping-cart__product-price">{{ $cartItem['price'] }} VND</span>
+                                    <span
+                                        class="shopping-cart__product-price">{{ number_format($cartItem['price'], 0, ',', '.') }}
+                                        VND</span>
                                 </td>
                                 <td>
                                     <div class="qty-control position-relative">
@@ -141,7 +91,7 @@
                                 </td>
                                 <td>
                                     <span
-                                        class="shopping-cart__subtotal">{{ $cartItem['quantity'] * $cartItem['price'] }}
+                                        class="shopping-cart__subtotal">{{ number_format($cartItem['price']*$cartItem['quantity'], 0, ',', '.') }}
                                         VND</span>
                                 </td>
                                 <td>
@@ -157,10 +107,49 @@
                                 </td>
                             </tr>
                             @endforeach
-                            
+
 
                         </tbody>
                     </table>
+                    <div class="col-md-12">
+                        <div class="search-field my-3">
+                            <div class="form-label-fixed hover-container">
+                                <label for="voucher-select" class="form-label">Voucher</label>
+                                <div class="js-hover__open">
+                                    <select name="voucher" id="voucher-select"
+                                        class="form-control form-control-lg search-field__actor search-field__arrow-down voucher-select">
+                                        <option value="" data-name="Không dùng voucher" selected>Không dùng voucher
+                                        </option>
+                                        @if($vouchers->isNotEmpty())
+                                        @foreach($vouchers as $voucher)
+                                        @php
+                                        $now = \Carbon\Carbon::now();
+                                        $isNotYetStarted = $now->lt(\Carbon\Carbon::parse($voucher->start_date));
+                                        $isExpired = $now->gt(\Carbon\Carbon::parse($voucher->end_date));
+                                        @endphp
+                                        <option value="{{ $voucher->id }}" data-name="{{ $voucher->name }}"
+                                            data-discount="{{ $voucher->discount }}" @if($isNotYetStarted || $isExpired)
+                                            disabled @endif>
+                                            {{ $voucher->name }} - Giảm {{ $voucher->discount }}%
+                                            (Hiệu lực từ {{ $voucher->start_date }} đến {{ $voucher->end_date }})
+                                            -
+                                            @if($isNotYetStarted)
+                                            Chưa bắt đầu
+                                            @elseif($isExpired)
+                                            Đã hết hạn
+                                            @else
+                                            Còn hiệu lực
+                                            @endif
+                                        </option>
+                                        @endforeach
+                                        @else
+                                        <option disabled>Không có voucher nào khả dụng.</option>
+                                        @endif
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div><button type="submit" id="update-cart" class="btn btn-dark">UPDATE CART</button></div>
                 </form>
                 @else
@@ -168,35 +157,6 @@
                 <a class="btn btn-primary btn-addtocart" href="{{ route('auth') }}">Login</a>
                 @endif
 
-
-                <div class="cart-table-footer">
-                    @if($vouchers->isNotEmpty())
-                    <h4>Voucher hiện có</h4>
-                    <select name="voucher" class="voucher-select">
-                        @foreach($vouchers as $voucher)
-                        @php
-                        $now = \Carbon\Carbon::now();
-                        $isNotYetStarted = $now->lt(\Carbon\Carbon::parse($voucher->start_date));
-                        $isExpired = $now->gt(\Carbon\Carbon::parse($voucher->end_date));
-                        @endphp
-                        <option value="{{ $voucher->id }}" @if($isNotYetStarted || $isExpired) disabled @endif>
-                            {{ $voucher->name }} - Giảm {{ $voucher->discount }}%
-                            (Hiệu lực từ {{ $voucher->start_date }} đến {{ $voucher->end_date }})
-                            -
-                            @if($isNotYetStarted)
-                            Chưa bắt đầu
-                            @elseif($isExpired)
-                            Đã hết hạn
-                            @else
-                            Còn hiệu lực
-                            @endif
-                        </option>
-                        @endforeach
-                    </select>
-                    @else
-                    <p>Không có voucher nào khả dụng.</p>
-                    @endif
-                </div>
             </div>
 
             <div class="shopping-cart__totals-wrapper">
@@ -207,46 +167,24 @@
                             <tbody>
                                 <tr>
                                     <th>Subtotal</th>
-                                    <td>$1300</td>
+                                    <td id="subtotal">{{ $total }} VND</td>
                                 </tr>
+
                                 <tr>
-                                    <th>Shipping</th>
-                                    <td>
-                                        <div class="form-check">
-                                            <input class="form-check-input form-check-input_fill" type="checkbox"
-                                                value="" id="free_shipping">
-                                            <label class="form-check-label" for="free_shipping">Free shipping</label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input form-check-input_fill" type="checkbox"
-                                                value="" id="flat_rate">
-                                            <label class="form-check-label" for="flat_rate">Flat rate: $49</label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input form-check-input_fill" type="checkbox"
-                                                value="" id="local_pickup">
-                                            <label class="form-check-label" for="local_pickup">Local pickup: $8</label>
-                                        </div>
-                                        <div>Shipping to AL.</div>
-                                        <div>
-                                            <a href="#" class="menu-link menu-link_us-s">CHANGE ADDRESS</a>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th>VAT</th>
-                                    <td>$19</td>
+                                    <th>Voucher</th>
+                                    <td id="voucher-info"></td>
                                 </tr>
                                 <tr>
                                     <th>Total</th>
-                                    <td>$1319</td>
+                                    <td id="total"></td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                     <div class="mobile_fixed-btn_wrapper">
                         <div class="button-wrapper container">
-                            <button class="btn btn-primary btn-checkout">PROCEED TO CHECKOUT</button>
+                            <button class="btn btn-primary btn-checkout-cart"
+                                data-url="{{ route('checkout.show') }}">PROCEED TO CHECKOUT</button>
                         </div>
                     </div>
                 </div>

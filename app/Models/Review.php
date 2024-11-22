@@ -9,9 +9,9 @@ class Review extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'review_id';
+    protected $primaryKey = 'id';
 
-    protected $fillable = ['user_id', 'product_id', 'rating', 'comment', 'created_at'];
+    protected $fillable = ['user_id', 'product_id', 'rating', 'comment', 'reply', 'created_at', 'updated_at'];
 
     public $timestamps = false;
 
@@ -25,5 +25,9 @@ class Review extends Model
     public function product()
     {
         return $this->belongsTo(Product::class, 'product_id');
+    }
+    public function images()
+    {
+        return $this->hasMany(ReviewImage::class);
     }
 }

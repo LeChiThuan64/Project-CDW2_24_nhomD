@@ -5,14 +5,14 @@ document.addEventListener("DOMContentLoaded", function () {
     if (loginForm) {
         loginForm.addEventListener('submit', function (e) {
             e.preventDefault();
-
+    
             // Xóa lỗi cũ
             document.getElementById('login-email-error').innerHTML = '';
             document.getElementById('login-password-error').innerHTML = '';
             document.getElementById('login-error').innerHTML = '';
-
+    
             let formData = new FormData(this);
-
+    
             fetch(loginUrl, {
                 method: 'POST',
                 headers: {
@@ -20,31 +20,35 @@ document.addEventListener("DOMContentLoaded", function () {
                 },
                 body: formData
             })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.status === 'error') {
-                        // Xử lý lỗi cụ thể cho từng trường
-                        if (data.errors) {
-                            for (const [key, messages] of Object.entries(data.errors)) {
-                                const errorSpan = document.getElementById(`login-${key}-error`);
-                                if (errorSpan) {
-                                    errorSpan.innerHTML = messages.join('<br>'); // Hiển thị lỗi
-                                }
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'error') {
+                    // Xử lý lỗi cụ thể cho từng trường
+                    if (data.errors) {
+                        for (const [key, messages] of Object.entries(data.errors)) {
+                            const errorSpan = document.getElementById(`login-${key}-error`);
+                            if (errorSpan) {
+                                errorSpan.innerHTML = messages.join('<br>'); // Hiển thị lỗi cụ thể
                             }
-                        } else {
-                            // Hiển thị lỗi tổng quát
-                            document.getElementById('login-error').innerHTML = data.message;
                         }
-                    } else if (data.status === 'success') {
-                        // Chuyển hướng nếu đăng nhập thành công
-                        window.location.href = data.redirect;
                     }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
+                    
+                    // Nếu có lỗi tổng quát (message), hiển thị nó
+                    if (data.message) {
+                        document.getElementById('login-error').innerHTML = data.message;
+                    }
+                } else if (data.status === 'success') {
+                    // Chuyển hướng nếu đăng nhập thành công
+                    window.location.href = data.redirect;
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('login-error').innerHTML = 'Lỗi hệ thống, vui lòng thử lại sau.';
+            });
         });
     }
+    
 
 
 

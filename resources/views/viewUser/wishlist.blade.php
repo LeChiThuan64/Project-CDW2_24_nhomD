@@ -1,26 +1,23 @@
 @extends('viewUser.navigation')
 @section('title', 'Wishlist')
 @section('content')
+@if (session('success'))
+<script>
+alert("{{ session('message') }}");
+</script>
+@endif
 <main>
     <div class="mb-4 pb-4"></div>
     <section class="my-account container">
         <h2 class="page-title">Wishlist</h2>
         <div class="row">
-            <div class="col-lg-3">
-                <ul class="account-nav">
-                    <li><a href="account_dashboard.html" class="menu-link menu-link_us-s">Dashboard</a></li>
-                    <li><a href="account_orders.html" class="menu-link menu-link_us-s">Orders</a></li>
-                    <li><a href="account_edit_address.html" class="menu-link menu-link_us-s">Addresses</a></li>
-                    <li><a href="account_edit.html" class="menu-link menu-link_us-s">Account Details</a></li>
-                    <li><a href="account_wishlist.html" class="menu-link menu-link_us-s menu-link_active">Wishlist</a>
-                    </li>
-                    <li><a href="login_register.html" class="menu-link menu-link_us-s">Logout</a></li>
-                </ul>
-            </div>
-            <div class="col-lg-9">
+            <div class="col-lg-12">
                 <div class="page-content my-account__wishlist">
                     <div class="products-grid row row-cols-2 row-cols-lg-3" id="products-grid">
                         @if (Auth::check())
+                        @if ($wishlistItems->isEmpty())
+                        <p>Your wishlist is currently empty.</p>
+                        @else
                         @foreach ($wishlistItems as $item)
                         <div class="product-card-wrapper">
                             <div class="product-card mb-3 mb-md-4 mb-xxl-5">
@@ -57,8 +54,6 @@
                                             </svg>
                                         </button>
                                     </form>
-
-
                                 </div>
 
                                 <div class="pc__info position-relative">
@@ -66,7 +61,8 @@
                                     <!-- Hiển thị danh mục sản phẩm -->
                                     <h6 class="pc__title">{{ $item->product->name }}</h6>
                                     <div class="product-card__price d-flex">
-                                        <span class="money price">{{ $item->price }} VND</span>
+                                        <span class="money price">{{ number_format($item->price, 0, ',', '.') }}
+                                            VND</span>
                                     </div>
 
                                     <button
@@ -81,16 +77,21 @@
                             </div>
                         </div>
                         @endforeach
+                        {{ $wishlistItems->links('vendor.pagination.bootstrap-5') }}
+                        @endif
                         @else
-                        <p>Bạn cần đăng nhập để sử dụng wishlist.</p><p></p><p></p>
+                        <p>You need to login to use wishlist.</p>
                         <a class="btn btn-primary btn-addtocart" href="{{ route('auth') }}">Login</a>
                         @endif
-
                     </div><!-- /.products-grid row -->
+
+
+
                 </div>
             </div>
         </div>
     </section>
+
 </main>
 
 <div class="mb-5 pb-xl-5"></div>

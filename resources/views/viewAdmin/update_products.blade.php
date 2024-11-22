@@ -21,7 +21,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="productContent" class="form-label">Nội dung</label>
-                        <textarea name="productContent" class="form-control" id="productContent" rows="5">{{ old('productContent', $product->description) }}</textarea>
+                        <textarea name="productContent" class="form-control" id="description" rows="5">{{ old('productContent', $product->description) }}</textarea>
                     </div>
 
 
@@ -314,6 +314,12 @@
     window.imagePaths = @json($imageUrls);
 </script>
 <script src="{{ asset('assets/js/update_products.js') }}"></script>
-
+<script src="https://cdn.ckeditor.com/4.20.1/standard/ckeditor.js"></script>
+<script>
+    CKEDITOR.replace('description', {
+        filebrowserUploadUrl: "{{ route('ckeditor.upload', ['_token' => csrf_token()]) }}",
+        filebrowserUploadMethod: 'form'
+    });
+</script>
 
 @endsection

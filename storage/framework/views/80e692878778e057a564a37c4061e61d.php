@@ -9,7 +9,7 @@
     <link rel="icon" type="image/png" href="<?php echo e(asset('assets/img/favicon.png')); ?>">
     <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>">
     <title>
-        Material Dashboard 2 by Creative Tim
+        Admin
     </title>
 
     <link rel="canonical" href="https://www.creative-tim.com/product/material-dashboard" />
@@ -49,6 +49,8 @@
     <link href="<?php echo e(asset('assets/css/addProducts.css')); ?>" rel="stylesheet" />
     <link href="<?php echo e(asset('assets/css/list_products.css')); ?>" rel="stylesheet" />
     <link rel="stylesheet" href="<?php echo e(asset('assets/css/chatbox_admin.css')); ?>">
+    <link rel="stylesheet" href="<?php echo e(asset('assets/css/customer_list.css')); ?>">
+
 
     <!-- Toastr CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
@@ -58,21 +60,6 @@
     <script src="<?php echo e(asset('assets/js/kit.fontawesome.js')); ?>" crossorigin="anonymous"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
-    <script defer data-site="demos.creative-tim.com" src="<?php echo e(asset('assets/js/nepcha-analytics.js')); ?>"></script>
-    <style>
-    /*
-    .pagination .page-item.active .page-link {
-        background-color: red; 
-        color: white; 
-        border-color: red; 
-    }
-
-    .pagination .page-item .page-link {
-        color: #007bff; 
-    }
-
-    */
-    </style>
 
 </head>
 
@@ -82,115 +69,184 @@
             style="display:none;visibility:hidden"></iframe>
     </noscript>
 
-  <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3 bg-gradient-dark" id="sidenav-main">
-    <div class="sidenav-header">
-      <i class="fas fa-times p-3 cursor-pointer text-white opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
-      <a class="navbar-brand m-0" href="dashboard-2.html" target="_blank">
-        <img src="<?php echo e(asset('assets/img/logo-ct.png')); ?>" class="navbar-brand-img h-100" alt="main_logo">
-        <span class="ms-1 font-weight-bold text-white">Material Dashboard 2</span>
-      </a>
-    </div>
-    <hr class="horizontal light mt-0 mb-2">
-    <div class="collapse navbar-collapse w-auto" id="sidenav-collapse-main">
-      <ul class="navbar-nav">
-        <!-- Menu items -->
-        <!-- Dashboard -->
-        <li class="nav-item">
-          <a class="nav-link text-white active bg-gradient-primary" href="<?php echo e(url('dashboard')); ?>">
-            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="material-icons opacity-10">dashboard</i>
-            </div>
-            <span class="nav-link-text ms-1">Dashboard</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-white " href="<?php echo e(url('tables')); ?>">
-            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="material-icons opacity-10">table_view</i>
-            </div>
-            <span class="nav-link-text ms-1">Tables</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-white " href="<?php echo e(route('products.showListProducts')); ?>">
-            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="material-icons opacity-10">receipt_long</i>
-            </div>
-            <span class="nav-link-text ms-1">Products</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-white " href="<?php echo e(url('blogs_admin')); ?>">
-            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="material-icons opacity-10">receipt_long</i>
-            </div>
-            <span class="nav-link-text ms-1">Blogs</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-white " href="<?php echo e(url('contact_admin')); ?>">
-            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="material-icons opacity-10">view_in_ar</i>
-            </div>
-            <span class="nav-link-text ms-1">Contact</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-white " href="<?php echo e(url('vocher_home')); ?>">
-            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="material-icons opacity-10">format_textdirection_r_to_l</i>
-            </div>
-            <span class="nav-link-text ms-1">Vocher</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-white " href="notifications.html">
-            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="material-icons opacity-10">notifications</i>
-            </div>
-            <span class="nav-link-text ms-1">Notifications</span>
-          </a>
-        </li>
-        <li class="nav-item mt-3">
-          <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Account pages</h6>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-white " href="profile.html">
-            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="material-icons opacity-10">person</i>
-            </div>
-            <span class="nav-link-text ms-1">Profile</span>
-          </a>
-        </li>
-        <?php if(auth()->check()): ?>
-    <!-- Nếu đã đăng nhập, hiển thị nút Logout -->
-    <li class="nav-item">
-        <a class="nav-link text-white" href="<?php echo e(route('logout')); ?>">
-            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                <i class="material-icons opacity-10">logout</i>
-            </div>
-            <span class="nav-link-text ms-1">Logout</span>
-        </a>
-    </li>
-<?php else: ?>
-    <!-- Nếu chưa đăng nhập, hiển thị nút Sign In và Sign Up -->
-    <li class="nav-item">
-        <a class="nav-link text-white" href="<?php echo e(route('auth')); ?>">
-            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                <i class="material-icons opacity-10">login</i>
-            </div>
-            <span class="nav-link-text ms-1">Sign In</span>
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link text-white" href="<?php echo e(route('auth')); ?>">
-            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                <i class="material-icons opacity-10">assignment</i>
-            </div>
-            <span class="nav-link-text ms-1">Sign Up</span>
-        </a>
-    </li>
-<?php endif; ?>
+    <aside
+        class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3 bg-gradient-dark"
+        id="sidenav-main">
+        <div class="sidenav-header">
+            <i class="fas fa-times p-3 cursor-pointer text-white opacity-5 position-absolute end-0 top-0 d-none d-xl-none"
+                aria-hidden="true" id="iconSidenav"></i>
+            <a class="navbar-brand m-0" href="dashboard-2.html" target="_blank">
+                <img src="<?php echo e(asset('assets/img/logo-ct.png')); ?>" class="navbar-brand-img h-100" alt="main_logo">
+                <span class="ms-1 font-weight-bold text-white">Material Dashboard 2</span>
+            </a>
+        </div>
+        <hr class="horizontal light mt-0 mb-2">
+        <div class="collapse navbar-collapse w-auto" id="sidenav-collapse-main">
+            <ul class="navbar-nav">
+                <!-- Menu items -->
+                <!-- Dashboard -->
+                <li class="nav-item">
+                    <a class="nav-link text-white <?php echo e(request()->is('dashboard') ? 'bg-gradient-primary' : ''); ?>"
+                        href="<?php echo e(url('dashboard')); ?>">
+                        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="material-icons opacity-10">dashboard</i>
+                        </div>
+                        <span class="nav-link-text ms-1">Dashboard</span>
+                    </a>
+                </li>
+
+                <!-- Tables -->
+                <li class="nav-item">
+                    <a class="nav-link text-white <?php echo e(request()->is('tables') ? 'bg-gradient-primary' : ''); ?>"
+                        href="<?php echo e(url('tables')); ?>">
+                        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <!-- <i class="material-icons opacity-10">table_view</i> -->
+                            <i class="material-icons fa fa-user me-sm-1"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Users</span>
+                    </a>
+                </li>
+
+                <!-- Products -->
+                <li class="nav-item">
+                    <a class="nav-link text-white <?php echo e(Route::currentRouteName() == 'products.showListProducts' ? 'bg-gradient-primary' : ''); ?>"
+                        href="<?php echo e(route('products.showListProducts')); ?>">
+                        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="material-icons opacity-10">receipt_long</i>
+                        </div>
+                        <span class="nav-link-text ms-1">Products</span>
+                    </a>
+                </li>
+
+                <!-- Categories -->
+                <li class="nav-item">
+                    <a class="nav-link text-white <?php echo e(Route::currentRouteName() == 'showCategories' ? 'bg-gradient-primary' : ''); ?>"
+                        href="<?php echo e(route('showCategories')); ?>">
+                        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="material-icons opacity-10">receipt_long</i>
+                        </div>
+                        <span class="nav-link-text ms-1">Categories</span>
+                    </a>
+                </li>
+
+                <!-- Blogs -->
+                <li class="nav-item">
+                    <a class="nav-link text-white <?php echo e(request()->is('blogs_admin') ? 'bg-gradient-primary' : ''); ?>"
+                        href="<?php echo e(url('blogs_admin')); ?>">
+                        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="material-icons opacity-10">receipt_long</i>
+                        </div>
+                        <span class="nav-link-text ms-1">Blogs</span>
+                    </a>
+                </li>
+
+                <!-- Reviews -->
+                <li class="nav-item">
+                    <a class="nav-link text-white <?php echo e(Route::currentRouteName() == 'review.show' ? 'bg-gradient-primary' : ''); ?>"
+                        href="<?php echo e(route('review.show')); ?>">
+                        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="material-icons opacity-10">receipt_long</i>
+                        </div>
+                        <span class="nav-link-text ms-1">Reviews</span>
+                    </a>
+                </li>
+
+                <!-- Other menu items here... -->
+
+                <!-- Contact -->
+                <li class="nav-item">
+                    <a class="nav-link text-white <?php echo e(request()->is('contact_admin') ? 'bg-gradient-primary' : ''); ?>"
+                        href="<?php echo e(url('contact_admin')); ?>">
+                        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="material-icons opacity-10">view_in_ar</i>
+                        </div>
+                        <span class="nav-link-text ms-1">Contact</span>
+                    </a>
+                </li>
+
+                <!-- Voucher -->
+                <li class="nav-item">
+                    <a class="nav-link text-white <?php echo e(request()->is('vocher_home') ? 'bg-gradient-primary' : ''); ?>"
+                        href="<?php echo e(url('vocher_home')); ?>">
+                        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="material-icons opacity-10">format_textdirection_r_to_l</i>
+                        </div>
+                        <span class="nav-link-text ms-1">Voucher</span>
+                    </a>
+                </li>
+                <!-- Chetbox -->
+                <li class="nav-item">
+                    <a class="nav-link text-white <?php echo e(request()->is('admin.chatbox') ? 'bg-gradient-primary' : ''); ?>"
+                        href=<?php echo e(route('admin.chatbox')); ?>>
+                        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="material-icons opacity-10">chat_bubble</i>
+                        </div>
+                        <span class="nav-link-text ms-1">Chatbox</span>
+                    </a>
+                </li>
+                <!-- Orders manager-->
+                <li class="nav-item">
+                    <a class="nav-link text-white <?php echo e(request()->is('admin.orders.index') ? 'bg-gradient-primary' : ''); ?>"
+                        href=<?php echo e(route('admin.orders.index')); ?>>
+                        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="material-icons opacity-10">list_alt</i>
+                        </div>
+                        <span class="nav-link-text ms-1">Oders manager</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white " href="notifications.html">
+                        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="material-icons opacity-10">notifications</i>
+                        </div>
+                        <span class="nav-link-text ms-1">Notifications</span>
+                    </a>
+                </li>
+                <li class="nav-item mt-3">
+                    <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Account pages
+                    </h6>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white " href="profile.html">
+                        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="material-icons opacity-10">person</i>
+                        </div>
+                        <span class="nav-link-text ms-1">Profile</span>
+                    </a>
+                </li>
+                <?php if(auth()->check()): ?>
+                    <!-- Nếu đã đăng nhập, hiển thị nút Logout -->
+                    <li class="nav-item">
+                        <a class="nav-link text-white <?php echo e(request()->is('logout') ? 'bg-gradient-primary' : ''); ?>"
+                            href="<?php echo e(route('logout')); ?>">
+                            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                                <i class="material-icons opacity-10">logout</i>
+                            </div>
+                            <span class="nav-link-text ms-1">Logout</span>
+                        </a>
+                    </li>
+                <?php else: ?>
+                    <!-- Nếu chưa đăng nhập, hiển thị nút Sign In và Sign Up -->
+                    <li class="nav-item">
+                        <a class="nav-link text-white <?php echo e(request()->routeIs('auth') ? 'bg-gradient-primary' : ''); ?>"
+                            href="<?php echo e(route('auth')); ?>">
+                            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                                <i class="material-icons opacity-10">login</i>
+                            </div>
+                            <span class="nav-link-text ms-1">Sign In</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white <?php echo e(request()->routeIs('auth') ? 'bg-gradient-primary' : ''); ?>"
+                            href="<?php echo e(route('auth')); ?>">
+                            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                                <i class="material-icons opacity-10">assignment</i>
+                            </div>
+                            <span class="nav-link-text ms-1">Sign Up</span>
+                        </a>
+                    </li>
+                <?php endif; ?>
+
 
 
                 <!-- Other menu items -->
@@ -214,10 +270,13 @@
     <script src="<?php echo e(asset('assets/js/addProducts.js')); ?>"></script>
     <script src="<?php echo e(asset('assets/js/list_products.js')); ?>"></script>
     <script src="<?php echo e(asset('assets/js/chatbox-admin.js')); ?>"></script>
+    <script src="<?php echo e(asset('assets/js/orders_admin.js')); ?>"></script>
+    <script src="<?php echo e(asset('assets/js/customer_list.js')); ?>"></script>
 
     <!-- Thêm jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mark.js/dist/mark.min.js"></script>
+    <script defer data-site="demos.creative-tim.com" src="<?php echo e(asset('assets/js/nepcha-analytics.js')); ?>"></script>
 
 </body>
 

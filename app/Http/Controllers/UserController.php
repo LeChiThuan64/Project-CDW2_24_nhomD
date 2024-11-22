@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cart;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Contracts\Encryption\DecryptException;
 
 class UserController extends Controller
@@ -47,9 +50,6 @@ class UserController extends Controller
         }
         return response()->json(['error' => 'User not found'], 404);
     }
-
-
-
 
     //khóa user
     public function toggleStatus($id, Request $request)
@@ -114,7 +114,7 @@ class UserController extends Controller
                 $profileImagePath = 'uploads/' . $profileImageName;
             }
 
-            User::create([
+            $user = User::create([
                 'name' => $request->input('name'),
                 'email' => $request->input('email'),
                 'password' => bcrypt($request->input('password')),
@@ -123,6 +123,11 @@ class UserController extends Controller
                 'dob' => $request->input('dob'),
                 'role' => 1,
                 'profile_image' => $profileImagePath,
+            ]);
+
+            DB::table('shopping_cart')->insert([
+                'user_id' => $user->id,
+                'created_at' => now(),
             ]);
 
             return redirect()->route('tables')->with('success', 'Người dùng đã được thêm thành công!');

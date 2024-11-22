@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Voucher;
 use App\Models\ProductSizeColor;
 use App\Models\Product;
+use App\Models\ShippingPrice;
 
 class CartController extends Controller
 {
@@ -46,15 +47,26 @@ public function show(Request $request)
         ];
     })->toArray();
 
+    // Tính tổng số tiền
+    $total = array_reduce($cart, function ($carry, $item) {
+        return $carry + ($item['price'] * $item['quantity']);
+    }, 0);
+
     // Lấy danh sách voucher
     $vouchers = Voucher::where('is_global', true)
         ->orWhere('user_id', $user_id)
         ->get();
 
+    // Lấy danh sách shipping price
+    $shippingprice = ShippingPrice::all();
+
     return view('viewUser.cart', [
         'cart' => $cart,
         'vouchers' => $vouchers,
+        'shippingprice' => $shippingprice,
+        'total' => $total,
     ]);
+
 }
 
 // Thêm sản phẩm vào giỏ hàng
@@ -132,6 +144,13 @@ public function update(Request $request)
     }
 
     return response()->json(['message' => 'Cart updated successfully']);
+}
+
+public function clear()
+{
+    // Xóa tất cả sản phẩm ra khỏi giỏ hàng trong cơ sở dữ liệu
+    CartItem::truncate();
+    return response()->json(['success' => true]);
 }
     
 

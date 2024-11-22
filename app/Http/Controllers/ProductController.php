@@ -7,12 +7,29 @@ use App\Models\Product;
 use App\Models\Color;
 use App\Models\Size;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use App\Models\ReviewImage;
 
 class ProductController extends Controller
 {
     // Hiển thị chi tiết sản phẩm
     public function show($id)
     {
+        $productsRandomModel = Product::with(['images', 'productSizeColors.size', 'productSizeColors.color', 'reviews'])
+            ->inRandomOrder() // Sắp xếp ngẫu nhiên
+            ->take(8) // Lấy 8 sản phẩm ngẫu nhiên
+            ->get();
+
+        // Chuyển đổi dữ liệu sản phẩm thành mảng và thêm các thông tin cần thiết
+        $productsRandom = $productsRandomModel->map(function ($product) {
+            $data = $product->getProductDetailData();
+            $data['averageRating'] = $product->reviews->avg('rating') ?? 0;
+            $data['reviewCount'] = $product->reviews->count();
+            return $data;
+        });
+
+
+
         $productModel = Product::with(['images', 'productSizeColors.size', 'productSizeColors.color', 'reviews', 'category'])
             ->findOrFail($id);
 
@@ -31,58 +48,172 @@ class ProductController extends Controller
         $product['sizesAndColor'] = $productModel->productSizeColors;
         $product['colors'] = $colors;
         $product['sizes'] = $sizes;
-        return view('viewUser.product-detail', compact('product'));
+        return view('viewUser.product-detail', compact('product', 'productsRandom'));
     }
 
     public function getQuantityAndPrice(Request $request)
-{
-    $productId = $request->input('product_id');
-    $sizeId = $request->input('size_id');
-    $colorId = $request->input('color_id');
+    {
+        $productId = $request->input('product_id');
+        $sizeId = $request->input('size_id');
+        $colorId = $request->input('color_id');
 
-    // Kiểm tra và lấy số lượng và giá từ bảng trung gian
-    $quantityAndPrice = DB::table('product_size_color')
-        ->where('product_id', $productId)
-        ->where('size_id', $sizeId)
-        ->where('color_id', $colorId)
-        ->select('quantity', 'price')
-        ->first();
+        // Kiểm tra và lấy số lượng và giá từ bảng trung gian
+        $quantityAndPrice = DB::table('product_size_color')
+            ->where('product_id', $productId)
+            ->where('size_id', $sizeId)
+            ->where('color_id', $colorId)
+            ->select('quantity', 'price')
+            ->first();
 
-    // Nếu không tìm thấy sản phẩm, trả về giá trị mặc định
-    if (!$quantityAndPrice) {
-        return response()->json(['quantity' => 0, 'price' => 0]);
+        // Nếu không tìm thấy sản phẩm, trả về giá trị mặc định
+        if (!$quantityAndPrice) {
+            return response()->json(['quantity' => 0, 'price' => 0]);
+        }
+
+        // Trả về số lượng và giá đúng định dạng
+        return response()->json([
+            'quantity' => $quantityAndPrice->quantity,
+            'price' => $quantityAndPrice->price
+        ]);
     }
 
-    // Trả về số lượng và giá đúng định dạng
-    return response()->json([
-        'quantity' => $quantityAndPrice->quantity,
-        'price' => $quantityAndPrice->price
-    ]);
-}
-
     // Thêm đánh giá cho sản phẩm
+    // public function addReview(Request $request, $productId)
+    // {
+    //     $request->validate([
+    //         'rating' => 'required|integer|min:1|max:5',
+    //         'comment' => 'required|string|max:255',
+    //     ]);
+
+    //     $product = Product::findOrFail($productId);
+
+    //     $existingReview = $product->reviews()->where('user_id', auth()->id())->first();
+
+    //     if ($existingReview) {
+    //         // Thông báo nếu đã có đánh giá
+    //         return redirect()->back()->with('add-review-error', 'You have already reviewed this product.');
+    //     }
+
+    //     $product->reviews()->create([
+    //         'user_id' => auth()->id(),
+    //         'rating' => $request->input('rating'),
+    //         'comment' => $request->input('comment'),
+    //     ]);
+
+    //     return redirect()->back()->with('add-review-success', 'Review added successfully!');
+    // }
+
     public function addReview(Request $request, $productId)
     {
-        // Xác thực thông tin đánh giá
+        // Xác thực dữ liệu
         $request->validate([
             'rating' => 'required|integer|min:1|max:5',
             'comment' => 'required|string|max:255',
         ]);
 
-        // Lấy sản phẩm theo ID
+        // Tìm sản phẩm
         $product = Product::findOrFail($productId);
 
-        // Thêm đánh giá mới
-        $product->reviews()->create([
-            'user_id' => auth()->id(), // Lấy ID người dùng hiện tại
+        // Kiểm tra nếu user đã đánh giá sản phẩm này
+        $existingReview = $product->reviews()->where('user_id', auth()->id())->first();
+        if ($existingReview) {
+            return redirect()->back()->with('add-review-error', 'You have already reviewed this product.');
+        }
+
+        // Lưu review vào cơ sở dữ liệu
+        $review = $product->reviews()->create([
+            'user_id' => auth()->id(),
             'rating' => $request->input('rating'),
             'comment' => $request->input('comment'),
         ]);
 
-        return redirect()->back()->with('success', 'Review added successfully!');
+        // Kiểm tra số lượng ảnh tải lên
+        $uploadedFiles = $request->file('images');
+        // if ($uploadedFiles && count($uploadedFiles) > 4) {
+        //     return redirect()->back()->with('add-review-error', 'You can only upload up to 4 images.');
+        // }
+
+        // Xử lý hình ảnh nếu có
+        if ($uploadedFiles) {
+            foreach ($uploadedFiles as $imageFile) {
+                if ($imageFile) {
+                    // Tạo tên file ảnh duy nhất
+                    $imageName = $imageFile->getClientOriginalName();
+
+                    // Đường dẫn lưu ảnh
+                    $imagePath = 'assets/img/reviews/';
+                    $fullImagePath = public_path($imagePath);
+                    if (!file_exists($fullImagePath)) {
+                        mkdir($fullImagePath, 0755, true);
+                    }
+
+                    // Lưu file ảnh vào thư mục
+                    $imageFile->move($fullImagePath, $imageName);
+
+                    // Lưu thông tin ảnh vào bảng review_images
+                    ReviewImage::create([
+                        'review_id' => $review->id,
+                        'image_url' => $imageName,
+                        'created_at' => now(),
+                    ]);
+                }
+            }
+        }
+
+        // Trả về với thông báo thành công
+        return redirect()->back()->with('add-review-success', 'Review added successfully!');
     }
 
+
+
+
+
+
     public function search(Request $request)
+    {
+        try {
+            $searchKeyword = $request->query('search-keyword');
+
+            if ($searchKeyword) {
+                // Tìm kiếm sản phẩm
+                $products = Product::with(['images', 'productSizeColors'])
+                    ->selectRaw("
+                    products.*, 
+                    MATCH(name) AGAINST(? IN BOOLEAN MODE) AS relevance_name, 
+                    MATCH(description) AGAINST(? IN BOOLEAN MODE) AS relevance_description
+                ", [$searchKeyword, $searchKeyword])
+                    ->where(function ($q) use ($searchKeyword) {
+                        $q->whereRaw("MATCH(name) AGAINST(? IN BOOLEAN MODE)", [$searchKeyword])
+                            ->orWhereRaw("MATCH(description) AGAINST(? IN BOOLEAN MODE)", [$searchKeyword])
+                            ->orWhere('name', 'like', '%' . $searchKeyword . '%')
+                            ->orWhere('description', 'like', '%' . $searchKeyword . '%');
+                    })
+                    ->orderByRaw("GREATEST(relevance_name, relevance_description) DESC") // Sắp xếp theo điểm số lớn nhất
+                    ->paginate(4);
+
+                // Transform dữ liệu sản phẩm
+                $products->getCollection()->transform(function ($product) {
+                    // Gán giá và hình ảnh từ quan hệ
+                    $product->price = $product->productSizeColors->isNotEmpty()
+                        ? $product->productSizeColors->first()->price
+                        : null;
+                    $product->image = optional($product->images->first())->image_url ?? null;
+                    return $product;
+                });
+
+                // Trả về view với danh sách sản phẩm
+                return view('viewUser.search-results', compact('products'));
+            }
+
+            // Nếu không có từ khóa tìm kiếm
+            return redirect()->back()->with('error', 'No search criteria provided');
+
+        } catch (\Exception $e) {
+            // Xử lý lỗi và thông báo
+            return redirect()->back()->with('error', 'Error occurred while searching for product: ' . $e->getMessage());
+        }
+    }
+    public function searchComparsion(Request $request)
     {
         try {
             $product_id = $request->query('product_id');
@@ -143,4 +274,6 @@ class ProductController extends Controller
             ], 500);
         }
     }
+
+
 }

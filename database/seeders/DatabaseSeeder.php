@@ -19,7 +19,7 @@ class DatabaseSeeder extends Seeder
     //     //     'email' => 'test@example.com',
     //     // ]);
 
-        
+
     // }
 
     public function run()
@@ -32,5 +32,16 @@ class DatabaseSeeder extends Seeder
         $this->call(ProductSeeder::class);
         $this->call(ProductSizeColorSeeder::class);
         $this->call(BlogSeeder::class);
+        $this->call(UserSeeder::class);
+        $this->call(CartItemSeeder::class);
+        $this->call(ShoppingCartSeeder::class);
+        $this->call(ProductImagesSeeder::class);
+        $this->call(WishlistSeeder::class);
+        $this->call(VoucherSeeder::class);
+        $this->call(ShippingPriceSeeder::class);
+        $this->call(ReviewSeeder::class);
+        $this->call(OrdersTableSeeder::class);
+        $this->call(OrderItemsTableSeeder::class, );
+
     }
 }

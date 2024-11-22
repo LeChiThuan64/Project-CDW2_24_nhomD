@@ -118,3 +118,8 @@
 }
 
 
+#product-description img {
+    max-width: 100%;  /* Đảm bảo hình ảnh không vượt quá chiều rộng của cột */
+    height: auto;     /* Giữ tỷ lệ chiều cao của hình ảnh */
+    
+}

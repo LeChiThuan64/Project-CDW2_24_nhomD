@@ -15,16 +15,22 @@ class CategorySeeder extends Seeder
     {
         DB::table('categories')->insert([
             [
-                'category_name' => 'Thời trang nam',
-                'description' => 'Quần áo thời trang dành cho nam giới',
+                'category_name' => 'Men',
+                'description' => 'Fashionable clothing for men',
+                'image' => 'grid_banner_1.jpg',
+                'created_at' => now(),
             ],
             [
-                'category_name' => 'Thời trang nữ',
-                'description' => 'Quần áo thời trang dành cho nữ giới',
+                'category_name' => 'Women',
+                'description' => 'Fashionable clothing for men',
+                'image' => 'grid_banner_2.jpg',
+                'created_at' => now(),
             ],
             [
-                'category_name' => 'Phụ kiện',
-                'description' => 'Các loại phụ kiện điện tử, thời trang',
+                'category_name' => 'Kids',
+                'description' => 'Fashionable clothing for kid',
+                'image' => 'grid_banner_3.jpg',
+                'created_at' => now(),
             ],
         ]);
     }

@@ -2,6 +2,13 @@
 @section('title', 'Authentication')
 @section('content')
 
+
+<!-- @if (session('no-login-wishlist'))
+<script>
+    alert("{{ session('no-login-wishlist') }}");
+</script>
+@endif -->
+
 @if (session('status'))
 <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -43,13 +50,18 @@
                             <div id="login-password-error" class="text-danger"></div> <!-- Hiển thị lỗi password -->
                         </div>
 
+                        
+                        <div class="d-flex align-items-center mb-3 pb-2">
+                            <div class="form-check mb-0">
+                                <input name="remember" class="form-check-input form-check-input_fill" type="checkbox" value="" id="flexCheckDefault">
+                                <label class="form-check-label text-secondary" for="flexCheckDefault">Remember me</label>
+                            </div>
+                            <a href="{{ route('password.request') }}" class="btn-text ms-auto">Lost password?</a>
+                        </div>
+                        
+                        <button class="btn btn-primary w-100 text-uppercase" type="submit">Log In</button>
                         <div id="login-error" class="text-danger mb-3"></div> <!-- Hiển thị lỗi tổng quát -->
 
-                        <button class="btn btn-primary w-100 text-uppercase" type="submit">Log In</button>
-                        <div class="customer-option mt-4 text-center">
-                            <span class="text-secondary">Go to</span>
-                            <a href="{{ route('password.request') }}" class="btn-text js-show-register">Reset Password</a>
-                        </div>
                     </form>
 
 

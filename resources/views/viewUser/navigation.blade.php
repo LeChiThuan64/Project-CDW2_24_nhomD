@@ -7,6 +7,18 @@
     <meta name="author" content="flexkit">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
+    <meta property="og:title" content="Tiêu đề bài viết" />
+    <meta property="og:description" content="Mô tả nội dung bài viết mà bạn muốn chia sẻ." />
+    <meta property="og:image" content="https://example.com/path-to-image.jpg" />
+    <meta property="og:url" content="https://example.com/my-article" />
+    <meta property="og:type" content="website" />
+
+    <!-- link của thuận  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="{{ asset('assets/css/contact.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/blog_list.css') }}">
+    <!-- link của thuận  -->
+
     <link rel="shortcut icon" href="{{ asset('assets/img/logos/logoJ97.png') }}" type="image/x-icon">
     <link rel="preconnect" href="https://fonts.gstatic.com/">
 
@@ -17,11 +29,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Allura&amp;display=swap" rel="stylesheet">
 
     <!-- Stylesheets -->
-    <link rel="stylesheet" href="{{ asset('assets/css/plugins/swiper.min.css') }}" type="text/css">
-    <link rel="stylesheet" href="{{ asset('assets/css/plugins/jquery.fancybox.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('assets/css/plugin/swiper.min.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('assets/css/plugin/jquery.fancybox.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('assets/css/plugin/lightbox.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('assets/css/auth.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('assets/css/noti.css') }}" type="text/css">
+
 
 
 
@@ -31,8 +45,7 @@
   <![endif]-->
 
     <!-- Document Title -->
-    <title>J97</title>
-
+    <title>J Shop</title>
 </head>
 
 <body>
@@ -349,7 +362,7 @@
                                             <use href="#icon_next_sm" />
                                         </svg></a>
                                     <div class="sub-menu__wrapper position-absolute top-0 start-100 w-100 d-none">
-                                        <a href="#"
+                                        <a href="{{ route('locgia') }}"
                                             class="navigation__link js-nav-left d-flex align-items-center border-bottom mb-2"><svg
                                                 class="me-2" width="7" height="11" viewBox="0 0 7 11"
                                                 xmlns="http://www.w3.org/2000/svg">
@@ -575,8 +588,8 @@
     <header id="header" class="header header_sticky">
         <div class="container">
             <div class="header-desk header-desk_type_1">
-                <div class="logo"><a href="">
-                        <img src="{{ asset('assets/img/logos/logoJ97.png') }}" alt="J97" class="logo__image d-block"
+                <div class="logo"><a href="{{ route('home.show') }}">
+                        <img src="{{ asset('assets/img/logos/logoJ97.png') }}" alt="J Shop" class="logo__image d-block"
                             style="width:2em;">
                     </a>
                 </div><!-- /.logo -->
@@ -584,7 +597,7 @@
                 <nav class="navigation">
                     <ul class="navigation__list list-unstyled d-flex">
                         <li class="navigation__item">
-                            <a href="#" class="navigation__link">Home</a>
+                            <a href="{{ route('home.show') }}" class="navigation__link">Home</a>
                             <!-- <div class="box-menu" style="width: 800px;">
                                 <div class="col pe-4">
                                     <ul class="sub-menu__list list-unstyled">
@@ -596,11 +609,11 @@
                             <!-- /.box-menu -->
                         </li>
                         <li class="navigation__item">
-                            <a href="#" class="navigation__link">Shop</a>
+                            <a href="{{ route('locgia') }}" class="navigation__link">Category</a>
                             <div class="mega-menu">
                                 <div class="container d-flex">
                                     <div class="col pe-4">
-                                        <a href="#" class="sub-menu__title">Shop List</a>
+                                        <a href="{{ route('locgia') }}" class="sub-menu__title">Shop List</a>
                                         <ul class="sub-menu__list list-unstyled">
                                             <li class="sub-menu__item"><a href="shop11.html"
                                                     class="menu-link menu-link_us-s">Horizontal Scroll</a></li>
@@ -639,24 +652,27 @@
 
                         <li class="navigation__item">
                             <a href="{{ route('blog.index') }}" class="navigation__link">Blog</a>
-                            <ul class="default-menu list-unstyled">
-                                <!-- Bạn có thể thêm các menu phụ tại đây nếu cần -->
-                            </ul><!-- /.box-menu -->
+                            <!-- <ul class="default-menu list-unstyled"> -->
+                            <!-- Bạn có thể thêm các menu phụ tại đây nếu cần -->
+                            <!-- </ul> -->
                         </li>
 
 
 
-                        <li class="navigation__item">
+                        <!-- <li class="navigation__item">
                             <a href="#" class="navigation__link">Pages</a>
                             <ul class="default-menu list-unstyled">
-                            </ul><!-- /.box-menu -->
-                        </li>
+                            </ul>
+                        </li> -->
                         <li class="navigation__item">
-                            <a href="about.html" class="navigation__link">About</a>
+                            <a href="{{ route('about-us.show') }}" class="navigation__link">About</a>
                         </li>
                         <li class="navigation__item">
                             <a href="{{ route('contact') }}" class="navigation__link">Contact</a>
                         </li>
+                        <!-- <li class="locgia__item">
+                            <a href="{{ route('locgia') }}" class="locgia__link">Lọc Giá</a>
+                        </li> -->
 
                     </ul><!-- /.navigation__list -->
                 </nav><!-- /.navigation -->
@@ -762,7 +778,7 @@
             <div class="row row-cols-lg-5 row-cols-2">
                 <div class="footer-column footer-store-info col-12 mb-4 mb-lg-0">
                     <div class="logo">
-                        <a href="index-2.html">
+                        <a href="{{ route('home.show') }}">
                             <img src="../images/logo.png" alt="GroupD" class="logo__image d-block">
                         </a>
                     </div><!-- /.logo -->
@@ -1333,7 +1349,7 @@
     <div class="page-overlay"></div><!-- /.page-overlay -->
 
 
-   
+
 
     <div class="notifications">
     </div>
@@ -1344,34 +1360,39 @@
         <button class="btn" id="info">Info</button>
     </div>
 
-
-    <!-- External JavaScripts -->
-    <script src="{{ asset('assets/js/plugins/jquery.min.js') }}"></script>
-    <script src="{{ asset('assets/js/plugins/bootstrap.bundle.min.js') }}"></script>
-    <script src="{{ asset('assets/js/plugins/bootstrap-slider.min.js') }}"></script>
-
-    <script src="{{ asset('assets/js/plugins/swiper.min.js') }}"></script>
-    <script src="{{ asset('assets/js/plugins/countdown.js') }}"></script>
-    <script src="{{ asset('assets/js/plugins/jquery.fancybox.js') }}"></script>
-    <script src="{{ asset('assets/js/details-disclosure.js') }}" defer="defer"></script>
-    <script src="{{ asset('assets/js/share.js') }}" defer="defer"></script>
-    <script src="{{ asset('assets/js/auth.js') }}" defer="defer"></script>
-    <script src="{{ asset('assets/js/reset_password.js') }}" defer="defer"></script>
-
-
-    <!-- Footer Scripts -->
-    <script src="{{ asset('assets/js/theme.js') }}"></script>
-    <script src="{{ asset('assets/js/noti.js') }}"></script>
-
     <script>
         const loginUrl = "{{ route('login') }}";
         const registerUrl = "{{ route('register') }}";
         const authUrl = "{{ route('auth') }}";
-        // const homeUrll = "{{ url('/home#') }}";
     </script>
 
 
+    <!-- External JavaScripts -->
+    <script src="{{ asset('assets/js/plugins/jquery.min.js') }}"></script>
+    <script src="{{ asset('assets/js/plugins/lightbox.js') }}"></script>
+    <script src="{{ asset('assets/js/plugins/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('assets/js/plugins/bootstrap-slider.min.js') }}"></script>
+    <script src="{{ asset('assets/js/plugins/bootstrap.min.js') }}"></script>
 
+    <script src="{{ asset('assets/js/plugins/swiper.min.js') }}"></script>
+    <script src="{{ asset('assets/js/plugins/countdown.js') }}"></script>
+    <script src="{{ asset('assets/js/plugins/jquery.fancybox.js') }}"></script>
+    <!-- <script src="{{ asset('assets/js/core/bootstrap.min.js') }}"></script> -->
+    <script src="{{ asset('assets/js/core/popper.min.js') }}"></script>
+    <script src="{{ asset('assets/js/details-disclosure.js') }}" defer="defer"></script>
+    <script src="{{ asset('assets/js/share.js') }}" defer="defer"></script>
+    <script src="{{ asset('assets/js/auth.js') }}" defer="defer"></script>
+    <script src="{{ asset('assets/js/orders_manager.js') }}"></script>
+    <script src="{{ asset('assets/js/order_details.js') }}"></script>
+    <script src="{{ asset('assets/js/noti.js') }}"></script>
+
+
+    <!-- Footer Scripts -->
+    <script src="{{ asset('assets/js/theme.js') }}"></script>
+    <!-- 
+ cua thuan -->
+    <!-- JavaScript để ẩn thông báo sau 3 giây và kiểm tra ký tự -->
+    <script src="{{ asset('assets/js/contact.js') }}"></script>
 </body>
 
 </html>

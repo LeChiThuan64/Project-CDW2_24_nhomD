@@ -13628,6 +13628,74 @@ fieldset:disabled .btn {
     line-height: 1.7143;
 }
 
+/* Bảng add thẻ ngân hàng checkout */
+.hidden-table {
+    display: none;
+}
+
+.fixed-table {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+    height: auto;
+    border: 1px solid #000;
+    background-color: #fff;
+    z-index: 1000;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    border-radius: 8px;
+    box-sizing: border-box;
+    padding-top: 40px; /* Tạo khoảng trống cho nút close */
+}
+
+/* Style cho tiêu đề */
+.fixed-table h3 {
+    margin-bottom: 15px;
+}
+
+/* Style cho bảng trong form */
+.fixed-table table {
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+/* Style cho các ô input và select */
+.fixed-table table td {
+    padding: 10px;
+}
+
+.fixed-table table input,
+.fixed-table table select {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+}
+
+/* Style cho nút xác nhận */
+.fixed-table button {
+    margin-top: 10px;
+    width: 100%;
+}
+
+/* Style cho nút close */
+.bank-form-close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: #000;
+}
+
+.bank-form-close-btn:hover {
+    color: red;
+}
+
 .col-form-label-lg {
     padding-top: 1.25rem;
     padding-bottom: 1.25rem;
@@ -20958,11 +21026,15 @@ a.add-to-wishlist.active .flaticon.flaticon-heart {
     text-decoration: underline;
 }
 .my-account .orders-table tbody td:last-child {
-    width: 12.5rem;
+    width: 20rem;
 }
 .my-account .orders-table tbody td .btn {
     height: 3.125rem;
     font-size: 0.875rem;
+}
+.my-account .orders-table tbody .btn {
+    margin-top: 5px;
+    width: 100%;
 }
 .my-account__address .notice {
     margin-bottom: 3.75rem;
@@ -20971,6 +21043,101 @@ a.add-to-wishlist.active .flaticon.flaticon-heart {
     display: flex;
     gap: 5.625rem;
 }
+.cancel-order-form {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-40%, -40%);
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 500px;
+    z-index: 1000;
+}
+
+.cancel-order-form h4 {
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.cancel-order-form div {
+    margin-bottom: 10px;
+}
+
+.cancel-order-form input[type="radio"] {
+    margin-right: 5px;
+}
+
+.cancel-order-form .btn {
+    width: 100%;
+    margin-top: 10px;
+}
+
+/* Giao diện trang chi tiết đơn hàng */
+.order-details-container {
+    border: 1px solid #ddd;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+
+
+.customer-info {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.customer-info td {
+    padding: 10px;
+    border: 1px solid #ddd;
+}
+
+.customer-info td:first-child {
+    width: 30%;
+    font-weight: bold;
+}
+
+.order-actions {
+    display: flex;
+    justify-content: space-between;
+}
+
+.order-actions .btn {
+    padding: 10px 20px;
+}
+.customer-info {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+.customer-info td {
+    padding: 10px;
+    vertical-align: middle;
+}
+
+.customer-info input {
+    width: 100%;
+    padding: 5px;
+    box-sizing: border-box;
+}
+.received-order-form {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 400px;
+    z-index: 1000;
+}
+.received-order-box {
+    text-align: center;
+}
+
 @media (max-width: 767.98px) {
     .my-account__address-list {
         flex-direction: column;
@@ -22407,8 +22574,78 @@ body.coming-soon-page .header {
 
 .product-details {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
     gap: 10px; /* Khoảng cách giữa các phần tử */
     justify-content: flex-start; /* Căn trái */
     text-align: left;
+}
+
+.custom-dropdown-menu {
+    border: none;
+    background-color: #fff;
+    z-index: 0;
+}
+#errorDetailTable {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+#errorDetailTable {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    border-radius: 3px; /* Thêm border-radius */
+}
+
+#errorDetailTable table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#errorDetailTable th,
+#errorDetailTable td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+#errorDetailTable th {
+    background-color: #0046be;
+}
+
+#errorDetailTable .btn {
+    margin-top: 10px;
+    display: block; /* Thêm display block */
+    margin-left: auto; /* Căn giữa nút */
+    margin-right: auto; /* Căn giữa nút */
+}
+
+/*review */
+.review-images {
+    display: flex;
+    gap: 10px; /* Khoảng cách giữa các hình ảnh */
+    margin-top: 10px; /* Khoảng cách từ phần text đến hình ảnh */
+    overflow-x: auto; /* Cuộn ngang nếu hình ảnh quá nhiều */
+    padding: 5px 0;
+}
+
+.review-image-item {
+    width: 70px; /* Đặt kích thước cố định cho hình ảnh */
+    height: 70px;
+    object-fit: cover; /* Đảm bảo hình ảnh không bị méo */
+    border-radius: 5px; /* Bo góc hình ảnh */
+    cursor: pointer; /* Hiệu ứng con trỏ */
+    border: 1px solid #ddd; /* Đường viền nhạt */
 }

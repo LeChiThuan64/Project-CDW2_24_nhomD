@@ -4,31 +4,35 @@ document.addEventListener('DOMContentLoaded', function () {
             const productRow = this.closest('tr');
             const productId = productRow.getAttribute('data-id');
             const productName = productRow.children[1].innerText;
-            const productDescription = productRow.children[2].innerText;
+            
+            // Lấy mô tả đầy đủ từ data-description
+            const productDescription = productRow.children[2].getAttribute('data-description');
+            
             const sizesAndColors = JSON.parse(productRow.getAttribute('data-sizes-and-colors')) || [];
             const images = JSON.parse(productRow.getAttribute('data-images')) || [];
-
+        
             document.getElementById('product-id').innerText = productId;
             document.getElementById('product-name').innerText = productName;
-            document.getElementById('product-description').innerText = productDescription;
-
+            
+            // Hiển thị mô tả đầy đủ với định dạng HTML trong modal
+            document.getElementById('product-description').innerHTML = productDescription;
+        
             const productDetailsBody = document.getElementById('product-details-body');
             productDetailsBody.innerHTML = '';
-
+        
             sizesAndColors.forEach(sizeColor => {
                 const row = `<tr>
                                 <td>${sizeColor.color.name}</td>
                                 <td>${sizeColor.size.name}</td>
                                 <td>${sizeColor.quantity}</td>
                                 <td>${sizeColor.price}</td>
-                             </tr>`;
+                            </tr>`;
                 productDetailsBody.innerHTML += row;
             });
-
+        
             const productImagesContainer = document.getElementById('product-images');
             productImagesContainer.innerHTML = '';
-            // console.log(images);
-
+        
             images.forEach(imageUrl => {
                 const imgElement = `<div class="col-3" style="display: flex; justify-content: center;">
                                         <img src="${imageUrl}" alt="Product Image" class="img-fluid" style="max-width: 100%; height: auto;">
@@ -36,6 +40,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 productImagesContainer.innerHTML += imgElement;
             });
         });
+        
     });
 
     $.ajaxSetup({
@@ -208,8 +213,6 @@ $('#confirmDeleteButton').click(function () {
             document.getElementById('categoryDropdown').innerText = this.innerText; // Cập nhật nút dropdown
         });
     });
-
-
     
     // Lắng nghe sự kiện click vào nút "Sửa"
     const editButtons = document.querySelectorAll('.edit-product');
@@ -225,3 +228,21 @@ $('#confirmDeleteButton').click(function () {
     });
 
 });
+
+setTimeout(function() {
+    var successMessage = document.getElementById('success-message');
+    if (successMessage) {
+        successMessage.style.display = 'none';
+    }
+  
+    var failureMessage = document.getElementById('failure-message');
+    if (failureMessage) {
+        failureMessage.style.display = 'none';
+    }
+  }, 3000);
+
+  function showReplyForm(reviewId) {
+    var replyForm = document.getElementById('reply-form-' + reviewId);
+    replyForm.style.display = replyForm.style.display === 'none' ? 'block' : 'none';
+}
+

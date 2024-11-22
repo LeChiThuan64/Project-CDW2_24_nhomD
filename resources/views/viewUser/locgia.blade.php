@@ -1,45 +1,10 @@
 @extends('viewUser.navigation')
-@section('title', 'contact')
+@section('title', 'LocGia')
 @section('content')
 
 <head>
-    <style>
-        .price-range {
-            position: relative;
-            margin: 20px 0;
-        }
 
-        input[type="range"] {
-            -webkit-appearance: none;
-            width: 100%;
-            height: 5px;
-            background: #ddd;
-            border-radius: 5px;
-        }
-
-        input[type="range"]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            width: 20px;
-            height: 20px;
-            background: #333;
-            border-radius: 50%;
-            cursor: pointer;
-        }
-
-        input[type="range"]::-moz-range-thumb {
-            width: 20px;
-            height: 20px;
-            background: #333;
-            border-radius: 50%;
-            cursor: pointer;
-        }
-
-        .price-labels {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 10px;
-        }
-    </style>
+<link rel="stylesheet" href="{{ asset('assets/css/locgia.css') }}">
 </head>
 
 <div class="mb-4 pb-lg-3"></div>
@@ -58,29 +23,34 @@
                 <h5 class="accordion-header" id="accordion-heading-11">
                     <button class="accordion-button p-0 border-0 fs-5 text-uppercase" type="button" data-bs-toggle="collapse" data-bs-target="#accordion-filter-1" aria-expanded="true" aria-controls="accordion-filter-1">
                         Product Categories
-                        <svg class="accordion-button__icon type2" viewBox="0 0 10 6" xmlns="http://www.w3.org/2000/svg">
-                            <g aria-hidden="true" stroke="none" fill-rule="evenodd">
-                                <path d="M5.35668 0.159286C5.16235 -0.053094 4.83769 -0.0530941 4.64287 0.159286L0.147611 5.05963C-0.0492049 5.27473 -0.049205 5.62357 0.147611 5.83813C0.344427 6.05323 0.664108 6.05323 0.860924 5.83813L5 1.32706L9.13858 5.83867C9.33589 6.05378 9.65507 6.05378 9.85239 5.83867C10.0492 5.62357 10.0492 5.27473 9.85239 5.06018L5.35668 0.159286Z" />
-                            </g>
-                        </svg>
                     </button>
                 </h5>
-                <div id="accordion-filter-1" class="accordion-collapse collapse show border-0" aria-labelledby="accordion-heading-11" data-bs-parent="#categories-list">
-                    <div class="accordion-body px-0 pb-0 pt-3">
-                        <ul class="list list-inline mb-0">
-                            <li class="list-item">
-                                <a href="#" class="menu-link py-1">Dresses</a>
-                            </li>
-                            <li class="list-item">
-                                <a href="#" class="menu-link py-1">Shorts</a>
-                            </li>
-                            <li class="list-item">
-                                <a href="#" class="menu-link py-1">Sweatshirts</a>
-                            </li>
-
-                        </ul>
-                    </div>
+                <div id="accordion-filter-1" class="accordion-collapse collapse show border-0"
+                    aria-labelledby="accordion-heading-11" data-bs-parent="#categories-list">
+                    @if ($categories->isNotEmpty())
+                    <ul class="list list-inline mb-0">
+                        <!-- Nút hiển thị tất cả sản phẩm -->
+                        <li class="list-item">
+                            <a href="{{ route('locgia') }}" class="menu-link py-1 text-primary">
+                                Hiển thị tất cả sản phẩm
+                            </a>
+                        </li>
+                        <!-- Danh sách các danh mục -->
+                        @foreach ($categories as $category)
+                        <li class="list-item">
+                            <a href="{{ route('locgia.category', $category->category_id) }}" class="menu-link py-1">
+                                {{ $category->category_name }}
+                            </a>
+                        </li>
+                        @endforeach
+                    </ul>
+                    @else
+                    <p class="text-muted py-2">Chưa có danh mục sản phẩm.</p>
+                    @endif
                 </div>
+
+
+
             </div><!-- /.accordion-item -->
         </div><!-- /.accordion-item -->
 
@@ -98,11 +68,6 @@
                 <h5 class="accordion-header mb-2" id="accordion-heading-price">
                     <button class="accordion-button p-0 border-0 fs-5 text-uppercase" type="button" data-bs-toggle="collapse" data-bs-target="#accordion-filter-price" aria-expanded="true" aria-controls="accordion-filter-price">
                         Price
-                        <svg class="accordion-button__icon type2" viewBox="0 0 10 6" xmlns="http://www.w3.org/2000/svg">
-                            <g aria-hidden="true" stroke="none" fill-rule="evenodd">
-                                <path d="M5.35668 0.159286C5.16235 -0.053094 4.83769 -0.0530941 4.64287 0.159286L0.147611 5.05963C-0.0492049 5.27473 -0.049205 5.62357 0.147611 5.83813C0.344427 6.05323 0.664108 6.05323 0.860924 5.83813L5 1.32706L9.13858 5.83867C9.33589 6.05378 9.65507 6.05378 9.85239 5.83867C10.0492 5.62357 10.0492 5.27473 9.85239 5.06018L5.35668 0.159286Z" />
-                            </g>
-                        </svg>
                     </button>
                 </h5>
 
@@ -114,7 +79,7 @@
                         <span>Min Price: <span id="minPriceLabel">0</span> VND</span>
                         <span>Max Price: <span id="maxPriceLabel">5.000.000</span> VND</span>
                     </div>
-                    <button style="
+                    <button id="filter-button" style="
     padding: 10px 20px;
     background-color: #007bff;
     color: white;
@@ -124,34 +89,48 @@
     font-weight: bold;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s ease;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-"
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);"
                         onmouseover="this.style.backgroundColor='#0056b3'; this.style.transform='scale(1.05)';"
                         onmouseout="this.style.backgroundColor='#007bff'; this.style.transform='scale(1)';">
                         Lọc
                     </button>
 
+
                 </div>
 
-            </div><!-- /.accordion-item -->
-        </div><!-- /.accordion -->
+            </div>
+        </div>
+
+
     </div><!-- /.shop-sidebar -->
 
-    <div class="products-grid row row-cols-2 row-cols-md-3" id="products-grid">
+
+    <div class="products-grid row" id="products-grid">
+
         @foreach ($products as $product)
-        <div class="product-card-wrapper">
-            <div class="product-card mb-3 mb-md-4 mb-xxl-5">
+        <div class="col-sm-6 col-md-4 col-lg-3 product-loc-wrapper">
+            <div class="product-loc mb-3 mb-md-4 mb-xxl-5">
                 <div class="pc__img-wrapper">
                     <div class="swiper-container background-img js-swiper-slider" data-settings='{"resizeObserver": true}'>
                         <div class="swiper-wrapper" id="swiper-wrapper-{{ $product->product_id }}">
-                            <!-- Swiper slides will be added here by JavaScript -->
+                            @foreach ($product->images as $image)
+                            <div class="swiper-slide">
+                                <a href="{{ route('product.show', $product->product_id) }}">
+
+                                    <img loading="lazy" src="{{ asset('assets/img/products/' . $image->image_url) }}" alt="{{ $product->name }}" class="pc__img" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
+                                </a>
+                            </div>
+                            @endforeach
                         </div>
                     </div>
                 </div>
-
                 <div class="pc__info position-relative">
-                    <h6 class="pc__title"><a href="{{ route('product.show', $product->product_id) }}">{{ $product->name }}</a></h6>
-                    <div class="product-card__price d-flex">
+                    <h6 class="pc__title">
+                        <a href="{{ route('product.show', $product->product_id) }}" style="font-size: 1.5rem; font-weight: bold; color: #000; text-align: center;">
+                            {{ $product->name }}
+                        </a>
+                    </h6>
+                    <div class="product-loc__price d-flex">
                         @php
                         $price = $product->productSizeColors->first()->price ?? 0; // Gán giá về 0 nếu không có giá
                         @endphp
@@ -168,6 +147,7 @@
         </div>
         @endforeach
     </div>
+
 </section>
 
 <script>
@@ -220,6 +200,63 @@
     });
 
 
+
+
+    // lọc giá 
+    document.addEventListener('DOMContentLoaded', function() {
+        const filterButton = document.querySelector('#filter-button');
+        const minPriceInput = document.getElementById('minPrice');
+        const maxPriceInput = document.getElementById('maxPrice');
+        const productsGrid = document.getElementById('products-grid');
+
+        filterButton.addEventListener('click', function() {
+            const minPrice = minPriceInput.value;
+            const maxPrice = maxPriceInput.value;
+
+            // Gửi yêu cầu AJAX để lọc sản phẩm
+            fetch(`/locgia/filter-products?minPrice=${minPrice}&maxPrice=${maxPrice}`, {
+                    method: 'GET',
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                .then(response => response.json())
+                .then(products => {
+                    // Xóa các sản phẩm cũ
+                    productsGrid.innerHTML = '';
+
+                    // Kiểm tra nếu không có sản phẩm nào
+                    if (products.length === 0) {
+                        productsGrid.innerHTML = '<p class="text-center">Không tìm thấy sản phẩm nào trong khoảng giá này.</p>';
+                        return;
+                    }
+
+                    // Hiển thị sản phẩm mới dựa trên dữ liệu nhận được
+                    products.forEach(product => {
+                        const productHtml = `
+                    <div class="col-sm-6 col-md-4 col-lg-3 product-loc-wrapper">
+                        <div class="product-loc mb-3 mb-md-4 mb-xxl-5">
+                            <div class="pc__img-wrapper">
+                                <a href="/product/${product.product_id}">
+                                    <img src="${product.images[0]}" class="pc__img" alt="${product.name}">
+                                </a>
+                            </div>
+                            <div class="pc__info position-relative">
+                                <h6 class="pc__title" style="font-size: 1.5rem; font-weight: bold; color: #000;">
+                                    <a href="/product/${product.product_id}">${product.name}</a>
+                                </h6>
+                                <div class="product-loc__price d-flex">
+                                    <span class="money price">${new Intl.NumberFormat('vi-VN').format(product.productSizeColors[0].price)} VND</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`;
+                        productsGrid.insertAdjacentHTML('beforeend', productHtml);
+                    });
+                })
+                .catch(error => console.error('Error:', error));
+        });
+    });
 </script>
 
 

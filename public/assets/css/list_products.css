@@ -187,11 +187,42 @@
     background-color: #f0f0f0; /* Màu nền khi hover */
 }
 
-
-
-
-
 .highlight {
     background-color: rgba(217, 218, 231,0.2); /* Hoặc màu nào khác bạn muốn */
     font-weight: bold; /* Bolding chữ nếu cần */
 }
+
+/* CSS cho nút */
+.btn-reply {
+    min-width: 100px; /* Đặt độ rộng tối thiểu, đủ cho cả "Reply" và "Replied" */
+    padding: 6px 12px; /* Đệm xung quanh để nút trông cân đối */
+    display: inline-flex; /* Giúp căn giữa nội dung */
+    align-items: center; /* Căn giữa theo chiều dọc */
+    justify-content: center; /* Căn giữa theo chiều ngang */
+    text-align: center; /* Căn giữa văn bản */
+    gap: 5px;
+}
+
+.cross {
+    border: 1px solid #000;
+    /* Đặt màu và độ dày cho đường kẻ */
+    width: 100%;
+    /* Chiều rộng của đường kẻ */
+}
+
+.category-image {
+    max-width: 100%;  /* Hình ảnh không rộng hơn ô chứa */
+    max-height: 100px; /* Kích thước cao tối đa của hình ảnh */
+    object-fit: contain;  /* Giữ tỷ lệ hình ảnh khi thay đổi kích thước */
+}
+
+
+.product-cell {
+    white-space: normal;  /* Cho phép xuống dòng */
+    overflow: hidden; /* Ẩn phần nội dung thừa nếu có */
+    text-overflow: ellipsis; /* Hiển thị dấu "..." nếu có tràn */
+    max-width: 150px; /* Đặt chiều rộng tối đa cho cột */
+    max-height: 100px; /* Giới hạn chiều cao */
+    overflow-y: auto; /* Tạo thanh cuộn dọc nếu nội dung vượt quá chiều cao */
+}
+    

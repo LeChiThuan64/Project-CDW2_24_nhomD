@@ -18,14 +18,14 @@ class BlogController extends Controller
         $queryText = $request->input('query');
 
         if ($queryText) {
-            $query->where('title', 'like', '%' . $queryText . '%')
-                ->orWhere('blog_id', $queryText); // Sử dụng 'blog_id' thay vì 'id'
+            $query->whereRaw("MATCH(title) AGAINST(? IN NATURAL LANGUAGE MODE)", [$queryText])
+                  ->orWhere('blog_id', $queryText);
         }
 
         $blogs = $query->orderBy('created_at', 'desc')->paginate(6);
 
         if ($request->ajax()) {
-            return view('viewUser.blog_list_ajax', compact('blogs'))->render();
+            return view('viewUser.blog_list', compact('blogs'))->render();
         }
 
         return view('viewUser.blog_list', compact('blogs'));
@@ -38,8 +38,8 @@ class BlogController extends Controller
         $queryText = $request->input('query');
 
         if ($queryText) {
-            $query->where('title', 'like', '%' . $queryText . '%')
-                ->orWhere('blog_id', $queryText);
+            $query->whereRaw("MATCH(title) AGAINST(? IN NATURAL LANGUAGE MODE)", [$queryText])
+                  ->orWhere('blog_id', $queryText);
         }
 
         $blogs = $query->orderBy('created_at', 'desc')->paginate(6);
@@ -127,20 +127,19 @@ class BlogController extends Controller
     // }
 
     public function edit($encryptedBlogId)
-{
-    try {
-        // Giải mã ID blog
-        $blog_id = Crypt::decryptString($encryptedBlogId);
+    {
+        try {
+            // Giải mã ID blog
+            $blog_id = Crypt::decryptString($encryptedBlogId);
 
-        // Lấy blog cần sửa
-        $blog = Blog::where('blog_id', $blog_id)->firstOrFail();
-        return view('viewAdmin.sua_blog', compact('blog'));
-
-    } catch (DecryptException $e) {
-        // Trả về thông báo lỗi nếu mã hóa không hợp lệ
-        return redirect()->route('admin.blog.index')->with('error', 'ID blog không hợp lệ.');
+            // Lấy blog cần sửa
+            $blog = Blog::where('blog_id', $blog_id)->firstOrFail();
+            return view('viewAdmin.sua_blog', compact('blog'));
+        } catch (DecryptException $e) {
+            // Trả về thông báo lỗi nếu mã hóa không hợp lệ
+            return redirect()->route('admin.blog.index')->with('error', 'ID blog không hợp lệ.');
+        }
     }
-}
 
 
     public function update(Request $request, $blog_id)
@@ -185,11 +184,14 @@ class BlogController extends Controller
         // Lấy ngày giờ hiện tại
         $currentDateTime = Carbon::now()->locale('vi')->isoFormat('DD/MM/YYYY, HH:mm');
 
+        // Tăng số lượt xem lên 1
+        $blog->increment('views');
+
         // Truyền blog và comments tới view
         return view('viewUser.blogs_Detal', compact('blog', 'comments'));
     }
 
-//comemnt của comment
+    //comemnt của comment
     public function storeComment(Request $request, $blog_id)
     {
         // Validate dữ liệu bình luận
@@ -199,18 +201,36 @@ class BlogController extends Controller
             'comment' => 'required|string',
             'parent_id' => 'nullable|exists:comments,id', // Kiểm tra xem parent_id có hợp lệ không
         ]);
-    
-        // Lưu bình luận hoặc phản hồi vào cơ sở dữ liệu
+
+        // Lưu bình luận hoặc phản hồi vào cơ sở dữ liệu và gán user_id
         Comment::create([
             'blog_id' => $blog_id,
+            'user_id' => auth()->id(), // Lưu user_id của người dùng hiện tại
             'name' => $request->name,
             'email' => $request->email,
             'comment' => $request->comment,
             'parent_id' => $request->parent_id, // Gán parent_id nếu có
         ]);
-    
+
         // Chuyển hướng về trang chi tiết blog với bình luận mới
         return redirect()->route('blog.detail', ['blog_id' => $blog_id])->with('success', 'Comment added successfully');
     }
-    
+
+    // đếm comment
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+    public function deleteComment($comment_id)
+    {
+        $comment = Comment::findOrFail($comment_id);
+
+        // Kiểm tra nếu người dùng hiện tại là tác giả của bình luận
+        if ($comment->user_id !== auth()->id()) {
+            return redirect()->back()->with('error', 'Bạn không có quyền xóa bình luận này');
+        }
+
+        $comment->delete();
+        return redirect()->back()->with('success', 'Bình luận đã được xóa thành công');
+    }
 }

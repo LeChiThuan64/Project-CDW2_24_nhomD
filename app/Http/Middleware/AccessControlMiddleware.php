@@ -27,7 +27,9 @@ class AccessControlMiddleware
 
         // Nếu user đã đăng nhập nhưng bị chặn
         if ($role === "1" && in_array($currentRoute, $restrictedRoutesForUser)) {
-            abort(403, 'Bạn không có quyền truy cập trang này.');
+            return response()->view('errors.404', [
+                'message' => 'Bạn không có quyền truy cập trang này.'
+            ], 403);
         }
 
         // Nếu admin, hoặc user không bị chặn, hoặc khách đều được truy cập

@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', function () {
         .catch(error => {
             console.error(error);
         });
+        
 
     // Prevent form submission if CKEditor content is empty
     document.querySelector('form').addEventListener('submit', function (event) {

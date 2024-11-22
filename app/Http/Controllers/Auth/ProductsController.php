@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\DB;
 class ProductsController extends Controller
 {
 
-    
+
     private $client;
     public function __construct()
     {
@@ -26,12 +26,29 @@ class ProductsController extends Controller
 
     public function showProducts()
     {
+        // Lấy tất cả danh mục
+        $categories = Category::all();
+
         // Lấy tất cả sản phẩm cùng với hình ảnh và danh mục
         $products = Product::with('images', 'category')->get();
 
-        // Truyền biến $products vào view
-        return view('viewUser.locgia', compact('products'));
+        // Truyền biến $categories và $products vào view
+        return view('viewUser.locgia', compact('categories', 'products'));
     }
+    public function productsByCategory($id)
+    {
+        // Lấy danh mục hiện tại
+        $categories = Category::all();
+
+        // Lấy sản phẩm thuộc danh mục
+        $products = Product::where('category_id', $id)->with('images', 'productSizeColors.size', 'productSizeColors.color')->get();
+
+        // Truyền dữ liệu vào view
+        return view('viewUser.locgia', compact('categories', 'products'));
+    }
+
+
+
 
 
     public function filterProducts(Request $request)
@@ -43,8 +60,27 @@ class ProductsController extends Controller
             $query->whereBetween('price', [$minPrice, $maxPrice]);
         })->with('images', 'productSizeColors.size', 'productSizeColors.color')->get();
 
-        return response()->json($products);
+        // Định dạng lại dữ liệu để dễ sử dụng trong JavaScript
+        $productsData = $products->map(function ($product) {
+            return [
+                'product_id' => $product->product_id,
+                'name' => $product->name,
+                'images' => $product->images->map(function ($image) {
+                    return asset('assets/img/products/' . $image->image_url);
+                })->toArray(),
+                'productSizeColors' => $product->productSizeColors->map(function ($psc) {
+                    return [
+                        'price' => $psc->price,
+                        'color' => $psc->color->name ?? 'N/A',
+                        'size' => $psc->size->name ?? 'N/A'
+                    ];
+                })->toArray()
+            ];
+        });
+
+        return response()->json($productsData);
     }
+
 
 
     public function showForm()
@@ -322,6 +358,7 @@ class ProductsController extends Controller
         $product->name = $request->productName;
         $product->description = $request->productContent;
         $product->category_id = $request->category;
+        $product->created_at = now();
         $product->save();
 
         // ID của sản phẩm vừa lưu

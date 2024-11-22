@@ -60,34 +60,37 @@ class Product extends Model
         return $this->hasMany(ProductSizeColor::class, 'product_id');
     }
 
-public function getProductDetailData()
-{
-    $colors = [];
-    $sizes = [];
-    $totalQuantity = 0;
-    $images = $this->images->pluck('image_url')->map(function ($url) {
-        return asset('assets/img/products/' . $url);
-    })->toArray();
+    public function getProductDetailData()
+    {
+        $colors = [];
+        $sizes = [];
+        $totalQuantity = 0;
+        $images = $this->images->pluck('image_url')->map(function ($url) {
+            return asset('assets/img/products/' . $url);
+        })->toArray();
 
-    foreach ($this->productSizeColors as $sizeColor) {
-        $colors[] = $sizeColor->color->name ?? 'N/A';
-        $sizes[] = $sizeColor->size->name ?? 'N/A';
-        $totalQuantity += $sizeColor->quantity;
-        $price = $sizeColor->price;
+        foreach ($this->productSizeColors as $sizeColor) {
+            $colors[] = $sizeColor->color->name ?? 'N/A';
+            $sizes[] = $sizeColor->size->name ?? 'N/A';
+            $totalQuantity += $sizeColor->quantity;
+            $price = $sizeColor->price;
+        }
+
+        $totalSold = OrderItem::where('product_id', $this->product_id)->sum('quantity');
+
+        return [
+            'product_id' => $this->product_id,
+            'name' => $this->name,
+            'description' => $this->description,
+            'category_name' => $this->category->category_name,
+            'colors' => implode(', ', array_unique($colors)),
+            'sizes' => implode(', ', array_unique($sizes)),
+            'total_quantity' => $totalQuantity,
+            'sizesAndColors' => $this->productSizeColors,
+            'images' => $images,
+            'price' => $price,
+            'total_sold' => $totalSold,
+        ];
     }
-
-    return [
-        'product_id' => $this->product_id,
-        'name' => $this->name,
-        'description' => $this->description,
-        'category_name' => $this->category->category_name,
-        'colors' => implode(', ', array_unique($colors)),
-        'sizes' => implode(', ', array_unique($sizes)),
-        'total_quantity' => $totalQuantity,
-        'sizesAndColors' => $this->productSizeColors,
-        'images' => $images,
-        'price' => $price,
-    ];
-}
 
 }

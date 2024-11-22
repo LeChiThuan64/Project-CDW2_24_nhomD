@@ -3,39 +3,7 @@
 @section('content')
 
 <HEad>
-  <STYle>
-    .blog-image {
-      max-width: 50%;
-      /* Đặt kích thước tối đa của hình ảnh (thay đổi tùy ý) */
-      height: auto;
-      /* Giữ tỷ lệ của hình ảnh */
-      margin: 0 auto;
-      /* Căn giữa hình ảnh */
-      display: block;
-      /* Đảm bảo hình ảnh là phần tử khối */
-    }
-
-    .mw-930 p {
-      font-size: 18px;
-      line-height: 1.6;
-    }
-
-    .review-textt {
-      font-size: 18px;
-      line-height: 1.6;
-    }
-
-    .blog-content img {
-      max-width: 100%;
-      /* Đảm bảo ảnh không vượt quá chiều rộng của container */
-      height: auto;
-      /* Giữ tỉ lệ ảnh để không bị biến dạng */
-      display: block;
-      /* Giúp ảnh căn chỉnh đẹp hơn */
-      margin: 0 auto;
-      /* Căn giữa ảnh trong content */
-    }
-  </STYle>
+<link rel="stylesheet" href="{{ asset('assets/css/blogs_Detal.css') }}">
 </HEad>
 <main>
 
@@ -47,6 +15,9 @@
       <div class="blog-single__item-meta">
         <span class="blog-single__item-meta__author">By Admin</span>
         <span class="blog-single__item-meta__date">{{ $blog->created_at->format('F d, Y') }}</span>
+        <div class="contact-icon"><i class="fas fa-comments"></i> <span>{{ $blog->comments->count() }} Comments</span></div>
+
+
       </div>
     </div>
 
@@ -103,26 +74,69 @@
             Trả lời
           </button>
 
+         <!-- Nút Xóa bình luận -->
+@auth
+@if ($comment->user_id === auth()->id())
+<div style="position: relative; display: inline-block;">
+    <!-- Dấu ba chấm đứng -->
+    <span onclick="toggleDeleteMenu(this)" style="
+          cursor: pointer; 
+          font-size: 20px; 
+          font-weight: bold;
+          color: gray;">
+        &#8226;&#8226;&#8226;
+    </span>
+    
+    <!-- Form xóa, mặc định ẩn -->
+    <div class="delete-menu" style="
+          display: none;
+          position: absolute;
+          top: 100%;
+          right: 0;
+          background-color: white;
+          border: 1px solid #ccc;
+          border-radius: 5px;
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+          padding: 5px;
+          z-index: 10;">
+        <form action="{{ route('comment.delete', $comment->id) }}" method="POST" onsubmit="return confirm('Bạn có chắc chắn muốn xóa bình luận này không?')">
+            @csrf
+            @method('DELETE')
+            <button type="submit" class="btn btn-danger" style="width: 100%; font-size: 14px;">Xóa</button>
+        </form>
+    </div>
+</div>
+@endif
+@endauth
+
+
 
 
           <!-- Hiển thị phản hồi của bình luận cha -->
           @foreach ($comment->replies as $reply)
-          <div class="reply" style="margin-left: 20px; margin-top: 10px;">
-            <h6>Tên : {{ $reply->name }}</h6>
-            <div class="review-date">{{ $reply->email }}</div>
-            <div class="review-date">{{ $reply->created_at->format('F d, Y') }}</div>
-            <div class="review-textt">
-              <p>{{ $reply->comment }}</p>
-            </div>
-          </div>
-          @endforeach
+<div class="reply" style="margin-left: 80px; margin-top: 20px;">
+    <h6>Trả lời cho bình luận của: {{ $comment->name }}</h6> <!-- Hiển thị tên cha -->
+    <h6>Tên: {{ $reply->name }}</h6>
+    <div class="review-date">{{ $reply->email }}</div>
+    <div class="review-date">{{ $reply->created_at->format('F d, Y') }}</div>
+
+    <div class="review-textt">
+        <p>{{ $reply->comment }}</p>
+    </div>
+</div>
+@endforeach
+
+
         </div>
       </div>
       @endforeach
 
       <!-- Nút "Xem thêm comment" nếu có hơn 3 bình luận -->
       @if ($comments->count() > 3)
-      <button id="showMoreButton" onclick="showAllComments()" style="background-color: #28a745; color: white; border: none; padding: 10px 15px; font-size: 16px; border-radius: 5px; cursor: pointer; margin-top: 15px; transition: background-color 0.3s ease;">
+      <button id="showMoreButton" onclick="showAllComments()" style="background-color: #28a745; 
+      color: white; border: none; padding: 10px 15px; font-size: 16px; 
+      border-radius: 5px; cursor: pointer; margin: 15px; transition: 
+      background-color 0.3s ease;">
         Xem thêm comment
       </button>
       @endif
@@ -160,18 +174,54 @@
             <button onclick="showReplyForm({{ $comment->id }}, '{{ $comment->name }}')" style="background-color: #f0ad4e; color: white; padding: 8px 12px;">
               Trả lời
             </button>
+            <!-- Nút Xóa bình luận -->
+            @auth
+@if ($comment->user_id === auth()->id())
+<div style="position: relative; display: inline-block;">
+    <!-- Dấu ba chấm đứng -->
+    <span onclick="toggleDeleteMenu(this)" style="
+          cursor: pointer; 
+          font-size: 20px; 
+          font-weight: bold;
+          color: gray;">
+        &#8226;&#8226;&#8226;
+    </span>
+    
+    <!-- Form xóa, mặc định ẩn -->
+    <div class="delete-menu" style="
+          display: none;
+          position: absolute;
+          top: 100%;
+          right: 0;
+          background-color: white;
+          border: 1px solid #ccc;
+          border-radius: 5px;
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+          padding: 5px;
+          z-index: 10;">
+        <form action="{{ route('comment.delete', $comment->id) }}" method="POST" onsubmit="return confirm('Bạn có chắc chắn muốn xóa bình luận này không?')">
+            @csrf
+            @method('DELETE')
+            <button type="submit" class="btn btn-danger" style="width: 100%; font-size: 14px;">Xóa</button>
+        </form>
+    </div>
+</div>
+@endif
+@endauth
 
             <!-- Hiển thị phản hồi của bình luận cha -->
             @foreach ($comment->replies as $reply)
-            <div class="reply" style="margin-left: 20px; margin-top: 10px;">
-              <h6>Tên : {{ $reply->name }}</h6>
-              <div class="review-date">{{ $reply->email }}</div>
-              <div class="review-date">{{ $reply->created_at->format('F d, Y') }}</div>
-              <div class="review-textt">
-                <p>{{ $reply->comment }}</p>
-              </div>
-            </div>
-            @endforeach
+<div class="reply" style="margin-left: 80px; margin-top: 20px;">
+    <h6>Trả lời cho bình luận của: {{ $comment->name }}</h6> <!-- Hiển thị tên cha -->
+    <h6>Tên: {{ $reply->name }}</h6>
+    <div class="review-date">{{ $reply->email }}</div>
+    <div class="review-date">{{ $reply->created_at->format('F d, Y') }}</div>
+
+    <div class="review-textt">
+        <p>{{ $reply->comment }}</p>
+    </div>
+</div>
+@endforeach
           </div>
         </div>
         @endforeach
@@ -271,6 +321,20 @@
     mainForm.style.display = 'block';
     document.getElementById('form-input-review').focus();
   }
+
+  function toggleDeleteMenu(element) {
+    // Lấy menu xóa liền kề dấu ba chấm
+    const menu = element.nextElementSibling;
+
+    // Hiển thị hoặc ẩn menu
+    if (menu.style.display === "none" || menu.style.display === "") {
+        menu.style.display = "block";
+    } else {
+        menu.style.display = "none";
+    }
+}
+
 </script>
+
 <div class="mb-5 pb-xl-5"></div>
 @endsection
