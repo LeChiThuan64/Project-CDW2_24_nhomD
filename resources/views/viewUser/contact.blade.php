@@ -95,9 +95,9 @@
                 </div>
                 @else
                 <div class="form-floating my-4">
-                    <input type="text" class="form-control" id="contact_us_name" name="name" placeholder="Name *" required>
-                    <label for="contact_us_name">Name *</label>
-                </div>
+    <input type="text" class="form-control" id="contact_us_name" name="name" placeholder="Name *" required>
+    <label for="contact_us_name">Name *</label>
+</div>
                 <div class="form-floating my-4">
                     <input type="email" class="form-control" id="contact_us_email" name="email" placeholder="Email address *" required>
                     <label for="contact_us_email">Email address *</label>
