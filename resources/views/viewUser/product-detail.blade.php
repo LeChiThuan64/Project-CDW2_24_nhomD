@@ -548,7 +548,7 @@ alert("{{ session('delete-wishlist-success') }}");
                     @foreach ($productsRandom as $product)
                     <div class="swiper-slide product-card product-card_style3">
                         <div class="pc__img-wrapper border-radius-0">
-                            <a href="{{ route('product.show', $product['product_id']) }}">
+                            <a href="{{ route('product.show', Crypt::encryptString($product['product_id'])) }}">
                                 <img loading="lazy" src="{{ asset($product['images'][0]) }}" width="330" height="400"
                                     alt="{{ $product['name'] }}" class="pc__img">
                             </a>
@@ -557,11 +557,11 @@ alert("{{ session('delete-wishlist-success') }}");
                         <div class="pc__info position-relative">
                             <p class="pc__category text-uppercase">{{ $product['category_name'] }}</p>
                             <h6 class="pc__title mb-2"><a
-                                    href="{{ route('product.show', $product['product_id']) }}">{{ $product['name'] }}</a>
+                                    href="{{ route('product.show', Crypt::encryptString($product['product_id'])) }}">{{ $product['name'] }}</a>
                             </h6>
                             <div class="product-card__price d-flex align-items-center">
                                 <span class="money price"><a
-                                        href="{{ route('product.show', $product['product_id']) }}">{{ number_format($product['price'], 0, ',', '.') }}
+                                        href="{{ route('product.show', Crypt::encryptString($product['product_id'])) }}">{{ number_format($product['price'], 0, ',', '.') }}
                                         VND</a></span>
                             </div>
                             <div class="product-card__price d-flex align-items-center">

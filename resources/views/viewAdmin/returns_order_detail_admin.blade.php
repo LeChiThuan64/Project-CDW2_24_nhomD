@@ -1,7 +1,7 @@
 @extends('viewAdmin.navigation')
 @section('title', 'Returns Order Detail')
 @section('content')
-
+<link rel="stylesheet" href="{{ asset('assets/css/returns_order_detail_admin.css') }}">
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <link rel="stylesheet" href="{{ asset('css/returns_order_detail_admin.css') }}">
 <div class="container my-5" style="padding-left: 250px;">
