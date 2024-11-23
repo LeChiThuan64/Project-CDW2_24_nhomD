@@ -217,3 +217,12 @@
 }
 
 
+.product-cell {
+    white-space: normal;  /* Cho phép xuống dòng */
+    overflow: hidden; /* Ẩn phần nội dung thừa nếu có */
+    text-overflow: ellipsis; /* Hiển thị dấu "..." nếu có tràn */
+    max-width: 150px; /* Đặt chiều rộng tối đa cho cột */
+    max-height: 100px; /* Giới hạn chiều cao */
+    overflow-y: auto; /* Tạo thanh cuộn dọc nếu nội dung vượt quá chiều cao */
+}
+    

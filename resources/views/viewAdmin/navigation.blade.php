@@ -232,18 +232,9 @@
                         <a class="nav-link text-white {{ request()->routeIs('auth') ? 'bg-gradient-primary' : '' }}"
                             href="{{ route('auth') }}">
                             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                                <i class="material-icons opacity-10">login</i>
-                            </div>
-                            <span class="nav-link-text ms-1">Sign In</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-white {{ request()->routeIs('auth') ? 'bg-gradient-primary' : '' }}"
-                            href="{{ route('auth') }}">
-                            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                                 <i class="material-icons opacity-10">assignment</i>
                             </div>
-                            <span class="nav-link-text ms-1">Sign Up</span>
+                            <span class="nav-link-text ms-1">Sign In</span>
                         </a>
                     </li>
                 @endif
@@ -265,7 +256,7 @@
 
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.ckeditor.com/ckeditor5/37.0.0/classic/ckeditor.js"></script>
+   
     <!-- Toastr JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script src="{{ asset('assets/js/addProducts.js') }}"></script>

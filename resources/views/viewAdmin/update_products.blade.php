@@ -21,7 +21,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="productContent" class="form-label">Nội dung</label>
-                        <textarea name="productContent" class="form-control" id="productContent" rows="5">{{ old('productContent', $product->description) }}</textarea>
+                        <textarea name="productContent" class="form-control" id="description" rows="5">{{ old('productContent', $product->description) }}</textarea>
                     </div>
 
 
@@ -269,7 +269,7 @@
                         <div class="col-md-6">
                             <label for="category" class="form-label">Danh mục</label>
                             <select name="category" class="form-select" id="category" required>
-                                <option selected>Chọn danh mục</option>
+                                <!-- <option selected>Chọn danh mục</option> -->
                                 @foreach($categories as $category)
                                 <option value="{{ $category->category_id }}" {{ $category->category_id == $product->category_id ? 'selected' : '' }}>
                                     {{ $category->category_name }}
@@ -314,6 +314,12 @@
     window.imagePaths = @json($imageUrls);
 </script>
 <script src="{{ asset('assets/js/update_products.js') }}"></script>
-
+<script src="https://cdn.ckeditor.com/4.20.1/standard/ckeditor.js"></script>
+<script>
+    CKEDITOR.replace('description', {
+        filebrowserUploadUrl: "{{ route('ckeditor.upload', ['_token' => csrf_token()]) }}",
+        filebrowserUploadMethod: 'form'
+    });
+</script>
 
 @endsection
