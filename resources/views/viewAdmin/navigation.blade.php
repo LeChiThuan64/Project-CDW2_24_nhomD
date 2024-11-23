@@ -51,7 +51,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/chatbox_admin.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/customer_list.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/dashboard.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/returns_order_detail_admin.css') }}">
+    <!-- <link rel="stylesheet" href="{{ asset('assets/css/returns_order_detail_admin.css') }}"> -->
 
 
     <!-- Toastr CSS -->
@@ -208,14 +208,14 @@
                     <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Account pages
                     </h6>
                 </li>
-                <li class="nav-item">
+                <!-- <li class="nav-item">
                     <a class="nav-link text-white " href="profile.html">
                         <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                             <i class="material-icons opacity-10">person</i>
                         </div>
                         <span class="nav-link-text ms-1">Profile</span>
                     </a>
-                </li>
+                </li> -->
                 @if (auth()->check())
                     <!-- Nếu đã đăng nhập, hiển thị nút Logout -->
                     <li class="nav-item">

@@ -605,43 +605,6 @@
                         </li>
                         <li class="navigation__item">
                             <a href="{{ route('locgia') }}" class="navigation__link">Category</a>
-                            <div class="mega-menu">
-                                <div class="container d-flex">
-                                    <div class="col pe-4">
-                                        <a href="{{ route('locgia') }}" class="sub-menu__title">Shop List</a>
-                                        <ul class="sub-menu__list list-unstyled">
-                                            <li class="sub-menu__item"><a href="shop11.html"
-                                                    class="menu-link menu-link_us-s">Horizontal Scroll</a></li>
-                                        </ul>
-                                    </div>
-
-                                    <div class="col pe-4">
-                                        <a href="#" class="sub-menu__title">Shop Detail</a>
-                                        <ul class="sub-menu__list list-unstyled">
-                                        </ul>
-                                    </div>
-
-                                    <div class="col pe-4">
-                                        <a href="#" class="sub-menu__title">Other Pages</a>
-                                        <ul class="sub-menu__list list-unstyled">
-                                        </ul>
-                                    </div>
-
-                                    <div class="mega-menu__media col">
-                                        <!-- <div class="position-relative">
-                                            <img loading="lazy" class="mega-menu__img"
-                                                src="../images/mega-menu-item.jpg" alt="New Horizons">
-                                            <div
-                                                class="mega-menu__media-content content_abs content_left content_bottom">
-                                                <h3>NEW</h3>
-                                                <h3 class="mb-0">HORIZONS</h3>
-                                                <a href="shop1.html" class="btn-link default-underline fw-medium">SHOP
-                                                    NOW</a>
-                                            </div>
-                                        </div> -->
-                                    </div>
-                                </div><!-- /.container d-flex -->
-                            </div>
                         </li>
 
 
@@ -751,6 +714,12 @@
                             <use href="#icon_cart" />
                         </svg>
                         <!-- <span class="cart-amount d-block position-absolute js-cart-items-count">3</span> -->
+                    </a>
+
+                    <a class="header-tools__item" href="{{ route('wishlist.index') }}">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <use href="#icon_heart" />
+                        </svg>
                     </a>
 
                     <a class="header-tools__item" href="{{ route('order.manager.show') }}">

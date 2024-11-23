@@ -30,7 +30,8 @@ class ReviewController extends Controller
                 ->paginate(5);
         } else {
             // Nếu không có từ khóa tìm kiếm, hiển thị tất cả reviews
-            $reviews = Review::orderBy('created_at', 'desc')->paginate(5);
+            $reviews = Review::orderBy('created_at', 'desc')
+            ->whereHas('product')->paginate(5);
         }
 
         // Trả về view chính
@@ -52,22 +53,32 @@ class ReviewController extends Controller
     }
 
     public function store(Request $request, $review_id)
-    {
-        $request->validate(['reply' => 'required|string']);
+{
+    $request->validate([
+        'reply' => [
+            'required',
+            'string',
+            'min:1',
+            'max:255',
+            'regex:/^[\p{L}\p{N}\s]+$/u', // Chỉ cho phép chữ, số và khoảng trắng
+            'not_regex:/\s{2,}/',         // Không cho phép khoảng trắng liên tiếp
+        ]
+    ]);
 
-        // Tìm review theo id
-        $review = Review::findOrFail($review_id);
+    // Tìm review theo id
+    $review = Review::findOrFail($review_id);
 
-        // Cập nhật hoặc thêm mới reply
-        $review->reply = $request->reply;
-        $review->save();
+    // Cập nhật hoặc thêm mới reply
+    $review->reply = $request->reply;
+    $review->save();
 
-        // Thêm flash message
-        $message = $review->wasChanged('reply') ? "Reply updated successfully!" : "Reply added successfully!";
-        $request->session()->flash('add-reply-success', $message);
+    // Thêm flash message
+    $message = $review->wasChanged('reply') ? "Reply added successfully!" : "Reply updated successfully!";
+    $request->session()->flash('add-reply-success', $message);
 
-        return back();
-    }
+    return back();
+}
+
     
     public function destroyByUser(Request $request, $id)
     {
@@ -112,12 +123,12 @@ class ReviewController extends Controller
         if ($request->ajax()) {
             return response()->json([
                 'success' => false,
-                'message' => 'Không tìm thấy đánh giá hoặc bạn không có quyền xóa.',
+                'message' => 'The review could not be found or you do not have permission to delete!',
             ], 404);
         }
 
         // Nếu không phải AJAX, trả về thông báo lỗi
-        $request->session()->flash('delete-failure', 'Không tìm thấy đánh giá hoặc bạn không có quyền xóa!');
+        $request->session()->flash('delete-failure', 'The review could not be found or you do not have permission to delete!');
         return redirect()->route('reviews.index');
     }
 

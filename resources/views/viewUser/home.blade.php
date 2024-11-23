@@ -2,6 +2,11 @@
 @section('title', 'Home')
 @section('content')
 <main>
+    @if (session('error'))
+    <script>
+    alert("{{ session('error') }}");
+    </script>
+    @endif
     <section class="swiper-container js-swiper-slider slideshow slideshow-navigation-white-sm" data-settings='{
         "autoplay": {
           "delay": 3000
@@ -23,8 +28,8 @@
             <div class="swiper-slide">
                 <div class="overflow-hidden position-relative h-100">
                     <div class="slideshow-character position-absolute position-right-center mx-xl-5">
-                        <img loading="lazy" src="{{ asset('assets/img/images_user/slideshow-character1.png') }}" width="945"
-                            height="733" alt="Woman Fashion 1"
+                        <img loading="lazy" src="{{ asset('assets/img/images_user/slideshow-character1.png') }}"
+                            width="945" height="733" alt="Woman Fashion 1"
                             class="slideshow-character__img animate animate_fade animate_btt animate_delay-9 w-auto h-auto">
                     </div>
                     <div class="slideshow-text container position-absolute start-50 top-50 translate-middle">
@@ -44,15 +49,16 @@
             <div class="swiper-slide">
                 <div class="overflow-hidden position-relative h-100">
                     <div class="slideshow-character position-absolute position-right-center mx-xl-5">
-                        <img loading="lazy" src="{{ asset('assets/img/images_user/slideshow-character2.png') }}" width="945"
-                            height="733" alt="Woman Fashion 1"
+                        <img loading="lazy" src="{{ asset('assets/img/images_user/slideshow-character2.png') }}"
+                            width="945" height="733" alt="Woman Fashion 1"
                             class="slideshow-character__img animate animate_fade animate_btt animate_delay-9 w-auto h-auto">
                     </div>
                     <div class="slideshow-text container position-absolute start-50 top-50 translate-middle">
                         <h6
                             class="text-yellow-bg-rounded text-uppercase fs-base fw-medium animate animate_fade animate_btt animate_delay-3">
                             New Arrivals</h6>
-                        <h2 class="h1 fw-normal mb-2 mb-lg-3 animate animate_fade animate_btt animate_delay-5">Fashionable
+                        <h2 class="h1 fw-normal mb-2 mb-lg-3 animate animate_fade animate_btt animate_delay-5">
+                            Fashionable
                             Jacket</h2>
                         <h2 class="h2 fw-normal mb-3 mb-lg-4 animate animate_fade animate_btt animate_delay-5">399,50 TL
                         </h2>
@@ -61,23 +67,23 @@
                             Now</a>
                     </div>
                 </div>
-       
 
-        <div class="slideshow__prev position-absolute top-50 d-flex align-items-center justify-content-center">
-            <svg width="7" height="11" viewBox="0 0 7 11" xmlns="http://www.w3.org/2000/svg">
-                <use href="#icon_prev_sm" />
-            </svg>
-        </div><!-- /.slideshow__prev -->
-        <div class="slideshow__next position-absolute top-50 d-flex align-items-center justify-content-center">
-            <svg width="7" height="11" viewBox="0 0 7 11" xmlns="http://www.w3.org/2000/svg">
-                <use href="#icon_next_sm" />
-            </svg>
-        </div><!-- /.slideshow__next -->
 
-        <div class="container">
-            <div class="slideshow-pagination d-flex align-items-center position-absolute bottom-0 mb-5"></div>
-            <!-- /.products-pagination -->
-        </div><!-- /.container -->
+                <div class="slideshow__prev position-absolute top-50 d-flex align-items-center justify-content-center">
+                    <svg width="7" height="11" viewBox="0 0 7 11" xmlns="http://www.w3.org/2000/svg">
+                        <use href="#icon_prev_sm" />
+                    </svg>
+                </div><!-- /.slideshow__prev -->
+                <div class="slideshow__next position-absolute top-50 d-flex align-items-center justify-content-center">
+                    <svg width="7" height="11" viewBox="0 0 7 11" xmlns="http://www.w3.org/2000/svg">
+                        <use href="#icon_next_sm" />
+                    </svg>
+                </div><!-- /.slideshow__next -->
+
+                <div class="container">
+                    <div class="slideshow-pagination d-flex align-items-center position-absolute bottom-0 mb-5"></div>
+                    <!-- /.products-pagination -->
+                </div><!-- /.container -->
     </section><!-- /.slideshow -->
 
     <div class="container mw-1620 bg-white">
@@ -183,7 +189,7 @@
                         @foreach ($topSellingProducts as $product)
                         <div class="swiper-slide product-card product-card_style3">
                             <div class="pc__img-wrapper border-radius-0">
-                                <a href="{{ route('product.show', $product['product_id']) }}">
+                                <a href="{{ route('product.show', Crypt::encryptString($product['product_id'])) }}">
                                     <img loading="lazy" src="{{ asset($product['images'][0]) }}" width="330"
                                         height="400" alt="{{ $product['name'] }}" class="pc__img">
                                 </a>
@@ -191,11 +197,12 @@
                             <div class="pc__info position-relative">
                                 <p class="pc__category text-uppercase">{{ $product['category_name'] }}</p>
                                 <h6 class="pc__title mb-2"><a
-                                        href="{{ route('product.show', $product['product_id']) }}">{{ $product['name'] }}</a>
+                                        href="{{ route('product.show', Crypt::encryptString($product['product_id'])) }}">{{ $product['name'] }}</a>
                                 </h6>
                                 <div class="product-card__price d-flex align-items-center">
-                                    <span class="money price">{{ number_format($product['price'], 0, ',', '.') }}
-                                        VND</span>
+                                    <span class="money price"><a
+                                            href="{{ route('product.show', Crypt::encryptString($product['product_id'])) }}">{{ number_format($product['price'], 0, ',', '.') }}
+                                            VND</a></span>
                                 </div>
                                 <div class="product-card__price d-flex align-items-center">
                                     <span class="reviews-note">Sold: {{ $product['total_sold'] }}</span>
@@ -213,12 +220,20 @@
                                     </span>
                                     @endif
                                 </div>
+                                <button
+                                    class="pc__btn-wl position-absolute top-0 end-0 bg-transparent border-0 js-add-wishlist {{ auth()->user() && auth()->user()->wishlists->contains('product_id', $product['product_id']) ? 'active' : '' }}"
+                                    data-product-id="{{ $product['product_id'] }}">
+                                    <svg width="16" height="16" viewBox="0 0 20 20" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <use href="#icon_heart" />
+                                    </svg>
+                                </button>
                             </div>
                         </div>
                         @endforeach
                     </div>
                 </div>
-                <div
+                <!-- <div
                     class="products-carousel__prev navigation-sm position-absolute top-50 d-flex align-items-center justify-content-center">
                     <svg width="25" height="25" viewBox="0 0 25 25" xmlns="http://www.w3.org/2000/svg">
                         <use href="#icon_prev_md" />
@@ -229,7 +244,7 @@
                     <svg width="25" height="25" viewBox="0 0 25 25" xmlns="http://www.w3.org/2000/svg">
                         <use href="#icon_next_md" />
                     </svg>
-                </div>
+                </div> -->
             </div>
         </section>
 
@@ -300,7 +315,8 @@
                                 @foreach($productsByCategory[$category->category_id] as $product)
                                 <div class="swiper-slide product-card product-card_style3">
                                     <div class="pc__img-wrapper border-radius-0">
-                                        <a href="{{ route('product.show', $product['product_id']) }}">
+                                        <a
+                                            href="{{ route('product.show', Crypt::encryptString($product['product_id'])) }}">
                                             <img loading="lazy"
                                                 src="{{ !empty($product['images']) ? $product['images'][0] : 'default.jpg' }}"
                                                 width="330" height="400" alt="{{ $product['name'] }}" class="pc__img">
@@ -310,27 +326,30 @@
                                     <div class="pc__info position-relative">
                                         <p class="pc__category text-uppercase">{{ $product['category_name'] }}</p>
                                         <h6 class="pc__title mb-2"><a
-                                                href="{{ route('product.show', $product['product_id']) }}">{{ $product['name'] }}</a>
+                                                href="{{ route('product.show', Crypt::encryptString($product['product_id'])) }}">{{ $product['name'] }}</a>
                                         </h6>
                                         <div class="product-card__price d-flex align-items-center">
-                                            <span class="money price">{{ number_format($product['price'], 0, ',', '.') }} VND</span>
+                                            <span class="money price"><a
+                                                    href="{{ route('product.show', Crypt::encryptString($product['product_id'])) }}">{{ number_format($product['price'], 0, ',', '.') }}
+                                                    VND</a></span>
                                         </div>
                                         <div class="product-card__price d-flex align-items-center">
-                                    <span class="reviews-note">Sold: {{ $product['total_sold'] }}</span>
-                                    @if ( $product['reviewCount'] > 0)
-                                    <span class="money price ms-5">
-                                        @for ($i = 0; $i < 5; $i++) @if ($i < $product['averageRating'])<svg
-                                            class="review-star" viewBox="0 0 9 9" xmlns="http://www.w3.org/2000/svg">
-                                            <use href="#icon_star" />
-                                            @else
-                                            {{ '' }}
+                                            <span class="reviews-note">Sold: {{ $product['total_sold'] }}</span>
+                                            @if ( $product['reviewCount'] > 0)
+                                            <span class="money price ms-5">
+                                                @for ($i = 0; $i < 5; $i++) @if ($i < $product['averageRating'])<svg
+                                                    class="review-star" viewBox="0 0 9 9"
+                                                    xmlns="http://www.w3.org/2000/svg">
+                                                    <use href="#icon_star" />
+                                                    @else
+                                                    {{ '' }}
+                                                    @endif
+                                                    </svg>
+                                                    @endfor
+                                                    ({{ $product['reviewCount']}})
+                                            </span>
                                             @endif
-                                            </svg>
-                                            @endfor
-                                            ({{ $product['reviewCount']}})
-                                    </span>
-                                    @endif
-                                </div>
+                                        </div>
                                         <!-- <div
                                             class="anim_appear-bottom position-absolute bottom-0 start-0 d-none d-sm-flex align-items-center bg-body mb-1">
                                             <button
@@ -349,8 +368,8 @@
                                         </div> -->
 
                                         <button
-                                            class="pc__btn-wl position-absolute top-0 end-0 bg-transparent border-0 js-add-wishlist"
-                                            title="Add To Wishlist">
+                                            class="pc__btn-wl position-absolute top-0 end-0 bg-transparent border-0 js-add-wishlist {{ auth()->user() && auth()->user()->wishlists->contains('product_id', $product['product_id']) ? 'active' : '' }}"
+                                            data-product-id="{{ $product['product_id'] }}">
                                             <svg width="16" height="16" viewBox="0 0 20 20" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg">
                                                 <use href="#icon_heart" />
@@ -487,7 +506,7 @@
                         @foreach ($products as $product)
                         <div class="swiper-slide product-card product-card_style3">
                             <div class="pc__img-wrapper border-radius-0">
-                                <a href="{{ route('product.show', $product['product_id']) }}">
+                                <a href="{{ route('product.show', Crypt::encryptString($product['product_id'])) }}">
                                     <img loading="lazy" src="{{ asset($product['images'][0]) }}" width="330"
                                         height="400" alt="{{ $product['name'] }}" class="pc__img">
                                 </a>
@@ -496,11 +515,11 @@
                             <div class="pc__info position-relative">
                                 <p class="pc__category text-uppercase">{{ $product['category'] }}</p>
                                 <h6 class="pc__title mb-2"><a
-                                        href="{{ route('product.show', $product['product_id']) }}">{{ $product['name'] }}</a>
+                                        href="{{ route('product.show', Crypt::encryptString($product['product_id'])) }}">{{ $product['name'] }}</a>
                                 </h6>
                                 <div class="product-card__price d-flex align-items-center">
                                     <span class="money price"><a
-                                            href="{{ route('product.show', $product['product_id']) }}">{{ number_format($product['price'], 0, ',', '.') }}
+                                            href="{{ route('product.show', Crypt::encryptString($product['product_id'])) }}">{{ number_format($product['price'], 0, ',', '.') }}
                                             VND</a></span>
                                 </div>
                                 <div class="product-card__price d-flex align-items-center">
@@ -522,8 +541,8 @@
 
 
                                 <button
-                                    class="pc__btn-wl position-absolute top-0 end-0 bg-transparent border-0 js-add-wishlist"
-                                    title="Add To Wishlist">
+                                    class="pc__btn-wl position-absolute top-0 end-0 bg-transparent border-0 js-add-wishlist {{ auth()->user() && auth()->user()->wishlists->contains('product_id', $product['product_id']) ? 'active' : '' }}"
+                                    data-product-id="{{ $product['product_id'] }}">
                                     <svg width="16" height="16" viewBox="0 0 20 20" fill="none"
                                         xmlns="http://www.w3.org/2000/svg">
                                         <use href="#icon_heart" />

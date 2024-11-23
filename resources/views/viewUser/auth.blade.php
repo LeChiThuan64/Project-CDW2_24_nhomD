@@ -1,15 +1,14 @@
 @extends('viewUser.navigation')
 @section('title', 'Authentication')
 @section('content')
-
-
-<!-- @if (session('no-login-wishlist'))
+@if (session('error'))
 <script>
-    alert("{{ session('no-login-wishlist') }}");
+    alert("{{ session('error') }}");
 </script>
-@endif -->
+@endif
 
 @if (session('status'))
+
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         let statusMessage = "{{ session('status') }}";

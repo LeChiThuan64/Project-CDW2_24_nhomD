@@ -39,24 +39,24 @@
 </style>
 @if (session('add-review-error'))
 <script>
-    alert("{{ session('add-review-error') }}");
+alert("{{ session('add-review-error') }}");
 </script>
 @endif
 
 @if (session('add-review-success'))
 <script>
-    alert("{{ session('add-review-success') }}");
+alert("{{ session('add-review-success') }}");
 </script>
 @endif
 
 @if (session('add-wishlist-success'))
 <script>
-    alert("{{ session('add-wishlist-success') }}");
+alert("{{ session('add-wishlist-success') }}");
 </script>
 @endif
 @if (session('delete-wishlist-success'))
 <script>
-    alert("{{ session('delete-wishlist-success') }}");
+alert("{{ session('delete-wishlist-success') }}");
 </script>
 @endif
 
@@ -120,9 +120,7 @@
                             xmlns="http://www.w3.org/2000/svg">
                             @if (
                             $i
-                            < $product['averageRating']
-                                )
-                                <use href="#icon_star" /> <!-- Sao đầy -->
+                            < $product['averageRating'] ) <use href="#icon_star" /> <!-- Sao đầy -->
                             @else
                             <use href="#icon_star_empty" /> <!-- Sao trống -->
                             @endif
@@ -191,13 +189,15 @@
                 </form>
                 <div id="product-info" data-product-id="{{ $product['product_id'] }}"></div>
                 <div class="product-single__addtolinks add-to-wishlist">
-                    <a href="#" class="menu-link menu-link_us-s add-to-wishlist"
+                    <a href="#"
+                        class="menu-link menu-link_us-s add-to-wishlist {{ auth()->user() && auth()->user()->wishlists->contains('product_id', $product['product_id']) ? 'active' : '' }}"
                         data-product-id="{{ $product['product_id'] }}">
                         <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <use href="#icon_heart" />
                         </svg>
                         <span>Add to Wishlist</span>
                     </a>
+
 
                     <share-button class="share-button">
                         <button
@@ -377,8 +377,8 @@
                         @foreach ($product['reviews'] as $review)
                         <div class="product-single__reviews-item" id="review-{{ $review->id }}">
                             <div class="customer-avatar">
-                                <img loading="lazy" src="{{ asset($review->user->profile_image) }}"
-                                    alt="{{ $review->user->name }}">
+                                <img loading="lazy" src="{{ $review->user ? asset($review->user->profile_image) : asset('assets/img/logos/j97.png') }}"
+                                    alt="{{ $review->user ? $review->user->name : 'Anonymous' }}">
                             </div>
                             <div class="customer-review">
                                 <div class="customer-name d-flex justify-content-between">
@@ -404,8 +404,8 @@
                                         @endfor
 
                                         {{-- Hiển thị các ngôi sao trống nếu rating dưới 5 --}}
-                                        @for ($i = $review->rating; $i < 5; $i++) <svg class="review-star" viewBox="0 0 9 9"
-                                            xmlns="http://www.w3.org/2000/svg">
+                                        @for ($i = $review->rating; $i < 5; $i++) <svg class="review-star"
+                                            viewBox="0 0 9 9" xmlns="http://www.w3.org/2000/svg">
                                             <use href="#icon_star_empty" />
                                             </svg>
                                             @endfor
@@ -549,8 +549,8 @@
                     <div class="swiper-slide product-card product-card_style3">
                         <div class="pc__img-wrapper border-radius-0">
                             <a href="{{ route('product.show', $product['product_id']) }}">
-                                <img loading="lazy" src="{{ asset($product['images'][0]) }}" width="330"
-                                    height="400" alt="{{ $product['name'] }}" class="pc__img">
+                                <img loading="lazy" src="{{ asset($product['images'][0]) }}" width="330" height="400"
+                                    alt="{{ $product['name'] }}" class="pc__img">
                             </a>
                         </div>
 
@@ -581,15 +581,23 @@
                                 @endif
                             </div>
 
-
                             <button
+                                class="pc__btn-wl position-absolute top-0 end-0 bg-transparent border-0 js-add-wishlist {{ auth()->user() && auth()->user()->wishlists->contains('product_id', $product['product_id']) ? 'active' : '' }}"
+                                data-product-id="{{ $product['product_id'] }}">
+                                <svg width="16" height="16" viewBox="0 0 20 20" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <use href="#icon_heart" />
+                                </svg>
+                            </button>
+
+                            <!-- <button
                                 class="pc__btn-wl position-absolute top-0 end-0 bg-transparent border-0 js-add-wishlist"
                                 title="Add To Wishlist">
                                 <svg width="16" height="16" viewBox="0 0 20 20" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <use href="#icon_heart" />
                                 </svg>
-                            </button>
+                            </button> -->
                             <!-- <form action="{{ route('wishlist.add', $product['product_id']) }}" method="POST"
                                     class="add-to-wishlist-form">
                                     @csrf
@@ -626,16 +634,16 @@
 <!-- Bao gồm component chatbox -->
 <x-chatbox />
 <script>
-    function toggleMenu(menuId) {
-        const menu = document.getElementById(menuId);
-        if (menu.style.display === "block") {
-            menu.style.display = "none";
-        } else {
-            menu.style.display = "block";
-        }
+function toggleMenu(menuId) {
+    const menu = document.getElementById(menuId);
+    if (menu.style.display === "block") {
+        menu.style.display = "none";    
+    } else {
+        menu.style.display = "block";
     }
-    document.addEventListener('click', function(event) {
-        const allMenus = document.querySelectorAll('.review-menu');
+}
+document.addEventListener('click', function(event) {
+    const allMenus = document.querySelectorAll('.review-menu');
 
         // Kiểm tra nếu click vào vùng ngoài các menu hoặc các nút trigger
         allMenus.forEach(menu => {
@@ -645,12 +653,12 @@
         });
     });
 
-    function deleteReview(reviewId, deleteUrl) {
-        if (confirm("Bạn có chắc chắn muốn xóa đánh giá này không?")) {
-            fetch(deleteUrl, {
-                    method: "DELETE",
-                    headers: {
-                        "X-Requested-With": "XMLHttpRequest", // Thêm header này để Laravel nhận diện yêu cầu là AJAX
+function deleteReview(reviewId, deleteUrl) {
+    if (confirm("Do you want to delete this review?")) {
+        fetch(deleteUrl, {
+                method: "DELETE",
+                headers: {
+                    "X-Requested-With": "XMLHttpRequest", // Thêm header này để Laravel nhận diện yêu cầu là AJAX
 
                         "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content"),
                     },
@@ -659,22 +667,22 @@
                 .then(data => {
                     console.log(data);
 
-                    if (data.success) {
-                        alert(data.message || "Đánh giá đã được xóa thành công!");
-                        const reviewElement = document.getElementById(`review-${reviewId}`);
-                        if (reviewElement) {
-                            reviewElement.remove(); // Chỉ xóa nếu phần tử tồn tại
-                        }
-                    } else {
-                        alert(data.message || "Không thể xóa đánh giá.");
+                if (data.success) {
+                    alert(data.message || "Delete review successfully!");
+                    const reviewElement = document.getElementById(`review-${reviewId}`);
+                    if (reviewElement) {
+                        reviewElement.remove(); // Chỉ xóa nếu phần tử tồn tại
                     }
-                })
-                .catch(error => {
-                    console.error("Error:", error);
-                    alert("Có lỗi xảy ra. Vui lòng thử lại sau.");
-                });
-        }
+                } else {
+                    alert(data.message || "Can not delete this review.");
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                alert("Errors occurred. Please retry later.");
+            });
     }
+}
 
     document.getElementById('imagesInput').addEventListener('change', function(event) {
         const files = event.target.files;
@@ -734,70 +742,5 @@
         }
     });
 
-    document.querySelectorAll('.add-to-wishlist').forEach(button => {
-        button.addEventListener('click', function(event) {
-            event.preventDefault(); // Ngăn việc chuyển hướng trang
-            const productId = this.getAttribute('data-product-id');
-
-            // Kiểm tra nếu productId hợp lệ
-            if (!productId) {
-                console.error('Invalid Product ID');
-                return;
-            }
-
-            fetch(`/wishlist/add/${productId}`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
-                            'content')
-                    }
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        alert(data.message); // Hiển thị thông báo thành công
-                    } else {
-                        alert(data.message); // Hiển thị thông báo lỗi
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
-        }, {
-            once: true
-        }); // Thêm tùy chọn để đảm bảo chỉ gọi một lần
-    });
 </script>
-<!-- <script>
-    $(document).ready(function() {
-        // Xử lý submit form bằng AJAX
-        $('#review-form').submit(function(e) {
-            e.preventDefault();  // Ngừng việc submit form theo cách truyền thống
-
-            var formData = new FormData(this); // Lấy dữ liệu từ form
-
-            $.ajax({
-                url: $(this).attr('action'),  // Lấy URL hành động từ form
-                type: 'POST',
-                data: formData,
-                processData: false,
-                contentType: false,
-                success: function(response) {
-                    // Nếu việc gửi thành công, bạn có thể xử lý phản hồi
-                    if (response.success) {
-                        alert('Review đã được gửi!');
-                        // Cập nhật danh sách đánh giá hoặc làm mới giao diện nếu cần
-                        $('#form-input-review').val('');  // Dọn sạch textarea
-                    } else {
-                        alert('Có lỗi xảy ra, vui lòng thử lại!');
-                    }
-                },
-                error: function(xhr, status, error) {
-                    alert('Đã có lỗi xảy ra. Vui lòng thử lại sau!');
-                }
-            });
-        });
-    });
-</script> -->
 @endsection

@@ -190,7 +190,7 @@
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-danger btn-sm px-3"
                                         style="border-radius: 10px; font-size: 12px;"
-                                        onclick="return confirm('Are you sure delete this review?')">
+                                        onclick="return confirm('Do you want to delete this review?')">
                                         <i class="fas fa-trash"></i> Delete
                                     </button>
                                 </form>
@@ -254,7 +254,7 @@
     <p><strong>Reply review:</strong> <span id="modalReply"></span></p>
 </div>
 <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
 </div>
 
         </div>
