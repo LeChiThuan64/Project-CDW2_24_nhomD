@@ -365,7 +365,8 @@ Route::post('/orders/{id}/product-received', [ReturnsOrderAdminController::class
 //Route cho trang danh sách khách hàng admin
 Route::get('/customer-list', [CustomerListController::class, 'index'])->name('customer.list');
 
-Route::get('/product/edit/{id}', [ProductsController::class, 'edit'])->name('products.edit');
+Route::get('/product/edit/{encryptedId}', [ProductsController::class, 'edit'])->name('products.edit');
+
 Route::post('/product/update/{id}', [ProductsController::class, 'update'])->name('products.update');
 
 Route::get('/admin/reviews', [ReviewController::class, 'show'])->name('review.show');

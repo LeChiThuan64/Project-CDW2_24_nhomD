@@ -216,16 +216,14 @@ $('#confirmDeleteButton').click(function () {
     
     // Lắng nghe sự kiện click vào nút "Sửa"
     const editButtons = document.querySelectorAll('.edit-product');
-    
-    editButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            // Lấy ID sản phẩm từ thuộc tính data-id của nút "Sửa"
-            const productId = this.getAttribute('data-id');
-            
-            // Chuyển hướng tới route products.edit với ID sản phẩm
-            window.location.href = `/product/edit/${productId}`;
-        });
+
+editButtons.forEach(button => {
+    button.addEventListener('click', function() {
+        const encryptedId = this.getAttribute('data-id'); // Lấy mã hóa ID
+        window.location.href = `/product/edit/${encryptedId}`;
     });
+});
+
 
 });
 

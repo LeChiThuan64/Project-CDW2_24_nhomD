@@ -65,7 +65,7 @@
                     <td class="product-cell" data-bs-toggle="modal" data-bs-target="#productModal">{{ $product['product_id'] }}</td>
                     <td class="product-cell" data-bs-toggle="modal" data-bs-target="#productModal">{{ $product['name'] }}</td>
                     <td class="product-cell text-truncate" data-bs-toggle="modal" data-bs-target="#productModal" title="{{ $product['description'] }}" data-description="{{ $product['description'] }}">
-                    {!! Str::limit($product['description'], 50) !!}
+                        {!! Str::limit($product['description'], 50) !!}
                     </td>
 
                     <td class="product-cell" data-bs-toggle="modal" data-bs-target="#productModal">{{ $product['category_name'] }}</td>
@@ -78,9 +78,11 @@
                                 <i class="fas fa-trash-alt"></i> Xóa
                             </button>
                             ||
-                            <a class="btn-icon edit-product" data-id="{{ $product['product_id'] }}">
+                            <a class="btn-icon edit-product"
+                                data-id="{{ encrypt($product['product_id']) }}">
                                 <i class="fas fa-edit"></i> Sửa
                             </a>
+
                         </div>
                     </td>
                 </tr>
