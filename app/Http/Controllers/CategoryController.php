@@ -80,7 +80,7 @@ class CategoryController extends Controller
                 'not_regex:/\s{2,}/'          // Không cho phép khoảng trắng liên tiếp
             ],
 
-            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048', // Chỉ cho phép file ảnh và kích thước tối đa 2MB
+            'image' => 'required|image|mimes:jpg,jpeg,png|max:2048', // Chỉ cho phép file ảnh và kích thước tối đa 2MB
         ]);
 
         // Tạo category mới

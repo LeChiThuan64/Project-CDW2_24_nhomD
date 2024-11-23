@@ -31,7 +31,7 @@ alert("{{ session('error') }}");
                                         data-settings='{"resizeObserver": true}'>
                                         <div class="swiper-wrapper">
                                             <div class="swiper-slide">
-                                                <a href="{{ route('product.show', $item['product_id']) }}">
+                                                <a href="{{ route('product.show', Crypt::encryptString($item['product_id'])) }}">
                                                     <img loading="lazy"
                                                         src="{{ asset('assets/img/products/' . $item->image) }}"
                                                         width="330" height="400" alt="{{ $item->product->name }}"
@@ -63,11 +63,13 @@ alert("{{ session('error') }}");
 
                                 <div class="pc__info position-relative">
                                     <p class="pc__category">{{ $item->product->category->category_name }}</p>
-                                    <h6 class="pc__title">{{ $item->product->name }}</h6>
-                                    <div class="product-card__price d-flex">
-                                        <span class="money price">{{ number_format($item->price, 0, ',', '.') }}
-                                            VND</span>
-                                    </div>
+                                    <h6 class="pc__title"><a href="{{ route('product.show', Crypt::encryptString($item['product_id'])) }}">{{ $item->product->name }}</a></h6>
+                                    
+                                    <div class="product-card__price d-flex align-items-center">
+                                    <span class="money price"><a
+                                            href="{{ route('product.show', Crypt::encryptString($item['product_id'])) }}">{{ number_format($item->price, 0, ',', '.') }}
+                                            VND</a></span>
+                                </div>
                                     <div class="product-card__price d-flex align-items-center">
                                     <span class="reviews-note">Sold: {{ $item->totalSold }}</span>
                                     @if ( $item['reviewCount'] > 0)
