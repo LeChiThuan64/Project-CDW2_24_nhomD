@@ -1,0 +1,94 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+
+
+.buttons button{
+    padding: 10px;
+}
+
+.notifications {
+	position: fixed;
+	top: 20px;
+	right: -20px;
+    z-index: 1000;
+}
+.notifications .toast{
+    position: relative;
+    margin-bottom: 6px;
+    color: #fff;
+    width: 400px;
+    display: grid;
+    grid-template-columns: 70px 1fr 70px;
+    border-radius: 5px;
+    --color: #0abf30;
+    background-image: linear-gradient(to right, #0abf3055, #22242F 15%);
+    animation: show_toast 0.3s ease forwards;
+}
+.notifications .toast i{
+    color: var(--color);
+}
+.notifications .toast .title{
+    font-size: medium;
+    font-weight: bold;
+}
+.notifications .toast i{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: medium;
+}
+.notifications .toast span,
+.notifications .toast .close{
+    opacity: 0.6;
+    color: #fff
+}
+
+@keyframes show_toast {
+	0% {
+        opacity: 0.1;
+		transform: translateX(100%);
+	}
+	40% {
+		transform: translateX(-5%);
+        opacity: 0.3;
+	}
+	80% {
+		transform: translateX(0%);
+        opacity: 0.6;
+	}
+	100% {
+		transform: translateX(-10%);
+        opacity: 0.9;
+	}
+}
+.notifications .toast::before{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    background-color: var(--color);
+    box-shadow: 0 0 10px var(--color);
+    content: '';
+    width: 100%;
+    height: 3px;
+    animation: timeOut 5s linear 1 forwards;
+}
+@keyframes timeOut{
+    to{
+        opacity: 0.6;
+        width: 0%;  
+    }
+}
+/* error */
+.notifications .toast.error{
+   --color: #f24d4c;
+   background-image: linear-gradient(to right, #f24d4c55, #22242F 30%);
+}
+/* warning */
+.notifications .toast.warning{
+    --color: #e9bd0c;
+    background-image: linear-gradient(to right, #e9bd0c55, #22242F 30%);
+}
+/* info */
+.notifications .toast.info{
+    --color: #3498db;
+    background-image: linear-gradient(to right, #3498db55, #22242F 30%);
+}

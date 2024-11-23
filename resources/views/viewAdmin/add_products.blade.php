@@ -20,9 +20,9 @@
                             oninvalid="this.setCustomValidity('Vui lòng điền tên sản phẩm')"
                             oninput="this.setCustomValidity('')">
                     </div>
-                    <div class="mb-3">
-                        <label for="productContent" class="form-label">Nội dung</label>
-                        <textarea name="productContent" class="form-control" id="productContent" rows="5"></textarea>
+                    <div class="form-group">
+                        <label for="productContent">Mô tả sản phẩm</label>
+                        <textarea id="description" name="productContent" class="form-control"></textarea>
                     </div>
 
                     <!-- Chọn màu -->
@@ -269,7 +269,7 @@
                         <div class="col-md-6">
                             <label for="category" class="form-label">Danh mục</label>
                             <select name="category" class="form-select" id="category" required>
-                                <option selected>Chọn danh mục</option>
+                                <!-- <option selected>Chọn danh mục</option> -->
                                 @foreach($categories as $category)
                                 <option value="{{ $category->category_id }}">{{ $category->category_name }}</option>
                                 @endforeach
@@ -304,5 +304,11 @@
 </div>
 
 <script src="{{ asset('assets/js/addProducts.js') }}"></script>
-
+<script src="https://cdn.ckeditor.com/4.20.1/standard/ckeditor.js"></script>
+<script>
+    CKEDITOR.replace('description', {
+        filebrowserUploadUrl: "{{ route('ckeditor.upload', ['_token' => csrf_token()]) }}",
+        filebrowserUploadMethod: 'form'
+    });
+</script>
 @endsection

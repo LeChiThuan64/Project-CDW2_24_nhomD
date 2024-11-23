@@ -48,15 +48,19 @@ use App\Http\Controllers\OrderReturnResultsController;
 
 
 
-Route::get('/', function () {
-    return view('welcome');
-});
 
 
 
 // Route dashboard
-Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
+// Áp dụng middleware kiểm soát truy cập
+Route::middleware(['access.control'])->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+});
+
+Route::get('/', function () {
+    return view('welcome');
+});
 
 // Hiển thị form đăng nhập/ đăng ký
 Route::get('/auth', function () {
@@ -68,6 +72,8 @@ Route::post('/register', [RegisterController::class, 'register'])->name('registe
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::get('password/reset', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
 Route::post('password/email', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
+Route::post('password/reset', [ForgotPasswordController::class, 'reset'])->name('password.update');
+Route::get('password/reset/{token}', [ForgotPasswordController::class, 'showResetForm'])->name('password.reset');
 
 
 // Route trang hiển thị danh sách người dùng (tables.blade.php)
@@ -359,7 +365,8 @@ Route::post('/orders/{id}/product-received', [ReturnsOrderAdminController::class
 //Route cho trang danh sách khách hàng admin
 Route::get('/customer-list', [CustomerListController::class, 'index'])->name('customer.list');
 
-Route::get('/product/edit/{id}', [ProductsController::class, 'edit'])->name('products.edit');
+Route::get('/product/edit/{encryptedId}', [ProductsController::class, 'edit'])->name('products.edit');
+
 Route::post('/product/update/{id}', [ProductsController::class, 'update'])->name('products.update');
 
 Route::get('/admin/reviews', [ReviewController::class, 'show'])->name('review.show');
@@ -372,3 +379,8 @@ Route::get('/about-us', function () {
 
 Route::post('/wishlist/toggle/{productId}', [WishlistController::class, 'toggle']);
 Route::delete('/wishlist/remove/{id}', [WishlistController::class, 'remove'])->name('wishlist.remove');
+
+
+
+
+Route::post('/ckeditor/upload', [App\Http\Controllers\CKEditorController::class, 'upload'])->name('ckeditor.upload');

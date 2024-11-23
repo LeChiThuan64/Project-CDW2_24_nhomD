@@ -6,6 +6,19 @@
     alert("{{ session('error') }}");
 </script>
 @endif
+
+@if (session('status'))
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        let statusMessage = "{{ session('status') }}";
+        let type = 'info'; // Bạn có thể thay đổi type nếu cần (error, warning, info)
+        createToast(type, 'fa-solid fa-circle-check', 'Success', statusMessage);
+    });
+</script>
+@endif
+
+
 <main>
     <div class="mb-4 pb-4"></div>
     <section class="login-register container">
@@ -36,9 +49,18 @@
                             <div id="login-password-error" class="text-danger"></div> <!-- Hiển thị lỗi password -->
                         </div>
 
+                        
+                        <div class="d-flex align-items-center mb-3 pb-2">
+                            <div class="form-check mb-0">
+                                <input name="remember" class="form-check-input form-check-input_fill" type="checkbox" value="" id="flexCheckDefault">
+                                <label class="form-check-label text-secondary" for="flexCheckDefault">Remember me</label>
+                            </div>
+                            <a href="{{ route('password.request') }}" class="btn-text ms-auto">Lost password?</a>
+                        </div>
+                        
+                        <button class="btn btn-primary w-100 text-uppercase" type="submit">Log In</button>
                         <div id="login-error" class="text-danger mb-3"></div> <!-- Hiển thị lỗi tổng quát -->
 
-                        <button class="btn btn-primary w-100 text-uppercase" type="submit">Log In</button>
                     </form>
 
 
@@ -94,10 +116,6 @@
 </main>
 
 
-<script>
-        const loginUrl = "{{ route('login') }}";
-        const registerUrl = "{{ route('register') }}";
-        const authUrl = "{{ route('auth') }}";
-    </script>
+
 
 @endsection

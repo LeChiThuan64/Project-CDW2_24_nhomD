@@ -3,39 +3,39 @@
 @section('content')
 
 <style>
-.review-options {
-    position: relative;
-    display: inline-block;
-}
+    .review-options {
+        position: relative;
+        display: inline-block;
+    }
 
-.options-icon {
-    cursor: pointer;
-    font-size: 1.2rem;
-}
+    .options-icon {
+        cursor: pointer;
+        font-size: 1.2rem;
+    }
 
-.review-menu {
-    display: none;
-    position: absolute;
-    right: 0;
-    background-color: white;
-    border: 1px solid #ddd;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    z-index: 10;
-}
+    .review-menu {
+        display: none;
+        position: absolute;
+        right: 0;
+        background-color: white;
+        border: 1px solid #ddd;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        z-index: 10;
+    }
 
-.review-menu button {
-    display: block;
-    width: 100%;
-    border: none;
-    background: none;
-    padding: 10px;
-    text-align: left;
-    cursor: pointer;
-}
+    .review-menu button {
+        display: block;
+        width: 100%;
+        border: none;
+        background: none;
+        padding: 10px;
+        text-align: left;
+        cursor: pointer;
+    }
 
-.review-menu button:hover {
-    background-color: #f5f5f5;
-}
+    .review-menu button:hover {
+        background-color: #f5f5f5;
+    }
 </style>
 @if (session('add-review-error'))
 <script>
@@ -201,9 +201,9 @@ alert("{{ session('delete-wishlist-success') }}");
 
                     <share-button class="share-button">
                         <button
+                            id="share-facebook"
                             class="menu-link menu-link_us-s to-share border-0 bg-transparent d-flex align-items-center">
-                            <svg width="16" height="19" viewBox="0 0 16 19" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
+                            <svg width="16" height="19" viewBox="0 0 16 19" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <use href="#icon_sharing" />
                             </svg>
                             <span>Share</span>
@@ -215,13 +215,11 @@ alert("{{ session('delete-wishlist-success') }}");
                                 <div class="field grow mr-4">
                                     <label class="field__label sr-only" for="url">Link</label>
                                     <input type="text" class="field__input w-full" id="url"
-                                        value="https://uomo-crystal.myshopify.com/blogs/news/go-to-wellness-tips-for-mental-health"
-                                        placeholder="Link" onclick="this.select();" readonly="">
+                                        value="https://uomo-crystal.myshopify.com/blogs/news/go-to-wellness-tips-for-mental-health" placeholder="Link"
+                                        onclick="this.select();" readonly="">
                                 </div>
                                 <button class="share-button__copy no-js-hidden">
-                                    <svg class="icon icon-clipboard inline-block mr-1" width="11" height="13"
-                                        fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"
-                                        focusable="false" viewBox="0 0 11 13">
+                                    <svg class="icon icon-clipboard inline-block mr-1" width="11" height="13" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" viewBox="0 0 11 13">
                                         <path fill-rule="evenodd" clip-rule="evenodd"
                                             d="M2 1a1 1 0 011-1h7a1 1 0 011 1v9a1 1 0 01-1 1V1H2zM1 2a1 1 0 00-1 1v9a1 1 0 001 1h7a1 1 0 001-1V3a1 1 0 00-1-1H1zm0 10V3h7v9H1z"
                                             fill="currentColor"></path>
@@ -231,6 +229,7 @@ alert("{{ session('delete-wishlist-success') }}");
                             </div>
                         </details>
                     </share-button>
+
                     <script src="js/details-disclosure.js" defer="defer"></script>
                     <script src="js/share.js" defer="defer"></script>
                     <!-- Button comparison product -->
@@ -549,7 +548,7 @@ alert("{{ session('delete-wishlist-success') }}");
                     @foreach ($productsRandom as $product)
                     <div class="swiper-slide product-card product-card_style3">
                         <div class="pc__img-wrapper border-radius-0">
-                            <a href="{{ route('product.show', $product['product_id']) }}">
+                            <a href="{{ route('product.show', Crypt::encryptString($product['product_id'])) }}">
                                 <img loading="lazy" src="{{ asset($product['images'][0]) }}" width="330" height="400"
                                     alt="{{ $product['name'] }}" class="pc__img">
                             </a>
@@ -558,11 +557,11 @@ alert("{{ session('delete-wishlist-success') }}");
                         <div class="pc__info position-relative">
                             <p class="pc__category text-uppercase">{{ $product['category_name'] }}</p>
                             <h6 class="pc__title mb-2"><a
-                                    href="{{ route('product.show', $product['product_id']) }}">{{ $product['name'] }}</a>
+                                    href="{{ route('product.show', Crypt::encryptString($product['product_id'])) }}">{{ $product['name'] }}</a>
                             </h6>
                             <div class="product-card__price d-flex align-items-center">
                                 <span class="money price"><a
-                                        href="{{ route('product.show', $product['product_id']) }}">{{ number_format($product['price'], 0, ',', '.') }}
+                                        href="{{ route('product.show', Crypt::encryptString($product['product_id'])) }}">{{ number_format($product['price'], 0, ',', '.') }}
                                         VND</a></span>
                             </div>
                             <div class="product-card__price d-flex align-items-center">
@@ -646,13 +645,13 @@ function toggleMenu(menuId) {
 document.addEventListener('click', function(event) {
     const allMenus = document.querySelectorAll('.review-menu');
 
-    // Kiểm tra nếu click vào vùng ngoài các menu hoặc các nút trigger
-    allMenus.forEach(menu => {
-        if (!menu.contains(event.target) && !event.target.classList.contains('options-icon')) {
-            menu.style.display = "none"; // Ẩn menu
-        }
+        // Kiểm tra nếu click vào vùng ngoài các menu hoặc các nút trigger
+        allMenus.forEach(menu => {
+            if (!menu.contains(event.target) && !event.target.classList.contains('options-icon')) {
+                menu.style.display = "none"; // Ẩn menu
+            }
+        });
     });
-});
 
 function deleteReview(reviewId, deleteUrl) {
     if (confirm("Do you want to delete this review?")) {
@@ -661,12 +660,12 @@ function deleteReview(reviewId, deleteUrl) {
                 headers: {
                     "X-Requested-With": "XMLHttpRequest", // Thêm header này để Laravel nhận diện yêu cầu là AJAX
 
-                    "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content"),
-                },
-            })
-            .then(response => response.json()) // Chuyển đổi phản hồi thành JSON
-            .then(data => {
-                console.log(data);
+                        "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content"),
+                    },
+                })
+                .then(response => response.json()) // Chuyển đổi phản hồi thành JSON
+                .then(data => {
+                    console.log(data);
 
                 if (data.success) {
                     alert(data.message || "Delete review successfully!");
@@ -685,63 +684,63 @@ function deleteReview(reviewId, deleteUrl) {
     }
 }
 
-document.getElementById('imagesInput').addEventListener('change', function(event) {
-    const files = event.target.files;
-    const previewContainer = document.getElementById('imagePreview');
-    previewContainer.innerHTML = ''; // Clear previous previews
+    document.getElementById('imagesInput').addEventListener('change', function(event) {
+        const files = event.target.files;
+        const previewContainer = document.getElementById('imagePreview');
+        previewContainer.innerHTML = ''; // Clear previous previews
 
-    if (files.length > 4) {
-        document.getElementById('error-message-images').style.display = 'block';
-    } else {
-        document.getElementById('error-message-images').style.display = 'none';
+        if (files.length > 4) {
+            document.getElementById('error-message-images').style.display = 'block';
+        } else {
+            document.getElementById('error-message-images').style.display = 'none';
 
-        Array.from(files).forEach(file => {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const imgWrapper = document.createElement('div');
-                imgWrapper.style.position = 'relative';
-                imgWrapper.style.display = 'inline-block';
-                imgWrapper.style.marginRight = '10px';
-                imgWrapper.style.marginBottom = '10px';
+            Array.from(files).forEach(file => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const imgWrapper = document.createElement('div');
+                    imgWrapper.style.position = 'relative';
+                    imgWrapper.style.display = 'inline-block';
+                    imgWrapper.style.marginRight = '10px';
+                    imgWrapper.style.marginBottom = '10px';
 
-                const imgElement = document.createElement('img');
-                imgElement.src = e.target.result;
-                imgElement.style.maxHeight = '60px'; // Adjust size as needed
-                imgElement.style.borderRadius = '5px'; // Optional: for rounded corners
+                    const imgElement = document.createElement('img');
+                    imgElement.src = e.target.result;
+                    imgElement.style.maxHeight = '60px'; // Adjust size as needed
+                    imgElement.style.borderRadius = '5px'; // Optional: for rounded corners
 
-                // Create and style the delete button (X)
-                const deleteBtn = document.createElement('span');
-                deleteBtn.innerText = '✖';
-                deleteBtn.style.position = 'absolute';
-                deleteBtn.style.top = '0.2em';
-                deleteBtn.style.right = '0.2em';
-                deleteBtn.style.color = 'white';
-                deleteBtn.style.border = 'none';
-                deleteBtn.style.textAlign = 'center';
-                deleteBtn.style.lineHeight = '15px';
-                deleteBtn.style.fontSize = '10px';
-                deleteBtn.style.cursor = 'pointer';
-                deleteBtn.style.width = '15px';
-                deleteBtn.style.height = '15px';
-                deleteBtn.style.background = 'black';
-                deleteBtn.style.borderRadius = '30%';
+                    // Create and style the delete button (X)
+                    const deleteBtn = document.createElement('span');
+                    deleteBtn.innerText = '✖';
+                    deleteBtn.style.position = 'absolute';
+                    deleteBtn.style.top = '0.2em';
+                    deleteBtn.style.right = '0.2em';
+                    deleteBtn.style.color = 'white';
+                    deleteBtn.style.border = 'none';
+                    deleteBtn.style.textAlign = 'center';
+                    deleteBtn.style.lineHeight = '15px';
+                    deleteBtn.style.fontSize = '10px';
+                    deleteBtn.style.cursor = 'pointer';
+                    deleteBtn.style.width = '15px';
+                    deleteBtn.style.height = '15px';
+                    deleteBtn.style.background = 'black';
+                    deleteBtn.style.borderRadius = '30%';
 
-                // Add event listener for deleting the image
-                deleteBtn.addEventListener('click', function() {
-                    imgWrapper.remove(); // Remove the image and the delete button
-                });
+                    // Add event listener for deleting the image
+                    deleteBtn.addEventListener('click', function() {
+                        imgWrapper.remove(); // Remove the image and the delete button
+                    });
 
-                // Append the image and button to the wrapper
-                imgWrapper.appendChild(imgElement);
-                imgWrapper.appendChild(deleteBtn);
+                    // Append the image and button to the wrapper
+                    imgWrapper.appendChild(imgElement);
+                    imgWrapper.appendChild(deleteBtn);
 
-                // Append the wrapper to the preview container
-                previewContainer.appendChild(imgWrapper);
-            };
-            reader.readAsDataURL(file);
-        });
-    }
-});
+                    // Append the wrapper to the preview container
+                    previewContainer.appendChild(imgWrapper);
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+    });
 
 </script>
 @endsection

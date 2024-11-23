@@ -14,7 +14,6 @@ use Illuminate\Support\Facades\DB;
 
 
 
-
 class ProductsController extends Controller
 {
 
@@ -36,6 +35,7 @@ class ProductsController extends Controller
         // Truyền biến $categories và $products vào view
         return view('viewUser.locgia', compact('categories', 'products'));
     }
+
     public function productsByCategory($id)
     {
         // Lấy danh mục hiện tại
@@ -283,7 +283,7 @@ class ProductsController extends Controller
         $products = Product::with(['images', 'productSizeColors.size', 'productSizeColors.color'])
             ->where('name', 'LIKE', "%{$keyword}%") // Tìm kiếm theo cột 'name'
             ->orderBy('updated_at', 'desc')
-            ->paginate(10); // Giới hạn số lượng kết quả trả về
+            ->paginate(6); // Giới hạn số lượng kết quả trả về
 
         // Lấy danh sách product_id từ các sản phẩm tìm thấy
         $productIds = $products->pluck('product_id')->toArray();
@@ -345,7 +345,7 @@ class ProductsController extends Controller
 
         // Xác thực dữ liệu
         $request->validate([
-            'productName' => 'required|string|max:50',
+            'productName' => 'required|string|max:255',
             'productContent' => 'nullable|string',
             'category' => 'required|integer',
             'images.*' => 'image|mimes:jpeg,png,jpg|max:1024',
@@ -360,6 +360,7 @@ class ProductsController extends Controller
         $product->description = $request->productContent;
         $product->category_id = $request->category;
         $product->created_at = now();
+        $product->updated_at = now();
         $product->save();
 
         // ID của sản phẩm vừa lưu
@@ -375,6 +376,10 @@ class ProductsController extends Controller
 
         // Duyệt qua các kết hợp màu-kích thước
         foreach ($activeColors as $combination) {
+
+            if (empty($combination) || strpos($combination, ':') === false) {
+                continue; // Bỏ qua nếu không hợp lệ
+            }
             // Tách chuỗi màu-kích thước thành colorId và sizeId
             list($colorId, $sizeId) = explode(':', $combination);
 
@@ -482,45 +487,46 @@ class ProductsController extends Controller
 
     // app/Http/Controllers/ProductController.php
 
-    public function edit($id)
+    public function edit($encryptedId)
     {
-        // Lấy thông tin sản phẩm theo `product_id` cùng với các quan hệ liên quan
-        $product = Product::with(['images', 'productSizeColors.size', 'productSizeColors.color', 'category'])
-            ->findOrFail($id);
+        try {
+            // Giải mã ID sản phẩm
+            $id = decrypt($encryptedId);
 
-        $categories = Category::all(); // Lấy tất cả danh mục
-        $colors = ['1' => 'Đen', '2' => 'Đỏ', '3' => 'Xám']; // Danh sách các màu
-        $sizes = ['1' => 'XS', '2' => 'S', '3' => 'M', '4' => 'L', '5' => 'XL']; // Danh sách các size
+            // Lấy thông tin sản phẩm
+            $product = Product::with(['images', 'productSizeColors.size', 'productSizeColors.color', 'category'])
+                ->findOrFail($id);
 
+            // Phần còn lại giữ nguyên
+            $categories = Category::all();
+            $colors = ['1' => 'Đen', '2' => 'Đỏ', '3' => 'Xám'];
+            $sizes = ['1' => 'XS', '2' => 'S', '3' => 'M', '4' => 'L', '5' => 'XL'];
 
-        $productSizeColors = ProductSizeColor::where('product_id', $id)
-            ->get()
-            ->mapWithKeys(function ($item) {
-                $colorKey = strtolower($item->color->name);  // e.g., 'den' for 'Đen'
-                if ($colorKey === 'xám') {
-                    $colorKey = "Xám";
-                }
-                $sizeKey = strtoupper($item->size->name);    // e.g., 'xs' for 'XS'
-                return ["{$colorKey}-{$sizeKey}" => [
-                    'quantity' => $item->quantity,
-                    'price' => $item->price,
-                ]];
-            })
-            ->toArray();
+            $productSizeColors = ProductSizeColor::where('product_id', $id)
+                ->get()
+                ->mapWithKeys(function ($item) {
+                    $colorKey = strtolower($item->color->name);
+                    if ($colorKey === 'xám') {
+                        $colorKey = "Xám";
+                    }
+                    $sizeKey = strtoupper($item->size->name);
+                    return ["{$colorKey}-{$sizeKey}" => [
+                        'quantity' => $item->quantity,
+                        'price' => $item->price,
+                    ]];
+                })
+                ->toArray();
 
-        $imageUrls = $product->images->pluck('image_url')->map(function ($url) {
-            return asset('assets/img/products/' . $url);
-        })->toArray();
+            $imageUrls = $product->images->pluck('image_url')->map(function ($url) {
+                return asset('assets/img/products/' . $url);
+            })->toArray();
 
-
-
-        // dd($images);
-
-
-
-        // Đổ dữ liệu xuống view với các biến đã chuẩn bị
-        return view('viewAdmin.update_products', compact('product', 'categories', 'colors', 'sizes', 'productSizeColors', 'imageUrls'));
+            return view('viewAdmin.update_products', compact('product', 'categories', 'colors', 'sizes', 'productSizeColors', 'imageUrls'));
+        } catch (\Exception $e) {
+            abort(404); // Hoặc trả về lỗi phù hợp
+        }
     }
+
 
     public function update(Request $request, $id)
     {

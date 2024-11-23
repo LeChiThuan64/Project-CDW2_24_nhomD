@@ -46,7 +46,7 @@ class Product extends Model
 
     public function wishlists()
     {
-        return $this->hasMany(Wishlist::class, 'product_id');
+        return $this->hasMany(Wishlist::class);
     }
 
     public function sizesAndColors()

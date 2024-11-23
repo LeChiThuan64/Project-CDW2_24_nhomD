@@ -11,26 +11,25 @@ class ColorSeeder extends Seeder {
         DB::table('colors')->insert([
             [
                 'id' => 1,
-                'name' => 'Black',
+                'name' => 'Đen',
                 'created_at' => null,
                 'updated_at' => null,
                 'color_code' => '#222',
             ],
             [
                 'id' => 2,
-                'name' => 'Red',
+                'name' => 'Đỏ',
                 'created_at' => null,
                 'updated_at' => null,
                 'color_code' => '#C93A3E',
             ],
             [
                 'id' => 3,
-                'name' => 'Gray',
+                'name' => 'Xám',
                 'created_at' => null,
                 'updated_at' => null,
                 'color_code' => '#E4E4E4',
             ],
         ]); 
-        
     }
 }
