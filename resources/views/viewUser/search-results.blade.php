@@ -15,7 +15,7 @@
                             data-settings='{"resizeObserver": true}'>
                             <div class="swiper-wrapper">
                                 <div class="swiper-slide">
-                                    <a href="{{ route('product.show', $product['product_id']) }}">
+                                    <a href="{{ route('product.show', Crypt::encryptString($product['product_id'])) }}">
                                         <img loading="lazy" src="{{ asset($product['images'][0]) }}" width="330"
                                             height="400" alt="{{ $product['name'] }}" class="pc__img">
                                     </a>
@@ -27,11 +27,12 @@
                     <div class="pc__info position-relative">
                         <p class="pc__category">{{ $product['category'] }}</p>
                         <h6 class="pc__title"><a
-                                href="{{ route('product.show', $product['product_id']) }}">{{ $product['name'] }}</a>
+                                href="{{ route('product.show', Crypt::encryptString($product['product_id'])) }}">{{ $product['name'] }}</a>
                         </h6>
                         <div class="product-card__price d-flex align-items-center">
-                            <span class="money price">{{ number_format($product['price'], 0, ',', '.') }}
-                                VND</span>
+                            <span class="money price"><a
+                                    href="{{ route('product.show', Crypt::encryptString($product['product_id'])) }}">{{ number_format($product['price'], 0, ',', '.') }}
+                                    VND</a></span>
                         </div>
                         <div class="product-card__price d-flex align-items-center">
                             <span class="reviews-note">Sold: {{ $product['total_sold'] }}</span>

@@ -51,7 +51,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/chatbox_admin.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/customer_list.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/dashboard.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/returns_order_detail_admin.css') }}">
+    <!-- <link rel="stylesheet" href="{{ asset('assets/css/returns_order_detail_admin.css') }}"> -->
 
 
     <!-- Toastr CSS -->

@@ -9,12 +9,20 @@ use App\Models\Size;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Models\ReviewImage;
+use Crypt;
 
 class ProductController extends Controller
 {
     // Hiển thị chi tiết sản phẩm
-    public function show($id)
+    public function show($encryptedId)
     {
+        try {
+            // Giải mã id
+            $id = Crypt::decryptString($encryptedId);
+        } catch (\Exception $e) {
+            // Nếu giải mã thất bại, trả về lỗi 404
+            abort(404, 'Invalid Product ID');
+        }
         $productsRandomModel = Product::with(['images', 'productSizeColors.size', 'productSizeColors.color', 'reviews'])
             ->inRandomOrder() // Sắp xếp ngẫu nhiên
             ->take(8) // Lấy 8 sản phẩm ngẫu nhiên

@@ -73,7 +73,7 @@ class ReviewController extends Controller
     $review->save();
 
     // Thêm flash message
-    $message = $review->wasChanged('reply') ? "Reply updated successfully!" : "Reply added successfully!";
+    $message = $review->wasChanged('reply') ? "Reply added successfully!" : "Reply updated successfully!";
     $request->session()->flash('add-reply-success', $message);
 
     return back();
